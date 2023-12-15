@@ -14,15 +14,15 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
 
     @Override
     public void storeOne(User user) {
-        String sql = "INSERT INTO User (loginUser, passwordUser, firstNameUser, prefixUser, surnameUser, roleUser) VALUES (?,?,?,?,?,?);";
+        String sql = "INSERT INTO User (username, password, firstName, prefix, surname, role) VALUES (?,?,?,?,?,?);";
         try {
             setupPreparedStatementWithKey(sql);
-            preparedStatement.setString(1,user.getLoginUser());
-            preparedStatement.setString(2, user.getPasswordUser());
-            preparedStatement.setString(3, user.getFirstNameUser());
-            preparedStatement.setString(4, user.getPrefixUser());
-            preparedStatement.setString(5, user.getSurnameUser());
-            preparedStatement.setString(6,user.getRoleUser());
+            preparedStatement.setString(1,user.getUsername());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(3, user.getFirstName());
+            preparedStatement.setString(4, user.getPrefix());
+            preparedStatement.setString(5, user.getSurname());
+            preparedStatement.setString(6,user.getRole());
             int userId = executeInsertStatementWithKey();
             user.setIdUser(userId);
         } catch (SQLException sqlError) {
@@ -33,20 +33,13 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
     @Override
     public List<User> getAll() {
         List<User> resultList = new ArrayList<>();
-        String sql = "SELECT * FROM Klant";
+        String sql = "SELECT * FROM User";
         User user;
         try {
             setupPreparedStatement(sql);
             ResultSet resultSet = executeSelectStatement();
             while (resultSet.next()) {
-                int userId = resultSet.getInt("idUser");
-                String loginUser = resultSet.getString("loginUser");
-                String passwordUser = resultSet.getString("passwordUser");
-                String firstNameUser = resultSet.getString("firstNameUser");
-                String prefixUser = resultSet.getString("prefixUser");
-                String surnameUser = resultSet.getString("surnameUser");
-                String roleUser = resultSet.getString("roleUser");
-                user = new User(userId, loginUser,passwordUser,firstNameUser,prefixUser,surnameUser,roleUser);
+                user = getUserFromResultSet(resultSet);
                 resultList.add(user);
             }
         }
@@ -54,28 +47,36 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
             System.out.println("SQL erorr: " + sqlError.getMessage());
         }
         return resultList;
-    };
+    }
+
     @Override
     public User getOneById(int id) {
-        String sql = "SELECT * FROM Klant WHERE klantnummer = ?";
+        String sql = "SELECT * FROM User WHERE userId = ?";
         User user = null;
         try {
             setupPreparedStatement(sql);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = executeSelectStatement();
             if (resultSet.next()) {
-                String loginUser = resultSet.getString("loginUser");
-                String passwordUser = resultSet.getString("passwordUser");
-                String firstNameUser = resultSet.getString("firstNameUser");
-                String prefixUser = resultSet.getString("prefixUser");
-                String surnameUser = resultSet.getString("surnameUser");
-                String roleUser = resultSet.getString("roleUser");
-                user = new User(loginUser,passwordUser,firstNameUser,prefixUser,surnameUser,roleUser);
+                user = getUserFromResultSet(resultSet);
             }
         }
         catch (SQLException sqlError){
             System.out.println("SQL error: " + sqlError.getMessage());
         }
         return user;
-    };
+    }
+
+    private static User getUserFromResultSet(ResultSet resultSet) throws SQLException {
+        User user;
+        int userId = resultSet.getInt("idUser");
+        String username = resultSet.getString("username");
+        String password = resultSet.getString("password");
+        String firstName = resultSet.getString("firstname");
+        String prefix = resultSet.getString("prefix");
+        String surname = resultSet.getString("surname");
+        String role = resultSet.getString("role");
+        user = new User(userId, username,password,firstName,prefix,surname,role);
+        return user;
+    }
 }
