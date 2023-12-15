@@ -1,8 +1,6 @@
 package model;
 //Bianca Duijvesteijn, studentnummer 500940421
 
-import model.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Group {
@@ -11,7 +9,6 @@ public class Group {
     private int numberOfStudents;
     private User userName;
     private Course courseName;
-    private List<Group> groups = new ArrayList<>();
 
     /*   public Group(String groupName, String courseName, int numberOfStudents, User userName) {
         this("default", "default", 0, User.getUserName);
@@ -32,12 +29,10 @@ public class Group {
                 ", numberOfStudents=" + numberOfStudents +
                 ", userName=" + userName +
                 ", courseName=" + courseName +
-                ", groups=" + groups +
                 '}';
     }
+
     //Getters en Setters
-
-
     public int getMAX_AANTAL_STUDENTEN() {
         return MAX_AANTAL_STUDENTEN;
     }
@@ -69,16 +64,7 @@ public class Group {
     public Course getCourseName() {
         return courseName;
     }
-
     public void setCourseName(Course courseName) {
         this.courseName = courseName;
-    }
-
-    public List<Group> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
     }
 }
