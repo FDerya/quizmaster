@@ -1,15 +1,18 @@
 package model;
-// Tom van Beek
+// Tom van Beek, 500941521.
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Quiz {
+    //Attributen
     private int idQuiz;
     private Course course;
     private String nameQuiz;
     private int level;
     private int aantal;
 
+    //Constructors
     public Quiz(int idQuiz, Course course, String nameQuiz, int level, int aantal){
         this.idQuiz = idQuiz;
         this.course = course;
@@ -21,6 +24,7 @@ public class Quiz {
         this(0,course, "",0,0);
     }
 
+    //Getters en setters
     public int getIdQuiz() {
         return idQuiz;
     }

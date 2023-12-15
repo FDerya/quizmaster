@@ -1,5 +1,5 @@
 package database.mysql;
-// Tom van Beek
+// Tom van Beek, 500941521.
 import database.mysql.AbstractDAO;
 import model.*;
 
