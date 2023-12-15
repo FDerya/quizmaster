@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+public class QuizDAO {
+}
 /*
 public class QuizDAO extends AbstractDAO implements GenericDAO{
 
@@ -34,4 +36,4 @@ public class QuizDAO extends AbstractDAO implements GenericDAO{
 		return vragenLijst;
     }
 }*/
-}
+
