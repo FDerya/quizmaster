@@ -7,12 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+/*
 public class QuizDAO extends AbstractDAO implements GenericDAO{
 
     List<Quiz> vragenLijst = new ArrayList<>();
     String sql = "SELECT (nameQuiz, levelQuiz, amountQuestion) FROM Quiz WHERE nameQuiz = ?;";
-    public Quiz makeQuiz(Question question){
+    public List<Quiz> getAll() {
     Quiz quiz;
 		try {
         setupPreparedStatement(sql);
@@ -32,5 +32,6 @@ public class QuizDAO extends AbstractDAO implements GenericDAO{
         System.out.println("SQL fout " + sqlFout.getMessage());
     }
 		return vragenLijst;
-}
+    }
+}*/
 }
