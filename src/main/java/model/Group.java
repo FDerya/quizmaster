@@ -1,6 +1,7 @@
 package model;
 //Bianca Duijvesteijn, studentnummer 500940421
 
+import model.*;
 import java.util.ArrayList;
 import java.util.List;
 
