@@ -2,6 +2,7 @@ package model;
 
 public class Question {
 
+    // Attributes
     private int idQuestion;
     private int idQuiz;
     private String question;
@@ -11,11 +12,9 @@ public class Question {
     private String answerWrong3;
     private static final int AANTAL_ANTWOORDEN = 4;
 
-    // Constructor
-    public Question (int idQuestion, int idQuiz, String question,
-                     String answerGood, String answerWrong1, String answerWrong2, String answerWrong3) {
+    public Question(int idQuestion, int idQuiz, String question,
+                    String answerGood, String answerWrong1, String answerWrong2, String answerWrong3) {
         this.idQuestion = idQuestion;
-
         this.idQuiz = idQuiz;
         this.question = question;
         this.answerGood = answerGood;
@@ -24,19 +23,13 @@ public class Question {
         this.answerWrong3 = answerWrong3;
     }
 
-    public Question (int idQuiz, String questionString,
-                     String answerGood, String answerWrong1, String answerWrong2, String answerWrong3) {
-        this(0, idQuiz, questionString, answerGood, answerWrong1, answerWrong2, answerWrong3);
+    // Contructors
+    public Question(int idQuiz, String question,
+                    String answerGood, String answerWrong1, String answerWrong2, String answerWrong3) {
+        this(0, idQuiz, question, answerGood, answerWrong1, answerWrong2, answerWrong3);
     }
 
-    // Methodes
-    @Override
-    public String toString() {
-        StringBuilder resultString = new StringBuilder();
-        resultString.append(question);
-        return resultString.toString();
-    }
-    // Getters en Setters
+    // Getters and Setters
     public void setIdQuiz(int idQuiz) {
         this.idQuiz = idQuiz;
     }
@@ -48,30 +41,21 @@ public class Question {
     public int getIdQuestion() {
         return idQuestion;
     }
-
     public int getIdQuiz() {
         return idQuiz;
     }
-
-    public String getQuestion() {
-        return question;
+    public String getQuestion() { return question;
+    }
+    public String getAnswerGood() {  return answerGood;
     }
 
-    public String getanswerGood() {
-        return answerGood;
+    public String getAnswerWrong1() {return answerWrong1;
+    }
+    public String getAnswerWrong2() {return answerWrong2;
+    }
+    public String getAnswerWrong3() {return answerWrong3;
+
+
     }
 
-    public String getAnswerB() {
-        return answerWrong1;
-    }
-
-    public String getAnswerC() {
-        return answerWrong2;
-    }
-
-    public String getAnswerD() {
-        return answerWrong3;
-    }
 }
-
-
