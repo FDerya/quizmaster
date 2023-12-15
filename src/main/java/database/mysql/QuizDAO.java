@@ -1,4 +1,4 @@
-package database;
+package database.mysql;
 
 import database.mysql.AbstractDAO;
 import model.*;

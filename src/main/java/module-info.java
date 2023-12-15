@@ -11,4 +11,5 @@ module QuizMaster {
     opens controller to javafx.fxml;
     opens model to com.google.gson;
     opens database to com.google.gson;
+    opens database.mysql to com.google.gson;
 }
