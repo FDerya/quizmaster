@@ -14,6 +14,9 @@ public class Course {
         this.nameCourse = nameCourse;
         this.difficultyCourse = difficultyCourse;
     }
+    public Course(User coordinator, String nameCourse, int difficultyCourse){
+        this(0, coordinator, nameCourse, difficultyCourse);
+    }
 
 // Getters & Setters
     public int getIdCourse() {
