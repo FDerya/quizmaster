@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 package model;
 
 public class Course {
@@ -46,4 +44,4 @@ public class Course {
         this.difficultyCourse = difficultyCourse;
     }
 }
->>>>>>> 9957d203a7d270b8bf1c9c6ae8abbaea72f88d7d
+

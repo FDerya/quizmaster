@@ -1,6 +1,4 @@
-
-<<<<<<< HEAD
-=======
+package model;
 public class User {
     // Attributes
     private int idUser;
@@ -90,4 +88,3 @@ public class User {
         this.roleUser = roleUser;
     }
 }
->>>>>>> 9957d203a7d270b8bf1c9c6ae8abbaea72f88d7d

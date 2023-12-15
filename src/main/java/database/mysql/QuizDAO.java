@@ -8,10 +8,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuizDAO extends AbstractDAO {
-    public Quiz makeQuiz(Question question)
+public class QuizDAO extends AbstractDAO implements GenericDAO{
+
     List<Quiz> vragenLijst = new ArrayList<>();
     String sql = "SELECT (nameQuiz, levelQuiz, amountQuestion) FROM Quiz WHERE nameQuiz = ?;";
+    public Quiz makeQuiz(Question question){
     Quiz quiz;
 		try {
         setupPreparedStatement(sql);
@@ -20,9 +21,9 @@ public class QuizDAO extends AbstractDAO {
         ResultSet resultSet = executeSelectStatement();
         while (resultSet.next()) {
             String naam = resultSet.getString("nameQuiz");
-            String level = resultSet.getInt("levelQuiz");
-            String aantal = resultSet.getInt("amountQuestion");
-            quiz = new Quiz(naam, level, aantal);
+            int level = resultSet.getInt("levelQuiz"));
+            int aantal = resultSet.getInt("amountQuestion"));
+            quiz = new Quiz(quiz.getCourse(), level, aantal);
             vragenLijst.add(quiz);
         }
     }
