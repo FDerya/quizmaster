@@ -1,8 +1,5 @@
 package model;
-<<<<<<< HEAD
-=======
 
->>>>>>> 79786e56cdf9a72614bf36b7c8e8c6df94923d53
 public class User {
     // Attributes
     private int idUser;
@@ -14,7 +11,7 @@ public class User {
     private String roleUser;
 
     // Constructors
-    public User (int idUser, String loginUser, String passwordUser, String firstNameUser, String prefixUser, String surnameUser, String roleUser) {
+    public User(int idUser, String loginUser, String passwordUser, String firstNameUser, String prefixUser, String surnameUser, String roleUser) {
         this.idUser = idUser;
         this.loginUser = loginUser;
         this.passwordUser = passwordUser;
@@ -91,8 +88,4 @@ public class User {
     public void setRoleUser(String roleUser) {
         this.roleUser = roleUser;
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 79786e56cdf9a72614bf36b7c8e8c6df94923d53
