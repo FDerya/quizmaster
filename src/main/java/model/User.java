@@ -1,4 +1,8 @@
 package model;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 79786e56cdf9a72614bf36b7c8e8c6df94923d53
 public class User {
     // Attributes
     private int idUser;
@@ -87,4 +91,8 @@ public class User {
     public void setRoleUser(String roleUser) {
         this.roleUser = roleUser;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 79786e56cdf9a72614bf36b7c8e8c6df94923d53
