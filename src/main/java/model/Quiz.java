@@ -14,10 +14,7 @@ public class Quiz {
         this.aantal = aantal;
     }
     public Quiz(Course course){
-        this(course);
-    }
-    public Quiz(){
-        this("", 0,0);
+        this(course,0,0);
     }
 
     public Course getCourse() {
