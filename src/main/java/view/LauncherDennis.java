@@ -11,15 +11,19 @@ import java.util.List;
 import java.util.Scanner;
 
 public class LauncherDennis {
-    private static String filepath = "src/main/java/database/Gebruikers.csv";
-    private static File userFile = new File(filepath);
+    private static final String filepath = "src/main/java/database/Gebruikers.csv";
+    private static final File userFile = new File(filepath);
 
     public static void main(String[] args) {
-        DBAccess dBaccess = new DBAccess("Quizmaster")
+        DBAccess dBaccess = new DBAccess("Quizmaster", "userQuizmaster", "pwQuizmaster");
         UserDAO userDAO = new UserDAO(dBaccess);
 
         List<String> test = FileReaderToArray();
         List<User> userList = listUsers(test);
+
+        for (User user : userList) {
+            userDAO.storeOne(user);
+        }
     }
 
     public static List<String> FileReaderToArray() {
@@ -37,15 +41,15 @@ public class LauncherDennis {
 
     public static List<User> listUsers(List<String> list) {
         List<User> userList = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            String[] lineArray = list.get(i).split(",");
+        for (String s : list) {
+            String[] lineArray = s.split(",");
             String username = lineArray[0];
             String password = lineArray[1];
             String firstName = lineArray[2];
             String prefix = lineArray[3];
             String surname = lineArray[4];
             String role = lineArray[5];
-            userList.add(new User(username, password, firstName,prefix,surname,role));
+            userList.add(new User(username, password, firstName, prefix, surname, role));
         }
         return userList;
     }
