@@ -1,24 +1,28 @@
 package model;
 //Bianca Duijvesteijn, studentnummer 500940421
 
-import java.util.List;
-
 public class Group {
+    //Attributen
     final int MAX_AANTAL_STUDENTEN = 25;
-    private String groupName;
-    private int numberOfStudents;
-    private User userName;
+    private int idGroup;
+    private int idTeacher;
     private Course courseName;
+    private String groupName;
+    private int amountStudent;
+    private User userName;
 
-    /*   public Group(String groupName, String courseName, int numberOfStudents, User userName) {
-        this("default", "default", 0, User.getUserName);
-    }*/
 
-    public Group(String groupName,Course courseName , int numberOfStudents, User userName) {
+    //All args constructor
+
+
+    public Group(int idGroup, int idTeacher, Course courseName, String groupName, int amountStudent,
+                 User userName) {
+        this.idGroup = idGroup;
+        this.idTeacher = idTeacher;
+        this.courseName = courseName;
         this.groupName = groupName;
-        this.courseName = getCourseName();
-        this.numberOfStudents = numberOfStudents;
-        this.userName = getUserName();
+        this.amountStudent = amountStudent;
+        this.userName = userName;
     }
 
     @Override
@@ -26,7 +30,7 @@ public class Group {
         return "Group{" +
                 "MAX_AANTAL_STUDENTEN=" + MAX_AANTAL_STUDENTEN +
                 ", groupName='" + groupName + '\'' +
-                ", numberOfStudents=" + numberOfStudents +
+                ", numberOfStudents=" + amountStudent +
                 ", userName=" + userName +
                 ", courseName=" + courseName +
                 '}';
@@ -46,11 +50,11 @@ public class Group {
     }
 
     public int getNumberOfStudents() {
-        return numberOfStudents;
+        return amountStudent;
     }
 
     public void setNumberOfStudents(int numberOfStudents) {
-        this.numberOfStudents = numberOfStudents;
+        this.amountStudent = numberOfStudents;
     }
 
     public User getUserName() {

@@ -1,105 +1,94 @@
-
 package database.mysql;
 //Bianca Duijvesteijn, studentnummer 500940421
 
-import model.Course;
-import model.Group;
-import model.User;
-
+import model.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupDAO {
-    public GroupDAO(DBAccess dBaccess) {
+public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
+    private static UserDAO userDAO;
 
+    public GroupDAO(DBAccess dBaccess, UserDAO userDAO) {
         super(dBaccess);
+        this.userDAO = userDAO;
     }
-    public void storeGroup(Group group){
-        String sql = "INSERT INTO group(naamGroep, naamCursus, aantalStudenten, gebruikersInlogNaam)" +
+
+    @Override
+    public List getAll() {
+        List<Group> resultList = new ArrayList<>();
+        String sql = "SELECT * FROM Group";
+        Group group;
+        try {
+            setupPreparedStatement(sql);
+            ResultSet resultSet = executeSelectStatement();
+            while (resultSet.next()) {
+                group = getGroupFromResultSet(resultSet);
+                resultList.add(group);
+            }
+        }
+        catch (SQLException sqlError){
+            System.out.println("SQL erorr: " + sqlError.getMessage());
+        }
+        return resultList;
+
+    }
+
+    @Override
+    public Group getOneById(int id) {
+        String sql = "SELECT * FROM group WHERE userId = ?";
+        Group group = null;
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = executeSelectStatement();
+            if (resultSet.next()) {
+                group = getGroupFromResultSet(resultSet);
+            }
+        }
+        catch (SQLException sqlError){
+            System.out.println("SQL error: " + sqlError.getMessage());
+        }
+        return group;
+    }
+
+
+    @Override
+    public void storeOne(Group group) {
+        String sql = "INSERT INTO `group` (naamGroep, naamCursus, aantalStudenten, gebruikersInlogNaam)" +
                 " VALUES (?, ?, ?, ?);";
         try {
             setupPreparedStatement(sql);
             preparedStatement.setString(1, group.getGroupName());
-
-            // Maak een instantie van Course
-            Course course = new Course();
-            preparedStatement.setString(2, course.getNameCourse());
-
+            preparedStatement.setString(2, group.getCourseName().getNameCourse());
             preparedStatement.setInt(3, group.getNumberOfStudents());
-
-            // Maak een instantie van User
-            User user = new User();
-            preparedStatement.setString(4, user.getIdUser());
+            preparedStatement.setString(4, String.valueOf(group.getUserName().getIdUser()));
 
             executeManipulateStatement();
-
         } catch (SQLException sqlFout) {
             System.out.println(sqlFout.getMessage());
         }
     }
 
 
-    public List<Group> getUsersInGroup(User user) {
-        List<Group> groupList = new ArrayList<>();
+    private Group getGroupFromResultSet(ResultSet resultSet) throws SQLException {
+        Group group;
 
-        String sql = "SELECT group.naamGroep, cursus.naamCursus, groep.aantalStudenten, " +
-                "CONCAT(user.VoornaamGebruiker, ' ', user.tussenvoegselgebruiker, ' ', user.achternaamGebruiker) as UserName " +
-                "FROM groep JOIN user ON groep.gebruikersInlogNaam = user.gebruikerInlogNaam " +
-                "JOIN cursus ON groep.naamCursus = groep.naamCursus";
+        int idGroup = resultSet.getInt("idGroup");
+        int idTeacher = resultSet.getInt("idTeacher");
+        String nameCourse = resultSet.getString("nameCourse");
+        String nameGroup = resultSet.getString("nameGroup");
+        int amountStudent = resultSet.getInt("amountStudent");
+        String coordinatorUsername = resultSet.getString("coordinator");
 
-        try {
-            setupPreparedStatement(sql);
-            ResultSet resultSet = executeSelectStatement();
-            while (resultSet.next()) {
-                String groupName = resultSet.getString("naamGroep");
-                String courseName = resultSet.getString("naamCursus");
-                int numberOfStudents = resultSet.getInt("aantalStudenten");
-                String userName = resultSet.getString("UserName");
+        User coordinator = userDAO.getUserByUsername(coordinatorUsername);
+        Course course = null;
+        int difficulty = course.getDifficultyCourse();
+        course = new Course(coordinator, nameCourse, difficulty);
 
-                System.out.println("Groupname: " + groupName);
-
-                Group group = new Group(groupName, courseName, numberOfStudents, userName);
-
-                // Gebruik een UserDAO-methode om gebruikers op te halen op basis van de groepsnaam
-                UserDAO userDAO = new UserDAO(); // Veronderstel dat je een UserDAO-klasse hebt
-                List<User> usersInGroup = userDAO.getUsersByGroupName(groupName);
-                group.setUserName(usersInGroup);
-                groupList.add(group);
-            }
-        } catch (SQLException sqlFout) {
-            System.out.println("SQL fout " + sqlFout.getMessage());
-        }
-        return groupList;
+        group = new Group(idGroup, idTeacher, course, nameGroup, amountStudent, coordinator);
+        return group;
     }
-
-    public List<Group> getListOfGroups(Group group) {
-        List<Group> listOfGroups = new ArrayList<>();
-        String sql = "SELECT * FROM groep WHERE aantalStudenten > 0;";
-        try {
-            setupPreparedStatement(sql);
-            ResultSet resultSet = executeSelectStatement();
-
-            while (resultSet.next()) {
-                String groupName = resultSet.getString("naamGroep");
-                String courseName = resultSet.getString("naamCursus");
-                String numberOfStudents = resultSet.getString("aantalStudenten");
-
-                Group group = makeListOfGroups(groupName);
-                listOfGroups.add(group);
-            }
-        } catch (SQLException foutmelding) {
-            System.out.println(foutmelding.getMessage());
-        }
-        return listOfGroups;
-    }
-    public Group makeListOfGroups(String groupName, String courseName, int numberOfStudents, String userName) {
-        Course course = new Course();  // Maak een nieuw Course-object
-        String actualCourseName = Course.getCourseName(courseName);  // Roep de methode aan op het Course-object
-        return new Group(groupName, actualCourseName, numberOfStudents, new User().getUserName(userName));
-    }
-
-
 }
