@@ -16,9 +16,9 @@ public class Group {
 
     public Group(String groupName,Course courseName , int numberOfStudents, User userName) {
         this.groupName = groupName;
+        this.courseName = getCourseName();
         this.numberOfStudents = numberOfStudents;
         this.userName = getUserName();
-        this.courseName = getCourseName();
     }
 
     @Override

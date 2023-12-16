@@ -1,3 +1,4 @@
+
 package database.mysql;
 //Bianca Duijvesteijn, studentnummer 500940421
 
@@ -13,9 +14,10 @@ import java.util.List;
 
 public class GroupDAO extends AbstractDAO {
     public GroupDAO(DBAccess dBaccess) {
+
         super(dBaccess);
     }
-    public void slaGroupOp(Group group){
+    public void storeGroup(Group group){
         String sql = "INSERT INTO group(naamGroep, naamCursus, aantalStudenten, gebruikersInlogNaam)" +
                 " VALUES (?, ?, ?, ?);";
         try {
@@ -24,13 +26,13 @@ public class GroupDAO extends AbstractDAO {
 
             // Maak een instantie van Course
             Course course = new Course();
-            preparedStatement.setString(2, course.getCourseName());
+            preparedStatement.setString(2, course.getNameCourse());
 
             preparedStatement.setInt(3, group.getNumberOfStudents());
 
             // Maak een instantie van User
             User user = new User();
-            preparedStatement.setString(4, user.getUserName());
+            preparedStatement.setString(4, user.getIdUser());
 
             executeManipulateStatement();
 
@@ -43,7 +45,7 @@ public class GroupDAO extends AbstractDAO {
     public List<Group> getUsersInGroup(User user) {
         List<Group> groupList = new ArrayList<>();
 
-        String sql = "SELECT groep.naamGroep, cursus.naamCursus, groep.aantalStudenten, " +
+        String sql = "SELECT group.naamGroep, cursus.naamCursus, groep.aantalStudenten, " +
                 "CONCAT(user.VoornaamGebruiker, ' ', user.tussenvoegselgebruiker, ' ', user.achternaamGebruiker) as UserName " +
                 "FROM groep JOIN user ON groep.gebruikersInlogNaam = user.gebruikerInlogNaam " +
                 "JOIN cursus ON groep.naamCursus = groep.naamCursus";
