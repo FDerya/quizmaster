@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupDAO extends AbstractDAO {
+public class GroupDAO {
     public GroupDAO(DBAccess dBaccess) {
 
         super(dBaccess);

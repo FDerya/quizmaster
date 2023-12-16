@@ -1,37 +1,34 @@
 package model;
-<<<<<<< HEAD
-=======
 
->>>>>>> 79786e56cdf9a72614bf36b7c8e8c6df94923d53
 public class User {
     // Attributes
     private int idUser;
-    private String loginUser;
-    private String passwordUser;
-    private String firstNameUser;
-    private String prefixUser;
-    private String surnameUser;
-    private String roleUser;
+    private String username;
+    private String password;
+    private String firstName;
+    private String prefix;
+    private String surname;
+    private String role;
 
     // Constructors
-    public User (int idUser, String loginUser, String passwordUser, String firstNameUser, String prefixUser, String surnameUser, String roleUser) {
+    public User(int idUser, String username, String password, String firstName, String prefix, String surname, String role) {
         this.idUser = idUser;
-        this.loginUser = loginUser;
-        this.passwordUser = passwordUser;
-        this.firstNameUser = firstNameUser;
-        this.prefixUser = prefixUser;
-        this.surnameUser = surnameUser;
-        this.roleUser = roleUser;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.prefix = prefix;
+        this.surname = surname;
+        this.role = role;
     }
 
-    public User(String loginUser, String passwordUser, String firstNameUser, String prefixUser, String surnameUser, String roleUser) {
-        this(0, loginUser, passwordUser, firstNameUser, prefixUser, surnameUser, roleUser);
+    public User(String username, String password, String firstName, String prefix, String surname, String role) {
+        this(0, username, password, firstName, prefix, surname, role);
     }
 
     // Methods
     @Override
     public String toString() {
-        return String.format("Gebruiker met als rol %s", roleUser);
+        return String.format("Gebruiker met als rol %s", role);
     }
 
     // Getters & Setters
@@ -44,55 +41,51 @@ public class User {
         this.idUser = idUser;
     }
 
-    public String getLoginUser() {
-        return loginUser;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLoginUser(String loginUser) {
-        this.loginUser = loginUser;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getPasswordUser() {
-        return passwordUser;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordUser(String passwordUser) {
-        this.passwordUser = passwordUser;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getFirstNameUser() {
-        return firstNameUser;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstNameUser(String firstNameUser) {
-        this.firstNameUser = firstNameUser;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getPrefixUser() {
-        return prefixUser;
+    public String getPrefix() {
+        return prefix;
     }
 
-    public void setPrefixUser(String prefixUser) {
-        this.prefixUser = prefixUser;
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
     }
 
-    public String getSurnameUser() {
-        return surnameUser;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setSurnameUser(String surnameUser) {
-        this.surnameUser = surnameUser;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
-    public String getRoleUser() {
-        return roleUser;
+    public String getRole() {
+        return role;
     }
 
-    public void setRoleUser(String roleUser) {
-        this.roleUser = roleUser;
+    public void setRole(String role) {
+        this.role = role;
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 79786e56cdf9a72614bf36b7c8e8c6df94923d53
