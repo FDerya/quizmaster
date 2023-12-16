@@ -142,3 +142,7 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- Define user and password
+CREATE USER 'userQuizmaster'@'localhost' IDENTIFIED BY 'pwQuizmaster';
+GRANT ALL PRIVILEGES ON Quizmaster.* TO 'userQuizmaster'@'localhost';

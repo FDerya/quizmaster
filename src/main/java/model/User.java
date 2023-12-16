@@ -28,7 +28,14 @@ public class User {
     // Methods
     @Override
     public String toString() {
-        return String.format("Gebruiker met als rol %s", role);
+        StringBuilder resultString = new StringBuilder("");
+        resultString.append(firstName).append(" ");
+        if (!prefix.equals("")) {
+            resultString.append(prefix).append(" ");
+        }
+        resultString.append(surname).append(", ");
+        resultString.append(role);
+        return resultString.toString();
     }
 
     // Getters & Setters
