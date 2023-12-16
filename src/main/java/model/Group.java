@@ -1,8 +1,8 @@
 package model;
-//Bianca Duijvesteijn, studentnummer 500940421
+// Bianca Duijvesteijn, studentnummer 500940421
 
 public class Group {
-    //Attributen
+    // Attributen
     final int MAX_AANTAL_STUDENTEN = 25;
     private int idGroup;
     private int idTeacher;
@@ -11,10 +11,7 @@ public class Group {
     private int amountStudent;
     private User userName;
 
-
-    //All args constructor
-
-
+    // All-args constructor
     public Group(int idGroup, int idTeacher, Course courseName, String groupName, int amountStudent,
                  User userName) {
         this.idGroup = idGroup;
@@ -25,20 +22,41 @@ public class Group {
         this.userName = userName;
     }
 
+    // toString-methode
     @Override
     public String toString() {
-        return "Group{" +
-                "MAX_AANTAL_STUDENTEN=" + MAX_AANTAL_STUDENTEN +
-                ", groupName='" + groupName + '\'' +
-                ", numberOfStudents=" + amountStudent +
-                ", userName=" + userName +
-                ", courseName=" + courseName +
-                '}';
+        return "Deze groep bestaat uit maximaal " + MAX_AANTAL_STUDENTEN + ". De groep heet " + groupName +
+                ", er zitten " + amountStudent + " studenten in de groep. De coordinator is: " + userName +
+                " en de groep volgt de cursus: " + courseName + '}';
     }
 
-    //Getters en Setters
+    // Getters en setters voor de attributen
     public int getMAX_AANTAL_STUDENTEN() {
         return MAX_AANTAL_STUDENTEN;
+    }
+
+    public int getIdGroup() {
+        return idGroup;
+    }
+
+    public void setIdGroup(int idGroup) {
+        this.idGroup = idGroup;
+    }
+
+    public int getIdTeacher() {
+        return idTeacher;
+    }
+
+    public void setIdTeacher(int idTeacher) {
+        this.idTeacher = idTeacher;
+    }
+
+    public Course getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(Course courseName) {
+        this.courseName = courseName;
     }
 
     public String getGroupName() {
@@ -49,12 +67,12 @@ public class Group {
         this.groupName = groupName;
     }
 
-    public int getNumberOfStudents() {
+    public int getAmountStudent() {
         return amountStudent;
     }
 
-    public void setNumberOfStudents(int numberOfStudents) {
-        this.amountStudent = numberOfStudents;
+    public void setAmountStudent(int amountStudent) {
+        this.amountStudent = amountStudent;
     }
 
     public User getUserName() {
@@ -64,11 +82,5 @@ public class Group {
     public void setUserName(User userName) {
         this.userName = userName;
     }
-
-    public Course getCourseName() {
-        return courseName;
-    }
-    public void setCourseName(Course courseName) {
-        this.courseName = courseName;
-    }
 }
+
