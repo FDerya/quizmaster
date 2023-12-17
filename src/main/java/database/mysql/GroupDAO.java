@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
-    private static UserDAO userDAO;
+    private UserDAO userDAO;
 
     // Constructor met UserDAO als parameter
     public GroupDAO(DBAccess dBaccess, UserDAO userDAO) {
@@ -38,7 +38,6 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         return resultList;
     }
 
-
     // Methode om een specifieke groep op te halen op basis van ID
     @Override
     public Group getOneById(int id) {
@@ -60,7 +59,6 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         }
         return group;
     }
-
 
     // Methode om een nieuwe groep op te slaan
     @Override
@@ -93,16 +91,23 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         String nameCourse = resultSet.getString("nameCourse");
         String nameGroup = resultSet.getString("nameGroup");
         int amountStudent = resultSet.getInt("amountStudent");
-        String coordinatorUsername = resultSet.getString("coordinator");
+        int coordinatorUserId = resultSet.getInt("userId");
+        String coordinatorUsername = resultSet.getString("userName");
 
         // Ophalen van de bijbehorende User
-        User coordinator = userDAO.getUserByRole(coordinatorUsername);
-
-        // Ophalen van de moeilijkheidsgraad (difficulty) van de Course
+        User coordinator = userDAO.getOneById(coordinatorUserId);
+        if (coordinator == null) {
+            // Als we de gebruiker niet kunnen vinden op basis van userId, proberen we het op basis van gebruikersnaam
+            coordinator = userDAO.getAll().stream()
+                    .filter(user -> user.getUsername().equals(coordinatorUsername))
+                    .findFirst()
+                    .orElse(null);
+        }
+        // Ophalen van de moeilijkheidsgraad
         int difficulty = resultSet.getInt("difficultyCourse");
         Course course = new Course(coordinator, nameCourse, difficulty);
 
-        // Aanmaken van het Group-object
+        // Aanmaken van het object
         group = new Group(idGroup, idTeacher, course, nameGroup, amountStudent, coordinator);
         return group;
     }
