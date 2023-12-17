@@ -1,24 +1,21 @@
 package model;
 // Tom van Beek, 500941521.
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Quiz {
     //Attributen
     private int idQuiz;
     private Course course;
     private String nameQuiz;
     private int level;
-    private int aantal;
+    private int amountQuestions;
 
     //Constructors
-    public Quiz(int idQuiz, Course course, String nameQuiz, int level, int aantal){
+    public Quiz(int idQuiz, Course course, String nameQuiz, int level, int amountQuestions){
         this.idQuiz = idQuiz;
         this.course = course;
         this.nameQuiz = nameQuiz;
         this.level = level;
-        this.aantal = aantal;
+        this.amountQuestions = amountQuestions;
     }
     public Quiz(Course course){
         this(0,course, "",0,0);
@@ -37,16 +34,16 @@ public class Quiz {
         return course;
     }
 
-    public int getAantal() {
-        return aantal;
+    public int getAmountQuestions() {
+        return amountQuestions;
     }
 
     public int getLevel() {
         return level;
     }
 
-    public void setAantal(int aantal) {
-        this.aantal = aantal;
+    public void setAmountQuestions(int amountQuestions) {
+        this.amountQuestions = amountQuestions;
     }
 
     public void setCourse(Course course) {

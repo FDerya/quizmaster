@@ -7,18 +7,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+public class GroupDAO {
+}
+/*
 
 public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
     private static UserDAO userDAO;
 
     // Constructor met UserDAO als parameter
-    public GroupDAO(DBAccess dBaccess, UserDAO userDAO) {
+    */
+/*public GroupDAO(DBAccess dBaccess, UserDAO userDAO) {
         super(dBaccess);
         this.userDAO = userDAO;
-    }
+    }*//*
+
 
     // Methode om alle groepen op te halen
-    @Override
+    */
+/*@Override
     public List<Group> getAll() {
         List<Group> resultList = new ArrayList<>();
         String sql = "SELECT * FROM Group";
@@ -82,9 +88,11 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
             System.out.println(sqlFout.getMessage());
         }
     }
+*//*
 
     // Methode om een Group-object te maken vanuit een ResultSet
-    private Group getGroupFromResultSet(ResultSet resultSet) throws SQLException {
+   */
+/* private Group getGroupFromResultSet(ResultSet resultSet) throws SQLException {
         Group group;
 
         // Ophalen van de velden uit het ResultSet
@@ -96,14 +104,17 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         String coordinatorUsername = resultSet.getString("coordinator");
 
         // Ophalen van de bijbehorende User
-        User coordinator = userDAO.getUserByRole(coordinatorUsername);
+        //User coordinator = userDAO.getUserByRole(coordinatorUsername);
 
         // Ophalen van de moeilijkheidsgraad (difficulty) van de Course
-        int difficulty = resultSet.getInt("difficultyCourse");
+       *//*
+*/
+/* int difficulty = resultSet.getInt("difficultyCourse");
         Course course = new Course(coordinator, nameCourse, difficulty);
 
         // Aanmaken van het Group-object
         group = new Group(idGroup, idTeacher, course, nameGroup, amountStudent, coordinator);
-        return group;
-    }
-}
+        return group;*//*
+*/
+
+

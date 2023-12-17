@@ -19,7 +19,7 @@ public class LauncherDennis {
         UserDAO userDAO = new UserDAO(dBaccess);
 
         List<String> test = FileReaderToArray();
-        List<User> userList = listUsers(test)
+        List<User> userList = listUsers(test);
 
         for (User user : userList) {
             userDAO.storeOne(user);
