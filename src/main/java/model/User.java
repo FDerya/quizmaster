@@ -1,3 +1,5 @@
+// Model user, gemaakt door Dennis Koelemeijer, studentnummer 500940711
+
 package model;
 
 public class User {
