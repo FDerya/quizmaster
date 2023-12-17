@@ -1,3 +1,5 @@
+// Model user, gemaakt door Dennis Koelemeijer, studentnummer 500940711
+
 package database.mysql;
 
 import model.User;
@@ -12,6 +14,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         super(dbAccess);
     }
 
+    // Methode om een lijst van alle gebruikers te krijgen vanuit de database.
     public List<User> getAll() {
         List<User> resultList = new ArrayList<>();
         String sql = "SELECT * FROM User;";
@@ -37,6 +40,8 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         return resultList;
     }
 
+    // Methode om een enkele gebruiker op te vragen uit de SQL database, waarvan je de parameter id meegeeft.
+    // Je krijgt je select statement terug in de vorm van een object User.
     public User getOneById(int id) {
         String sql = "SELECT * FROM User WHERE idUser = ?";
         User user = null;
@@ -61,6 +66,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         return user;
     }
 
+    // Methode om een object User (zonder userId, want de tabel User gebruikt auto-increment) toe te voegen aan SQL.
     public void storeOne(User user) {
         String sql = "INSERT INTO user(username, password, firstName, prefix, surname, role) VALUES (?,?,?,?,?,?) ;";
 
