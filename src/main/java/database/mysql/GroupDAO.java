@@ -63,17 +63,28 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
     // Methode om een nieuwe groep op te slaan
     @Override
     public void storeOne(Group group) {
-        String sql = "INSERT INTO `group` (naamGroep, naamCursus, aantalStudenten, gebruikersInlogNaam)" +
+
+        // SetupPreparedStatementWithKey, autoincrement, kijken bij Tom.
+
+        //Controleert of alle gegevens zijn ingevuld
+        if (group.getGroupName() == null || group.getCourseName() == null || group.getAmountStudent() < 0 || group.getUserName() == null) {
+            System.out.println("Ongeldige gegevens. Opslaan geannuleerd.");
+            return;
+        }
+
+        String sql = "INSERT INTO `group` (groupName, courseName, amountStudent, userName)" +
                 " VALUES (?, ?, ?, ?);";
         try {
             // Voorbereiden van de SQL statement
-            setupPreparedStatement(sql);
+            setupPreparedStatementWithKey(sql);
             // Invullen van de parameters
             preparedStatement.setString(1, group.getGroupName());
             preparedStatement.setString(2, group.getCourseName().getNameCourse());
             preparedStatement.setInt(3, group.getAmountStudent());
             preparedStatement.setString(4, String.valueOf(group.getUserName().getIdUser()));
-
+            // Verkrijg de gegenereerde primaire sleutel en wijs toe aan group object
+            int primaryKey = executeInsertStatementWithKey();
+            group.setIdGroup(primaryKey);
             // Uitvoeren van de insert statement
             executeManipulateStatement();
         } catch (SQLException sqlFout) {

@@ -1,14 +1,14 @@
 package database.mysql;
 // Tom van Beek, 500941521.
-import database.mysql.AbstractDAO;
 import model.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
-
+public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz>{
+    // Maak een lijst met quizen
+   @Override
     public List<Quiz> getAll() {
         CourseDAO courseDAO = new CourseDAO(dbAccess);
         List<Quiz> totaalQuiz = new ArrayList<>();
@@ -20,11 +20,11 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
             while (resultSet.next()) {
                 int id = resultSet.getInt("idQuiz");
                 int idCourse = resultSet.getInt("idCourse");
-                String naam = resultSet.getString("nameQuiz");
+                String name = resultSet.getString("nameQuiz");
                 int level = resultSet.getInt("levelQuiz");
-                int aantal = resultSet.getInt("amountQuestion");
-                Course course = courseDAO.getOne(idCourse);
-                quiz = new Quiz(id, course, naam, level, aantal);
+                int amountQuestion = resultSet.getInt("amountQuestion");
+                Course course = courseDAO.getOneById(idCourse);
+                quiz = new Quiz(id, idCourse, name, level, amountQuestion);
                 totaalQuiz.add(quiz);
             }
         } catch (
@@ -33,6 +33,8 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         }
         return totaalQuiz;
     }
+    // Zoek een specifieke quiz aan de hand van idQuiz
+    @Override
     public Quiz getOneById(int id) {
         String sql = "SELECT * FROM Quiz WHERE idQuiz = ?;";
         Quiz quiz;
@@ -40,10 +42,10 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
             setupPreparedStatement(sql);
             ResultSet resultSet = executeSelectStatement();
             while (resultSet.next()) {
-                String naam = resultSet.getString("nameQuiz");
+                String name = resultSet.getString("nameQuiz");
                 int level = resultSet.getInt("levelQuiz");
-                int aantal = resultSet.getInt("amountQuestion");
-                quiz = new Quiz(quiz.getIdQuiz(), quiz.getCourse(), naam, level, aantal);
+                int amountQuestion = resultSet.getInt("amountQuestion");
+                quiz = new Quiz(quiz.getIdQuiz(), quiz.getCourse().getIdCourse(), name, level, amountQuestion);
             }
         } catch (
                 SQLException sqlFout) {
@@ -51,20 +53,23 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         }
         return quiz;
     }
-
+    // Quiz opslaan in database
+    @Override
     public void storeOne(Quiz quiz){
         String sql = "INSERT INTO Quiz (idCourse, nameQuiz, levelQuiz, amountQuestion) VALUES(?, ?, ?, ?);";
         try {
             setupPreparedStatementWithKey(sql);
             preparedStatement.setInt(1,quiz.getCourse().getIdCourse());
-            preparedStatement.setString(2, quiz.getCourse().getNameCourse());
+            preparedStatement.setString(2, quiz.getNameQuiz());
             preparedStatement.setInt(3, quiz.getLevel());
-            preparedStatement.setInt(4, quiz.getAantal());
+            preparedStatement.setInt(4, quiz.getAmountQuestions());
             int primaryKey=executeInsertStatementWithKey();
             quiz.setIdQuiz(primaryKey);
         } catch (SQLException sqlFout) {
             System.out.println(sqlFout);
         }
     }
+
+
 }
 

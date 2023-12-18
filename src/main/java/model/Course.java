@@ -6,14 +6,14 @@ public class Course {
     private User coordinator;
     private String nameCourse;
     private int difficultyCourse;
-
-// Contructors
     public Course(int idCourse, User coordinator, String nameCourse, int difficultyCourse){
         this.idCourse = idCourse;
         this.coordinator = coordinator;
         this.nameCourse = nameCourse;
         this.difficultyCourse = difficultyCourse;
     }
+// Contructors
+
     public Course(User coordinator, String nameCourse, int difficultyCourse){
         this(0, coordinator, nameCourse, difficultyCourse);
     }
