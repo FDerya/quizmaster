@@ -1,5 +1,3 @@
-// Model user, gemaakt door Dennis Koelemeijer, studentnummer 500940711
-
 package database.mysql;
 
 import model.User;
@@ -86,3 +84,4 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
     }
 
 }
+

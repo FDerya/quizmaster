@@ -53,4 +53,11 @@ public class Quiz {
     public void setLevel(int level) {
         this.level = level;
     }
+
+    public String getNameQuiz() {
+        return nameQuiz;
+    }
+    public void setNameQuiz(String nameQuiz) {
+        this.nameQuiz = nameQuiz;
+    }
 }

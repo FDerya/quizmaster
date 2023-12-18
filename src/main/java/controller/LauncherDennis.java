@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class LauncherDennis {
     // Nodig voor het initialiseren van het gebruikers csv bestand, om de database te vullen.
-    private static final String filepath = "src/main/java/database/Gebruikers.csv";
+   // private static final String filepath = "src/main/java/database/Gebruikers.csv";
     private static final File userFile = new File(filepath);
 
     public static void main(String[] args) {
