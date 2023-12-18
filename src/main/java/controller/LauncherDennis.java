@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class LauncherDennis {
     // Nodig voor het initialiseren van het gebruikers csv bestand, om de database te vullen.
-   // private static final String filepath = "src/main/java/database/Gebruikers.csv";
+    private static final String filepath = "src/main/java/database/Gebruikers.csv";
     private static final File userFile = new File(filepath);
 
     public static void main(String[] args) {
@@ -24,6 +24,7 @@ public class LauncherDennis {
         final String mainUser = "userQuizmaster";
         final String mainUserPassword = "pwQuizmaster";
         DBAccess dBaccess = new DBAccess(databaseName, mainUser, mainUserPassword);
+        dBaccess.openConnection();
         UserDAO userDAO = new UserDAO(dBaccess);
 
         // Aanroepen methodes om het csv weg te schrijven naar uiteindelijk een ArrayList met Users.
@@ -33,6 +34,7 @@ public class LauncherDennis {
         // Het opslaan van de gebruikers in de database. Gecomment omdat de gebruikers er anders meerdere keren in voor
         // kunnen komen.
         // saveUsersFromArray(dBaccess, userList, userDAO);
+        dBaccess.closeConnection();
     }
 
     // Deze methode leest een csv-bestand in en slaat deze regel voor regel op in een ArrayList van Strings.
