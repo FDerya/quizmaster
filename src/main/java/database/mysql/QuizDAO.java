@@ -7,6 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz>{
+<<<<<<< HEAD
+=======
+
+>>>>>>> f9ae658f713dd3423c49bd646e4c51ebf116c6fa
     public List<Quiz> getAll() {
         CourseDAO courseDAO = new CourseDAO(dbAccess);
         List<Quiz> totaalQuiz = new ArrayList<>();

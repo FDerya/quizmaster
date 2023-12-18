@@ -21,6 +21,12 @@ public class Group {
         this.amountStudent = amountStudent;
         this.userName = userName;
     }
+    public Group(Course courseName, String groupName, int amountStudent, User userName) {
+        this.courseName = courseName;
+        this.groupName = groupName;
+        this.amountStudent = amountStudent;
+        this.userName = userName;
+    }
 
     // toString-methode
     @Override
