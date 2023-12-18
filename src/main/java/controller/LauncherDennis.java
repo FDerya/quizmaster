@@ -30,12 +30,9 @@ public class LauncherDennis {
         List<String> test = FileReaderToArray();
         List<User> userList = listUsers(test);
 
-        // Het opslaan van de gebruikers in de database
-        dBaccess.openConnection();
-        for (User user : userList) {
-            userDAO.storeOne(user);
-        }
-        dBaccess.closeConnection();
+        // Het opslaan van de gebruikers in de database. Gecomment omdat de gebruikers er anders meerdere keren in voor
+        // kunnen komen.
+        // saveUsersFromArray(dBaccess, userList, userDAO);
     }
 
     // Deze methode leest een csv-bestand in en slaat deze regel voor regel op in een ArrayList van Strings.
@@ -67,6 +64,16 @@ public class LauncherDennis {
             userList.add(new User(username, password, firstName, prefix, surname, role));
         }
         return userList;
+    }
+
+    // Deze methode opent de database, haalt de gebruikers uit een ArrayList van Users en slaat ze via de UserDAO
+    // op in de database. Daarna wordt de database gesloten.
+    private static void saveUsersFromArray(DBAccess dBaccess, List<User> userList, UserDAO userDAO) {
+        dBaccess.openConnection();
+        for (User user : userList) {
+            userDAO.storeOne(user);
+        }
+        dBaccess.closeConnection();
     }
 
 }
