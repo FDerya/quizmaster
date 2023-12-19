@@ -16,10 +16,11 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         super(dBaccess);
         this.userDAO = userDAO;
     }
-    // Maak een lijst met quizen
+
+    // Maak een lijst met quizzen
     @Override
     public List<Quiz> getAll() {
-        CourseDAO courseDAO = new CourseDAO(dbAccess);
+        CourseDAO courseDAO = new CourseDAO(dbAccess, userDAO);
         List<Quiz> totalListQuiz = new ArrayList<>();
         String sql = "SELECT * FROM Quiz;";
         Quiz quiz = null;
@@ -47,8 +48,8 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
     @Override
     public Quiz getOneById(int id) {
         String sql = "SELECT * FROM Quiz WHERE idQuiz = ?;";
-        Quiz oneQuiz;
-        CourseDAO courseDAO = new CourseDAO(dbAccess);
+        Quiz oneQuiz = null;
+        CourseDAO courseDAO = new CourseDAO(dbAccess, userDAO);
         try {
             setupPreparedStatement(sql);
             ResultSet resultSet = executeSelectStatement();
@@ -59,7 +60,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
                 int level = resultSet.getInt("levelQuiz");
                 int amountQuestion = resultSet.getInt("amountQuestion");
                 Course course = courseDAO.getOneById(idCourse);
-                oneQuiz = new Quiz(idQuiz, idCourse, name, level, amountQuestion);
+                oneQuiz = new Quiz(idQuiz, course, name, level, amountQuestion);
             }
         } catch (
                 SQLException sqlFout) {
@@ -81,9 +82,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
             int primaryKey = executeInsertStatementWithKey();
             quiz.setIdQuiz(primaryKey);
         } catch (SQLException sqlFout) {
-            System.out.println(sqlFout) {
-                System.out.println("SQL fout " + sqlFout.getMessage());
-            }
+            System.out.println("SQL fout " + sqlFout.getMessage());
         }
     }
 }

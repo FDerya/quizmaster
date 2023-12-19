@@ -17,6 +17,9 @@ public class Quiz {
         this.level = level;
         this.amountQuestions = amountQuestions;
     }
+    public Quiz (Course course, String nameQuiz, int level, int amountQuestions){
+        this(0,course, nameQuiz,level,amountQuestions);
+    }
     public Quiz(Course course){
         this(0,course, "",0,0);
     }
