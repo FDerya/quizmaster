@@ -29,6 +29,8 @@ public class LoginController {
             if (passwordField.getText().contains(user.getPassword())) {
                 User.setCurrentUser(user);
                 Main.getSceneManager().showWelcomeScene();
+            } else {
+            errorMessage.setText("Fout: combinatie van gebruikersnaam en wachtwoord is onjuist");
             }
         } catch (NullPointerException nullPointerException) {
             errorMessage.setText("Fout: combinatie van gebruikersnaam en wachtwoord is onjuist");
