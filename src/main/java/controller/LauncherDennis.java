@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class LauncherDennis {
     // Nodig voor het initialiseren van het gebruikers csv bestand, om de database te vullen.
-   // private static final String filepath = "src/main/java/database/Gebruikers.csv";
+    private static final String filepath = "src/main/java/database/Gebruikers.csv";
     private static final File userFile = new File(filepath);
 
     public static void main(String[] args) {
@@ -24,17 +24,16 @@ public class LauncherDennis {
         final String mainUser = "userQuizmaster";
         final String mainUserPassword = "pwQuizmaster";
         DBAccess dBaccess = new DBAccess(databaseName, mainUser, mainUserPassword);
+        dBaccess.openConnection();
         UserDAO userDAO = new UserDAO(dBaccess);
 
         // Aanroepen methodes om het csv weg te schrijven naar uiteindelijk een ArrayList met Users.
         List<String> test = FileReaderToArray();
         List<User> userList = listUsers(test);
 
-        // Het opslaan van de gebruikers in de database
-        dBaccess.openConnection();
-        for (User user : userList) {
-            userDAO.storeOne(user);
-        }
+        // Het opslaan van de gebruikers in de database. Gecomment omdat de gebruikers er anders meerdere keren in voor
+        // kunnen komen.
+        // saveUsersFromArray(dBaccess, userList, userDAO);
         dBaccess.closeConnection();
     }
 
@@ -67,6 +66,16 @@ public class LauncherDennis {
             userList.add(new User(username, password, firstName, prefix, surname, role));
         }
         return userList;
+    }
+
+    // Deze methode opent de database, haalt de gebruikers uit een ArrayList van Users en slaat ze via de UserDAO
+    // op in de database. Daarna wordt de database gesloten.
+    private static void saveUsersFromArray(DBAccess dBaccess, List<User> userList, UserDAO userDAO) {
+        dBaccess.openConnection();
+        for (User user : userList) {
+            userDAO.storeOne(user);
+        }
+        dBaccess.closeConnection();
     }
 
 }

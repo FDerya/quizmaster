@@ -123,3 +123,4 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         return group;
     }
 }
+

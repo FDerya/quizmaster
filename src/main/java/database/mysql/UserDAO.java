@@ -22,14 +22,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
             ResultSet resultSet = executeSelectStatement();
 
             while(resultSet.next()) {
-                int idUser = resultSet.getInt("idUser");
-                String username = resultSet.getString("username");
-                String password = resultSet.getString("password");
-                String firstName = resultSet.getString("firstName");
-                String prefix = resultSet.getString("prefix");
-                String surname = resultSet.getString("surname");
-                String role = resultSet.getString("role");
-                User user = new User(idUser, username, password, firstName, prefix, surname, role);
+                User user = getUser(resultSet);
                 resultList.add(user);
             }
         } catch (SQLException sqlException) {
@@ -40,23 +33,44 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
 
     // Methode om een enkele gebruiker op te vragen uit de SQL database, waarvan je de parameter id meegeeft.
     // Je krijgt je select statement terug in de vorm van een object User.
-    public User getOneById(int id) {
+    public User getOneById(int idUser) {
         String sql = "SELECT * FROM User WHERE idUser = ?";
         User user = null;
 
         try {
             setupPreparedStatement(sql);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, idUser);
             ResultSet resultSet = executeSelectStatement();
 
             if (resultSet.next()) {
-                String username = resultSet.getString("username");
-                String password = resultSet.getString("password");
-                String firstName = resultSet.getString("firstName");
-                String prefix = resultSet.getString("prefix");
-                String surname = resultSet.getString("surname");
-                String role = resultSet.getString("role");
-                user = new User(id, username, password, firstName, prefix, surname, role);
+//                String username = resultSet.getString("username");
+//                String password = resultSet.getString("password");
+//                String firstName = resultSet.getString("firstName");
+//                String prefix = resultSet.getString("prefix");
+//                String surname = resultSet.getString("surname");
+//                String role = resultSet.getString("role");
+                user = getUser(resultSet);
+//            new User(idUser, username, password, firstName, prefix, surname, role);
+            }
+        } catch (SQLException sqlException) {
+            System.out.println("SQL fout " + sqlException.getMessage());
+        }
+        return user;
+    }
+    
+    // Methode nodig bij het inloggen: het vraagt om een userName en geeft een object User terug, waarvan je met de
+    // getters het wachtwoord kan controleren.
+    public User getOneByUsername(String userName) {
+        String sql = "SELECT * FROM User WHERE username = ?";
+        User user = null;
+
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setString(1, userName);
+            ResultSet resultSet = executeSelectStatement();
+
+            if (resultSet.next()) {
+                user = getUser(resultSet);
             }
         } catch (SQLException sqlException) {
             System.out.println("SQL fout " + sqlException.getMessage());
@@ -82,6 +96,19 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
             System.out.println("SQL fout " + sqlException.getMessage());
         }
     }
+
+    private static User getUser(ResultSet resultSet) throws SQLException {
+        int idUser = resultSet.getInt("idUser");
+        String username = resultSet.getString("username");
+        String password = resultSet.getString("password");
+        String firstName = resultSet.getString("firstName");
+        String prefix = resultSet.getString("prefix");
+        String surname = resultSet.getString("surname");
+        String role = resultSet.getString("role");
+        User user = new User(idUser, username, password, firstName, prefix, surname, role);
+        return user;
+    }
+
 
 }
 
