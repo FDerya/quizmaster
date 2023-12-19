@@ -43,14 +43,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
             ResultSet resultSet = executeSelectStatement();
 
             if (resultSet.next()) {
-//                String username = resultSet.getString("username");
-//                String password = resultSet.getString("password");
-//                String firstName = resultSet.getString("firstName");
-//                String prefix = resultSet.getString("prefix");
-//                String surname = resultSet.getString("surname");
-//                String role = resultSet.getString("role");
                 user = getUser(resultSet);
-//            new User(idUser, username, password, firstName, prefix, surname, role);
             }
         } catch (SQLException sqlException) {
             System.out.println("SQL fout " + sqlException.getMessage());
@@ -105,8 +98,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         String prefix = resultSet.getString("prefix");
         String surname = resultSet.getString("surname");
         String role = resultSet.getString("role");
-        User user = new User(idUser, username, password, firstName, prefix, surname, role);
-        return user;
+        return new User(idUser, username, password, firstName, prefix, surname, role);
     }
 
 }
