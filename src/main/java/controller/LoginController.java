@@ -1,15 +1,12 @@
 package controller;
 
-import database.mysql.DBAccess;
 import database.mysql.UserDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.User;
 import view.Main;
-
-import java.util.List;
 
 public class LoginController {
 
@@ -18,6 +15,9 @@ public class LoginController {
     private TextField nameTextField;
     @FXML
     private TextField passwordField;
+    // Made a label that shows an error if login failed.
+    @FXML
+    private Label errorMessage;
 
     public LoginController() {
         userDAO = new UserDAO(Main.getDBaccess());
@@ -25,13 +25,23 @@ public class LoginController {
 
     public void doLogin() {
         User user = userDAO.getOneByUsername(nameTextField.getText());
-        if (passwordField.getText().contains(user.getPassword())) {
-            Main.getSceneManager().showWelcomeScene();
+        try {
+            if (passwordField.getText().contains(user.getPassword())) {
+                User.setCurrentUser(user);
+                Main.getSceneManager().showWelcomeScene();
+            }
+        } catch (NullPointerException nullPointerException) {
+            errorMessage.setText("Fout: combinatie van gebruikersnaam en wachtwoord is onjuist");
+            System.out.println(nullPointerException.getMessage());
         }
     }
 
     public void doQuit(ActionEvent event) {
+        // Verandert de currentUser naar null
+        User.setCurrentUser(null);
+        // Sluit de database
         Main.getDBaccess().closeConnection();
+        // Sluit de applicatie
         System.exit(0);
     }
 }

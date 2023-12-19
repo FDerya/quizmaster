@@ -11,6 +11,7 @@ public class User {
     private String prefix;
     private String surname;
     private String role;
+    public static User currentUser;
 
     // Constructors
     public User(int idUser, String username, String password, String firstName, String prefix, String surname, String role) {
@@ -96,5 +97,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(User currentUser) {
+        User.currentUser = currentUser;
     }
 }
