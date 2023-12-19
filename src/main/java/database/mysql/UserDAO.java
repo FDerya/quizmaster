@@ -109,5 +109,6 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         return user;
     }
 
+
 }
 
