@@ -33,7 +33,7 @@ public class LauncherTom {
 
         // Het opslaan van de quizzen in de database. Gecomment omdat de quizzen er anders meerdere keren in voor
         // kunnen komen.
-        // saveQuizFromArray(dBaccess, quizList, quizDAO);
+        // saveQuizFromArray(dBAccess, quizList, quizDAO);
         dBaccess.closeConnection();
     }
 
@@ -61,16 +61,10 @@ public class LauncherTom {
             String[] lineArray = s.split(",");
             String quizName = lineArray[0];
             String difficulty = lineArray[1];
-            int difficultyCourse = 1;
-            if (difficulty.equals("Gevorderd")) {
-                difficultyCourse = 3;
-            } else if (difficulty.equals("Medium")) {
-                difficultyCourse = 2;
-            }
             int amountQuestion = Integer.parseInt(lineArray[2]);
             String courseName = lineArray[3];
             Course course = courseDAO.getOneByName(courseName);
-            quizList.add(new Quiz(course, quizName, difficultyCourse, amountQuestion));
+            quizList.add(new Quiz(course, quizName, getDifficultyCourse(difficulty), amountQuestion));
         }
         return quizList;
     }
@@ -83,6 +77,14 @@ public class LauncherTom {
             quizDAO.storeOne(quiz);
         }
         dBaccess.closeConnection();
+    }
+    private static int getDifficultyCourse(String difficulty){
+        int difficultyCourse = 1;
+        if (difficulty.equals("Gevorderd")) {
+            difficultyCourse = 3;
+        } else if (difficulty.equals("Medium")) {
+            difficultyCourse = 2;
+        }return difficultyCourse;
     }
 
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
     private UserDAO userDAO;
+    private CourseDAO courseDAO = new CourseDAO(dbAccess, userDAO);
 
     // Constructor met UserDAO als parameter
     public QuizDAO(DBAccess dBaccess, UserDAO userDAO) {
@@ -20,7 +21,6 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
     // Maak een lijst met quizzen
     @Override
     public List<Quiz> getAll() {
-        CourseDAO courseDAO = new CourseDAO(dbAccess, userDAO);
         List<Quiz> totalListQuiz = new ArrayList<>();
         String sql = "SELECT * FROM Quiz;";
         Quiz quiz = null;
@@ -28,13 +28,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
             setupPreparedStatement(sql);
             ResultSet resultSet = executeSelectStatement();
             while (resultSet.next()) {
-                int id = resultSet.getInt("idQuiz");
-                int idCourse = resultSet.getInt("idCourse");
-                String name = resultSet.getString("nameQuiz");
-                int level = resultSet.getInt("levelQuiz");
-                int amountQuestion = resultSet.getInt("amountQuestion");
-                Course course = courseDAO.getOneById(idCourse);
-                quiz = new Quiz(id, course, name, level, amountQuestion);
+                quiz = getQuiz(resultSet, courseDAO, quiz);
                 totalListQuiz.add(quiz);
             }
         } catch (
@@ -49,19 +43,12 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
     public Quiz getOneById(int id) {
         String sql = "SELECT * FROM Quiz WHERE idQuiz = ?;";
         Quiz oneQuiz = null;
-        CourseDAO courseDAO = new CourseDAO(dbAccess, userDAO);
         try {
             setupPreparedStatement(sql);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = executeSelectStatement();
             while (resultSet.next()) {
-                int idQuiz = resultSet.getInt("idQuiz");
-                int idCourse = resultSet.getInt("idCourse");
-                String name = resultSet.getString("nameQuiz");
-                int level = resultSet.getInt("levelQuiz");
-                int amountQuestion = resultSet.getInt("amountQuestion");
-                Course course = courseDAO.getOneById(idCourse);
-                oneQuiz = new Quiz(idQuiz, course, name, level, amountQuestion);
+                oneQuiz = getQuiz(resultSet, courseDAO, oneQuiz);
             }
         } catch (
                 SQLException sqlFout) {
@@ -69,6 +56,8 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         }
         return oneQuiz;
     }
+
+
     public Quiz getOneByName(String quizName) {
         String sql = "SELECT * FROM Quiz WHERE nameQuiz = ?;";
         Quiz nameOfQuiz = null;
@@ -78,13 +67,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
             preparedStatement.setString(1, quizName);
             ResultSet resultSet = executeSelectStatement();
             while (resultSet.next()) {
-                int idQuiz = resultSet.getInt("idQuiz");
-                int idCourse = resultSet.getInt("idCourse");
-                String name = resultSet.getString("nameQuiz");
-                int level = resultSet.getInt("levelQuiz");
-                int amountQuestion = resultSet.getInt("amountQuestion");
-                Course course = courseDAO.getOneById(idCourse);
-                nameOfQuiz = new Quiz(idQuiz, course, name, level, amountQuestion);
+                nameOfQuiz = getQuiz(resultSet, courseDAO, nameOfQuiz);
             }
         } catch (
                 SQLException sqlFout) {
@@ -92,6 +75,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         }
         return nameOfQuiz;
     }
+
     // Quiz opslaan in database
     @Override
     public void storeOne(Quiz quiz) {
@@ -107,5 +91,16 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         } catch (SQLException sqlFout) {
             System.out.println("SQL fout " + sqlFout.getMessage());
         }
+    }
+
+    private Quiz getQuiz(ResultSet resultSet, CourseDAO courseDAO, Quiz quiz) throws SQLException {
+        int idQuiz = resultSet.getInt("idQuiz");
+        int idCourse = resultSet.getInt("idCourse");
+        String name = resultSet.getString("nameQuiz");
+        int level = resultSet.getInt("levelQuiz");
+        int amountQuestion = resultSet.getInt("amountQuestion");
+        Course course = courseDAO.getOneById(idCourse);
+        quiz = new Quiz(idQuiz, course, name, level, amountQuestion);
+        return quiz;
     }
 }
