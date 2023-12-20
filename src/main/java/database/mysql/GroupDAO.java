@@ -103,4 +103,5 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
 
         group = new Group(idGroup, idTeacher, course, nameGroup, amountStudent, coordinator);
         return group;
-        }
+    }
+}

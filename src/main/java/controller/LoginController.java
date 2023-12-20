@@ -26,7 +26,7 @@ public class LoginController {
     public void doLogin() {
         User user = userDAO.getOneByUsername(nameTextField.getText());
         try {
-            if (passwordField.getText().contains(user.getPassword())) {
+            if (passwordField.getText().equals(user.getPassword())) {
                 User.setCurrentUser(user);
                 Main.getSceneManager().showWelcomeScene();
             } else {
