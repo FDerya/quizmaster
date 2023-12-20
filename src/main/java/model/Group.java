@@ -2,7 +2,7 @@ package model;
 // Bianca Duijvesteijn, studentnummer 500940421
 
 public class Group {
-    // Attributen
+    // Attributes
     final int MAX_AANTAL_STUDENTEN = 25;
     private int idGroup;
     private int idTeacher;
@@ -11,7 +11,7 @@ public class Group {
     private int amountStudent;
     private User userName;
 
-    // All-args constructor
+    // Constructors
     public Group(int idGroup, int idTeacher, Course courseName, String groupName, int amountStudent,
                  User userName) {
         this.idGroup = idGroup;
