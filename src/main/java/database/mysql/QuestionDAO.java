@@ -13,12 +13,12 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
 
     @Override
     public void storeOne(Question question) {
-        String sql =  "INSERT INTO question(idQuiz, questionText, answerA, answerB, answerC, answerD) " +
+        String sql =  "INSERT INTO question(nameQuiz, question, answerGood, answerWrong1, answerWrong2, answerWrong3) " +
                 "VALUES(?, ?, ?, ?, ?, ?);";
         try {
 
                 setupPreparedStatementWithKey(sql);
-                preparedStatement.setInt(1, question.getIdQuiz());
+                preparedStatement.setString(1, question.getnameQuiz());
                 preparedStatement.setString(2, question.getQuestionText());
                 preparedStatement.setString(3, question.getAnswerRight());
                 preparedStatement.setString(4, question.getAnswerWrong1());
@@ -41,13 +41,13 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
             ResultSet resultSet = executeSelectStatement();
             while (resultSet.next()) {
                 int idQuestion = resultSet.getInt(1);
-                int idQuiz = resultSet.getInt(2);
+                String nameQuiz = resultSet.getString(2);
                 String questionText = resultSet.getString(3);
                 String getAnswerRight = resultSet.getString(4);
                 String getAnswerWrong1 = resultSet.getString(5);
                 String getAnswerWrong2 = resultSet.getString(6);
                 String getAnswerWrong3 = resultSet.getString(7);
-                questions.add(new Question(idQuestion, idQuiz, questionText,
+                questions.add(new Question(idQuestion, nameQuiz, questionText,
                         getAnswerRight, getAnswerWrong1, getAnswerWrong2, getAnswerWrong3));
             }
             if (questions.isEmpty()) {
@@ -70,13 +70,13 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
             ResultSet resultSet = executeSelectStatement();
             if (resultSet.next()) {
                 int idQuestion = resultSet.getInt(1);
-                int idQuiz = resultSet.getInt(2);
+                String nameQuiz = resultSet.getString(2);
                 String questionText = resultSet.getString(3);
                 String answerRight = resultSet.getString(4);
                 String getAnswerWrong1 = resultSet.getString(5);
                 String getAnswerWrong2 = resultSet.getString(6);
                 String getAnswerWrong3 = resultSet.getString(7);
-                question = new Question(idQuestion, idQuiz, questionText,
+                question = new Question(idQuestion, nameQuiz, questionText,
                         answerRight, getAnswerWrong1, getAnswerWrong2, getAnswerWrong3);
             } else {
                 System.out.println("Er zijn geen vragen met deze vraag ID in de database");

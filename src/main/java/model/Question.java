@@ -6,7 +6,7 @@ public class Question {
 Fatma Tatar
  */
     private int idQuestion;
-    private int idQuiz;
+    private String  nameQuiz;
     private String questionText;
     private String answerRight;
     private String answerWrong1;
@@ -14,10 +14,10 @@ Fatma Tatar
     private String answerWrong3;
     private static final int AANTAL_ANTWOORDEN = 4;
 
-    public Question(int idQuestion, int idQuiz, String questionText,
+    public Question(int idQuestion, String nameQuiz, String questionText,
                     String answerRight, String answerWrong1, String answerWrong2, String answerWrong3) {
         this.idQuestion = idQuestion;
-        this.idQuiz = idQuiz;
+        this.nameQuiz = nameQuiz;
         this.questionText = questionText;
         this.answerRight = answerRight;
         this.answerWrong1 = answerWrong1;
@@ -26,14 +26,14 @@ Fatma Tatar
     }
 
 
-    public Question(int idQuiz, String questionText,
+    public Question(String nameQuiz, String questionText,
                     String answerRight, String answerWrong1, String answerWrong2, String answerWrong3) {
-        this(0, idQuiz, questionText, answerRight, answerWrong1, answerWrong2, answerWrong3);
+        this(0, nameQuiz, questionText, answerRight, answerWrong1, answerWrong2, answerWrong3);
     }
 
     // Getters and Setters
-    public void setIdQuiz(int idQuiz) {
-        this.idQuiz = idQuiz;
+    public void setnameQuiz(String nameQuiz) {
+        this.nameQuiz = nameQuiz;
     }
 
     public void setIdQuestion(int idQuestion) {
@@ -43,8 +43,8 @@ Fatma Tatar
     public int getIdQuestion() {
         return idQuestion;
     }
-    public int getIdQuiz() {
-        return idQuiz;
+    public String getnameQuiz() {
+        return nameQuiz;
     }
     public String getQuestionText() { return questionText;
     }
