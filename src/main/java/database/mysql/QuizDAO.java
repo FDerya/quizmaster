@@ -52,6 +52,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         CourseDAO courseDAO = new CourseDAO(dbAccess, userDAO);
         try {
             setupPreparedStatement(sql);
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = executeSelectStatement();
             while (resultSet.next()) {
                 int idQuiz = resultSet.getInt("idQuiz");
@@ -68,7 +69,29 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         }
         return oneQuiz;
     }
-
+    public Quiz getOneByName(String name) {
+        String sql = "SELECT * FROM Quiz WHERE nameQuiz = ?;";
+        Quiz nameOfQuiz = null;
+        CourseDAO courseDAO = new CourseDAO(dbAccess, userDAO);
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, name);
+            ResultSet resultSet = executeSelectStatement();
+            while (resultSet.next()) {
+                int idQuiz = resultSet.getInt("idQuiz");
+                int idCourse = resultSet.getInt("idCourese");
+                String name = resultSet.getString("nameQuiz");
+                int level = resultSet.getInt("levelQuiz");
+                int amountQuestion = resultSet.getInt("amountQuestion");
+                Course course = courseDAO.getOneById(idCourse);
+                nameOfQuiz = new Quiz(idQuiz, course, name, level, amountQuestion);
+            }
+        } catch (
+                SQLException sqlFout) {
+            System.out.println("SQL fout " + sqlFout.getMessage());
+        }
+        return nameOfQuiz;
+    }
     // Quiz opslaan in database
     @Override
     public void storeOne(Quiz quiz) {
