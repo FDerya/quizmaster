@@ -53,93 +53,9 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         }
         return group;
     }
-    // Methode om een nieuwe groep op te slaan
-    @Override
+
+
     public void storeOne(Group group) {
-        if (!isValidGroup(group)) {
-            System.out.println("Ongeldige gegevens. Opslaan geannuleerd.");
-            return;
-        }
-        String sql = "INSERT INTO `group` (groupName, courseName, amountStudent, userName)" +
-                " VALUES (?, ?, ?, ?);";
-        try {
-            setupPreparedStatementWithKey(sql);
-            setPreparedStatementValues(group);
-            int primaryKey = executeInsertStatementWithKey();
-            group.setIdGroup(primaryKey);
-
-            executeManipulateStatement();
-        } catch (SQLException sqlFout) {
-            System.out.println(sqlFout.getMessage());
-        }
-    }
-
-    // Controleert of een groep geldige gegevens bevat
-    private boolean isValidGroup(Group group) {
-        return group.getGroupName() != null &&
-                group.getCourseName() != null &&
-                group.getAmountStudent() >= 0 &&
-                group.getUserName() != null;
-    }
-
-    // Vult de waarden van het prepared statement in met de gegevens van de groep
-    private void setPreparedStatementValues(Group group) throws SQLException {
-        preparedStatement.setString(1, group.getGroupName());
-        preparedStatement.setString(2, group.getCourseName().getNameCourse());
-        preparedStatement.setInt(3, group.getAmountStudent());
-        preparedStatement.setString(4, String.valueOf(group.getUserName().getIdUser()));
-    }
-
-    // Methode om een Group-object te maken vanuit een ResultSet
-    private Group getGroupFromResultSet(ResultSet resultSet) throws SQLException {
-        int idGroup = resultSet.getInt("idGroup");
-        int idTeacher = resultSet.getInt("idTeacher");
-        String nameCourse = resultSet.getString("nameCourse");
-        String nameGroup = resultSet.getString("nameGroup");
-        int amountStudent = resultSet.getInt("amountStudent");
-        int coordinatorUserId = resultSet.getInt("userId");
-        String coordinatorUsername = resultSet.getString("userName");
-        int difficulty = resultSet.getInt("difficultyCourse");
-
-        // Haalt de coördinator op op basis van ID of gebruikersnaam
-        User coordinator = getCoordinator(coordinatorUserId, coordinatorUsername);
-
-        // Maakt een Course-object
-        Course course = createCourse(coordinator, nameCourse, difficulty);
-
-        // Maakt een Group-object
-        return createGroup(idGroup, idTeacher, course, nameGroup, amountStudent, coordinator);
-    }
-
-    // Haalt de coördinator op op basis van ID of gebruikersnaam
-    private User getCoordinator(int coordinatorUserId, String coordinatorUsername) {
-        User coordinator = userDAO.getOneById(coordinatorUserId);
-        if (coordinator == null) {
-            coordinator = getUserByUsername(coordinatorUsername);
-        }
-        return coordinator;
-    }
-
-    // Haalt een gebruiker op op basis van gebruikersnaam
-    private User getUserByUsername(String username) {
-        return userDAO.getAll().stream()
-                .filter(user -> user.getUsername().equals(username))
-                .findFirst()
-                .orElse(null);
-    }
-
-    // Maakt een Course-object
-    private Course createCourse(User coordinator, String nameCourse, int difficulty) {
-        return new Course(coordinator, nameCourse, difficulty);
-    }
-
-    // Maakt een Group-object
-    private Group createGroup(int idGroup, int idTeacher, Course course, String nameGroup, int amountStudent, User coordinator) {
-        return new Group(idGroup, idTeacher, course, nameGroup, amountStudent, coordinator);
-    }
-}
-
-/*    public void storeOne(Group group) {
         //Controleert of alle gegevens zijn ingevuld
         if (group.getGroupName() == null || group.getCourseName() == null || group.getAmountStudent() < 0 || group.getUserName() == null) {
             System.out.println("Ongeldige gegevens. Opslaan geannuleerd.");
@@ -160,9 +76,9 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         } catch (SQLException sqlFout) {
             System.out.println(sqlFout.getMessage());
         }
-    }*/
+    }
 
-/*    private Group getGroupFromResultSet(ResultSet resultSet) throws SQLException {
+    private Group getGroupFromResultSet(ResultSet resultSet) throws SQLException {
         Group group;
 
         int idGroup = resultSet.getInt("idGroup");
@@ -187,4 +103,4 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
 
         group = new Group(idGroup, idTeacher, course, nameGroup, amountStudent, coordinator);
         return group;
-        }*/
+        }

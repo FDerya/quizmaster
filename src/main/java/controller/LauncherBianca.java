@@ -17,18 +17,7 @@ import java.util.Scanner;
 public class LauncherBianca {
     // Bestands- en padnamen
     private static final String filepath = "src/main/java/database/Groep.csv";
-    private static final String CONFIG_FILE_PATH = "src/config.properties";
     private static final File userFile = new File(filepath);
-
-    // MySQL database configuratie
-    private static final String MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String PREFIX_CONNECTION_URL = "jdbc:mysql://localhost:3306/";
-    private static final String CONNECTION_SETTINGS = "?useSSL=false" +
-            "&allowPublicKeyRetrieval=true" +
-            "&useJDBCCompliantTimezoneShift=true" +
-            "&useLegacyDatetimeCode=false" +
-            "&serverTimezone=UTC";
-
     // Indexen voor CSV-bestand
     private static final int INDEX_ID_GROUP = 0;
     private static final int INDEX_ID_TEACHER = 1;
@@ -38,17 +27,16 @@ public class LauncherBianca {
     private static final int INDEX_USER_NAME = 5;
 
     public static void main(String[] args) {
-      //Configureer de toegang tot de database
-        DBAccess dBaccess = configureDBAccess();
-        if (dBaccess == null) {
-            System.out.println("Failed to configure DBAccess. Exiting...");
-            return;
-        }
+        //Configureer de toegang tot de database
+
+        final String databaseName = "Quizmaster";
+        final String mainUser = "userQuizmaster";
+        final String mainUserPassword = "pwQuizmaster";
+        DBAccess dBaccess = new DBAccess(databaseName, mainUser, mainUserPassword);
 
         // Initialisatie van data access objecten
         UserDAO userDAO = new UserDAO(dBaccess);
-        CourseDAO courseDAO = new CourseDAO(dBaccess);
-
+        CourseDAO courseDAO = new CourseDAO(dBaccess, userDAO);
         GroupDAO groupDAO = new GroupDAO(dBaccess, userDAO);
 
         // Lees gegevens uit het CSV-bestand
@@ -68,26 +56,6 @@ public class LauncherBianca {
         } finally {
             // Sluit de databaseconnectie, ongeacht of er fouten zijn opgetreden
             dBaccess.closeConnection();
-        }
-    }
-
-    // Methode voor het configureren van de database-toegang
-    private static DBAccess configureDBAccess() {
-        Properties properties = new Properties();
-        try (InputStream input = new FileInputStream(CONFIG_FILE_PATH)) {
-            properties.load(input);
-
-            // Lees configuratiegegevens uit het properties-bestand
-            String databaseName = properties.getProperty("databaseName");
-            String mainUser = properties.getProperty("mainUser");
-            String mainUserPassword = properties.getProperty("mainUserPassword");
-
-            // Maak een nieuwe DBAccess instantie met de geconfigureerde gegevens
-            return new DBAccess(databaseName, mainUser, mainUserPassword);
-        } catch (IOException e) {
-            // Vang IOException af en druk de stack trace af
-            e.printStackTrace();
-            return null;
         }
     }
 
