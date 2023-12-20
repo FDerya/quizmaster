@@ -38,7 +38,7 @@ public class LauncherBianca {
     private static final int INDEX_USER_NAME = 5;
 
     public static void main(String[] args) {
-        // Configureer de toegang tot de database
+      /*//Configureer de toegang tot de database
         DBAccess dBaccess = configureDBAccess();
         if (dBaccess == null) {
             System.out.println("Failed to configure DBAccess. Exiting...");
@@ -47,7 +47,7 @@ public class LauncherBianca {
 
         // Initialisatie van data access objecten
         UserDAO userDAO = new UserDAO(dBaccess);
-        CourseDAO courseDAO = new CourseDAO(dBaccess);
+        //CourseDAO courseDAO = new CourseDAO(dBaccess);
 
         GroupDAO groupDAO = new GroupDAO(dBaccess, userDAO);
 
@@ -127,6 +127,7 @@ public class LauncherBianca {
             // Maak een nieuwe Group-instantie en voeg toe aan de lijst
             groupList.add(new Group(idGroup, idTeacher, course, groupName, numberOfStudents, user));
         }
-        return groupList;
+        return groupList;*/
     }
 }
+
