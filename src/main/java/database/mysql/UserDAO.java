@@ -16,11 +16,9 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
     public List<User> getAll() {
         List<User> resultList = new ArrayList<>();
         String sql = "SELECT * FROM User;";
-
         try {
             setupPreparedStatement(sql);
             ResultSet resultSet = executeSelectStatement();
-
             while(resultSet.next()) {
                 User user = getUser(resultSet);
                 resultList.add(user);
@@ -36,12 +34,10 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
     public User getOneById(int idUser) {
         String sql = "SELECT * FROM User WHERE idUser = ?";
         User user = null;
-
         try {
             setupPreparedStatement(sql);
             preparedStatement.setInt(1, idUser);
             ResultSet resultSet = executeSelectStatement();
-
             if (resultSet.next()) {
                 user = getUser(resultSet);
             }
@@ -56,12 +52,10 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
     public User getOneByUsername(String userName) {
         String sql = "SELECT * FROM User WHERE username = ?";
         User user = null;
-
         try {
             setupPreparedStatement(sql);
             preparedStatement.setString(1, userName);
             ResultSet resultSet = executeSelectStatement();
-
             if (resultSet.next()) {
                 user = getUser(resultSet);
             }
@@ -74,7 +68,6 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
     // Methode om een object User (zonder userId, want de tabel User gebruikt auto-increment) toe te voegen aan SQL.
     public void storeOne(User user) {
         String sql = "INSERT INTO user(username, password, firstName, prefix, surname, role) VALUES (?,?,?,?,?,?) ;";
-
         try {
             setupPreparedStatementWithKey(sql);
             preparedStatement.setString(1, user.getUsername());
