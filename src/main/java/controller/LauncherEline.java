@@ -12,72 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class LauncherEline {
-    private static final String filepath = "src/main/java/database/Cursussen.csv";
-    private static final File userFile = new File(filepath);
-
     public static void main(String[] args) {
-        final String databaseName = "Quizmaster";
-        final String mainUser = "userQuizmaster";
-        final String mainUserPassword = "pwQuizmaster";
-        DBAccess dBaccess = new DBAccess(databaseName, mainUser, mainUserPassword);
-        dBaccess.openConnection();
-        UserDAO userDAO = new UserDAO(dBaccess);
-        CourseDAO courseDAO = new CourseDAO(dBaccess, userDAO);
-
-        // Aanroepen methodes om het csv weg te schrijven naar uiteindelijk een ArrayList met Users.
-        List<String> test = FileReaderToArray();
-        List<Course> courseList = listCourse(test, dBaccess);
-        saveCourseFromArray(dBaccess, courseList, courseDAO);
-
-        // Het opslaan van de gebruikers in de database. Gecomment omdat de gebruikers er anders meerdere keren in voor
-        // kunnen komen.
-        // saveUsersFromArray(dBaccess, userList, userDAO);
-        dBaccess.closeConnection();
+        System.out.println("Hello world");
     }
-
-    // Deze methode leest een csv-bestand in en slaat deze regel voor regel op in een ArrayList van Strings.
-    public static List<String> FileReaderToArray() {
-        List<String> linesFromFile = new ArrayList<>();
-        try {
-            Scanner input = new Scanner(userFile);
-            while (input.hasNextLine()) {
-                linesFromFile.add(input.nextLine());
-            }
-        } catch (FileNotFoundException notFound) {
-            System.out.println("File not found.");
-        }
-        return linesFromFile;
-    }
-
-    // Deze methode leest een ArrayList van Strings, splitst elke regel in een array van Strings
-    // en maakt vervolgens een object User vanuit de array.
-    public static List<Course> listCourse(List<String> list, DBAccess dBAccess) {
-        UserDAO userDAO = new UserDAO(dBAccess);
-        List<Course> courseList = new ArrayList<>();
-        for (String s : list) {
-            String[] lineArray = s.split(",");
-            String courseName = lineArray[0];
-            String difficulty = lineArray[1];
-            int difficultyLevel = 1;
-            if (difficulty.equals("Gevorderd")){
-                difficultyLevel = 3;
-            }else if (difficulty.equals("Medium")){
-                difficultyLevel = 2;
-            }
-            User coordinator = userDAO.getOneByUsername(lineArray[2]);
-            courseList.add(new Course(coordinator, courseName, difficultyLevel));
-        }
-        return courseList;
-    }
-
-    // Deze methode opent de database, haalt de gebruikers uit een ArrayList van Users en slaat ze via de UserDAO
-    // op in de database. Daarna wordt de database gesloten.
-    private static void saveCourseFromArray(DBAccess dBaccess, List<Course> courseList, CourseDAO courseDAO) {
-        dBaccess.openConnection();
-        for (Course course : courseList) {
-            courseDAO.storeOne(course);
-        }
-        dBaccess.closeConnection();
-    }
-
 }
