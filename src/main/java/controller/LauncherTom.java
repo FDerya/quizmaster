@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class LauncherTom {
+    // Eerst locatie benoemen csv
     private static final String filepath = "src/main/java/database/Quizzen.csv";
     private static final File userFile = new File(filepath);
 
@@ -26,18 +27,17 @@ public class LauncherTom {
         CourseDAO courseDAO = new CourseDAO(dBaccess, userDAO);
         QuizDAO quizDAO = new QuizDAO(dBaccess, userDAO);
 
-        // Aanroepen methodes om het csv weg te schrijven naar uiteindelijk een ArrayList met Quizzen.
+        // Methodes aanroepen om het csv weg te schrijven naar een ArrayList met Quizzen.
         List<String> test = FileReaderToArray();
         List<Quiz> quizList = listQuiz(test, dBaccess);
         saveQuizFromArray(dBaccess, quizList, quizDAO);
 
-        // Het opslaan van de quizzen in de database. Gecomment omdat de quizzen er anders meerdere keren in voor
-        // kunnen komen.
+        // Quizzen opslaan in de database. Even achter "//", anders herhaalt de opdracht zich en heb je teveel info in de DBMS
         // saveQuizFromArray(dBAccess, quizList, quizDAO);
         dBaccess.closeConnection();
     }
 
-    // Deze methode leest een csv-bestand in en slaat deze regel voor regel op in een ArrayList van Strings.
+    // Methode om Strings vanuit de csv op te slaan in een ArrayList.
     public static List<String> FileReaderToArray() {
         List<String> linesFromFile = new ArrayList<>();
         try {
@@ -51,8 +51,7 @@ public class LauncherTom {
         return linesFromFile;
     }
 
-    // Deze methode leest een ArrayList van Strings, splitst elke regel in een array van Strings
-    // en maakt vervolgens een object Quiz vanuit de array.
+    // Methode om een array van quizzen als object aan te maken.
     public static List<Quiz> listQuiz(List<String> list, DBAccess dBAccess) {
         UserDAO userDAO = new UserDAO(dBAccess);
         CourseDAO courseDAO = new CourseDAO(dBAccess, userDAO);
@@ -64,13 +63,13 @@ public class LauncherTom {
             int amountQuestion = Integer.parseInt(lineArray[2]);
             String courseName = lineArray[3];
             Course course = courseDAO.getOneByName(courseName);
-            quizList.add(new Quiz(course, quizName, getDifficultyCourse(difficulty), amountQuestion));
+            quizList.add(new Quiz(course, quizName, getLevelQuiz(difficulty), amountQuestion));
         }
         return quizList;
     }
 
-    // Deze methode opent de database, haalt de quizzen uit een ArrayList van Quizzen en slaat ze via de QuizDAO
-    // op in de database. Daarna wordt de database gesloten.
+    // Methode om na opening van de database de quizzen uit een ArrayList te halen en ze via de QuizDAO
+    // op te slaan in de database. Met afsluiten van de database.
     private static void saveQuizFromArray(DBAccess dBaccess, List<Quiz> quizList, QuizDAO quizDAO) {
         dBaccess.openConnection();
         for (Quiz quiz : quizList) {
@@ -78,13 +77,14 @@ public class LauncherTom {
         }
         dBaccess.closeConnection();
     }
-    private static int getDifficultyCourse(String difficulty){
-        int difficultyCourse = 1;
-        if (difficulty.equals("Gevorderd")) {
-            difficultyCourse = 3;
-        } else if (difficulty.equals("Medium")) {
-            difficultyCourse = 2;
-        }return difficultyCourse;
+    //Methode om de String "Beginner/Medium/Gevorderd" om te zetten in int difficulty (1, 2, 3)
+    private static int getLevelQuiz(String difficulty){
+        int difficultyQuiz = 1;
+         if (difficulty.equals("Medium")) {
+             difficultyQuiz = 2;
+         } else if (difficulty.equals("Gevorderd")) {
+                difficultyQuiz = 3;
+        }return difficultyQuiz;
     }
 
 }
