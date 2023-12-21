@@ -28,7 +28,7 @@ public class LauncherQuestion {
             QuestionDAO questionDAO = new QuestionDAO(dBaccess);
 
             List<String> linesFromFile = readLinesFromFile(FILE_PATH);
-            List<Question> questionList = createQuestionList(linesFromFile);
+            List<Question> questionList = createQuestionList(linesFromFile,dBaccess );
 
             saveQuestionsToDatabase(dBaccess, questionList, questionDAO);
 
