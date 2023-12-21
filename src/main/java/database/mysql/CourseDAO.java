@@ -1,3 +1,7 @@
+//
+// Deze DAO is gemaakt door Eline van Tunen, 500636756
+//
+
 package database.mysql;
 
 import model.Course;
@@ -11,6 +15,7 @@ import java.util.List;
 
 public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
     private UserDAO userDAO;
+    private Course course = null;
 
 
 // Constructors
@@ -41,7 +46,6 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
     @Override
     public Course getOneById(int id) {
         String sql = "SELECT * FROM Course WHERE idCourse = ?;";
-        Course course = null;
         try {
             setupPreparedStatement(sql);
             preparedStatement.setInt(1, id);
@@ -60,8 +64,6 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
 // Course ophalen op basis van naam
     public Course getOneByName(String courseName) {
         String sql = "SELECT * FROM Course WHERE nameCourse = ?";
-        Course course = null;
-
         try {
             setupPreparedStatement(sql);
             preparedStatement.setString(1, courseName);
