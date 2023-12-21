@@ -38,7 +38,7 @@ public class LauncherQuestion {
         }
     }
     // Hulpmethode om regels uit een bestand te lezen
-    private static List<String> readLinesFromFile(String filePath) throws FileNotFoundException {
+    private static List<String> readLinesFromFile(String filePath ) throws FileNotFoundException {
         List<String> linesFromFile = new ArrayList<>();
         try (Scanner input = new Scanner(new File(filePath))) {
             while (input.hasNextLine()) {
@@ -48,7 +48,7 @@ public class LauncherQuestion {
         return linesFromFile;
     }
     // Hulpmethode om Question objecten te maken van de regels
-    private static List<Question> createQuestionList(List<String> lines) {
+    private static List<Question> createQuestionList(List<String> lines,  DBAccess dBaccess) {
         List<Question> questionList = new ArrayList<>();
         for (String line : lines) {
             String[] lineArray = line.split(";");
@@ -58,7 +58,7 @@ public class LauncherQuestion {
             String answerWrong2 = lineArray[3];
             String answerWrong3 = lineArray[4];
             int idQuiz = Integer.parseInt(lineArray[5]);
-            QuizDAO quizDAO = new QuizDAO();
+            QuizDAO quizDAO = new QuizDAO(dBaccess);
             Quiz quiz = quizDAO.getOneById(idQuiz);
             questionList.add(new Question( 1, quiz , question, answerRight, answerWrong1, answerWrong2, answerWrong3));
         }

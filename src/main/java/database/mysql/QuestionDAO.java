@@ -82,7 +82,7 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
         String answerWrong3 = resultSet.getString("answerWrong3");
 
         // Vraagt het Quiz-object op ID op met QuizDAO
-        QuizDAO quizDAO = new QuizDAO();
+        QuizDAO quizDAO = new QuizDAO(dbAccess);
         Quiz quiz = quizDAO.getOneById(idQuiz);
 
         // Maakt het object Vraag met de gegenereerde informatie en stuurt het terug

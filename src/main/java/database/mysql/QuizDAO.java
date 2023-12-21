@@ -19,6 +19,10 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         this.userDAO = userDAO;
     }
 
+    public QuizDAO(DBAccess dBaccess) {
+        super(dBaccess);
+    }
+
     // Maak een lijst met quizzen
     @Override
     public List<Quiz> getAll() {
