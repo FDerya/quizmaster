@@ -14,7 +14,7 @@ public class WelcomeController {
 
     User testUser = new User("Denshi", "ww", "Denshi", "null","Kerio", "Student");
     Course testCourse = new Course(testUser, "test course", "Gevorderd");
-    Quiz testQuiz = new Quiz(1, testCourse, "Test", 1, 1);
+    Quiz testQuiz = new Quiz(1, testCourse, "Test", "Beginner", 1);
 
     @FXML
     private Label welcomeLabel;

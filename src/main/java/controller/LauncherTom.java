@@ -63,7 +63,7 @@ public class LauncherTom {
             int amountQuestion = Integer.parseInt(lineArray[2]);
             String courseName = lineArray[3];
             Course course = courseDAO.getOneByName(courseName);
-            quizList.add(new Quiz(course, quizName, getLevelQuiz(difficulty), amountQuestion));
+            quizList.add(new Quiz(course, quizName, difficulty, amountQuestion));
         }
         return quizList;
     }
@@ -76,15 +76,6 @@ public class LauncherTom {
             quizDAO.storeOne(quiz);
         }
         dBaccess.closeConnection();
-    }
-    //Methode om de String "Beginner/Medium/Gevorderd" om te zetten in int difficulty (1, 2, 3)
-    private static int getLevelQuiz(String difficulty){
-        int difficultyQuiz = 1;
-         if (difficulty.equals("Medium")) {
-             difficultyQuiz = 2;
-         } else if (difficulty.equals("Gevorderd")) {
-                difficultyQuiz = 3;
-        }return difficultyQuiz;
     }
 
 }

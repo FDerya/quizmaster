@@ -86,7 +86,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
             setupPreparedStatementWithKey(sql);
             preparedStatement.setInt(1, quiz.getCourse().getIdCourse());
             preparedStatement.setString(2, quiz.getNameQuiz());
-            preparedStatement.setInt(3, quiz.getLevel());
+            preparedStatement.setString(3, quiz.getLevel());
             preparedStatement.setInt(4, quiz.getAmountQuestions());
             int primaryKey = executeInsertStatementWithKey();
             quiz.setIdQuiz(primaryKey);
@@ -99,7 +99,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         int idQuiz = resultSet.getInt("idQuiz");
         int idCourse = resultSet.getInt("idCourse");
         String name = resultSet.getString("nameQuiz");
-        int level = resultSet.getInt("levelQuiz");
+        String level = resultSet.getString("levelQuiz");
         int amountQuestion = resultSet.getInt("amountQuestion");
         Course course = courseDAO.getOneById(idCourse);
         quiz = new Quiz(idQuiz, course, name, level, amountQuestion);

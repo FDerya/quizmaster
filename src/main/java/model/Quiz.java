@@ -6,22 +6,22 @@ public class Quiz {
     private int idQuiz;
     private Course course;
     private String nameQuiz;
-    private int level;
+    private String level;
     private int amountQuestions;
 
     //Constructors
-    public Quiz(int idQuiz, Course course, String nameQuiz, int level, int amountQuestions){
+    public Quiz(int idQuiz, Course course, String nameQuiz, String level, int amountQuestions){
         this.idQuiz = idQuiz;
         this.course = course;
         this.nameQuiz = nameQuiz;
         this.level = level;
         this.amountQuestions = amountQuestions;
     }
-    public Quiz (Course course, String nameQuiz, int level, int amountQuestions){
+    public Quiz (Course course, String nameQuiz, String level, int amountQuestions){
         this(0,course, nameQuiz,level,amountQuestions);
     }
     public Quiz(Course course){
-        this(0,course, "",0,0);
+        this(0,course, "","",0);
     }
 
     //Getters en setters
@@ -41,7 +41,7 @@ public class Quiz {
         return amountQuestions;
     }
 
-    public int getLevel() {
+    public String getLevel() {
         return level;
     }
 
@@ -53,7 +53,7 @@ public class Quiz {
         this.course = course;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(String level) {
         this.level = level;
     }
 

@@ -98,7 +98,7 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
                     .findFirst()
                     .orElse(null);
         }
-        int difficulty = resultSet.getInt("difficultyCourse");
+        String difficulty = resultSet.getString("difficultyCourse");
         Course course = new Course(coordinator, nameCourse, difficulty);
 
         group = new Group(idGroup, idTeacher, course, nameGroup, amountStudent, coordinator);
