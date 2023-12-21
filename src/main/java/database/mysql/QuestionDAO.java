@@ -20,7 +20,7 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
         try {
             setupPreparedStatementWithKey(sql);
             // Assuming getIdQuiz returns a String
-            preparedStatement.setInt(1, question.getIdQuiz().getIdQuiz());
+            preparedStatement.setInt(1, question.getQuiz().getIdQuiz());
             preparedStatement.setString(2, question.getQuestion());
             preparedStatement.setString(3, question.getAnswerRight());
             preparedStatement.setString(4, question.getAnswerWrong1());
@@ -28,8 +28,7 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
             preparedStatement.setString(6, question.getAnswerWrong3());
             question.setIdQuestion(executeInsertStatementWithKey());
         } catch (SQLException sqlException) {
-
-            sqlException.printStackTrace();
+            System.out.println("SQL fout " + sqlException.getMessage());
         }
     }
      //De methode die wordt gebruikt om alle vragen uit de database te halen
@@ -47,7 +46,7 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
                 System.out.println("Er zijn geen vragen in de database");
             }
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+            System.out.println("SQL fout " + sqlException.getMessage());
         }
         return questions;
     }
@@ -66,7 +65,7 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
                 System.out.println("Er zijn geen vragen met deze vraag ID in de database");
             }
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+            System.out.println("SQL fout " + sqlException.getMessage());
         }
         return question;
     }
