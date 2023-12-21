@@ -2,7 +2,9 @@ package controller;
 
 import database.mysql.DBAccess;
 import database.mysql.QuestionDAO;
+import database.mysql.QuizDAO;
 import model.Question;
+import model.Quiz;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,7 +37,7 @@ public class LauncherQuestion {
             System.out.println("File not found.");
         }
     }
-
+    // Hulpmethode om regels uit een bestand te lezen
     private static List<String> readLinesFromFile(String filePath) throws FileNotFoundException {
         List<String> linesFromFile = new ArrayList<>();
         try (Scanner input = new Scanner(new File(filePath))) {
@@ -45,22 +47,24 @@ public class LauncherQuestion {
         }
         return linesFromFile;
     }
-
+    // Hulpmethode om Question objecten te maken van de regels
     private static List<Question> createQuestionList(List<String> lines) {
         List<Question> questionList = new ArrayList<>();
         for (String line : lines) {
             String[] lineArray = line.split(";");
-            String questionText = lineArray[0];
+            String question = lineArray[0];
             String answerRight = lineArray[1];
             String answerWrong1 = lineArray[2];
             String answerWrong2 = lineArray[3];
             String answerWrong3 = lineArray[4];
-            String nameQuiz = lineArray[5];
-            questionList.add(new Question( nameQuiz , questionText, answerRight, answerWrong1, answerWrong2, answerWrong3));
+            int idQuiz = Integer.parseInt(lineArray[5]);
+            QuizDAO quizDAO = new QuizDAO();
+            Quiz quiz = quizDAO.getOneById(idQuiz);
+            questionList.add(new Question( 1, quiz , question, answerRight, answerWrong1, answerWrong2, answerWrong3));
         }
         return questionList;
     }
-
+    // Hulpmethode om vragen naar de database op te slaan
     private static void saveQuestionsToDatabase(DBAccess dBaccess, List<Question> questionList, QuestionDAO questionDAO) {
         dBaccess.openConnection();
         for (Question question : questionList) {
