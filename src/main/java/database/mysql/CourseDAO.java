@@ -19,7 +19,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         this.userDAO = userDAO;
     }
 
-    // Alle courses ophalen
+// Alle courses ophalen
     @Override
     public List<Course> getAll() {
         List<Course> resultList = new ArrayList<>();
@@ -37,7 +37,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
     }
 
 
-    // Course ophalen op basis van ID
+// Course ophalen op basis van ID
     @Override
     public Course getOneById(int id) {
         String sql = "SELECT * FROM Course WHERE idCourse = ?;";
@@ -57,7 +57,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         return course;
     }
 
-    // Course ophalen op basis van naam
+// Course ophalen op basis van naam
     public Course getOneByName(String courseName) {
         String sql = "SELECT * FROM Course WHERE nameCourse = ?";
         Course course = null;
@@ -77,7 +77,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
     }
 
 
-    // Nieuwe course opslaan
+// Nieuwe course opslaan
     @Override
     public void storeOne(Course course) {
         String sql = "INSERT INTO Course (idCoordinator, nameCourse, difficultyCourse) VALUES(?, ?, ?);";
@@ -94,7 +94,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
     }
 
 
-    // Course object maken vanuit resultSet
+// Course object maken vanuit resultSet
     private Course getCourse(ResultSet resultSet) throws SQLException {
         UserDAO userDAO = new UserDAO(dbAccess);
         int idCourse = resultSet.getInt("idCourse");
