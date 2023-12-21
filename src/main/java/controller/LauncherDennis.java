@@ -36,10 +36,10 @@ public class LauncherDennis {
         saveUsersFromArray(dBaccess, userList, userDAO);
 
         // Aantal testusers gemaakt en in de database opgeslagen, om het testen van de launcher makkelijker te maken
-        User studentUser = new User("student", "test", "Frits",null,"Fritsma","student");
-        User coordinatorUser = new User("coordin", "test", "Sem", "van der", "Semming", "coördinator");
-        User administratorUser = new User("admin", "test", "Test", null, "Testma", "administrator");
-        User functioneelUser = new User("funcbeh", "test", "Taeke", null, "Taekema", "Functioneel Beheerder");
+//        User studentUser = new User("student", "test", "Frits",null,"Fritsma","student");
+//        User coordinatorUser = new User("coordin", "test", "Sem", "van der", "Semming", "coördinator");
+//        User administratorUser = new User("admin", "test", "Test", null, "Testma", "administrator");
+//        User functioneelUser = new User("funcbeh", "test", "Taeke", null, "Taekema", "Functioneel Beheerder");
 
 //        userDAO.storeOne(studentUser);
 //        userDAO.storeOne(coordinatorUser);
