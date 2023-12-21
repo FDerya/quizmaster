@@ -6,18 +6,17 @@ public class Question {
     Fatma Tatar
      */
     private int idQuestion;
-    private Quiz idQuiz;
+    private Quiz quiz;
     private String question;
     private String answerRight;
     private String answerWrong1;
     private String answerWrong2;
     private String answerWrong3;
-    private static final int AANTAL_ANTWOORDEN = 4;
 
-    public Question(int idQuestion, Quiz  idQuiz, String question,
+    public Question(int idQuestion, Quiz  quiz, String question,
                     String answerRight, String answerWrong1, String answerWrong2, String answerWrong3) {
         this.idQuestion = idQuestion;
-        this.idQuiz = idQuiz;
+        this.quiz = quiz;
         this.question = question;
         this.answerRight = answerRight;
         this.answerWrong1 = answerWrong1;
@@ -26,20 +25,12 @@ public class Question {
     }
 
     // Getters and Setters
-    public Quiz getIdQuiz() {
-        return idQuiz;
-    }
-
-    public void setIdQuiz(Quiz idQuiz) {
-        this.idQuiz = idQuiz;
-    }
-
-    public void setIdQuestion(int idQuestion) {
-        this.idQuestion = idQuestion;
-    }
-
     public int getIdQuestion() {
         return idQuestion;
+    }
+
+    public Quiz getQuiz() {
+        return quiz;
     }
 
     public String getQuestion() {
@@ -62,4 +53,31 @@ public class Question {
         return answerWrong3;
     }
 
+    public void setIdQuestion(int idQuestion) {
+        this.idQuestion = idQuestion;
     }
+
+    public void setQuiz(Quiz quiz) {
+        this.quiz = quiz;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public void setAnswerRight(String answerRight) {
+        this.answerRight = answerRight;
+    }
+
+    public void setAnswerWrong1(String answerWrong1) {
+        this.answerWrong1 = answerWrong1;
+    }
+
+    public void setAnswerWrong2(String answerWrong2) {
+        this.answerWrong2 = answerWrong2;
+    }
+
+    public void setAnswerWrong3(String answerWrong3) {
+        this.answerWrong3 = answerWrong3;
+    }
+}
