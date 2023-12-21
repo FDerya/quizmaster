@@ -1,3 +1,7 @@
+//
+// Dit model is gemaakt door Eline van Tunen, 500636756
+//
+
 package database.mysql;
 
 import model.Course;
