@@ -80,12 +80,12 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
 // Nieuwe course opslaan
     @Override
     public void storeOne(Course course) {
-        String sql = "INSERT INTO Course (idCoordinator, nameCourse, difficultyCourse) VALUES(?, ?, ?);";
+        String sql = "INSERT INTO course (idUser, nameCourse, difficultyCourse) VALUES(?, ?, ?);";
         try {
             setupPreparedStatementWithKey(sql);
             preparedStatement.setInt(1, course.getCoordinator().getIdUser());
             preparedStatement.setString(2, course.getNameCourse());
-            preparedStatement.setInt(3, course.getDifficultyCourse());
+            preparedStatement.setString(3, course.getDifficultyCourse());
             int primaryKey = executeInsertStatementWithKey();
             course.setIdCourse(primaryKey);
         } catch (SQLException sqlException){
@@ -98,9 +98,9 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
     private Course getCourse(ResultSet resultSet) throws SQLException {
         UserDAO userDAO = new UserDAO(dbAccess);
         int idCourse = resultSet.getInt("idCourse");
-        int idCoordinator = resultSet.getInt("idCoordinator");
+        int idCoordinator = resultSet.getInt("idUser");
         String nameCourse = resultSet.getString("nameCourse");
-        int difficultyCourse = resultSet.getInt("difficultyCourse");
+        String difficultyCourse = resultSet.getString("difficultyCourse");
         User user = userDAO.getOneById(idCoordinator);
         return new Course(idCourse, user, nameCourse, difficultyCourse);
     }

@@ -13,7 +13,7 @@ import view.Main;
 public class WelcomeController {
 
     User testUser = new User("Denshi", "ww", "Denshi", "null","Kerio", "Student");
-    Course testCourse = new Course(testUser, "test course", 3);
+    Course testCourse = new Course(testUser, "test course", "Gevorderd");
     Quiz testQuiz = new Quiz(1, testCourse, "Test", 1, 1);
 
     @FXML
