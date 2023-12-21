@@ -33,7 +33,7 @@ public class LauncherDennis {
 
         // Het opslaan van de gebruikers in de database. Gecomment omdat de gebruikers er anders meerdere keren in voor
         // kunnen komen.
-        // saveUsersFromArray(dBaccess, userList, userDAO);
+        saveUsersFromArray(dBaccess, userList, userDAO);
 
         // Aantal testusers gemaakt en in de database opgeslagen, om het testen van de launcher makkelijker te maken
         User studentUser = new User("student", "test", "Frits",null,"Fritsma","student");
