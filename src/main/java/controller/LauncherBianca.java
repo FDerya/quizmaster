@@ -18,13 +18,6 @@ public class LauncherBianca {
     // Bestands- en padnamen
     private static final String filepath = "src/main/java/database/Groepen.csv";
     private static final File userFile = new File(filepath);
-    // Indexen voor CSV-bestand
-    private static final int INDEX_ID_GROUP = 0;
-    private static final int INDEX_ID_TEACHER = 1;
-    private static final int INDEX_GROUP_NAME = 2;
-    private static final int INDEX_COURSE_NAME = 3;
-    private static final int INDEX_NUM_OF_STUDENTS = 4;
-    private static final int INDEX_USER_NAME = 5;
 
     public static void main(String[] args) {
         //Configureer de toegang tot de database
@@ -47,21 +40,7 @@ public class LauncherBianca {
         for (Group group : listGroups) {
             groupDAO.storeOne(group);
         }
-
         dBaccess.closeConnection();
-
-//
-//        try {
-//            // Open de databaseconnectie
-//            dBaccess.openConnection();
-//            // Sla elke groep op in de database
-//
-//        } catch (Exception e) {
-//            // Vang eventuele uitzonderingen af en druk de stack trace af
-//            e.printStackTrace();
-//        } finally {
-//            // Sluit de databaseconnectie, ongeacht of er fouten zijn opgetreden
-//        }
     }
 
 
