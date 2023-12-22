@@ -32,7 +32,7 @@ CREATE TABLE `course` (
   PRIMARY KEY (`idCourse`),
   KEY `verzinzelf3_idx` (`idUser`),
   CONSTRAINT `verzinzelf3` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,7 +50,7 @@ CREATE TABLE `group` (
   PRIMARY KEY (`idGroup`),
   KEY `verzinzelf2_idx` (`idUser`),
   CONSTRAINT `verzinzelf2` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,7 +92,7 @@ CREATE TABLE `question` (
   PRIMARY KEY (`idQuestion`),
   KEY `verzinzelf4_idx` (`idQuiz`),
   CONSTRAINT `verzinzelf4` FOREIGN KEY (`idQuiz`) REFERENCES `quiz` (`idQuiz`)
-) ENGINE=InnoDB AUTO_INCREMENT=168 DEFAULT CHARSET=utf8mb3 COMMENT='	';
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb3 COMMENT='	';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -111,7 +111,7 @@ CREATE TABLE `quiz` (
   PRIMARY KEY (`idQuiz`),
   KEY `verzinzelf1_idx` (`idCourse`),
   CONSTRAINT `is part of` FOREIGN KEY (`idCourse`) REFERENCES `course` (`idCourse`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,7 +130,7 @@ CREATE TABLE `user` (
   `surname` varchar(45) NOT NULL,
   `role` set('Student','Docent','Coördinator','Administrator','Functioneel Beheerder') NOT NULL,
   PRIMARY KEY (`idUser`)
-) ENGINE=InnoDB AUTO_INCREMENT=202 DEFAULT CHARSET=utf8mb3 COMMENT='										';
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb3 COMMENT='										';
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
