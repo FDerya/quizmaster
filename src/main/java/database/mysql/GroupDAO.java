@@ -46,7 +46,7 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
             preparedStatement.setInt(1, id);
             try (ResultSet resultSet = executeSelectStatement()) {
                 if (resultSet.next()) {
-                    return getGroupFromResultSet(resultSet);
+                    group = getGroupFromResultSet(resultSet);
                 }
             }
         } catch (SQLException sqlError) {
@@ -58,17 +58,8 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
     // Methode om een nieuwe groep op te slaan
     @Override
     public void storeOne(Group group) {
-<<<<<<< HEAD
-        if (!isValidGroup(group)) {
-            System.out.println("Ongeldige gegevens. Opslaan geannuleerd.");
-            return;
-        }
-        String sql = "INSERT INTO `group` (idUser, naamGroup, amountStudent)" +
-                " VALUES (?, ?, ?, ?);";
-=======
         String sql = "INSERT INTO `group` (idUser, nameGroup, amountStudent)" +
                 " VALUES (?, ?, ?);";
->>>>>>> refs/remotes/origin/master
         try {
             setupPreparedStatementWithKey(sql);
             preparedStatement.setInt(1, group.getUserName().getIdUser());
