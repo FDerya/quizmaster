@@ -18,8 +18,8 @@ public class LauncherQuestion {
 
     public static void main(String[] args) {
         final String databaseName = "Quizmaster";
-        final String mainUser = "userQuizmaster";
-        final String mainUserPassword = "pwQuizmaster";
+        final String mainUser = "root";
+        final String mainUserPassword = "ftm7874tr";
 
         DBAccess dBaccess = new DBAccess(databaseName, mainUser, mainUserPassword);
         dBaccess.openConnection();
