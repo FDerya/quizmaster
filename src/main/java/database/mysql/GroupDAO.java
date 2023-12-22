@@ -100,7 +100,7 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         int amountStudent = resultSet.getInt("amountStudent");
         int coordinatorUserId = resultSet.getInt("userId");
         String coordinatorUsername = resultSet.getString("userName");
-        int difficulty = resultSet.getInt("difficultyCourse");
+        String difficulty = resultSet.getString("difficultyCourse");
 
         // Haalt de coördinator op op basis van ID of gebruikersnaam
         User coordinator = getCoordinator(coordinatorUserId, coordinatorUsername);
@@ -130,7 +130,7 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
     }
 
     // Maakt een Course-object
-    private Course createCourse(User coordinator, String nameCourse, int difficulty) {
+    private Course createCourse(User coordinator, String nameCourse, String difficulty) {
         return new Course(coordinator, nameCourse, difficulty);
     }
 
@@ -183,9 +183,10 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
                     .findFirst()
                     .orElse(null);
         }
-        int difficulty = resultSet.getInt("difficultyCourse");
+        String difficulty = resultSet.getString("difficultyCourse");
         Course course = new Course(coordinator, nameCourse, difficulty);
 
         group = new Group(idGroup, idTeacher, course, nameGroup, amountStudent, coordinator);
         return group;
+
         }*/

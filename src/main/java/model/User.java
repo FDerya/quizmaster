@@ -31,9 +31,9 @@ public class User {
     // Methods
     @Override
     public String toString() {
-        StringBuilder resultString = new StringBuilder("");
+        StringBuilder resultString = new StringBuilder();
         resultString.append(firstName).append(" ");
-        if (!prefix.equals("")) {
+        if (!prefix.isEmpty()) {
             resultString.append(prefix).append(" ");
         }
         resultString.append(surname).append(", ");

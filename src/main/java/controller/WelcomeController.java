@@ -2,7 +2,6 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import model.Course;
@@ -12,9 +11,9 @@ import view.Main;
 
 public class WelcomeController {
 
-    User testUser = new User("Denshi", "ww", "Denshi", "null","Kerio", "Student");
-    Course testCourse = new Course(testUser, "test course", 3);
-    Quiz testQuiz = new Quiz(1, testCourse, "Test", 1, 1);
+//    User testUser = new User("Denshi", "ww", "Denshi", "null","Kerio", "Student");
+//    Course testCourse = new Course(testUser, "test course", "Gevorderd");
+//    Quiz testQuiz = new Quiz(1, testCourse, "Test", "Beginner", 1);
 
     @FXML
     private Label welcomeLabel;

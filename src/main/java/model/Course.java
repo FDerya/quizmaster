@@ -1,3 +1,7 @@
+//
+// Dit model is gemaakt door Eline van Tunen, 500636756
+//
+
 package model;
 
 import java.sql.ResultSet;
@@ -8,16 +12,17 @@ public class Course {
     private int idCourse;
     private User coordinator;
     private String nameCourse;
-    private int difficultyCourse;
-    public Course(int idCourse, User coordinator, String nameCourse, int difficultyCourse){
+    private String difficultyCourse;
+
+// Contructors
+    public Course(int idCourse, User coordinator, String nameCourse, String difficultyCourse){
         this.idCourse = idCourse;
         this.coordinator = coordinator;
         this.nameCourse = nameCourse;
         this.difficultyCourse = difficultyCourse;
     }
-// Contructors
 
-    public Course(User coordinator, String nameCourse, int difficultyCourse){
+    public Course(User coordinator, String nameCourse, String difficultyCourse){
         this(0, coordinator, nameCourse, difficultyCourse);
     }
 
@@ -40,10 +45,10 @@ public class Course {
     public void setNameCourse(String nameCourse) {
         this.nameCourse = nameCourse;
     }
-    public int getDifficultyCourse() {
+    public String getDifficultyCourse() {
         return difficultyCourse;
     }
-    public void setDifficultyCourse(int difficultyCourse) {
+    public void setDifficultyCourse(String difficultyCourse) {
         this.difficultyCourse = difficultyCourse;
     }
 }
