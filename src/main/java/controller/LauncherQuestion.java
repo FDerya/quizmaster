@@ -53,16 +53,15 @@ public class LauncherQuestion {
     private static List<Question> createQuestionList(List<String> lines, DBAccess dBaccess) {
         List<Question> questionList = new ArrayList<>();
         for (String line : lines) {
+            QuizDAO quizDAO = new QuizDAO(dBaccess);
             String[] lineArray = line.split(";");
             String question = lineArray[0];
             String answerRight = lineArray[1];
             String answerWrong1 = lineArray[2];
             String answerWrong2 = lineArray[3];
             String answerWrong3 = lineArray[4];
-            int idQuiz = Integer.parseInt(lineArray[5]);
-            QuizDAO quizDAO = new QuizDAO(dBaccess);
-            Quiz quiz = quizDAO.getOneById(idQuiz);
-            questionList.add(new Question(1, quiz, question, answerRight, answerWrong1, answerWrong2, answerWrong3));
+            Quiz quiz = quizDAO.getOneByName(lineArray[5]);
+            questionList.add(new Question(quiz, question, answerRight, answerWrong1, answerWrong2, answerWrong3));
         }
         return questionList;
     }

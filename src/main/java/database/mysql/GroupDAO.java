@@ -3,6 +3,7 @@ package database.mysql;
 
 import model.*;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -57,38 +58,26 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
     // Methode om een nieuwe groep op te slaan
     @Override
     public void storeOne(Group group) {
+<<<<<<< HEAD
         if (!isValidGroup(group)) {
             System.out.println("Ongeldige gegevens. Opslaan geannuleerd.");
             return;
         }
         String sql = "INSERT INTO `group` (idUser, naamGroup, amountStudent)" +
                 " VALUES (?, ?, ?, ?);";
+=======
+        String sql = "INSERT INTO `group` (idUser, nameGroup, amountStudent)" +
+                " VALUES (?, ?, ?);";
+>>>>>>> refs/remotes/origin/master
         try {
             setupPreparedStatementWithKey(sql);
-            setPreparedStatementValues(group);
-            int primaryKey = executeInsertStatementWithKey();
-            group.setIdGroup(primaryKey);
-
+            preparedStatement.setInt(1, group.getUserName().getIdUser());
+            preparedStatement.setString(2, group.getGroupName());
+            preparedStatement.setInt(3, group.getAmountStudent());
             executeManipulateStatement();
         } catch (SQLException sqlFout) {
             System.out.println(sqlFout.getMessage());
         }
-    }
-
-    // Controleert of een groep geldige gegevens bevat
-    private boolean isValidGroup(Group group) {
-        return group.getGroupName() != null &&
-                group.getCourseName() != null &&
-                group.getAmountStudent() >= 0 &&
-                group.getUserName() != null;
-    }
-
-    // Vult de waarden van het prepared statement in met de gegevens van de groep
-    private void setPreparedStatementValues(Group group) throws SQLException {
-        preparedStatement.setString(1, group.getGroupName());
-        preparedStatement.setString(2, group.getCourseName().getNameCourse());
-        preparedStatement.setInt(3, group.getAmountStudent());
-        preparedStatement.setString(4, String.valueOf(group.getUserName().getIdUser()));
     }
 
     // Methode om een Group-object te maken vanuit een ResultSet

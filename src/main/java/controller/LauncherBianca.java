@@ -16,7 +16,7 @@ import java.util.Scanner;
 
 public class LauncherBianca {
     // Bestands- en padnamen
-    private static final String filepath = "src/main/java/database/Groep.csv";
+    private static final String filepath = "src/main/java/database/Groepen.csv";
     private static final File userFile = new File(filepath);
     // Indexen voor CSV-bestand
     private static final int INDEX_ID_GROUP = 0;
@@ -38,26 +38,32 @@ public class LauncherBianca {
         UserDAO userDAO = new UserDAO(dBaccess);
         CourseDAO courseDAO = new CourseDAO(dBaccess, userDAO);
         GroupDAO groupDAO = new GroupDAO(dBaccess, userDAO);
+        dBaccess.openConnection();
 
         // Lees gegevens uit het CSV-bestand
         List<String> test = FileReaderToArray();
         List<Group> listGroups = listGroups(test, userDAO, courseDAO);
 
-        try {
-            // Open de databaseconnectie
-            dBaccess.openConnection();
-            // Sla elke groep op in de database
-            for (Group group : listGroups) {
-                groupDAO.storeOne(group);
-            }
-        } catch (Exception e) {
-            // Vang eventuele uitzonderingen af en druk de stack trace af
-            e.printStackTrace();
-        } finally {
-            // Sluit de databaseconnectie, ongeacht of er fouten zijn opgetreden
-            dBaccess.closeConnection();
+        for (Group group : listGroups) {
+            groupDAO.storeOne(group);
         }
+
+        dBaccess.closeConnection();
+
+//
+//        try {
+//            // Open de databaseconnectie
+//            dBaccess.openConnection();
+//            // Sla elke groep op in de database
+//
+//        } catch (Exception e) {
+//            // Vang eventuele uitzonderingen af en druk de stack trace af
+//            e.printStackTrace();
+//        } finally {
+//            // Sluit de databaseconnectie, ongeacht of er fouten zijn opgetreden
+//        }
     }
+
 
     // Methode om gegevens uit het CSV-bestand naar een lijst te lezen
     public static List<String> FileReaderToArray() {
@@ -81,19 +87,14 @@ public class LauncherBianca {
 
         for (String s : list) {
             String[] lineArray = s.split(",");
-            int idGroup = Integer.parseInt(lineArray[INDEX_ID_GROUP]);
-            int idTeacher = Integer.parseInt(lineArray[INDEX_ID_TEACHER]);
-            String groupName = lineArray[INDEX_GROUP_NAME];
-            String courseName = lineArray[INDEX_COURSE_NAME];
-            int numberOfStudents = Integer.parseInt(lineArray[INDEX_NUM_OF_STUDENTS]);
-            String userName = lineArray[INDEX_USER_NAME];
+            Course course = courseDAO.getOneByName(lineArray[0]);
+            String groupName = lineArray[1];
+            int numberOfStudents = Integer.parseInt(lineArray[2]);
+            User user = userDAO.getOneByUsername(lineArray[3]);
 
             // Maak een nieuwe User en Course instantie
-            User user = userDAO.getOneById(Integer.parseInt(userName));
-            Course course = courseDAO.getOneById(Integer.parseInt(courseName));
-
             // Maak een nieuwe Group-instantie en voeg toe aan de lijst
-            groupList.add(new Group(idGroup, idTeacher, course, groupName, numberOfStudents, user));
+            groupList.add(new Group(course, groupName, numberOfStudents, user));
         }
         return groupList;
     }
