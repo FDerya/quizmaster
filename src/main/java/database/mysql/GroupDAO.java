@@ -59,11 +59,7 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
     public void storeOne(Group group) {
         String sql = "INSERT INTO `group` (idUser, nameGroup, amountStudent)" +
                 " VALUES (?, ?, ?);";
-<<<<<<< HEAD
-=======
-
->>>>>>> 81bb56335d8262d9c55439a7587106e510d9d693
-        try {
+       try {
             setupPreparedStatementWithKey(sql);
             preparedStatement.setInt(1, group.getUserName().getIdUser());
             preparedStatement.setString(2, group.getGroupName());
