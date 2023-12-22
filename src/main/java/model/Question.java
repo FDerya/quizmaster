@@ -24,6 +24,10 @@ public class Question {
         this.answerWrong3 = answerWrong3;
     }
 
+    public Question(Quiz quiz, String question, String answerRight, String answerWrong1, String answerWrong2, String answerWrong3) {
+        this(0, quiz, question, answerRight, answerWrong1, answerWrong2, answerWrong3);
+    }
+
     // Getters and Setters
     public int getIdQuestion() {
         return idQuestion;

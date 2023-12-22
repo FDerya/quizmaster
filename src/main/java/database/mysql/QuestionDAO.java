@@ -42,9 +42,6 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
             while (resultSet.next()) {
                 questions.add(getQuestionFromResultSet(resultSet));
             }
-            if (questions.isEmpty()) {
-                System.out.println("Er zijn geen vragen in de database");
-            }
         } catch (SQLException sqlException) {
             System.out.println("SQL fout " + sqlException.getMessage());
         }
@@ -61,8 +58,6 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
             ResultSet resultSet = executeSelectStatement();
             if (resultSet.next()) {
                 question = getQuestionFromResultSet(resultSet);
-            } else {
-                System.out.println("Er zijn geen vragen met deze vraag ID in de database");
             }
         } catch (SQLException sqlException) {
             System.out.println("SQL fout " + sqlException.getMessage());
