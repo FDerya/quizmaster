@@ -36,15 +36,15 @@ public class LauncherDennis {
         saveUsersFromArray(dBaccess, userList, userDAO);
 
         // Aantal testusers gemaakt en in de database opgeslagen, om het testen van de launcher makkelijker te maken
-//        User studentUser = new User("student", "test", "Frits",null,"Fritsma","student");
-//        User coordinatorUser = new User("coordin", "test", "Sem", "van der", "Semming", "coördinator");
-//        User administratorUser = new User("admin", "test", "Test", null, "Testma", "administrator");
-//        User functioneelUser = new User("funcbeh", "test", "Taeke", null, "Taekema", "Functioneel Beheerder");
+        User studentUser = new User("student", "test", "Frits",null,"Fritsma","student");
+        User coordinatorUser = new User("coordin", "test", "Sem", "van der", "Semming", "coördinator");
+        User administratorUser = new User("admin", "test", "Test", null, "Testma", "administrator");
+        User functioneelUser = new User("funcbeh", "test", "Taeke", null, "Taekema", "Functioneel Beheerder");
 
-//        userDAO.storeOne(studentUser);
-//        userDAO.storeOne(coordinatorUser);
-//        userDAO.storeOne(administratorUser);
-//        userDAO.storeOne(functioneelUser);
+        userDAO.storeOne(studentUser);
+        userDAO.storeOne(coordinatorUser);
+        userDAO.storeOne(administratorUser);
+        userDAO.storeOne(functioneelUser);
         dBaccess.closeConnection();
     }
 
@@ -82,11 +82,8 @@ public class LauncherDennis {
     // Deze methode opent de database, haalt de gebruikers uit een ArrayList van Users en slaat ze via de UserDAO
     // op in de database. Daarna wordt de database gesloten.
     private static void saveUsersFromArray(DBAccess dBaccess, List<User> userList, UserDAO userDAO) {
-        dBaccess.openConnection();
         for (User user : userList) {
             userDAO.storeOne(user);
         }
-        dBaccess.closeConnection();
     }
-
 }
