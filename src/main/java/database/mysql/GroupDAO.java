@@ -61,7 +61,7 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
             System.out.println("Ongeldige gegevens. Opslaan geannuleerd.");
             return;
         }
-        String sql = "INSERT INTO `group` (groupName, courseName, amountStudent, userName)" +
+        String sql = "INSERT INTO `group` (idUser, naamGroup, amountStudent)" +
                 " VALUES (?, ?, ?, ?);";
         try {
             setupPreparedStatementWithKey(sql);
