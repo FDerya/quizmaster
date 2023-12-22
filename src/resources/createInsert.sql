@@ -142,4 +142,7 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+CREATE USER 'userQuizmaster'@'localhost' IDENTIFIED BY 'pwQuizmaster';
+GRANT ALL PRIVILEGES ON Quizmaster.* TO 'userQuizmaster'@'localhost';
+
 -- Dump completed on 2023-12-22 10:34:25
