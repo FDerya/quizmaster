@@ -4,16 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-import model.Course;
-import model.Quiz;
 import model.User;
 import view.Main;
 
 public class WelcomeController {
-
-//    User testUser = new User("Denshi", "ww", "Denshi", "null","Kerio", "Student");
-//    Course testCourse = new Course(testUser, "test course", "Gevorderd");
-//    Quiz testQuiz = new Quiz(1, testCourse, "Test", "Beginner", 1);
 
     @FXML
     private Label welcomeLabel;
@@ -21,7 +15,7 @@ public class WelcomeController {
     private MenuButton taskMenuButton;
 
     public void setup() {
-        welcomeLabel.setText("Welkom " + User.getCurrentUser().getFirstName());
+        welcomeLabel.setText("Welkom " + User.getCurrentUser().getFirstName() + "\nU bent ingelogd als " + User.getCurrentUser().getRole());
         // Menuitems voor de student
         MenuItem item1 = new MenuItem("In- en uitschrijven");
         item1.setOnAction(actionEvent -> Main.getSceneManager().showStudentSignInOutScene());
@@ -59,7 +53,6 @@ public class WelcomeController {
             case "Functioneel Beheerder":
                 taskMenuButton.getItems().add(item6);
         }
-
     }
 
     public void doLogout() {
