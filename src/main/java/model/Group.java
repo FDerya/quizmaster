@@ -36,6 +36,7 @@ public class Group {
                 " en de groep volgt de cursus: " + courseName + '}';
     }
 
+
     // Getters en setters voor de attributen
     public int getMAX_AANTAL_STUDENTEN() {
         return MAX_AANTAL_STUDENTEN;
