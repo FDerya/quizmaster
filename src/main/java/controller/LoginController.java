@@ -24,16 +24,21 @@ public class LoginController {
     }
 
     public void doLogin() {
+        String loginErrorMessage = "Combinatie van gebruikersnaam en wachtwoord is onjuist";
         User user = userDAO.getOneByUsername(nameTextField.getText());
         try {
             if (passwordField.getText().equals(user.getPassword())) {
                 User.setCurrentUser(user);
-                Main.getSceneManager().showWelcomeScene();
+                if (user.getRole().equals("Docent")) {
+                    errorMessage.setText("Er zijn momenteel geen taken beschikbaar voor een docent");
+                } else {
+                    Main.getSceneManager().showWelcomeScene();
+                }
             } else {
-            errorMessage.setText("Fout: combinatie van gebruikersnaam en wachtwoord is onjuist");
+            errorMessage.setText(loginErrorMessage);
             }
         } catch (NullPointerException nullPointerException) {
-            errorMessage.setText("Fout: combinatie van gebruikersnaam en wachtwoord is onjuist");
+            errorMessage.setText(loginErrorMessage);
             System.out.println(nullPointerException.getMessage());
         }
     }
