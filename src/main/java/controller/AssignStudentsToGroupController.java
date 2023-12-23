@@ -4,6 +4,7 @@ import database.mysql.*;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import model.Course;
@@ -24,6 +25,8 @@ public class AssignStudentsToGroupController {
     ListView<User> studentList;
     @FXML
     ListView<User> studentsInGroupList;
+    @FXML
+    private Label groupLabel;
 
     public void setup() {
         courseComboBox.getSelectionModel().selectedItemProperty().addListener(
@@ -39,4 +42,9 @@ public class AssignStudentsToGroupController {
     public void doRemove() {}
 
     public void doMenu() {}
+
+    public void initData(Group group) {
+        groupLabel.setText("Selected Group: " + group.getGroupName());
+    }
 }
+

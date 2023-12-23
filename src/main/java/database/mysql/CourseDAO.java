@@ -106,5 +106,4 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         User user = userDAO.getOneById(idCoordinator);
         return new Course(idCourse, user, nameCourse, difficultyCourse);
     }
-
 }

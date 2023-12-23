@@ -1,5 +1,8 @@
 package database.mysql;
 // Bianca Duijvesteijn, studentnummer 500940421
+// Manages database operations for Group entities, including retrieval, creation, and deletion.
+// Associates with UserDAO for user-related functionalities.
+
 
 import model.*;
 
@@ -11,13 +14,13 @@ import java.util.List;
 public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
     private UserDAO userDAO;
 
-    // Constructor met UserDAO als parameter
+    // Constructor with UserDAO as a parameter
     public GroupDAO(DBAccess dBaccess, UserDAO userDAO) {
         super(dBaccess);
         this.userDAO = userDAO;
     }
 
-    // Methode om alle groepen op te halen
+    // Method to retrieve all groups
     @Override
     public List<Group> getAll() {
         List<Group> resultList = new ArrayList<>();
@@ -35,7 +38,25 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         return resultList;
     }
 
-    // Methode om een specifieke groep op te halen op basis van ID
+    // Method to retrieve the count of groups associated with a course
+    public int getCountOfGroupsByCourse(String courseName) {
+        String sql = "SELECT COUNT(*) FROM Group WHERE nameCourse = ?";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setString(1, courseName);
+
+            try (ResultSet resultSet = executeSelectStatement()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
+                }
+            }
+        } catch (SQLException sqlError) {
+            System.out.println("SQL error: " + sqlError.getMessage());
+        }
+        return 0;
+    }
+
+    // Method to retrieve a specific group based on ID
     @Override
     public Group getOneById(int id) {
         String sql = "SELECT * FROM group WHERE userId = ?";
@@ -54,7 +75,7 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         return group;
     }
 
-    // Methode om een nieuwe groep op te slaan
+    // Method to store a new group
     @Override
     public void storeOne(Group group) {
         String sql = "INSERT INTO `group` (idUser, nameGroup, amountStudent)" +
@@ -70,37 +91,33 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         }
     }
 
-    // Methode om een Group-object te maken vanuit een ResultSet
+    // Method to create a Group object from a ResultSet
     private Group getGroupFromResultSet(ResultSet resultSet) throws SQLException {
         int idGroup = resultSet.getInt("idGroup");
         int idTeacher = resultSet.getInt("idTeacher");
         String nameCourse = resultSet.getString("nameCourse");
         String nameGroup = resultSet.getString("nameGroup");
         int amountStudent = resultSet.getInt("amountStudent");
-        int coordinatorUserId = resultSet.getInt("userId");
-        String coordinatorUsername = resultSet.getString("userName");
+        int administratorUserId = resultSet.getInt("userId");
+        String administratorUserName = resultSet.getString("userName");
         String difficulty = resultSet.getString("difficultyCourse");
 
-        // Haalt de coördinator op op basis van ID of gebruikersnaam
-        User coordinator = getCoordinator(coordinatorUserId, coordinatorUsername);
+        User administrator = getAdministrator(administratorUserId, administratorUserName);
+        Course course = createCourse(administrator, nameCourse, difficulty);
 
-        // Maakt een Course-object
-        Course course = createCourse(coordinator, nameCourse, difficulty);
-
-        // Maakt een Group-object
-        return createGroup(idGroup, idTeacher, course, nameGroup, amountStudent, coordinator);
+        return createGroup(idGroup, idTeacher, course, nameGroup, amountStudent, administrator);
     }
 
-    // Haalt de coördinator op op basis van ID of gebruikersnaam
-    private User getCoordinator(int coordinatorUserId, String coordinatorUsername) {
-        User coordinator = userDAO.getOneById(coordinatorUserId);
-        if (coordinator == null) {
-            coordinator = getUserByUsername(coordinatorUsername);
+    // Method to get the administrator based on ID or username
+    private User getAdministrator(int administratorUserId, String administratorUsername) {
+        User administator = userDAO.getOneById(administratorUserId);
+        if (administator == null) {
+            administator = getUserByUsername(administratorUsername);
         }
-        return coordinator;
+        return administator;
     }
 
-    // Haalt een gebruiker op op basis van gebruikersnaam
+    // Method to get a user based on username
     private User getUserByUsername(String username) {
         return userDAO.getAll().stream()
                 .filter(user -> user.getUsername().equals(username))
@@ -108,16 +125,17 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
                 .orElse(null);
     }
 
-    // Maakt een Course-object
-    private Course createCourse(User coordinator, String nameCourse, String difficulty) {
-        return new Course(coordinator, nameCourse, difficulty);
+    // Method to create a Course object
+    private Course createCourse(User administrator, String nameCourse, String difficulty) {
+        return new Course(administrator, nameCourse, difficulty);
     }
 
-    // Maakt een Group-object
-    private Group createGroup(int idGroup, int idTeacher, Course course, String nameGroup, int amountStudent, User coordinator) {
-        return new Group(idGroup, idTeacher, course, nameGroup, amountStudent, coordinator);
+    // Method to create a Group object
+    private Group createGroup(int idGroup, int idTeacher, Course course, String nameGroup,
+                              int amountStudent, User administrator) {
+        return new Group(idGroup, idTeacher, course, nameGroup, amountStudent, administrator);
     }
-
+    // Method to get a group by name
     public Group getGroupByName(String selectedGroupName) {
         List<Group> groups = getAll();
         for (Group group : groups) {
@@ -126,6 +144,18 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
             }
         }
         return null;
+    }
+
+    // Method to delete a group
+    public void deleteGroup(Group group) {
+        String sql = "DELETE FROM Group WHERE groupName = ?";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setString(1, group.getGroupName());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
 

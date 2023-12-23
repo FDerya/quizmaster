@@ -1,122 +1,128 @@
 package controller;
+// Bianca Duijvesteijn, studentnummer 500940421
+// This controller is responsible for managing groups in a JavaFX application.
+// It provides functionalities such as creating, updating, and deleting groups, as well as displaying
+// relevant information to the user.
 
 import database.mysql.DBAccess;
 import database.mysql.GroupDAO;
 import database.mysql.UserDAO;
-import javafx.event.ActionEvent;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+
 import model.Group;
 import view.Main;
-import view.SceneManager;
 
+import java.io.IOException;
 import java.util.List;
 
 public class ManageGroupsController {
+    @FXML
     private ListView<String> groupList;
-    private database.mysql.DBAccess DBAccess;
-    private database.mysql.UserDAO UserDAO;
-    private GroupDAO groupDAO = new GroupDAO(DBAccess, UserDAO);
-    TextField waarschuwingTextField;
+    @FXML
+    private GroupDAO groupDAO;
+    @FXML
+    private final TextField waarschuwingTextField = new TextField();
 
-    public ManageGroupsController() {
-    }
-
+    // Initializes the ManageGroupsController, setting up the UI components and event listeners
     public void setup() {
-        MenuItem newItem = new MenuItem("Nieuw");
-        newItem.setOnAction(actionEvent -> createNewGroup());
-        MenuItem updateItem = new MenuItem("Wijzig");
-        updateItem.setOnAction(actionEvent -> goToUpdateGroup());
-        MenuItem deleteItem = new MenuItem("Verwijder");
-        deleteItem.setOnAction(actionEvent -> deleteSelectedGroup());
-        Button menuButton = new Button("Menu");
-        menuButton.setOnAction(actionEvent -> goToWelcomeScene());
-
-        groupList.setContextMenu(new ContextMenu(newItem, updateItem, deleteItem));
+        DBAccess dbAccess = Main.getDBaccess();
+        UserDAO userDAO = new UserDAO(Main.getDBaccess());
+        groupDAO = new GroupDAO(dbAccess, userDAO);
 
         List<Group> groups = groupDAO.getAll();
-
         for (Group group : groups) {
             groupList.getItems().add(group.getGroupName());
         }
+
+        Label groupsInCourseInfoLabel = new Label();
+        groupList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                Group selectedGroup = groupDAO.getGroupByName(newValue);
+                int groupsWithSameCourse = groupDAO.getCountOfGroupsByCourse(selectedGroup.getCourseName().getNameCourse());
+                groupsInCourseInfoLabel.setText("Aantal groepen die deze cursus volgen: " + groupsWithSameCourse);
+            } else {
+                groupsInCourseInfoLabel.setText("Informatie niet beschikbaar");
+            }
+        });
     }
 
-    private void goToWelcomeScene() {
-        Main.getSceneManager().showWelcomeScene();
-    }
-
-    private void deleteSelectedGroup() {
-        String selectedGroup = groupList.getSelectionModel().getSelectedItem();
-        System.out.println("Verwijder groep: " + selectedGroup);
-
-        groupList.getItems().remove(selectedGroup);
-    }
-
-    private void createNewGroup() {
-
-    }
+    // Handles the "Menu" button click event, navigating back to the welcome scene
     @FXML
-    public void doChangeGroup(ActionEvent event) {
-        Group group = groupList.getSelectionModel().getSelectedItem();
+    private void doMenu() {
+        Main.getSceneManager().showWelcomeScene();
 
-        if (group == null) {
-            waarschuwingTextField.setVisible(true);
-            waarschuwingTextField.setText("Je moet eerst een groep selecteren");
-       } else {
-        loadView(group).getSceneManager().showExistingCustomerScene(group);
-    }
     }
 
-    private void goToUpdateGroup() {
-        if (!groupList.getSelectionModel().isEmpty()) {
-            String selectedGroupName = groupList.getSelectionModel().getSelectedItem();
-
-            Group selectedGroup = groupDAO.getGroupByName(selectedGroupName);
-
-            Main.getSceneManager().showCreateUpdateGroupScene(selectedGroup);
-        } else {
-            System.out.println("Geen groep geselecteerd");
-        }
-    }
-
-@FXML
-    public void doMenu(ActionEvent actionEvent) {
-        loadView("Menu.fxml");
-    }
-
-
-    public void doCreateGroup(ActionEvent event) {
-        SceneManager sceneManager = new SceneManager((Stage) ((Node) event.getSource()).getScene().getWindow());
-        sceneManager.showManageGroupsScene();
-    }
-
-
-    public void doUpdateGroup() {
-        loadView("UpdateGroup.fxml");
-    }
-
-    public void doDeleteGroup() {
-        loadView("DeleteGroup.fxml");
-    }
-
-    private void loadView(String fxmlFileName) {
+    // Handles the creation of a new group, opening the corresponding UI
+    public void doCreateGroup() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFileName));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("path/to/createUpdateGroup.fxml"));
             Parent root = loader.load();
 
-           CreateUpdateGroupController controller = loader.getController();
+            CreateUpdateGroupController controller = loader.getController();
+            controller.initialize(null, null);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
-
             stage.show();
-        } catch (Exception e) {
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Handles the update of an existing group, opening the UI to assign students to groups
+    @FXML
+    private void doUpdateGroup() {
+        String selectedGroupName = groupList.getSelectionModel().getSelectedItem();
+        if (selectedGroupName == null) {
+            waarschuwingTextField.setVisible(true);
+            waarschuwingTextField.setText("Je moet eerst een groep selecteren");
+        } else {
+            Group selectedGroup = getGroupByName(selectedGroupName);
+            openAssignStudentsToGroupsScene(selectedGroup);
+        }
+    }
+
+    // Handles the deletion of an existing group, updating the UI and database accordingly
+    public void doDeleteGroup() {
+        String selectedGroupName = groupList.getSelectionModel().getSelectedItem();
+        if (selectedGroupName != null) {
+            Group selectedGroup = getGroupByName(selectedGroupName);
+            groupDAO.deleteGroup(selectedGroup);
+
+            Platform.runLater(() -> groupList.getItems().remove(selectedGroupName));
+        } else {
+            waarschuwingTextField.setVisible(true);
+            waarschuwingTextField.setText("Je moet eerst een groep selecteren");
+        }
+    }
+
+    // Retrieves a group by its name
+    private Group getGroupByName(String selectedGroupName) {
+        return groupDAO.getGroupByName(selectedGroupName);
+    }
+
+    // Opens the UI to assign students to groups for a given group
+    private void openAssignStudentsToGroupsScene(Group group) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("assignStudentsToGroups.fxml"));
+            Parent root = loader.load();
+
+            AssignStudentsToGroupController controller = loader.getController();
+            controller.initData(group);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 }
+
