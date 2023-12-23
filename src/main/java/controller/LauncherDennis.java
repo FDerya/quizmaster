@@ -14,45 +14,44 @@ import java.util.List;
 import java.util.Scanner;
 
 public class LauncherDennis {
-    // Nodig voor het initialiseren van het gebruikers csv bestand, om de database te vullen.
-    private static final String filepath = "src/main/java/database/Gebruikers.csv";
-    private static final File userFile = new File(filepath);
+    // Attributen nodig voor initialiseren database en Filereader.
+    private static final String databaseName = "Quizmaster";
+    private static final String mainUser = "userQuizmaster";
+    private static final String mainUserPassword = "pwQuizmaster";
+    private static final String filepathGebruikers = "src/main/java/database/Gebruikers.csv";
+    private static final String filepathTestusers = "src/main/java/database/testusers.csv";
+    private static final File userFileGebruikers = new File(filepathGebruikers);
+    private static final File userFileTestusers = new File(filepathTestusers);
 
     public static void main(String[] args) {
+
         // Aanmaken database access object en userDAO object.
-        final String databaseName = "Quizmaster";
-        final String mainUser = "userQuizmaster";
-        final String mainUserPassword = "pwQuizmaster";
         DBAccess dBaccess = new DBAccess(databaseName, mainUser, mainUserPassword);
+        // Openen van database en aanroepen userDAO
         dBaccess.openConnection();
         UserDAO userDAO = new UserDAO(dBaccess);
 
         // Aanroepen methodes om het csv weg te schrijven naar uiteindelijk een ArrayList met Users.
-        List<String> test = FileReaderToArray();
-        List<User> userList = listUsers(test);
+        List<String> gebruikerscsv = FileReaderToArray(userFileGebruikers);
+        List<User> gebruikersList = listUsers(gebruikerscsv);
+        List<String> testuserscsv = FileReaderToArray(userFileTestusers);
+        List<User> testuserList = listUsers(testuserscsv);
 
-        // Het opslaan van de gebruikers in de database. Gecomment omdat de gebruikers er anders meerdere keren in voor
-        // kunnen komen.
-        saveUsersFromArray(dBaccess, userList, userDAO);
 
-        // Aantal testusers gemaakt en in de database opgeslagen, om het testen van de launcher makkelijker te maken
-        User studentUser = new User("student", "test", "Frits",null,"Fritsma","student");
-        User coordinatorUser = new User("coordin", "test", "Sem", "van der", "Semming", "coördinator");
-        User administratorUser = new User("admin", "test", "Test", null, "Testma", "administrator");
-        User functioneelUser = new User("funcbeh", "test", "Taeke", null, "Taekema", "Functioneel Beheerder");
+        // Het opslaan van de gebruikers en testusers in de database.
+        // Gecomment omdat de gebruikers er anders meerdere keren in voor kunnen komen.
+        // saveUsersFromArray(gebruikersList, userDAO);
+        // saveUsersFromArray(testuserList, userDAO);
 
-        userDAO.storeOne(studentUser);
-        userDAO.storeOne(coordinatorUser);
-        userDAO.storeOne(administratorUser);
-        userDAO.storeOne(functioneelUser);
+        // Sluiten database
         dBaccess.closeConnection();
     }
 
-    // Deze methode leest een csv-bestand in en slaat deze regel voor regel op in een ArrayList van Strings.
-    public static List<String> FileReaderToArray() {
+    // Deze methode leest een csv-bestand met gebruikers in en slaat deze regel voor regel op in een ArrayList van Strings.
+    public static List<String> FileReaderToArray(File file) {
         List<String> linesFromFile = new ArrayList<>();
         try {
-            Scanner input = new Scanner(userFile);
+            Scanner input = new Scanner(file);
             while (input.hasNextLine()) {
                 linesFromFile.add(input.nextLine());
             }
@@ -81,7 +80,7 @@ public class LauncherDennis {
 
     // Deze methode opent de database, haalt de gebruikers uit een ArrayList van Users en slaat ze via de UserDAO
     // op in de database. Daarna wordt de database gesloten.
-    private static void saveUsersFromArray(DBAccess dBaccess, List<User> userList, UserDAO userDAO) {
+    private static void saveUsersFromArray(List<User> userList, UserDAO userDAO) {
         for (User user : userList) {
             userDAO.storeOne(user);
         }
