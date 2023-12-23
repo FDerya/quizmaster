@@ -15,7 +15,7 @@ public class WelcomeController {
     private MenuButton taskMenuButton;
 
     public void setup() {
-        welcomeLabel.setText("Welkom " + User.getCurrentUser().getFirstName() + "\nU bent ingelogd als " + User.getCurrentUser().getRole());
+        welcomeLabel.setText("Welkom " + User.getCurrentUser().getFirstName() + "\nU bent ingelogd als " + User.getCurrentUser().getRole().toLowerCase());
         // Menuitems voor de student
         MenuItem item1 = new MenuItem("In- en uitschrijven");
         item1.setOnAction(actionEvent -> Main.getSceneManager().showStudentSignInOutScene());
