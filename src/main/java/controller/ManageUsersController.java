@@ -68,14 +68,20 @@ public class ManageUsersController {
     public void doCounterRole() {
         User user = userList.getSelectionModel().getSelectedItem();
         List<User> users = userDAO.getAll();
-        int counter = 0;
 
-        for (User param : users) {
-            if (param.getRole().equals(user.getRole())) {
-                counter++;
+        if (user == null) {
+            roleCounter.setText("Selecteer een gebruiker om te zien \nhoeveel gebruikers dezelfde rol hebben.");
+            roleCounter.setVisible(true);
+        } else {
+            int counter = 0;
+
+            for (User param : users) {
+                if (param.getRole().equals(user.getRole())) {
+                    counter++;
+                }
             }
+            roleCounter.setVisible(true);
+            roleCounter.setText("Van het type " + user.getRole().toLowerCase() + " zijn er " + counter + " gebruikers");
         }
-        roleCounter.setVisible(true);
-        roleCounter.setText("Van het type " + user.getRole().toLowerCase() + " zijn er " + counter + " gebruikers");
     }
 }
