@@ -83,6 +83,18 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         }
     }
 
+    // Methode om een gebruiker uit de database te verwijderen.
+    public void removeOne(User user) {
+        String sql = "DELETE FROM user WHERE idUser = ?;";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, user.getIdUser());
+            executeManipulateStatement();
+        } catch (SQLException sqlException) {
+            System.out.println("SQL fout " + sqlException.getMessage());
+        }
+    }
+
     private static User getUser(ResultSet resultSet) throws SQLException {
         int idUser = resultSet.getInt("idUser");
         String username = resultSet.getString("username");

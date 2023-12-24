@@ -66,11 +66,11 @@ public class SceneManager {
         controller.setup(course);
     }
 
-    public void showManageGroupsScene() {
-        FXMLLoader loader = getScene("/view/fxml/manageGroups.fxml");
-        ManageGroupsController controller = loader.getController();
-        controller.setup();
-    }
+//    public void showManageGroupsScene() {
+//        FXMLLoader loader = getScene("/view/fxml/manageGroups.fxml");
+//        ManageGroupsController controller = loader.getController();
+//        controller.setup();
+//    }
 
     public void showCreateUpdateGroupScene(Group group) {
         FXMLLoader loader = getScene("/view/fxml/createUpdateGroup.fxml");
