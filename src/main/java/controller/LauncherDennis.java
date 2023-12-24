@@ -32,11 +32,10 @@ public class LauncherDennis {
         UserDAO userDAO = new UserDAO(dBaccess);
 
         // Aanroepen methodes om het csv weg te schrijven naar uiteindelijk een ArrayList met Users.
-        List<String> gebruikerscsv = FileReaderToArray(userFileGebruikers);
-        List<User> gebruikersList = listUsers(gebruikerscsv);
-        List<String> testuserscsv = FileReaderToArray(userFileTestusers);
-        List<User> testuserList = listUsers(testuserscsv);
-
+//        List<String> gebruikerscsv = FileReaderToArray(userFileGebruikers);
+//        List<User> gebruikersList = listUsers(gebruikerscsv);
+//        List<String> testuserscsv = FileReaderToArray(userFileTestusers);
+//        List<User> testuserList = listUsers(testuserscsv);
 
         // Het opslaan van de gebruikers en testusers in de database.
         // Gecomment omdat de gebruikers er anders meerdere keren in voor kunnen komen.
