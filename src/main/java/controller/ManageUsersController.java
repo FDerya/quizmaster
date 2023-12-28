@@ -1,12 +1,11 @@
 package controller;
 
 import database.mysql.UserDAO;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.GridPane;
 import model.User;
 import view.Main;
 
@@ -20,6 +19,10 @@ public class ManageUsersController {
     Label warningLabel;
     @FXML
     Label roleCounter;
+    @FXML
+    GridPane deleteUserGrid;
+    @FXML
+    Label deleteWarningLabel;
 
     public ManageUsersController() {
         this.userDAO = new UserDAO(Main.getDBaccess());
@@ -30,11 +33,9 @@ public class ManageUsersController {
         userList.getItems().addAll(users);
         userList.getSelectionModel().selectFirst();
         doCounterRole();
-        userList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<User>() {
-            @Override
-            public void changed(ObservableValue<? extends User> observableValue, User user, User t1) {
+        userList.getSelectionModel().selectedItemProperty().addListener((observableValue, user, t1) -> {
                 doCounterRole();
-            }
+                warningLabel.setVisible(false);
         });
     }
 
@@ -48,20 +49,35 @@ public class ManageUsersController {
 
     public void doUpdateUser(ActionEvent event) {
         User user = userList.getSelectionModel().getSelectedItem();
-        if (user == null) {
-            warningLabel.setVisible(true);
-        } else {
-            Main.getSceneManager().showCreateUpdateUserScene(user);
-        }
+        Main.getSceneManager().showCreateUpdateUserScene(user);
     }
 
     public void doDeleteUser(ActionEvent event) {
         User user = userList.getSelectionModel().getSelectedItem();
+        if (user != null) {
+            userDAO.removeOne(user);
+            userList.getItems().remove(user);
+            deleteUserGrid.setVisible(false);
+        } else {
+            warningLabel.setText("Houd de gebruiker geselecteerd.");
+            warningLabel.setVisible(true);
+        }
+    }
+
+    public void doNotDeleteUser(ActionEvent event) {
+        deleteUserGrid.setVisible(false);
+    }
+
+    public void doAskDeleteUser (ActionEvent event) {
+        User user = userList.getSelectionModel().getSelectedItem();
         if (user == null) {
             warningLabel.setVisible(true);
         } else {
-            userDAO.removeOne(user);
-            userList.getItems().remove(user);
+            warningLabel.setVisible(false);
+            deleteUserGrid.setVisible(true);
+            deleteWarningLabel.setText("Je gaat gebruiker " + user + " verwijderen. \n" +
+                    "Dit kan niet ongedaan gemaakt worden.\n" +
+                    "Weet je het zeker?");
         }
     }
 
@@ -70,7 +86,9 @@ public class ManageUsersController {
         List<User> users = userDAO.getAll();
 
         if (user == null) {
-            roleCounter.setText("Selecteer een gebruiker om te zien \nhoeveel gebruikers dezelfde rol hebben.");
+            roleCounter.setText("Selecteer een gebruiker om te zien \n" +
+                    "hoeveel gebruikers dezelfde rol hebben \n" +
+                    "of om een actie uit te voeren.");
             roleCounter.setVisible(true);
         } else {
             int counter = 0;
