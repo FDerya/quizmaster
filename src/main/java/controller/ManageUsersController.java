@@ -29,7 +29,7 @@ public class ManageUsersController {
     }
 
     public void setup() {
-        List<User> users = userDAO.getAll();
+        List<User> users = userDAO.getAllSortedBySurname();
         userList.getItems().addAll(users);
         userList.getSelectionModel().selectFirst();
         doCounterRole();
