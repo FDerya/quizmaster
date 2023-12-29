@@ -25,13 +25,13 @@ public class LauncherBianca {
         final String databaseName = "Quizmaster";
         final String mainUser = "userQuizmaster";
         final String mainUserPassword = "pwQuizmaster";
-        DBAccess dBaccess = new DBAccess(databaseName, mainUser, mainUserPassword);
+        DBAccess dbAccess = new DBAccess(databaseName, mainUser, mainUserPassword);
 
         // Initialisatie van data access objecten
-        UserDAO userDAO = new UserDAO(dBaccess);
-        CourseDAO courseDAO = new CourseDAO(dBaccess, userDAO);
-        GroupDAO groupDAO = new GroupDAO(dBaccess, userDAO);
-        dBaccess.openConnection();
+        UserDAO userDAO = new UserDAO(dbAccess);
+        CourseDAO courseDAO = new CourseDAO(dbAccess, userDAO);
+        GroupDAO groupDAO = new GroupDAO(dbAccess, userDAO);
+        dbAccess.openConnection();
 
         // Lees gegevens uit het CSV-bestand
         List<String> test = FileReaderToArray();
@@ -40,7 +40,7 @@ public class LauncherBianca {
         for (Group group : listGroups) {
             groupDAO.storeOne(group);
         }
-        dBaccess.closeConnection();
+        dbAccess.closeConnection();
     }
 
 
