@@ -19,8 +19,8 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
 
 
 // Constructors
-    public CourseDAO(DBAccess dBaccess, UserDAO userDAO) {
-        super(dBaccess);
+    public CourseDAO(DBAccess dbAccess, UserDAO userDAO) {
+        super(dbAccess);
         this.userDAO = userDAO;
     }
 

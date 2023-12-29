@@ -23,9 +23,9 @@ public class LauncherDennis {
         final String databaseName = "Quizmaster";
         final String mainUser = "userQuizmaster";
         final String mainUserPassword = "pwQuizmaster";
-        DBAccess dBaccess = new DBAccess(databaseName, mainUser, mainUserPassword);
-        dBaccess.openConnection();
-        UserDAO userDAO = new UserDAO(dBaccess);
+        DBAccess dbAccess = new DBAccess(databaseName, mainUser, mainUserPassword);
+        dbAccess.openConnection();
+        UserDAO userDAO = new UserDAO(dbAccess);
 
         // Aanroepen methodes om het csv weg te schrijven naar uiteindelijk een ArrayList met Users.
         List<String> test = FileReaderToArray();
@@ -33,10 +33,10 @@ public class LauncherDennis {
 
         // Het opslaan van de gebruikers in de database. Gecomment omdat de gebruikers er anders meerdere keren in voor
         // kunnen komen.
-        saveUsersFromArray(dBaccess, userList, userDAO);
+       // saveUsersFromArray(dbAccess, userList, userDAO);
 
         // Aantal testusers gemaakt en in de database opgeslagen, om het testen van de launcher makkelijker te maken
-        User studentUser = new User("student", "test", "Frits",null,"Fritsma","student");
+       /* User studentUser = new User("student", "test", "Frits",null,"Fritsma","student");
         User coordinatorUser = new User("coordin", "test", "Sem", "van der", "Semming", "coördinator");
         User administratorUser = new User("admin", "test", "Test", null, "Testma", "administrator");
         User functioneelUser = new User("funcbeh", "test", "Taeke", null, "Taekema", "Functioneel Beheerder");
@@ -45,7 +45,7 @@ public class LauncherDennis {
         userDAO.storeOne(coordinatorUser);
         userDAO.storeOne(administratorUser);
         userDAO.storeOne(functioneelUser);
-        dBaccess.closeConnection();
+       */ dbAccess.closeConnection();
     }
 
     // Deze methode leest een csv-bestand in en slaat deze regel voor regel op in een ArrayList van Strings.
@@ -81,7 +81,7 @@ public class LauncherDennis {
 
     // Deze methode opent de database, haalt de gebruikers uit een ArrayList van Users en slaat ze via de UserDAO
     // op in de database. Daarna wordt de database gesloten.
-    private static void saveUsersFromArray(DBAccess dBaccess, List<User> userList, UserDAO userDAO) {
+    private static void saveUsersFromArray(DBAccess dbAccess, List<User> userList, UserDAO userDAO) {
         for (User user : userList) {
             userDAO.storeOne(user);
         }
