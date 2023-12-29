@@ -28,12 +28,6 @@ public class LauncherDennis {
         // Openen van database en aanroepen userDAO
         UserDAO userDAO = new UserDAO(Main.getDBaccess());
         Main.getDBaccess().openConnection();
-        final String databaseName = "Quizmaster";
-        final String mainUser = "userQuizmaster";
-        final String mainUserPassword = "pwQuizmaster";
-        DBAccess dbAccess = new DBAccess(databaseName, mainUser, mainUserPassword);
-        dbAccess.openConnection();
-
 
         // Aanroepen methodes om het csv weg te schrijven naar uiteindelijk een ArrayList met Users.
 //        List<String> gebruikerscsv = FileReaderToArray(userFileGebruikers);
@@ -85,7 +79,7 @@ public class LauncherDennis {
     // Deze methode opent de database, haalt de gebruikers uit een ArrayList van Users en slaat ze via de UserDAO
     // op in de database. Daarna wordt de database gesloten.
 
-    private static void saveUsersFromArray(DBAccess dbAccess, List<User> userList, UserDAO userDAO) {
+    private static void saveUsersFromArray(List<User> userList, UserDAO userDAO) {
         for (User user : userList) {
             userDAO.storeOne(user);
         }
