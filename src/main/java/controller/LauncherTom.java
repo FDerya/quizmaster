@@ -79,12 +79,5 @@ public class LauncherTom {
         }
         dbAccess.closeConnection();
     }
-    public static DBAccess getDBaccess() {
-        if (dbAccess == null) {
-            dbAccess = new DBAccess("Quizmaster", "userQuizmaster", "pwQuizmaster");
-            dbAccess.openConnection();
-        }
-        return dbAccess;
-    }
 
 }

@@ -12,6 +12,7 @@ import view.Main;
 
 import java.util.List;
 import java.util.ArrayList;
+
 public class ManageQuizzesController {
     @FXML
     ListView<Quiz> quizList;
@@ -20,37 +21,43 @@ public class ManageQuizzesController {
     private final DBAccess dbAccess;
 
 
-    public ManageQuizzesController(){this.dbAccess = LauncherTom.getDBaccess();}
+    public ManageQuizzesController() {
+        this.dbAccess = Main.getDBaccess();
+    }
 
 
     public void setup() {
         QuizDAO quizDAO = new QuizDAO(dbAccess);
-          List<Quiz> Quizzen = quizDAO.getAll();
-        for(Quiz quiz : Quizzen){
-            quizList.getItems().add(quiz);
-        }
+        List<Quiz> quizzen = quizDAO.getAll();
+        quizList.getItems().addAll(quizzen);
+        quizList.getSelectionModel().getSelectedItem();
+        quizList.getSelectionModel().selectedItemProperty().addListener(
+                (observableValue, oldQuiz, newQuiz) ->
+                        System.out.println("Geselecteerde quiz: " + observableValue + ", " + oldQuiz + ", " + newQuiz));
+
     }
-    public void doMenu(ActionEvent event){
+
+    public void doMenu(ActionEvent event) {
         Main.getSceneManager().showWelcomeScene();
     }
 
-    public void doCreateQuiz(){
-   //     QuizDAO quizDAO = new QuizDAO();
-   //     quizDAO.storeOne(new Quiz());
+    public void doCreateQuiz() {
+        //     QuizDAO quizDAO = new QuizDAO();
+        //     quizDAO.storeOne(new Quiz());
 
     }
 
-    public void doUpdateQuiz(ActionEvent event){
+    public void doUpdateQuiz(ActionEvent event) {
         Quiz quiz = quizList.getSelectionModel().getSelectedItem();
-        if (quiz == null){
+        if (quiz == null) {
             waarschuwingsTextField.setVisible(true);
             waarschuwingsTextField.setText("Je moet eerst een quiz kiezen");
-        }else{
+        } else {
             Main.getSceneManager().showCreateUpdateQuizScene(quiz);
         }
     }
 
-    public void doDeleteQuiz(ActionEvent event){
+    public void doDeleteQuiz(ActionEvent event) {
         QuizDAO quizDAO = new QuizDAO(dbAccess);
         Quiz quiz = quizList.getSelectionModel().getSelectedItem();
         quizDAO.deleteQuiz(quiz);
