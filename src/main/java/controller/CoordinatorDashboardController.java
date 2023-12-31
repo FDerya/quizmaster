@@ -42,7 +42,6 @@ public class CoordinatorDashboardController {
         List<Quiz> quizzen = quizDAO.getAll();
         quizList.getItems().addAll(quizzen);
         quizList.getSelectionModel().getSelectedItem();
-        System.out.println(quizList);
         quizList.getSelectionModel().selectedItemProperty().addListener(
                 (observableValue, oldQuiz, newQuiz) ->
                         System.out.println("Geselecteerde quiz: " + observableValue + ", " + oldQuiz + ", " + newQuiz));
