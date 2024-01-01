@@ -16,16 +16,16 @@ public class LauncherEline {
     final static String databaseName = "Quizmaster";
     final static String mainUser = "userQuizmaster";
     final static String mainUserPassword = "pwQuizmaster";
-    static DBAccess dBaccess = new DBAccess(databaseName, mainUser, mainUserPassword);
-    static UserDAO userDAO = new UserDAO(dBaccess);
-    static CourseDAO courseDAO = new CourseDAO(dBaccess, userDAO);
+    static DBAccess dbAccess = new DBAccess(databaseName, mainUser, mainUserPassword);
+    static UserDAO userDAO = new UserDAO(dbAccess);
+    static CourseDAO courseDAO = new CourseDAO(dbAccess, userDAO);
 
 // Initialiseren van courses csv bestand, om database te vullen
     private static final String filepath = "src/main/java/database/Cursussen.csv";
     private static final File courseFile = new File(filepath);
 
     public static void main(String[] args) {
-        dBaccess.openConnection();
+        dbAccess.openConnection();
         // Csv naar een ArrayList wegschrijven
         List<String> test = fileReaderCourseToArray();
         List<Course> courseList = listCourses(test);
@@ -33,7 +33,7 @@ public class LauncherEline {
         // Opslaan van courses in de database
         saveCoursesFromArray(courseList, courseDAO);
 
-        dBaccess.closeConnection();
+        dbAccess.closeConnection();
     }
 
     // Leest csv bestand in en slaat deze op in ArrayList
@@ -52,7 +52,7 @@ public class LauncherEline {
 
     // Leest Arraylist fileReaderCourseToArray() en maakt een list van Courses
     public static List<Course> listCourses(List<String> list){
-        UserDAO userDAO = new UserDAO(dBaccess);
+        UserDAO userDAO = new UserDAO(dbAccess);
         List<Course> courseList = new ArrayList<>();
         for (String s : list){
             String[] lineArray = s.split(",");
@@ -67,10 +67,10 @@ public class LauncherEline {
 
     // Sla Course via CourseDAO op in database
     public static void saveCoursesFromArray(List<Course> courseList, CourseDAO courseDAO){
-        dBaccess.openConnection();
+        dbAccess.openConnection();
         for (Course course : courseList){
             courseDAO.storeOne(course);
         }
-        dBaccess.closeConnection();
+        dbAccess.closeConnection();
     }
 }

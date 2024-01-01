@@ -17,41 +17,50 @@ public class WelcomeController {
     public void setup() {
         welcomeLabel.setText("Welkom " + User.getCurrentUser().getFirstName() + "\nU bent ingelogd als " + User.getCurrentUser().getRole().toLowerCase());
         // Menuitems voor de student
-        MenuItem item1 = new MenuItem("In- en uitschrijven");
-        item1.setOnAction(actionEvent -> Main.getSceneManager().showStudentSignInOutScene());
-        MenuItem item2 = new MenuItem("Quiz selecteren");
-        item2.setOnAction(actionEvent -> Main.getSceneManager().showSelectQuizForStudent());
+        MenuItem sMenuItem1 = new MenuItem("In- en uitschrijven");
+        sMenuItem1.setOnAction(actionEvent -> Main.getSceneManager().showStudentSignInOutScene());
+        MenuItem sMenuItem2 = new MenuItem("Quiz selecteren");
+        sMenuItem2.setOnAction(actionEvent -> Main.getSceneManager().showSelectQuizForStudent());
 
         // Menuitems voor de coördinator
-        MenuItem item3 = new MenuItem("Coördinator dashboard");
-        item3.setOnAction(actionEvent -> Main.getSceneManager().showCoordinatorDashboard());
+        MenuItem cMenuItem1 = new MenuItem("Coördinator dashboard");
+        cMenuItem1.setOnAction(actionEvent -> Main.getSceneManager().showCoordinatorDashboard());
+        MenuItem cMenuItem2 = new MenuItem("Quizbeheer");
+        cMenuItem2.setOnAction(actionEvent -> Main.getSceneManager().showManageQuizScene());
+        MenuItem cMenuItem3 = new MenuItem("Vragenbeheer");
+        cMenuItem3.setOnAction(actionEvent -> Main.getSceneManager().showManageQuestionsScene());
 
         // Menuitems voor de administrator
-        MenuItem item4 = new MenuItem("Cursusbeheer");
-        item4.setOnAction(actionEvent -> Main.getSceneManager().showManageCoursesScene());
-        MenuItem item5 = new MenuItem("Studenten toewijzen aan groepen");
-        item5.setOnAction(actionEvent -> Main.getSceneManager().showAssignStudentsToGroupScene());
+        MenuItem aMenuItem1 = new MenuItem("Cursusbeheer");
+        aMenuItem1.setOnAction(actionEvent -> Main.getSceneManager().showManageCoursesScene());
+        MenuItem aMenuItem2 = new MenuItem("Groepenbeheer");
+        aMenuItem2.setOnAction(actionEvent -> Main.getSceneManager().showManageGroupsScene());
+        MenuItem aMenuItem3 = new MenuItem("Studenten toewijzen aan groepen");
+        aMenuItem3.setOnAction(actionEvent -> Main.getSceneManager().showAssignStudentsToGroupScene());
 
         // Menuitems voor de functioneel beheerder
-        MenuItem item6 = new MenuItem("Studentenbeheer");
-        item6.setOnAction(actionEvent -> Main.getSceneManager().showManageUserScene());
+        MenuItem fMenuItem1 = new MenuItem("Gebruikersbeheer");
+        fMenuItem1.setOnAction(actionEvent -> Main.getSceneManager().showManageUserScene());
 
         // Shows menu buttons by role
         String role = User.currentUser.getRole();
         switch (role) {
             case "Student":
-                taskMenuButton.getItems().add(item1);
-                taskMenuButton.getItems().add(item2);
+                taskMenuButton.getItems().add(sMenuItem1);
+                taskMenuButton.getItems().add(sMenuItem2);
                 break;
             case "Coördinator":
-                taskMenuButton.getItems().add(item3);
+                taskMenuButton.getItems().add(cMenuItem1);
+                taskMenuButton.getItems().add(cMenuItem2);
+                taskMenuButton.getItems().add(cMenuItem3);
                 break;
             case "Administrator":
-                taskMenuButton.getItems().add(item4);
-                taskMenuButton.getItems().add(item5);
+                taskMenuButton.getItems().add(aMenuItem1);
+                taskMenuButton.getItems().add(aMenuItem2);
+                taskMenuButton.getItems().add(aMenuItem3);
                 break;
             case "Functioneel Beheerder":
-                taskMenuButton.getItems().add(item6);
+                taskMenuButton.getItems().add(fMenuItem1);
         }
     }
 

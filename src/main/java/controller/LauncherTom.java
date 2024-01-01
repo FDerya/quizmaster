@@ -17,24 +17,26 @@ public class LauncherTom {
     private static final String filepath = "src/main/java/database/Quizzen.csv";
     private static final File userFile = new File(filepath);
 
+    private static DBAccess dbAccess = null;
+
     public static void main(String[] args) {
         final String databaseName = "Quizmaster";
         final String mainUser = "userQuizmaster";
         final String mainUserPassword = "pwQuizmaster";
-        DBAccess dBaccess = new DBAccess(databaseName, mainUser, mainUserPassword);
-        dBaccess.openConnection();
-        UserDAO userDAO = new UserDAO(dBaccess);
-        CourseDAO courseDAO = new CourseDAO(dBaccess, userDAO);
-        QuizDAO quizDAO = new QuizDAO(dBaccess, userDAO);
+        DBAccess dbAccess = new DBAccess(databaseName, mainUser, mainUserPassword);
+        dbAccess.openConnection();
+        UserDAO userDAO = new UserDAO(dbAccess);
+        CourseDAO courseDAO = new CourseDAO(dbAccess, userDAO);
+        QuizDAO quizDAO = new QuizDAO(dbAccess, userDAO);
 
         // Methodes aanroepen om het csv weg te schrijven naar een ArrayList met Quizzen.
         List<String> test = FileReaderToArray();
-        List<Quiz> quizList = listQuiz(test, dBaccess);
-        saveQuizFromArray(dBaccess, quizList, quizDAO);
+        List<Quiz> quizList = listQuiz(test, dbAccess);
+        saveQuizFromArray(dbAccess, quizList, quizDAO);
 
         // Quizzen opslaan in de database. Even achter "//", anders herhaalt de opdracht zich en heb je teveel info in de DBMS
         // saveQuizFromArray(dBAccess, quizList, quizDAO);
-        dBaccess.closeConnection();
+        dbAccess.closeConnection();
     }
 
     // Methode om Strings vanuit de csv op te slaan in een ArrayList.
@@ -52,9 +54,9 @@ public class LauncherTom {
     }
 
     // Methode om een array van quizzen als object aan te maken.
-    public static List<Quiz> listQuiz(List<String> list, DBAccess dBAccess) {
-        UserDAO userDAO = new UserDAO(dBAccess);
-        CourseDAO courseDAO = new CourseDAO(dBAccess, userDAO);
+    public static List<Quiz> listQuiz(List<String> list, DBAccess dbAccess) {
+        UserDAO userDAO = new UserDAO(dbAccess);
+        CourseDAO courseDAO = new CourseDAO(dbAccess, userDAO);
         List<Quiz> quizList = new ArrayList<>();
         for (String s : list) {
             String[] lineArray = s.split(",");
@@ -70,12 +72,19 @@ public class LauncherTom {
 
     // Methode om na opening van de database de quizzen uit een ArrayList te halen en ze via de QuizDAO
     // op te slaan in de database. Met afsluiten van de database.
-    private static void saveQuizFromArray(DBAccess dBaccess, List<Quiz> quizList, QuizDAO quizDAO) {
-        dBaccess.openConnection();
+    private static void saveQuizFromArray(DBAccess dbAccess, List<Quiz> quizList, QuizDAO quizDAO) {
+        dbAccess.openConnection();
         for (Quiz quiz : quizList) {
             quizDAO.storeOne(quiz);
         }
-        dBaccess.closeConnection();
+        dbAccess.closeConnection();
+    }
+    public static DBAccess getDBaccess() {
+        if (dbAccess == null) {
+            dbAccess = new DBAccess("Quizmaster", "userQuizmaster", "pwQuizmaster");
+            dbAccess.openConnection();
+        }
+        return dbAccess;
     }
 
 }

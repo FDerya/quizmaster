@@ -35,6 +35,7 @@ public class LauncherDennis {
 //        List<String> testuserscsv = FileReaderToArray(userFileTestusers);
 //        List<User> testuserList = listUsers(testuserscsv);
 
+
         // Het opslaan van de gebruikers en testusers in de database.
         // Gecomment omdat de gebruikers er anders meerdere keren in voor kunnen komen.
         // saveUsersFromArray(gebruikersList, userDAO);
@@ -77,6 +78,7 @@ public class LauncherDennis {
 
     // Deze methode opent de database, haalt de gebruikers uit een ArrayList van Users en slaat ze via de UserDAO
     // op in de database. Daarna wordt de database gesloten.
+
     private static void saveUsersFromArray(List<User> userList, UserDAO userDAO) {
         for (User user : userList) {
             userDAO.storeOne(user);
