@@ -33,8 +33,10 @@ public class WelcomeController {
         // Menuitems voor de administrator
         MenuItem aMenuItem1 = new MenuItem("Cursusbeheer");
         aMenuItem1.setOnAction(actionEvent -> Main.getSceneManager().showManageCoursesScene());
-        MenuItem aMenuItem2 = new MenuItem("Studenten toewijzen aan groepen");
-        aMenuItem2.setOnAction(actionEvent -> Main.getSceneManager().showAssignStudentsToGroupScene());
+        MenuItem aMenuItem2 = new MenuItem("Groepenbeheer");
+        aMenuItem2.setOnAction(actionEvent -> Main.getSceneManager().showManageGroupsScene());
+        MenuItem aMenuItem3 = new MenuItem("Studenten toewijzen aan groepen");
+        aMenuItem3.setOnAction(actionEvent -> Main.getSceneManager().showAssignStudentsToGroupScene());
 
         // Menuitems voor de functioneel beheerder
         MenuItem fMenuItem1 = new MenuItem("Studentenbeheer");
@@ -55,6 +57,7 @@ public class WelcomeController {
             case "Administrator":
                 taskMenuButton.getItems().add(aMenuItem1);
                 taskMenuButton.getItems().add(aMenuItem2);
+                taskMenuButton.getItems().add(aMenuItem3);
                 break;
             case "Functioneel Beheerder":
                 taskMenuButton.getItems().add(fMenuItem1);
