@@ -97,12 +97,12 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
     }
 
     // New method to get the count of questions for a specific quiz
-    public int getQuestionCountForQuiz(String quizName) {
+    public int getQuestionCountForQuiz(Quiz quizName) {
         int count = 0;
         String sql = "SELECT COUNT(*) FROM question q JOIN quiz z ON q.idQuiz = z.idQuiz WHERE z.nameQuiz = ?;";
         try {
             setupPreparedStatement(sql);
-            preparedStatement.setString(1, quizName);
+            preparedStatement.setString(1, String.valueOf(quizName));
             ResultSet resultSet = executeSelectStatement();
             if (resultSet.next()) {
                 count = resultSet.getInt(1);
