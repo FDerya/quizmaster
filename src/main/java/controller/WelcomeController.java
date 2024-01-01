@@ -39,7 +39,7 @@ public class WelcomeController {
         aMenuItem3.setOnAction(actionEvent -> Main.getSceneManager().showAssignStudentsToGroupScene());
 
         // Menuitems voor de functioneel beheerder
-        MenuItem fMenuItem1 = new MenuItem("Studentenbeheer");
+        MenuItem fMenuItem1 = new MenuItem("Gebruikersbeheer");
         fMenuItem1.setOnAction(actionEvent -> Main.getSceneManager().showManageUserScene());
 
         // Shows menu buttons by role
