@@ -8,8 +8,6 @@ import javafx.scene.control.TextField;
 import model.Quiz;
 import view.Main;
 
-import java.util.List;
-
 public class CreateUpdateQuizController {
     @FXML
     ListView<Quiz> quizList;
@@ -19,17 +17,15 @@ public class CreateUpdateQuizController {
     private final DBAccess dbAccess;
 
     public CreateUpdateQuizController(){this.dbAccess = Main.getDBaccess();}
-
-    public void setup(Quiz quiz) {
-        QuizDAO quizDAO = new QuizDAO(dbAccess);
-        List<Quiz> Quizzen = quizDAO.getAll();
-        for (Quiz quizz : Quizzen) {
-            quizList.getItems().add(quizz);
-        }
+    public void setup(Quiz quizOne) {
+       Quiz printQuiz = quizOne;
+       quizList.getItems().add(printQuiz);
     }
     public void doMenu() {
         Main.getSceneManager().showWelcomeScene();
     }
 
-    public void doCreateUpdateQuiz() {}
+    public void doCreateUpdateQuiz() {
+
+    }
 }

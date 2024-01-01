@@ -10,19 +10,9 @@
            <Font size="18.0" />
        </font>
    </Label>
-   <Button layoutX="74.0" layoutY="348.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="48.0" onAction="#doMenu" text="Menu" />
-   <Button layoutX="360.0" layoutY="339.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="59.0" text="Opslaan" />
-   <DialogPane layoutX="54.0" layoutY="53.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="187.0" prefWidth="480.0">
-       <header>
-         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="480.0" />
-       </header>
-       <content>
-         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="320.0" />
-       </content>
-       <expandableContent>
-         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="320.0" />
-       </expandableContent>
-   </DialogPane>
+    <ListView fx:id="quizList" layoutX="14.0" layoutY="78.0" prefHeight="200.0" prefWidth="281.0" />
+    <Button layoutX="74.0" layoutY="348.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="48.0" onAction="#doMenu" text="Menu" />
+   <Button layoutX="360.0" layoutY="339.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="59.0" onAction="#doCreateUpdateQuiz" text="Opslaan" />
     <children>
    </children>
 </AnchorPane>

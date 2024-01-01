@@ -11,7 +11,6 @@ import view.Main;
 
 
 import java.util.List;
-import java.util.ArrayList;
 
 public class ManageQuizzesController {
     @FXML
@@ -47,14 +46,14 @@ public class ManageQuizzesController {
 
     }
 
-    public void doUpdateQuiz(ActionEvent event) {
+    public Quiz doUpdateQuiz(ActionEvent event) {
         Quiz quiz = quizList.getSelectionModel().getSelectedItem();
         if (quiz == null) {
             waarschuwingsTextField.setVisible(true);
             waarschuwingsTextField.setText("Je moet eerst een quiz kiezen");
         } else {
             Main.getSceneManager().showCreateUpdateQuizScene(quiz);
-        }
+        }return quiz;
     }
 
     public void doDeleteQuiz(ActionEvent event) {

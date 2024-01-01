@@ -2,6 +2,7 @@ package database.mysql;
 // Tom van Beek, 500941521.
 
 import model.*;
+import database.mysql.QuestionDAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +13,8 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
     private UserDAO userDAO;
     private CourseDAO courseDAO = new CourseDAO(dbAccess, userDAO);
     private Quiz quiz = null;
+
+    private int counter = quiz.getAmountQuestions();
 
     // Constructor met UserDAO als parameter
     public QuizDAO(DBAccess dbAccess, UserDAO userDAO) {
@@ -105,7 +108,8 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         quiz = new Quiz(idQuiz, course, name, level, amountQuestion);
         return quiz;
     }
-    public void deleteQuiz(Quiz quizDelete){
+
+    public void deleteQuiz(Quiz quizDelete) {
         String sql = "DELETE FROM Quiz WHERE idQuiz =?;";
         try {
             preparedStatement.setInt(1, quizDelete.getIdQuiz());
@@ -114,4 +118,29 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
             System.out.println("SQL fout " + sqlFout.getMessage());
         }
     }
+
+    public Question getQuestions(Quiz quiz, int[] randomNumbers) {
+        QuestionDAO questionDAO = new QuestionDAO(dbAccess);
+        List<Question> quizQuestions = new ArrayList<>();
+        for (int i = 0; i < counter; i++) {
+            quizQuestions.add(questionDAO.getOneById((randomNumbers[i])));
+
+
+        }
++-        return quizQuestions;
+    }
+
+    public int getRandomNumbers(Quiz quiz) {
+        List<int> randomNumbers = new ArrayList<>();
+        int maxCounter = question.getQuestionCountForQuiz();
+        boolean test = false;
+        int random = (Math.random() * maxCounter);
+        for (int random : randomNumbers) {
+            if random != random){
+               randomNumbers.add(random);
+            }
+        }
+
+    }
 }
+
