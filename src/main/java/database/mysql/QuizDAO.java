@@ -119,28 +119,28 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         }
     }
 
-    public Question getQuestions(Quiz quiz, int[] randomNumbers) {
+    public Question[] getQuestions(Quiz quiz) {
         QuestionDAO questionDAO = new QuestionDAO(dbAccess);
-        List<Question> quizQuestions = new ArrayList<>();
-        for (int i = 0; i < counter; i++) {
-            quizQuestions.add(questionDAO.getOneById((randomNumbers[i])));
-
-
+        List<Question> questionsList = questionDAO.getAll();
+        List<Question> quizList = new ArrayList<>();
+        List<Integer> randomNumbers = getRandomNumbers(quiz);
+        for (int i = 0; i < quizList.size(); i++) {
+        quizList.add(questionDAO.getOneById(randomNumbers[i]));
         }
-+-        return quizQuestions;
+        return quizList;
     }
 
     public int getRandomNumbers(Quiz quiz) {
-        List<int> randomNumbers = new ArrayList<>();
-        int maxCounter = question.getQuestionCountForQuiz();
-        boolean test = false;
-        int random = (Math.random() * maxCounter);
-        for (int random : randomNumbers) {
-            if random != random){
-               randomNumbers.add(random);
-            }
+        List<Integer> questionAmount = new ArrayList<>();
+        List<Integer> quizAmount = new ArrayList<>();
+        for (int i = 1; i <= question.getQuestionCountforQuiz(); i++) {
+            questionAmount.add(i);
         }
-
+        for (int i = 1; i <= quiz.getAmountQuestions(); i++) {
+            int randomNumber = (int) (Math.random() * questionAmount.size());
+            quizAmount.add(questionAmount.get(randomNumber));
+            questionAmount.remove(randomNumber);
+        }
     }
 }
 
