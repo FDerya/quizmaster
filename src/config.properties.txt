@@ -1,3 +1,0 @@
-databaseName=Quizmaster
-mainUser=userQuizmaster
-mainUserPassword=pwQuizmaster

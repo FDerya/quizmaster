@@ -32,6 +32,7 @@ public class WelcomeController {
         MenuItem item5 = new MenuItem("Studenten toewijzen aan groepen");
         item5.setOnAction(actionEvent -> Main.getSceneManager().showAssignStudentsToGroupScene());
 
+
         // Menuitems voor de functioneel beheerder
         MenuItem item6 = new MenuItem("Studentenbeheer");
         item6.setOnAction(actionEvent -> Main.getSceneManager().showManageUserScene());

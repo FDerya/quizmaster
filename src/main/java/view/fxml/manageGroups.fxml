@@ -15,7 +15,7 @@
             <Font size="18.0" />
         </font>
     </Label>
-    <ListView fx:id="groupList" layoutX="14.0" layoutY="78.0" prefHeight="200.0" prefWidth="281.0" />
+    <ListView fx:id="groupList" focusTraversable="false" layoutX="14.0" layoutY="78.0" prefHeight="200.0" prefWidth="281.0" />
     <Button layoutX="14.0" layoutY="288.0" mnemonicParsing="false" onAction="#doCreateGroup" text="Nieuw">
         <font>
             <Font size="14.0" />
@@ -36,9 +36,14 @@
             <Font size="14.0" />
         </font>
     </Button>
-<!--    <Label fx:id="groupsInCourseInfoLabel" layoutX="304.0" layoutY="137.0" text="Informatie niet beschikbaar">
+    <Label fx:id="courseNameLabel" layoutX="318.0" layoutY="123.0" text="Cursusnaam">
         <font>
             <Font size="14.0" />
         </font>
-    </Label>-->
+    </Label>
+    <Label fx:id="groupCountLabel" layoutX="318.0" layoutY="145.0" prefHeight="0.0" prefWidth="207.0" text="Aantal groepen die cursus volgen">
+        <font>
+            <Font size="14.0" />
+        </font>
+    </Label>
 </AnchorPane>
