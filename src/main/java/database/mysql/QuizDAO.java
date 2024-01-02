@@ -14,13 +14,13 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
     private Quiz quiz = null;
 
     // Constructor met UserDAO als parameter
-    public QuizDAO(DBAccess dBaccess, UserDAO userDAO) {
-        super(dBaccess);
+    public QuizDAO(DBAccess dbAccess, UserDAO userDAO) {
+        super(dbAccess);
         this.userDAO = userDAO;
     }
 
-    public QuizDAO(DBAccess dBaccess) {
-        super(dBaccess);
+    public QuizDAO(DBAccess dbAccess) {
+        super(dbAccess);
     }
 
     // Maak een lijst met quizzen
@@ -104,5 +104,14 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         Course course = courseDAO.getOneById(idCourse);
         quiz = new Quiz(idQuiz, course, name, level, amountQuestion);
         return quiz;
+    }
+    public void deleteQuiz(Quiz quizDelete){
+        String sql = "DELETE FROM Quiz WHERE idQuiz =?;";
+        try {
+            preparedStatement.setInt(1, quizDelete.getIdQuiz());
+            executeManipulateStatement();
+        } catch (SQLException sqlFout) {
+            System.out.println("SQL fout " + sqlFout.getMessage());
+        }
     }
 }

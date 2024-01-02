@@ -6,6 +6,7 @@ package controller;
 import database.mysql.DBAccess;
 import database.mysql.UserDAO;
 import model.User;
+import view.Main;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,9 +16,7 @@ import java.util.Scanner;
 
 public class LauncherDennis {
     // Attributen nodig voor initialiseren database en Filereader.
-    private static final String databaseName = "Quizmaster";
-    private static final String mainUser = "userQuizmaster";
-    private static final String mainUserPassword = "pwQuizmaster";
+
     private static final String filepathGebruikers = "src/main/java/database/Gebruikers.csv";
     private static final String filepathTestusers = "src/main/java/database/testusers.csv";
     private static final File userFileGebruikers = new File(filepathGebruikers);
@@ -26,16 +25,15 @@ public class LauncherDennis {
     public static void main(String[] args) {
 
         // Aanmaken database access object en userDAO object.
-        DBAccess dBaccess = new DBAccess(databaseName, mainUser, mainUserPassword);
         // Openen van database en aanroepen userDAO
-        dBaccess.openConnection();
-        UserDAO userDAO = new UserDAO(dBaccess);
+        UserDAO userDAO = new UserDAO(Main.getDBaccess());
+        Main.getDBaccess().openConnection();
 
         // Aanroepen methodes om het csv weg te schrijven naar uiteindelijk een ArrayList met Users.
-        List<String> gebruikerscsv = FileReaderToArray(userFileGebruikers);
-        List<User> gebruikersList = listUsers(gebruikerscsv);
-        List<String> testuserscsv = FileReaderToArray(userFileTestusers);
-        List<User> testuserList = listUsers(testuserscsv);
+//        List<String> gebruikerscsv = FileReaderToArray(userFileGebruikers);
+//        List<User> gebruikersList = listUsers(gebruikerscsv);
+//        List<String> testuserscsv = FileReaderToArray(userFileTestusers);
+//        List<User> testuserList = listUsers(testuserscsv);
 
 
         // Het opslaan van de gebruikers en testusers in de database.
@@ -44,7 +42,7 @@ public class LauncherDennis {
         // saveUsersFromArray(testuserList, userDAO);
 
         // Sluiten database
-        dBaccess.closeConnection();
+        Main.getDBaccess().closeConnection();
     }
 
     // Deze methode leest een csv-bestand met gebruikers in en slaat deze regel voor regel op in een ArrayList van Strings.
@@ -80,6 +78,7 @@ public class LauncherDennis {
 
     // Deze methode opent de database, haalt de gebruikers uit een ArrayList van Users en slaat ze via de UserDAO
     // op in de database. Daarna wordt de database gesloten.
+
     private static void saveUsersFromArray(List<User> userList, UserDAO userDAO) {
         for (User user : userList) {
             userDAO.storeOne(user);

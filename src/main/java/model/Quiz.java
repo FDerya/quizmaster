@@ -24,6 +24,14 @@ public class Quiz {
         this(0,course, "","",0);
     }
 
+    @Override
+    public String toString() {
+        StringBuilder resultString = new StringBuilder();
+        resultString.append(nameQuiz).append(" ");
+        resultString.append(level);
+        return resultString.toString();
+    }
+
     //Getters en setters
     public int getIdQuiz() {
         return idQuiz;

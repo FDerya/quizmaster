@@ -10,6 +10,9 @@ public class Main extends Application {
     private static SceneManager sceneManager = null;
     private static Stage primaryStage = null;
     private static DBAccess dbAccess = null;
+    private static final String databaseName = "Quizmaster";
+    private static final String mainUser = "userQuizmaster";
+    private static final String mainUserPassword = "pwQuizmaster";
 
     public static void main(String[] args) {
         launch(args);
@@ -36,7 +39,7 @@ public class Main extends Application {
 
     public static DBAccess getDBaccess() {
         if (dbAccess == null) {
-            dbAccess = new DBAccess("Quizmaster", "userQuizmaster", "pwQuizmaster");
+            dbAccess = new DBAccess(databaseName, mainUser,mainUserPassword);
             dbAccess.openConnection();
         }
         return dbAccess;

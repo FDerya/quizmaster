@@ -31,6 +31,7 @@ public class User {
     // Methods
     @Override
     public String toString() {
+/*
         StringBuilder resultString = new StringBuilder();
         resultString.append(firstName).append(" ");
         if (!prefix.isEmpty()) {
@@ -39,6 +40,8 @@ public class User {
         resultString.append(surname).append(", ");
         resultString.append(role);
         return resultString.toString();
+*/
+        return String.format("%s %s %s, %s", firstName, (getPrefix() == null) ? "" : getPrefix(), getSurname(), getRole());
     }
 
     // Getters & Setters

@@ -29,6 +29,22 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         return resultList;
     }
 
+    public List<User> getAllSortedBySurname() {
+        List<User> resultList = new ArrayList<>();
+        String sql = "SELECT * FROM User ORDER BY surname;";
+        try {
+            setupPreparedStatement(sql);
+            ResultSet resultSet = executeSelectStatement();
+            while(resultSet.next()) {
+                User user = getUser(resultSet);
+                resultList.add(user);
+            }
+        } catch (SQLException sqlException) {
+            System.out.println("SQL fout " + sqlException.getMessage());
+        }
+        return resultList;
+    }
+
     // Methode om een enkele gebruiker op te vragen uit de SQL database, waarvan je de parameter id meegeeft.
     // Je krijgt je select statement terug in de vorm van een object User.
     public User getOneById(int idUser) {
@@ -78,6 +94,18 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
             preparedStatement.setString(6, user.getRole());
             int idUser = executeInsertStatementWithKey();
             user.setIdUser(idUser);
+        } catch (SQLException sqlException) {
+            System.out.println("SQL fout " + sqlException.getMessage());
+        }
+    }
+
+    // Methode om een gebruiker uit de database te verwijderen.
+    public void removeOne(User user) {
+        String sql = "DELETE FROM user WHERE idUser = ?;";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, user.getIdUser());
+            executeManipulateStatement();
         } catch (SQLException sqlException) {
             System.out.println("SQL fout " + sqlException.getMessage());
         }
