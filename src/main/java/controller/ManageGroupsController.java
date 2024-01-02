@@ -67,8 +67,8 @@ public class ManageGroupsController {
 
     // Initializes text labels with default text
     private void configureLabels() {
-        courseNameLabel.setText("Course: ");
-        groupCountLabel.setText("Number of groups following the same course: ");
+        courseNameLabel.setText("Cursus: ");
+        groupCountLabel.setText("Aantal groepen dat deze cursus volgt: ");
     }
 
     // Adds a listener to the ListView for handling selected groups
@@ -100,7 +100,7 @@ public class ManageGroupsController {
             if (groupCount != -1) {
                 showGroupInfo(courseName, groupCount);
             } else {
-                showErrorMessage("No groups found following the same course.");
+                showErrorMessage("Er zijn geen groepen gevonden die dezelfde cursus volgen.");
             }
         } else {
             showNoCourseInfo();
@@ -109,14 +109,14 @@ public class ManageGroupsController {
 
     // Displays information about the selected group
     private void showGroupInfo(String courseName, int groupCount) {
-        courseNameLabel.setText("Course: " + courseName);
-        groupCountLabel.setText("Number of groups following the same course: " + groupCount);
+        courseNameLabel.setText("Cursus: " + courseName);
+        groupCountLabel.setText("Aantal groepen dat dezelfde cursus volgt: " + groupCount);
         showLabels();
     }
 
     // Displays an error message when course information is missing for the selected group
     private void showNoCourseInfo() {
-        courseNameLabel.setText("No course information available for this group.");
+        courseNameLabel.setText("Er is geen cursusinformatie beschikbaar voor deze groep.");
         groupCountLabel.setText("");
         clearErrorMessage();
         showLabels();
@@ -124,7 +124,7 @@ public class ManageGroupsController {
 
     // Handles the situation where no group is selected
     private void handleNoGroupSelected() {
-        showErrorMessage("No group selected.");
+        showErrorMessage("Geen groep geselecteerd.");
         courseNameLabel.setText("");
         groupCountLabel.setText("");
         showLabels();
@@ -176,7 +176,7 @@ public class ManageGroupsController {
         Group selectedGroup = groupList.getSelectionModel().getSelectedItem();
 
         if (selectedGroup == null) {
-            showWarning("You must first select a group.");
+            showWarning("Selecteer een groep.");
             return;
         }
 
@@ -190,7 +190,7 @@ public class ManageGroupsController {
     private void showWarning(String message) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Warning");
+            alert.setTitle("Waarschuwing");
             alert.setHeaderText(null);
             alert.setContentText(message);
             alert.showAndWait();
@@ -200,11 +200,11 @@ public class ManageGroupsController {
     // Requests user confirmation for deleting a group
     private boolean confirmDeletion(Group selectedGroup) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Delete Group");
-        alert.setHeaderText("Group " + selectedGroup.getGroupName() + " will be deleted.");
-        alert.setContentText("Are you sure?");
-        ButtonType buttonTypeYes = new ButtonType("Yes");
-        ButtonType buttonTypeNo = new ButtonType("No");
+        alert.setTitle("Verwijder groep");
+        alert.setHeaderText("Groep " + selectedGroup.getGroupName() + " wordt verwijderd.");
+        alert.setContentText("Weet je het zeker?");
+        ButtonType buttonTypeYes = new ButtonType("Ja");
+        ButtonType buttonTypeNo = new ButtonType("Nee");
         alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
         Optional<ButtonType> result = alert.showAndWait();
         return result.isPresent() && result.get() == buttonTypeYes;

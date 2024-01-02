@@ -9,11 +9,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import model.Question;
-import view.questionTestMain;
+
 
 import java.util.List;
 
-public class ManageQuestionsController {
+/*public class ManageQuestionsController {
 
     private final QuestionDAO questionDAO;
     @FXML
@@ -72,5 +72,5 @@ public class ManageQuestionsController {
             warningLabel.setText("Je moet eerst een vraag kiezen");
         }
     }
-}
+}*/
 
