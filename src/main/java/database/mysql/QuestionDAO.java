@@ -84,4 +84,32 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
     }
 
 
+    public void removeOne(Question selectedQuestion) {
+        String sql = "DELETE FROM question WHERE idQuestion = ?;";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, selectedQuestion.getIdQuestion());
+            executeManipulateStatement();
+        } catch (SQLException sqlException) {
+            System.out.println("SQL fout " + sqlException.getMessage());
+        }
+
+    }
+
+    // New method to get the count of questions for a specific quiz
+    public int getQuestionCountForQuiz(Quiz quizName) {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM question q JOIN quiz z ON q.idQuiz = z.idQuiz WHERE z.nameQuiz = ?;";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setString(1, String.valueOf(quizName));
+            ResultSet resultSet = executeSelectStatement();
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (SQLException sqlException) {
+            System.out.println("SQL fout " + sqlException.getMessage());
+        }
+        return count;
+    }
 }
