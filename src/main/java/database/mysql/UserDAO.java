@@ -12,24 +12,8 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         super(dbAccess);
     }
 
-    // Methode om een lijst van alle gebruikers te krijgen vanuit de database.
+    // Methode om een lijst van alle gebruikers te krijgen vanuit de database, gesorteerd op achternaam.
     public List<User> getAll() {
-        List<User> resultList = new ArrayList<>();
-        String sql = "SELECT * FROM User;";
-        try {
-            setupPreparedStatement(sql);
-            ResultSet resultSet = executeSelectStatement();
-            while(resultSet.next()) {
-                User user = getUser(resultSet);
-                resultList.add(user);
-            }
-        } catch (SQLException sqlException) {
-            System.out.println("SQL fout " + sqlException.getMessage());
-        }
-        return resultList;
-    }
-
-    public List<User> getAllSortedBySurname() {
         List<User> resultList = new ArrayList<>();
         String sql = "SELECT * FROM User ORDER BY surname;";
         try {
