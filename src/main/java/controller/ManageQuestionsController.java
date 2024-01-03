@@ -9,7 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import model.Question;
-import view.questionTestMain;
+import view.Main;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class ManageQuestionsController {
 
 
     public ManageQuestionsController() {
-        this.questionDAO = new QuestionDAO(questionTestMain.getDBaccess());
+        this.questionDAO = new QuestionDAO(Main.getDBaccess());
 
 
     }
@@ -41,13 +41,13 @@ public class ManageQuestionsController {
 
     // terug naar menu
     public void doMenu(ActionEvent event) {
-        questionTestMain.getSceneManager().showWelcomeScene();
+        Main.getSceneManager().showWelcomeScene();
     }
 
     public void doCreateQuestion() {
         Question selectedQuestion = questionList.getSelectionModel().getSelectedItem();
         if (selectedQuestion != null) {
-            questionTestMain.getSceneManager().showCreateUpdateQuestionScene(selectedQuestion);
+            Main.getSceneManager().showCreateUpdateQuestionScene(selectedQuestion);
         } else {
             warningLabel.setVisible(true);
             warningLabel.setText("Je moet eerst een vraag kiezen");
@@ -57,7 +57,7 @@ public class ManageQuestionsController {
 
     public void doUpdateQuestion(ActionEvent event) {
         Question question = questionList.getSelectionModel().getSelectedItem();
-        questionTestMain.getSceneManager().showCreateUpdateQuestionScene(question);
+        Main.getSceneManager().showCreateUpdateQuestionScene(question);
 
     }
 

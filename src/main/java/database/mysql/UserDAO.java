@@ -86,16 +86,24 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         String sql = "INSERT INTO user(username, password, firstName, prefix, surname, role) VALUES (?,?,?,?,?,?) ;";
         try {
             setupPreparedStatementWithKey(sql);
-            preparedStatement.setString(1, user.getUsername());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, user.getFirstName());
-            preparedStatement.setString(4, user.getPrefix());
-            preparedStatement.setString(5, user.getSurname());
-            preparedStatement.setString(6, user.getRole());
+            storeUpdateUser(user);
             int idUser = executeInsertStatementWithKey();
             user.setIdUser(idUser);
         } catch (SQLException sqlException) {
             System.out.println("SQL fout " + sqlException.getMessage());
+        }
+    }
+
+    // Methode om een gebruiker in SQL te updaten.
+    public void updateOne(User user) {
+        String sql = "UPDATE User SET username = ?, password = ?, firstName = ?, prefix = ?, surname = ?, role = ? WHERE idUser = ?;";
+        try {
+            setupPreparedStatement(sql);
+            storeUpdateUser(user);
+            preparedStatement.setInt(7, user.getIdUser());
+            executeManipulateStatement();
+        } catch (SQLException sqlException) {
+            System.out.println("SQL error " + sqlException.getMessage());
         }
     }
 
@@ -120,6 +128,15 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         String surname = resultSet.getString("surname");
         String role = resultSet.getString("role");
         return new User(idUser, username, password, firstName, prefix, surname, role);
+    }
+
+    private void storeUpdateUser(User user) throws SQLException {
+        preparedStatement.setString(1, user.getUsername());
+        preparedStatement.setString(2, user.getPassword());
+        preparedStatement.setString(3, user.getFirstName());
+        preparedStatement.setString(4, user.getPrefix());
+        preparedStatement.setString(5, user.getSurname());
+        preparedStatement.setString(6, user.getRole());
     }
 
 
