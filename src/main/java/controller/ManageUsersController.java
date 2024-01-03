@@ -44,6 +44,7 @@ public class ManageUsersController {
     }
 
      public void doCreateUser() {
+//        User selectedUser = userList.getSelectionModel().getSelectedItem();
         Main.getSceneManager().showCreateUpdateUserScene(null);
     }
 
