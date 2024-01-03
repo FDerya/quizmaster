@@ -23,6 +23,9 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         super(dbAccess);
         this.userDAO = userDAO;
     }
+    public CourseDAO(DBAccess dbAccess){
+        super(dbAccess);
+    }
 
 // Alle courses ophalen
     @Override
@@ -95,6 +98,16 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         }
     }
 
+    public void deleteOne(Course course){
+        String sql = "DELETE FROM course WHERE idCourse = ?;";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, course.getIdCourse());
+            executeManipulateStatement();
+        } catch (SQLException sqlFout){
+            System.out.println("SQL fout " + sqlFout.getMessage());
+        }
+    }
 
 // Course object maken vanuit resultSet
     private Course getCourse(ResultSet resultSet) throws SQLException {

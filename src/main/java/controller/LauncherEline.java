@@ -24,6 +24,7 @@ public class LauncherEline {
     private static final String filepath = "src/main/java/database/Cursussen.csv";
     private static final File courseFile = new File(filepath);
 
+
     public static void main(String[] args) {
         dbAccess.openConnection();
         // Csv naar een ArrayList wegschrijven
@@ -72,5 +73,9 @@ public class LauncherEline {
             courseDAO.storeOne(course);
         }
         dbAccess.closeConnection();
+    }
+
+    public static DBAccess getDbAccess() {
+        return dbAccess;
     }
 }

@@ -31,6 +31,12 @@ public class Course {
         this(0, coordinator, nameCourse, difficultyCourse);
     }
 
+// Methods
+    @Override
+    public String toString(){
+        return String.format("%s", getNameCourse());
+    }
+
 // Getters & Setters
     public int getIdCourse() {
         return idCourse;
