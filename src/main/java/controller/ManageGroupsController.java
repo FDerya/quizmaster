@@ -1,8 +1,8 @@
 package controller;
 // Bianca Duijvesteijn, studentnummer 500940421
-// This controller is responsible for managing groups in a JavaFX application.
-// It provides functionalities such as creating, updating, and deleting groups, as well as displaying
-// relevant information to the user.
+// Deze controller is verantwoordelijk voor het beheer van groepen in een JavaFX-applicatie.
+// Het biedt functionaliteiten zoals het maken, bijwerken en verwijderen van groepen, evenals het weergeven
+// relevante informatie voor de gebruiker.
 
 import database.mysql.GroupDAO;
 import javafx.application.Platform;
@@ -26,12 +26,12 @@ public class ManageGroupsController {
     @FXML
     private Label groupCountLabel;
 
-    // Initializes the controller and creates a GroupDAO with database access
+    // Initialiseert de controller en creëert een GroupDAO met databasetoegang
     public ManageGroupsController() {
         this.groupDAO = new GroupDAO(Main.getDBaccess());
     }
 
-    // Initializes UI components and calls configuration methods
+    // Initialiseert UI-componenten en roept configuratie methoden aan
     @FXML
     public void initialize() {
         setup();
@@ -40,7 +40,7 @@ public class ManageGroupsController {
         configureGroupListListener();
     }
 
-    // Retrieves the list of groups and configures the ListView
+    // Haalt de lijst met groepen op en configureert de ListView
     @FXML
     public void setup() {
         List<Group> groups = groupDAO.getAll();
@@ -50,9 +50,9 @@ public class ManageGroupsController {
         groupCountLabel.setVisible(false);
     }
 
-    // Configures the appearance of cells in the ListView for displaying groups
+    // Configureert de weergave van cellen in de ListView voor het weergeven van groepen
     private void configureGroupListCellFactory() {
-        groupList.setCellFactory(param -> new ListCell<Group>() {
+        groupList.setCellFactory(param -> new ListCell<>() {
             @Override
             protected void updateItem(Group item, boolean empty) {
                 super.updateItem(item, empty);
@@ -65,13 +65,13 @@ public class ManageGroupsController {
         });
     }
 
-    // Initializes text labels with default text
+    // Initialiseert tekstlabels met standaardtekst
     private void configureLabels() {
         courseNameLabel.setText("Cursus: ");
         groupCountLabel.setText("Aantal groepen dat deze cursus volgt: ");
     }
 
-    // Adds a listener to the ListView for handling selected groups
+    // Voegt een luisteraar toe aan de ListView voor het verwerken van geselecteerde groepen
     private void configureGroupListListener() {
         groupList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -80,7 +80,7 @@ public class ManageGroupsController {
         });
     }
 
-    // Handles the selection of a group and updates the labels accordingly
+    // Verwerkt de selectie van een groep en werkt de labels bij
     private void handleGroupSelection() {
         Group selectedGroup = groupList.getSelectionModel().getSelectedItem();
         if (selectedGroup != null) {
@@ -91,7 +91,7 @@ public class ManageGroupsController {
         groupList.refresh();
     }
 
-    // Updates the labels based on the selected group
+    // Werkt de labels bij op basis van de geselecteerde groep
     private void updateLabels(Group selectedGroup) {
         int idGroup = selectedGroup.getIdGroup();
         String courseName = groupDAO.getCourseNameForGroup(idGroup);
@@ -107,14 +107,14 @@ public class ManageGroupsController {
         }
     }
 
-    // Displays information about the selected group
+    // Toont informatie over de geselecteerde groep
     private void showGroupInfo(String courseName, int groupCount) {
         courseNameLabel.setText("Cursus: " + courseName);
         groupCountLabel.setText("Aantal groepen dat dezelfde cursus volgt: " + groupCount);
         showLabels();
     }
 
-    // Displays an error message when course information is missing for the selected group
+    // Toont een foutmelding wanneer cursusinformatie ontbreekt voor de geselecteerde groep
     private void showNoCourseInfo() {
         courseNameLabel.setText("Er is geen cursusinformatie beschikbaar voor deze groep.");
         groupCountLabel.setText("");
@@ -122,7 +122,7 @@ public class ManageGroupsController {
         showLabels();
     }
 
-    // Handles the situation where no group is selected
+    // Behandelt de situatie waarin geen groep is geselecteerd
     private void handleNoGroupSelected() {
         showErrorMessage("Geen groep geselecteerd.");
         courseNameLabel.setText("");
@@ -130,25 +130,25 @@ public class ManageGroupsController {
         showLabels();
     }
 
-    // Makes the labels visible
+    // Maakt de labels zichtbaar
     private void showLabels() {
         courseNameLabel.setVisible(true);
         groupCountLabel.setVisible(true);
     }
 
-    // Displays an error message in a text field
+    // Geeft een foutmelding weer in een tekstveld
     private void showErrorMessage(String message) {
         warningTextField.setText(message);
         warningTextField.setVisible(true);
     }
 
-    // Clears the error message in the text field
+    // Wist de foutmelding in het tekstveld
     private void clearErrorMessage() {
         warningTextField.setText("");
         warningTextField.setVisible(false);
     }
 
-    // Handles the "Menu" button click event, navigating back to the welcome scene
+    // Verwerkt de klik gebeurtenis op de menuknop en navigeert terug naar de welkomsscène
     @FXML
     private void doMenu() {
         try {
@@ -158,46 +158,46 @@ public class ManageGroupsController {
         }
     }
 
-    // Handles the creation of a new group, opening the corresponding UI
+    // Verwerkt de creatie van een nieuwe groep en opent de bijbehorende gebruikersinterface
     @FXML
     private void doCreateGroup() {
         Main.getSceneManager().showCreateUpdateGroupScene(null);
     }
 
-    // Handles the update of an existing group, opening the UI to assign students to groups
+    // Verwerkt de update van een bestaande groep en opent de gebruikersinterface om studenten
+    // aan groepen toe te wijzen
     @FXML
     private void doUpdateGroup() {
         Main.getSceneManager().showCreateUpdateGroupScene(null);
     }
 
-    // Handles the deletion of an existing group, updating the UI and database accordingly
+    // Verwerkt de verwijdering van een bestaande groep, waarbij de gebruikersinterface
+    // en de database worden bijgewerkt
     @FXML
     private void doDeleteGroup() {
         Group selectedGroup = groupList.getSelectionModel().getSelectedItem();
-
         if (selectedGroup == null) {
-            showWarning("Selecteer een groep.");
+            showWarning();
             return;
         }
-
         if (confirmDeletion(selectedGroup)) {
             deleteGroup(selectedGroup);
             removeFromGroupList(selectedGroup);
         }
     }
 
-    // Displays a warning in a dialog
-    private void showWarning(String message) {
+    // Geeft een waarschuwing weer in een dialoogvenster
+    private void showWarning() {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Waarschuwing");
             alert.setHeaderText(null);
-            alert.setContentText(message);
+            alert.setContentText("Selecteer een groep.");
             alert.showAndWait();
         });
     }
 
-    // Requests user confirmation for deleting a group
+    // Vraagt om bevestiging van de gebruiker voor het verwijderen van een groep
     private boolean confirmDeletion(Group selectedGroup) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Verwijder groep");
@@ -210,12 +210,12 @@ public class ManageGroupsController {
         return result.isPresent() && result.get() == buttonTypeYes;
     }
 
-    // Deletes a group from the database
+    // Verwijdert een groep uit de database
     private void deleteGroup(Group selectedGroup) {
         groupDAO.deleteGroup(selectedGroup);
     }
 
-    // Removes a group from the list
+    // Verwijdert een groep uit de lijst
     private void removeFromGroupList(Group selectedGroup) {
         groupList.getItems().remove(selectedGroup);
     }

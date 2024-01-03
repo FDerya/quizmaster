@@ -1,14 +1,14 @@
 package model;
 // Bianca Duijvesteijn, studentnummer 500940421
+//Beheert groepen in de UI, inclusief aanmaken, bijwerken, en verwijderen.
+// Toont de geselecteerde groep met cursusinformatie en het aantal gelijksoortige groepen.
 
 public class Group {
-    // Attributes
-    final int MAX_AANTAL_STUDENTEN = 25;
     private int idGroup;
     private Course courseName;
     private String groupName;
     private int amountStudent;
-    private User userName;
+    private User administrator;
 
 
     // Constructors
@@ -17,28 +17,23 @@ public class Group {
         this.courseName = courseName;
         this.groupName = groupName;
         this.amountStudent = amountStudent;
-        this.userName = administrator;
+        this.administrator = administrator;
     }
 
     public Group(Course courseName, String groupName, int amountStudent, User userName) {
         this.courseName = courseName;
         this.groupName = groupName;
         this.amountStudent = amountStudent;
-        this.userName = userName;
+        this.administrator = userName;
     }
 
     public Group() {
-
     }
+
     // toString-methode
     @Override
     public String toString() {
         return String.valueOf(courseName);
-    }
-
-    // Getters en setters voor de attributen
-    public int getMAX_AANTAL_STUDENTEN() {
-        return MAX_AANTAL_STUDENTEN;
     }
 
     public int getIdGroup() {
@@ -73,12 +68,12 @@ public class Group {
         this.amountStudent = amountStudent;
     }
 
-    public User getUserName() {
-        return userName;
+    public User getAdministrator() {
+        return administrator;
     }
 
-    public void setUserName(User userName) {
-        this.userName = userName;
+    public void setAdministrator(User administrator) {
+        this.administrator = administrator;
     }
 }
 
