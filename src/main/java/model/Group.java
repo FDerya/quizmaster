@@ -5,22 +5,21 @@ public class Group {
     // Attributes
     final int MAX_AANTAL_STUDENTEN = 25;
     private int idGroup;
-    private int idTeacher;
     private Course courseName;
     private String groupName;
     private int amountStudent;
     private User userName;
 
+
     // Constructors
-    public Group(int idGroup, int idTeacher, Course courseName, String groupName, int amountStudent,
-                 User userName) {
+    public Group(int idGroup, Course courseName, String groupName, int amountStudent, User administrator) {
         this.idGroup = idGroup;
-        this.idTeacher = idTeacher;
         this.courseName = courseName;
         this.groupName = groupName;
         this.amountStudent = amountStudent;
-        this.userName = userName;
+        this.userName = administrator;
     }
+
     public Group(Course courseName, String groupName, int amountStudent, User userName) {
         this.courseName = courseName;
         this.groupName = groupName;
@@ -28,14 +27,14 @@ public class Group {
         this.userName = userName;
     }
 
+    public Group() {
+
+    }
     // toString-methode
     @Override
     public String toString() {
-        return "Deze groep bestaat uit maximaal " + MAX_AANTAL_STUDENTEN + ". De groep heet " + groupName +
-                ", er zitten " + amountStudent + " studenten in de groep. De coordinator is: " + userName +
-                " en de groep volgt de cursus: " + courseName + '}';
+        return String.valueOf(courseName);
     }
-
 
     // Getters en setters voor de attributen
     public int getMAX_AANTAL_STUDENTEN() {
@@ -48,14 +47,6 @@ public class Group {
 
     public void setIdGroup(int idGroup) {
         this.idGroup = idGroup;
-    }
-
-    public int getIdTeacher() {
-        return idTeacher;
-    }
-
-    public void setIdTeacher(int idTeacher) {
-        this.idTeacher = idTeacher;
     }
 
     public Course getCourseName() {
