@@ -41,8 +41,8 @@ public class ManageQuizzesController {
     }
 
     public void doCreateQuiz() {
-        //     QuizDAO quizDAO = new QuizDAO();
-        //     quizDAO.storeOne(new Quiz());
+        Quiz quiz = new Quiz(null);
+         Main.getSceneManager().showCreateUpdateQuizScene(quiz);
 
     }
 
