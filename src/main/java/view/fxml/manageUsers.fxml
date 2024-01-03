@@ -36,9 +36,9 @@
             <Font size="14.0" />
         </font>
     </Button>
-   <Label fx:id="warningLabel" layoutX="14.0" layoutY="415.0" text="Je moet eerst een gebruiker selecteren" visible="false" />
-   <Label fx:id="roleCounter" layoutX="15.0" layoutY="453.0" prefHeight="65.0" prefWidth="340.0" text="Placeholder text rolecounter" visible="false" />
-   <GridPane fx:id="deleteUserGrid" layoutX="359.0" layoutY="75.0" prefHeight="90.0" prefWidth="365.0" visible="false">
+   <Label fx:id="warningLabel" layoutX="300.0" layoutY="90.0" text="Je moet eerst een gebruiker selecteren" visible="false" />
+   <Label fx:id="roleCounter" layoutX="300.0" layoutY="120.0" prefHeight="65.0" prefWidth="340.0" text="Placeholder text rolecounter" visible="false" />
+   <GridPane fx:id="deleteUserGrid" layoutX="300.0" layoutY="250.0" prefHeight="90.0" prefWidth="365.0" visible="false">
      <columnConstraints>
        <ColumnConstraints hgrow="SOMETIMES" maxWidth="112.0" minWidth="10.0" prefWidth="79.0" />
        <ColumnConstraints hgrow="SOMETIMES" maxWidth="165.0" minWidth="10.0" prefWidth="165.0" />
