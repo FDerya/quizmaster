@@ -9,11 +9,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import model.Question;
-
+import view.Main;
 
 import java.util.List;
 
-/*public class ManageQuestionsController {
+public class ManageQuestionsController {
 
     private final QuestionDAO questionDAO;
     @FXML
@@ -26,7 +26,7 @@ import java.util.List;
 
 
     public ManageQuestionsController() {
-        this.questionDAO = new QuestionDAO(questionTestMain.getDBaccess());
+        this.questionDAO = new QuestionDAO(Main.getDBaccess());
 
 
     }
@@ -41,13 +41,13 @@ import java.util.List;
 
     // terug naar menu
     public void doMenu(ActionEvent event) {
-        questionTestMain.getSceneManager().showWelcomeScene();
+        Main.getSceneManager().showWelcomeScene();
     }
 
     public void doCreateQuestion() {
         Question selectedQuestion = questionList.getSelectionModel().getSelectedItem();
         if (selectedQuestion != null) {
-            questionTestMain.getSceneManager().showCreateUpdateQuestionScene(selectedQuestion);
+            Main.getSceneManager().showCreateUpdateQuestionScene(selectedQuestion);
         } else {
             warningLabel.setVisible(true);
             warningLabel.setText("Je moet eerst een vraag kiezen");
@@ -57,7 +57,7 @@ import java.util.List;
 
     public void doUpdateQuestion(ActionEvent event) {
         Question question = questionList.getSelectionModel().getSelectedItem();
-        questionTestMain.getSceneManager().showCreateUpdateQuestionScene(question);
+        Main.getSceneManager().showCreateUpdateQuestionScene(question);
 
     }
 
@@ -72,5 +72,5 @@ import java.util.List;
             warningLabel.setText("Je moet eerst een vraag kiezen");
         }
     }
-}*/
+}
 
