@@ -120,17 +120,19 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
     public List<Question> getQuestions(Quiz quiz) {
         QuestionDAO questionDAO = new QuestionDAO(dbAccess);
         List<Question> quizList = new ArrayList<>();
-      //  List<Integer> randomNumbers = new ArrayList<>(getRandomNumbers(quiz));
+        List<Integer> randomNumbers = new ArrayList<>(getRandomNumbers(quiz));
         for (int i = 0; i < quiz.getAmountQuestions(); i++) {
-        quizList.add(questionDAO.getOneById(i));
+        quizList.add(questionDAO.getOneById(randomNumbers.get(i)));
         }
         return quizList;
     }
     // Produceert een List van willekeurige cijfers, afhankelijk van het aantal vragen wat nodig is in de quiz
     public List<Integer> getRandomNumbers(Quiz quiz) {
+        QuestionDAO questionDAO = new QuestionDAO(dbAccess);
         List<Integer> questionAmount = new ArrayList<>();
         List<Integer> quizRandomAmount = new ArrayList<>();
-        for (int i = 1; i <= quiz.getAmountQuestions(); i++) {
+        int maxQuestions = questionDAO.getQuestionCountForQuiz(quiz);
+        for (int i = 1; i <= maxQuestions;i++) {
             questionAmount.add(i);
         }
         for (int i = 1; i <= quiz.getAmountQuestions(); i++) {
