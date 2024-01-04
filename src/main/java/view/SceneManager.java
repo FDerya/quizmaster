@@ -32,6 +32,7 @@ public class SceneManager {
         }
     }
 
+
     public void showLoginScene() {
         getScene("/view/fxml/login.fxml");
     }

@@ -112,4 +112,20 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
         }
         return count;
     }
+
+    public List<Question> getQuestionsForQuiz(Quiz quiz) {
+        List<Question> questions = new ArrayList<>();
+        String sql = "SELECT * FROM question WHERE idQuiz = ?;";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, quiz.getIdQuiz());
+            ResultSet resultSet = executeSelectStatement();
+            while (resultSet.next()) {
+                questions.add(getQuestionFromResultSet(resultSet));
+            }
+        } catch (SQLException sqlException) {
+            System.out.println("SQL fout " + sqlException.getMessage());
+        }
+        return questions;
+    }
 }

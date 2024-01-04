@@ -8,7 +8,7 @@ import model.User;
 public class Main extends Application {
 
     private static SceneManager sceneManager = null;
-    private static Stage primaryStage = null;
+    public static Stage primaryStage = null;
     private static DBAccess dbAccess = null;
     private static final String databaseName = "Quizmaster";
     private static final String mainUser = "userQuizmaster";
