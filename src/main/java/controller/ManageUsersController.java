@@ -28,8 +28,9 @@ public class ManageUsersController {
         this.userDAO = new UserDAO(Main.getDBaccess());
     }
 
+    // Methode die ervoor zorgt dat de listView gevuld is en dat de eerste counter aangeroepen wordt.
     public void setup() {
-        List<User> users = userDAO.getAllSortedBySurname();
+        List<User> users = userDAO.getAll();
         userList.getItems().addAll(users);
         userList.getSelectionModel().selectFirst();
         doCounterRole();
@@ -39,35 +40,27 @@ public class ManageUsersController {
         });
     }
 
+    // Terug naar welcomeScene passend bij de rol.
     public void doMenu() {
         Main.getSceneManager().showWelcomeScene();
     }
 
-     public void doCreateUser() {
+     // Door naar scherm createUpdateUser om een nieuwe gebruiker toe te voegen.
+    public void doCreateUser() {
         Main.getSceneManager().showCreateUpdateUserScene(null);
     }
 
+    // Door naar scherm createUpdateUser om een bestaande gebruiker te wijzigen.
     public void doUpdateUser(ActionEvent event) {
         User user = userList.getSelectionModel().getSelectedItem();
-        Main.getSceneManager().showCreateUpdateUserScene(user);
-    }
-
-    public void doDeleteUser(ActionEvent event) {
-        User user = userList.getSelectionModel().getSelectedItem();
         if (user != null) {
-            userDAO.removeOne(user);
-            userList.getItems().remove(user);
-            deleteUserGrid.setVisible(false);
+            Main.getSceneManager().showCreateUpdateUserScene(user);
         } else {
-            warningLabel.setText("Houd de gebruiker geselecteerd.");
             warningLabel.setVisible(true);
         }
     }
 
-    public void doNotDeleteUser(ActionEvent event) {
-        deleteUserGrid.setVisible(false);
-    }
-
+    // Zorgt ervoor dat er een waarschuwing komt als je een gebruiker wilt verwijderen.
     public void doAskDeleteUser (ActionEvent event) {
         User user = userList.getSelectionModel().getSelectedItem();
         if (user == null) {
@@ -81,20 +74,37 @@ public class ManageUsersController {
         }
     }
 
+    // Actie om de gebruiker definitief te verwijderen.
+    public void doDeleteUser(ActionEvent event) {
+        User user = userList.getSelectionModel().getSelectedItem();
+        if (user != null) {
+            userDAO.removeOne(user);
+            userList.getItems().remove(user);
+            deleteUserGrid.setVisible(false);
+        } else {
+            warningLabel.setText("Houd de gebruiker geselecteerd.");
+            warningLabel.setVisible(true);
+        }
+    }
+
+    // Actie om de gebruiker niet te verwijderen en het grid weer onzichtbaar te maken
+    public void doNotDeleteUser(ActionEvent event) {
+        deleteUserGrid.setVisible(false);
+    }
+
+    // Deze methode telt het aantal gebruikers dat eenzelfde rol heeft als de geselecteerde gebruiker.
     public void doCounterRole() {
         User user = userList.getSelectionModel().getSelectedItem();
         List<User> users = userDAO.getAll();
 
         if (user == null) {
-            roleCounter.setText("Selecteer een gebruiker om te zien \n" +
-                    "hoeveel gebruikers dezelfde rol hebben \n" +
+            roleCounter.setText("Selecteer een gebruiker om te zien \nhoeveel gebruikers dezelfde rol hebben \n" +
                     "of om een actie uit te voeren.");
             roleCounter.setVisible(true);
         } else {
             int counter = 0;
-
-            for (User param : users) {
-                if (param.getRole().equals(user.getRole())) {
+            for (User roleUsers : users) {
+                if (roleUsers.getRole().equals(user.getRole())) {
                     counter++;
                 }
             }
