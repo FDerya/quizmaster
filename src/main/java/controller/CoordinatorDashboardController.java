@@ -48,8 +48,13 @@ public class CoordinatorDashboardController {
     }
 
     public void doNewQuiz() {
-        Quiz quiz = null;
-        Main.getSceneManager().showCreateUpdateQuizScene(quiz);
+        Quiz quiz = quizList.getSelectionModel().getSelectedItem();
+        if (quiz == null) {
+            waarschuwingsTextField.setVisible(true);
+            waarschuwingsTextField.setText("Je moet eerst een quiz kiezen");
+        } else {
+            Main.getSceneManager().showCreateUpdateQuizScene(quiz);
+        }
     }
 
     public void doEditQuiz() {
