@@ -28,12 +28,14 @@ public class LauncherTom {
         UserDAO userDAO = new UserDAO(dbAccess);
         CourseDAO courseDAO = new CourseDAO(dbAccess, userDAO);
         QuizDAO quizDAO = new QuizDAO(dbAccess, userDAO);
-
+       // Course course = new Course(21, "c1", "medium");
+       // Quiz TestTom = new Quiz(course, "Jazz", "Medium", 6);
+       // quizDAO.storeOne(TestTom);
         // Methodes aanroepen om het csv weg te schrijven naar een ArrayList met Quizzen.
-        List<String> test = FileReaderToArray();
-        List<Quiz> quizList = listQuiz(test, dbAccess);
-        saveQuizFromArray(dbAccess, quizList, quizDAO);
-
+        //List<String> test = FileReaderToArray();
+        //List<Quiz> quizList = listQuiz(test, dbAccess);
+       //saveQuizFromArray(dbAccess, quizList, quizDAO);
+        Quiz testQuiz = new Quiz();
         // Quizzen opslaan in de database. Even achter "//", anders herhaalt de opdracht zich en heb je teveel info in de DBMS
         // saveQuizFromArray(dBAccess, quizList, quizDAO);
         dbAccess.closeConnection();
