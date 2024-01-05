@@ -27,8 +27,8 @@ public class WelcomeController {
         cMenuItem1.setOnAction(actionEvent -> Main.getSceneManager().showCoordinatorDashboard());
         MenuItem cMenuItem2 = new MenuItem("Quizbeheer");
         cMenuItem2.setOnAction(actionEvent -> Main.getSceneManager().showManageQuizScene());
-        /*MenuItem cMenuItem3 = new MenuItem("Vragenbeheer");
-        cMenuItem3.setOnAction(actionEvent -> Main.getSceneManager().showManageQuestionsScene());*/
+        MenuItem cMenuItem3 = new MenuItem("Vragenbeheer");
+        cMenuItem3.setOnAction(actionEvent -> Main.getSceneManager().showManageQuestionsScene());
 
         // Menuitems voor de administrator
         MenuItem aMenuItem1 = new MenuItem("Cursusbeheer");
@@ -53,7 +53,7 @@ public class WelcomeController {
             case "Coördinator":
                 taskMenuButton.getItems().add(cMenuItem1);
                 taskMenuButton.getItems().add(cMenuItem2);
-                /*taskMenuButton.getItems().add(cMenuItem3);*/
+                taskMenuButton.getItems().add(cMenuItem3);
                 break;
             case "Administrator":
                 taskMenuButton.getItems().add(aMenuItem1);
