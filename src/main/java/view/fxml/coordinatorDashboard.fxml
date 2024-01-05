@@ -53,5 +53,9 @@
       <font>
          <Font size="14.0" />
       </font>
+
    </Button>
+    <TextField fx:id="waarschuwingsTextField" layoutX="94.0" layoutY="333.0" prefHeight="27.0" prefWidth="368.0"
+                       visible="false">
+</TextField>
 </AnchorPane>
