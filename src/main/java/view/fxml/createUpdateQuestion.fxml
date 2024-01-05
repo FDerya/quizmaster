@@ -9,16 +9,19 @@
 <AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateUpdateQuestionController">
     <children>
         <Label fx:id="titelLabel" layoutX="14.0" layoutY="14.0" text="" />
-        <TextField fx:id="questionNumberTextfield" layoutX="14.0" layoutY="48.0" promptText="Question Number" />
-        <TextField fx:id="quizTextfield" layoutX="14.0" layoutY="84.0" promptText="Quiz" />
-        <TextField fx:id="questionTextfield" layoutX="14.0" layoutY="120.0" promptText="Question" />
-        <TextField fx:id="answerRightTextfield" layoutX="14.0" layoutY="159.0" promptText="Right Answer" />
-        <TextField fx:id="answerWrong1Textfield" layoutX="14.0" layoutY="192.0" promptText="Wrong Answer 1" />
-        <TextField fx:id="answerWrong2Textfield" layoutX="14.0" layoutY="228.0" promptText="Wrong Answer 2" />
-        <TextField fx:id="answerWrong3Textfield" layoutX="14.0" layoutY="264.0" promptText="Wrong Answer 3" />
-        <ComboBox fx:id="quizlist" layoutX="14.0" layoutY="300.0" promptText="Select Quiz" />
-        <TextField fx:id="warningTextfield" layoutX="14.0" layoutY="336.0" promptText="Warning" />
-        <Button layoutX="14.0" layoutY="372.0" mnemonicParsing="false" onAction="#doStoreQuestion" text="Store Question" />
-      <Button layoutX="14.0" layoutY="416.0" mnemonicParsing="false" onAction="#doMenu" text="Menu" />
+        <TextField fx:id="questionNumberTextfield" layoutX="215.0" layoutY="54.0" promptText="Question Number" />
+        <TextField fx:id="quizTextfield" layoutX="215.0" layoutY="90.0" promptText="Quiz" />
+        <TextField fx:id="questionTextfield" layoutX="215.0" layoutY="126.0" promptText="Question" />
+        <TextField fx:id="answerRightTextfield" layoutX="215.0" layoutY="165.0" promptText="Right Answer" />
+        <TextField fx:id="answerWrong1Textfield" layoutX="215.0" layoutY="198.0" promptText="Wrong Answer 1" />
+        <TextField fx:id="answerWrong2Textfield" layoutX="215.0" layoutY="234.0" promptText="Wrong Answer 2" />
+        <TextField fx:id="answerWrong3Textfield" layoutX="215.0" layoutY="270.0" promptText="Wrong Answer 3" />
+        <ComboBox fx:id="quizlist" layoutX="215.0" layoutY="306.0" promptText="Select Quiz" />
+        <TextField fx:id="warningTextfield" layoutX="215.0" layoutY="342.0" promptText="Warning" />
+        <Button layoutX="215.0" layoutY="378.0" mnemonicParsing="false" onAction="#doStoreQuestion" text="Store Question" />
+      <Button layoutX="69.0" layoutY="480.0" mnemonicParsing="false" onAction="#doMenu" text="Menu" />
+      <Label layoutX="93.0" layoutY="58.0" text="Question Number" />
+      <Label layoutX="102.0" layoutY="94.0" text="Quiz Name" />
+      <Label layoutX="113.0" layoutY="130.0" text="Question " />
     </children>
 </AnchorPane>
