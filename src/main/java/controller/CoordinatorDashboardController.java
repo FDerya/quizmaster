@@ -5,7 +5,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 import model.*;
 import view.Main;
 
@@ -21,7 +21,7 @@ public class CoordinatorDashboardController {
     @FXML
     private ListView<Question> questionList;
     @FXML
-    private TextField waarschuwingsTextField;
+    private Label waarschuwingsLabel;
     private final DBAccess dbAccess;
 
     private final QuestionDAO questionDAO;
@@ -82,8 +82,8 @@ public class CoordinatorDashboardController {
     public void doNewQuiz() {
         Quiz quiz = quizList.getSelectionModel().getSelectedItem();
         if (quiz == null) {
-            waarschuwingsTextField.setVisible(true);
-            waarschuwingsTextField.setText("Je moet eerst een quiz kiezen");
+            waarschuwingsLabel.setVisible(true);
+            waarschuwingsLabel.setText("Je moet eerst een quiz kiezen");
         } else {
             Main.getSceneManager().showCreateUpdateQuizScene(quiz);
         }
@@ -92,8 +92,8 @@ public class CoordinatorDashboardController {
     public void doEditQuiz() {
         Quiz quiz = quizList.getSelectionModel().getSelectedItem();
         if (quiz == null) {
-            waarschuwingsTextField.setVisible(true);
-            waarschuwingsTextField.setText("Je moet eerst een quiz kiezen");
+            waarschuwingsLabel.setVisible(true);
+            waarschuwingsLabel.setText("Je moet eerst een quiz kiezen");
         } else {
             Main.getSceneManager().showCreateUpdateQuizScene(quiz);
         }
@@ -102,8 +102,8 @@ public class CoordinatorDashboardController {
     public void doNewQuestion() {
         Question question = questionList.getSelectionModel().getSelectedItem();
         if (question == null) {
-            waarschuwingsTextField.setText("Je moet eerst een question kiezen");
-            waarschuwingsTextField.setVisible(true);
+            waarschuwingsLabel.setText("Je moet eerst een question kiezen");
+            waarschuwingsLabel.setVisible(true);
 
         } else {
             Main.getSceneManager().showCreateUpdateQuestionScene(question);
@@ -115,8 +115,8 @@ public class CoordinatorDashboardController {
 
         Question question = questionList.getSelectionModel().getSelectedItem();
         if (question == null) {
-            waarschuwingsTextField.setText("Je moet eerst een question kiezen");
-            waarschuwingsTextField.setVisible(true);
+            waarschuwingsLabel.setText("Je moet eerst een question kiezen");
+            waarschuwingsLabel.setVisible(true);
 
         } else {
             Main.getSceneManager().showCreateUpdateQuestionScene(question);
