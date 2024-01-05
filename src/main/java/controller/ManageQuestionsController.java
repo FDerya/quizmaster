@@ -43,6 +43,7 @@ public class ManageQuestionsController {
         Question selectedQuestion = questionList.getSelectionModel().getSelectedItem();
         if (selectedQuestion != null) {
             Main.getSceneManager().showCreateUpdateQuestionScene(selectedQuestion);
+            warningLabel.setVisible(false);
         } else {
             warningLabel.setVisible(true);
             warningLabel.setText("Je moet eerst een vraag kiezen");
@@ -61,6 +62,7 @@ public class ManageQuestionsController {
         Question selectedQuestion = questionList.getSelectionModel().getSelectedItem();
         if (selectedQuestion != null) {
             questionList.getItems().remove(selectedQuestion);
+            warningLabel.setVisible(false);
 
         } else {
             warningLabel.setVisible(true);

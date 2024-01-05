@@ -44,6 +44,7 @@ public class CreateUpdateQuestionController {
     @FXML
     private TextField warningTextfield;
 
+
     public CreateUpdateQuestionController() {
         this.questionDAO = new QuestionDAO(Main.getDBaccess());
         this.quizDAO = new QuizDAO(Main.getDBaccess());
@@ -61,7 +62,7 @@ public class CreateUpdateQuestionController {
         quizlist.setPromptText("Wijzig de bijbehorende quiz:");
         fillComboBoxQuizzes();
     }
-
+     //Vult de keuzelijst (ComboBox) met beschikbare quizzen.
     public void fillComboBoxQuizzes() {
         List<Quiz> allQuizzes = quizDAO.getAll();
         ObservableList<Quiz> quizObservableList =
@@ -70,9 +71,11 @@ public class CreateUpdateQuestionController {
     }
 
     public void doMenu(ActionEvent event) {
-        Main.getSceneManager().showWelcomeScene();
+        Main.getSceneManager().showCoordinatorDashboard();
     }
 
+   // Werkt de huidige vraag bij met de gegevens uit de velden.
+  //  @return De bijgewerkte vraag of null als er ongeldige gegevens zijn ingevoerd.
     public Question doUpdateQuestion() {
         // Update the currentQuestion object with the data from the fields
         String  quizText = quizTextfield.getText();
@@ -96,6 +99,8 @@ public class CreateUpdateQuestionController {
 
         return question;
     }
+
+    //Slaat de vraag op of geeft een foutmelding weer als de invoergegevens ongeldig zijn
     public void doStoreQuestion(ActionEvent actionEvent) {
         Question question = doUpdateQuestion();
     if (question != null) {
@@ -111,7 +116,7 @@ public class CreateUpdateQuestionController {
         }
     }
 }
-
+    //Toont een waarschuwingsvenster met het opgegeven bericht en titel.
     private void showAlert(String content, String title) {
         Alert saved = new Alert(Alert.AlertType.INFORMATION);
         saved.setContentText(content);

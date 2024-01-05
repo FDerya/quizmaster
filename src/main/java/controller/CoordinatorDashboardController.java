@@ -21,7 +21,7 @@ public class CoordinatorDashboardController {
     @FXML
     private ListView<Question> questionList;
     @FXML
-    TextField waarschuwingsTextField;
+    private TextField waarschuwingsTextField;
     private final DBAccess dbAccess;
 
     private final QuestionDAO questionDAO;
@@ -95,8 +95,14 @@ public class CoordinatorDashboardController {
     }
 
     public void doNewQuestion() {
-        Question question = null;
-        Main.getSceneManager().showCreateUpdateQuestionScene(question);
+        Question question = questionList.getSelectionModel().getSelectedItem();
+        if (question == null) {
+            waarschuwingsTextField.setText("Je moet eerst een question kiezen");
+            waarschuwingsTextField.setVisible(true);
+
+        } else {
+            Main.getSceneManager().showCreateUpdateQuestionScene(question);
+        }
 
     }
 
@@ -104,8 +110,9 @@ public class CoordinatorDashboardController {
 
         Question question = questionList.getSelectionModel().getSelectedItem();
         if (question == null) {
-            waarschuwingsTextField.setVisible(true);
             waarschuwingsTextField.setText("Je moet eerst een question kiezen");
+            waarschuwingsTextField.setVisible(true);
+
         } else {
             Main.getSceneManager().showCreateUpdateQuestionScene(question);
         }
