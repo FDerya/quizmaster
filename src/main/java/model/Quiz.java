@@ -27,8 +27,8 @@ public class Quiz {
     @Override
     public String toString() {
         StringBuilder resultString = new StringBuilder();
-        resultString.append(nameQuiz).append(" ");
-        resultString.append(level);
+        resultString.append(nameQuiz).append("\t ") ;
+        resultString.append(amountQuestions);
         return resultString.toString();
     }
 

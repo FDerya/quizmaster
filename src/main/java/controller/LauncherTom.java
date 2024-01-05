@@ -35,7 +35,6 @@ public class LauncherTom {
         //List<String> test = FileReaderToArray();
         //List<Quiz> quizList = listQuiz(test, dbAccess);
        //saveQuizFromArray(dbAccess, quizList, quizDAO);
-        Quiz testQuiz = new Quiz();
         // Quizzen opslaan in de database. Even achter "//", anders herhaalt de opdracht zich en heb je teveel info in de DBMS
         // saveQuizFromArray(dBAccess, quizList, quizDAO);
         dbAccess.closeConnection();

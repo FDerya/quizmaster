@@ -1,5 +1,6 @@
 package controller;
 
+import database.mysql.CourseDAO;
 import javafx.event.ActionEvent;
 import model.*;
 import database.mysql.DBAccess;
@@ -50,12 +51,13 @@ public class CreateUpdateQuizController {
         Main.getSceneManager().showWelcomeScene();
     }
 
-    public void doCreateUpdateQuiz() {
+    public void doCreateUpdateQuiz(ActionEvent event) {
         Quiz quiz = null;
         QuizDAO quizDAO = new QuizDAO(dbAccess);
-        Course course = courseList.getSelectionModel().getSelectedItem();
-        String nameQuiz = quizList.getSelectionModel().getSelectedItem().getNameQuiz();
-        String level = nameTextField.getText();
+        CourseDAO courseDAO = new CourseDAO(dbAccess);
+        Course course = courseDAO.getOneByName(courseTextField.getText());
+        String nameQuiz = nameTextField.getText();
+        String level = levelTextField.getText();
         int amountQuestions = 5;
         quiz = new Quiz(course, nameQuiz, level, amountQuestions);
         quizDAO.storeOne(quiz);

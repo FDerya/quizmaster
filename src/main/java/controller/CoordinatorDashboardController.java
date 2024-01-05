@@ -43,7 +43,9 @@ public class CoordinatorDashboardController {
                 (observableValue, oldCourse, newCourse) ->
                         System.out.println("Geselecteerde cursus: " + observableValue + ", " + oldCourse + ", " + newCourse));
 
-        List<Quiz> quizzen = quizDAO.getAll();
+        List<Quiz> quizzen = new ArrayList<>();
+        Quiz quiz =quizDAO.getOneByName(courseList.getSelectionModel().getSelectedItem().getNameCourse());
+        quizzen.add(quiz);
         quizList.getItems().addAll(quizzen);
         quizList.getSelectionModel().getSelectedItem();
         quizList.getSelectionModel().selectedItemProperty().addListener(

@@ -12,6 +12,7 @@ import view.Main;
 import java.util.List;
 
 public class ManageQuizzesController {
+    private final QuizDAO quizDAO;
     @FXML
     ListView<Quiz> quizList;
 
@@ -22,11 +23,11 @@ public class ManageQuizzesController {
 
     public ManageQuizzesController() {
         this.dbAccess = Main.getDBaccess();
+        this.quizDAO = new QuizDAO(Main.getDBaccess());
     }
 
-
+    // Quizlijst afdrukken in scherm
     public void setup() {
-        QuizDAO quizDAO = new QuizDAO(dbAccess);
         List<Quiz> quizzen = quizDAO.getAll();
         quizList.getItems().addAll(quizzen);
         quizList.getSelectionModel().getSelectedItem();
@@ -63,8 +64,13 @@ public class ManageQuizzesController {
     }
 
     public void doDeleteQuiz(ActionEvent event) {
-        QuizDAO quizDAO = new QuizDAO(dbAccess);
         Quiz quiz = quizList.getSelectionModel().getSelectedItem();
-        quizDAO.deleteQuiz(quiz);
+        if (quiz == null) {
+            waarschuwingsTextField.setVisible(true);
+            waarschuwingsTextField.setText("Je moet eerst een quiz kiezen");
+        } else {
+            quizDAO.deleteQuiz(quiz);
+            quizList.getItems().remove(quiz);
+        }
     }
 }
