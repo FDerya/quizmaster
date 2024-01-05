@@ -11,7 +11,7 @@ import view.Main;
 
 public class CreateUpdateUserController {
     private final UserDAO userDAO;
-
+    private int idUser;         // Opslaan van idUser omdat deze nodig is om een gebruiker te wijzigen.
     @FXML
     Label titleLabel;
     @FXML
@@ -34,8 +34,8 @@ public class CreateUpdateUserController {
         this.userDAO = new UserDAO(Main.getDBaccess());
     }
 
-    private int idUser;
-
+    // In de setup wordt de combobox voor de rollen gevuld en worden textfields gevuld 
+    // als er in het manageUsers scherm een gebruiker geselecteerd is.
     public void setup(User user) {
         roleComboBox.setItems(rollen);
         if (user != null) {
@@ -47,10 +47,10 @@ public class CreateUpdateUserController {
             prefixTextfield.setText(String.valueOf(user.getPrefix()));
             lastNameTextfield.setText(String.valueOf(user.getSurname()));
             roleComboBox.getSelectionModel().select(user.getRole());
-            System.out.println(idUser);
         }
     }
 
+    // Deze methode slaat een nieuwe gebruiker op in de database of wijzigt een bestaande gebruiker.
     @FXML
     public void doSaveUser(ActionEvent actionEvent) {
         User user = createUser();
@@ -70,18 +70,21 @@ public class CreateUpdateUserController {
         }
     }
 
+    // Actie om terug te gaan naar het manageUsers scherm
     @FXML
     public void doShowManageUsers(ActionEvent actionEvent) {
         Main.getSceneManager().showManageUserScene();
     }
 
+    // Actie om terug te gaan naar het welcomeScene scherm
     @FXML
     public void doShowMenu(ActionEvent actionEvent) {
         Main.getSceneManager().showWelcomeScene();
     }
 
+    // Methode om een nieuw object User te maken. Als foutieve informatie ingevuld wordt,
+    // wordt hier een melding over gegeven.
     private User createUser() {
-        StringBuilder error = new StringBuilder();
         boolean correctInput = true;
         String username = usernameTextfield.getText();
         String password = passwordTextfield.getText();
@@ -89,6 +92,8 @@ public class CreateUpdateUserController {
         String prefix = prefixTextfield.getText();
         String lastname = lastNameTextfield.getText();
         String role = roleComboBox.getSelectionModel().getSelectedItem();
+
+        StringBuilder error = new StringBuilder();
 
         if (username.isEmpty()) {
             error.append("Je moet een gebruikersnaam invullen. ");

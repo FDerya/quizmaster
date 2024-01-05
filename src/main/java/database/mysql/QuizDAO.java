@@ -2,6 +2,7 @@ package database.mysql;
 // Tom van Beek, 500941521.
 
 import model.*;
+import database.mysql.QuestionDAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -60,7 +61,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         return quiz;
     }
 
-
+    // Zoek een specifieke quiz aan de hand van de naam
     public Quiz getOneByName(String quizName) {
         String sql = "SELECT * FROM Quiz WHERE nameQuiz = ?;";
         CourseDAO courseDAO = new CourseDAO(dbAccess, userDAO);
@@ -105,13 +106,41 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         quiz = new Quiz(idQuiz, course, name, level, amountQuestion);
         return quiz;
     }
-    public void deleteQuiz(Quiz quizDelete){
+    // Verwijder een quiz uit de lijst aan de hand van idQuiz
+    public void deleteQuiz(Quiz quizDelete) {
         String sql = "DELETE FROM Quiz WHERE idQuiz =?;";
         try {
+            setupPreparedStatement(sql);
             preparedStatement.setInt(1, quizDelete.getIdQuiz());
             executeManipulateStatement();
         } catch (SQLException sqlFout) {
             System.out.println("SQL fout " + sqlFout.getMessage());
         }
     }
+    // Presenteert een lijst met vragen van de quiz
+    public List<Question> getQuestions(Quiz quiz) {
+        QuestionDAO questionDAO = new QuestionDAO(dbAccess);
+        List<Question> quizList = new ArrayList<>();
+        List<Integer> randomNumbers = new ArrayList<>(getRandomNumbers(quiz));
+        for (int i = 0; i < quiz.getAmountQuestions(); i++) {
+        quizList.add(questionDAO.getOneById(randomNumbers.get(i)));
+        }
+        return quizList;
+    }
+    // Produceert een List van willekeurige cijfers, afhankelijk van het aantal vragen wat nodig is in de quiz
+    public List<Integer> getRandomNumbers(Quiz quiz) {
+        QuestionDAO questionDAO = new QuestionDAO(dbAccess);
+        List<Integer> questionAmount = new ArrayList<>();
+        List<Integer> quizRandomAmount = new ArrayList<>();
+        int maxQuestions = questionDAO.getQuestionCountForQuiz(quiz);
+        for (int i = 1; i <= maxQuestions;i++) {
+            questionAmount.add(i);
+        }
+        for (int i = 1; i <= quiz.getAmountQuestions(); i++) {
+            int randomNumber = (int) (Math.random() * questionAmount.size());
+            quizRandomAmount.add(questionAmount.get(randomNumber));
+            questionAmount.remove(randomNumber);
+        }return quizRandomAmount;
+    }
 }
+

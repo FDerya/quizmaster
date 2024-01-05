@@ -28,6 +28,11 @@ public class Question {
         this(0, quiz, question, answerRight, answerWrong1, answerWrong2, answerWrong3);
     }
 
+    @Override
+    public String toString() {
+        return "Question: " + idQuestion + ", Quiz: " + quiz.getIdQuiz() + ", Text: " + question;
+    }
+
     // Getters and Setters
     public int getIdQuestion() {
         return idQuestion;

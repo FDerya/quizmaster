@@ -32,6 +32,7 @@ public class SceneManager {
         }
     }
 
+
     public void showLoginScene() {
         getScene("/view/fxml/login.fxml");
     }
@@ -72,7 +73,15 @@ public class SceneManager {
         controller.setup();
 
     }
-
+/*    public void showCreateUpdateGroupScene(Group group) {
+        FXMLLoader loader = getScene("/view/fxml/createUpdateGroup.fxml");
+        if (loader != null) {
+            CreateUpdateGroupController controller = loader.getController();
+            if (controller != null) {
+                controller.setup(group);
+            }
+        }
+    }*/
     public void showCreateUpdateGroupScene(Group group) {
         FXMLLoader loader = getScene("/view/fxml/createUpdateGroup.fxml");
         CreateUpdateGroupController controller = loader.getController();
@@ -91,11 +100,11 @@ public class SceneManager {
         controller.setup(quiz);
     }
 
-/*   public void showManageQuestionsScene() {
+    public void showManageQuestionsScene() {
         FXMLLoader loader = getScene("/view/fxml/manageQuestions.fxml");
         ManageQuestionsController controller = loader.getController();
         controller.setup();
-    }*/
+    }
 
     public void showCreateUpdateQuestionScene(Question question) {
         FXMLLoader loader = getScene("/view/fxml/createUpdateQuestion.fxml");
