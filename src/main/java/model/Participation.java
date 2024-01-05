@@ -17,7 +17,8 @@ public class Participation {
         this.group = group;
     }
 
-// Getters & Setters
+
+    // Getters & Setters
     public User getUser() {
         return user;
     }

@@ -5,10 +5,14 @@ package database.mysql;
 
 import model.*;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.sql.DriverManager.getConnection;
 
 public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
     private UserDAO userDAO;
@@ -26,53 +30,50 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
     // Methode om alle groepen op te halen
     @Override
     public List<Group> getAll() {
-        List<Group> groups = new ArrayList<>();
+        List<Group> groupList = new ArrayList<>();
         String sql = "SELECT * FROM `Group`;";
         try {
             setupPreparedStatement(sql);
             ResultSet resultSet = executeSelectStatement();
             while (resultSet.next()) {
-
-                Group group = new Group();
-                group.setIdGroup(resultSet.getInt("idGroup"));
-                group.setGroupName(resultSet.getString("nameGroup"));
-                groups.add(group);
+                Group group = getGroupFromResultSet(resultSet);
+                groupList.add(group);
             }
         } catch (SQLException sqlException) {
             System.out.println("SQL fout " + sqlException.getMessage());
         }
-        return groups;
+        return groupList;
     }
 
     // Methode om een specifieke groep op te halen op basis van ID
     @Override
-    public Group getOneById(int id) {
-        String sql = "SELECT * FROM group WHERE userId = ?";
+    public Group getOneById(int idGroup) {
+        String sql = "SELECT * FROM group WHERE idGroup = ?";
         Group group = null;
         try {
             setupPreparedStatement(sql);
-            preparedStatement.setInt(1, id);
-            try (ResultSet resultSet = executeSelectStatement()) {
-                if (resultSet.next()) {
-                    group = getGroupFromResultSet(resultSet);
-                }
+            preparedStatement.setInt(1, idGroup);
+            ResultSet resultSet = executeSelectStatement();
+            if (resultSet.next()) {
+                group = getGroupFromResultSet(resultSet);
             }
         } catch (SQLException sqlError) {
             System.out.println("SQL error: " + sqlError.getMessage());
         }
-        return group;
+        return null;
     }
 
     // Methode om een nieuwe groep op te slaan
     @Override
     public void storeOne(Group group) {
-        String sql = "INSERT INTO `group` (idUser, nameGroup, amountStudent)" +
+        String sql = "INSERT INTO `group` (nameCourse, nameGroup, amountStudent, userName)" +
                 " VALUES (?, ?, ?);";
         try {
             setupPreparedStatementWithKey(sql);
-            preparedStatement.setInt(1, group.getAdministrator().getIdUser());
+            preparedStatement.setString(1, group.getCourseName().getNameCourse());
             preparedStatement.setString(2, group.getGroupName());
             preparedStatement.setInt(3, group.getAmountStudent());
+            preparedStatement.setString(4, group.getUserName().getUsername());
             executeManipulateStatement();
         } catch (SQLException sqlFout) {
             System.out.println(sqlFout.getMessage());
@@ -82,23 +83,19 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
     // Methode om een Group-object te maken van een ResultSet
     private Group getGroupFromResultSet(ResultSet resultSet) throws SQLException {
         int idGroup = resultSet.getInt("idGroup");
+        Course nameCourse = getCourseByCourseName("nameCourse"); 
         String nameGroup = resultSet.getString("nameGroup");
         int amountStudent = resultSet.getInt("amountStudent");
+        User userName = getUserByUsername(resultSet.getString("userName"));
 
-        int courseId = resultSet.getInt("idCourse");
-
-        User administrator = getAdministrator(resultSet.getInt("userId"), resultSet.getString("userName"));
-        Course course = getCourseById(courseId);
-
-        return createGroup(idGroup, course, nameGroup, amountStudent, administrator);
+        return createGroup(idGroup, nameCourse, nameGroup, amountStudent, userName);
     }
 
-    // Methode om een Cursusobject op te halen op basis van zijn ID
-    private Course getCourseById(int courseId) {
-        String sql = "SELECT * FROM Course WHERE idCourse = ?";
+    private Course getCourseByCourseName(String nameCourse) {
+        String sql = "SELECT * FROM Course WHERE nameCourse = ?";
         try {
             setupPreparedStatement(sql);
-            preparedStatement.setInt(1, courseId);
+            preparedStatement.setString(1, nameCourse);
             try (ResultSet resultSet = executeSelectStatement()) {
                 if (resultSet.next()) {
                     return getCourseFromResultSet(resultSet);
@@ -117,15 +114,6 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         String difficulty = resultSet.getString("difficultyCourse");
 
         return new Course(idCourse, nameCourse, difficulty);
-    }
-
-    // Methode om de beheerder te verkrijgen op basis van ID of gebruikersnaam
-    private User getAdministrator(int administratorUserId, String administratorUsername) {
-        User administrator = userDAO.getOneById(administratorUserId);
-        if (administrator == null) {
-            administrator = getUserByUsername(administratorUsername);
-        }
-        return administrator;
     }
 
     // Methode om een gebruiker te verkrijgen op basis van gebruikersnaam

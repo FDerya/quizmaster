@@ -8,23 +8,24 @@ public class Group {
     private Course courseName;
     private String groupName;
     private int amountStudent;
-    private User administrator;
+    private User userName;
+
 
 
     // Constructors
-    public Group(int idGroup, Course courseName, String groupName, int amountStudent, User administrator) {
+    public Group(int idGroup, Course courseName, String groupName, int amountStudent, User userName) {
         this.idGroup = idGroup;
         this.courseName = courseName;
         this.groupName = groupName;
         this.amountStudent = amountStudent;
-        this.administrator = administrator;
+        this.userName = userName;
     }
 
     public Group(Course courseName, String groupName, int amountStudent, User userName) {
         this.courseName = courseName;
         this.groupName = groupName;
         this.amountStudent = amountStudent;
-        this.administrator = userName;
+        this.userName = userName;
     }
 
     public Group() {
@@ -68,12 +69,13 @@ public class Group {
         this.amountStudent = amountStudent;
     }
 
-    public User getAdministrator() {
-        return administrator;
+    public User getUserName() {
+        return userName;
     }
 
-    public void setAdministrator(User administrator) {
-        this.administrator = administrator;
+    public void setUserName(User userName) {
+        this.userName = userName;
     }
 }
+
 

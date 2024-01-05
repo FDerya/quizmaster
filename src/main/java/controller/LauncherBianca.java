@@ -2,10 +2,7 @@ package controller;
 // Bianca Duijvesteijn, studentnummer 500940421
 //Wegschrijven van de cvs bestanden. Vullen van de tabel Participation
 
-import database.mysql.CourseDAO;
-import database.mysql.DBAccess;
-import database.mysql.GroupDAO;
-import database.mysql.UserDAO;
+import database.mysql.*;
 import model.Course;
 import model.Group;
 import model.User;
@@ -51,6 +48,8 @@ public class LauncherBianca {
         for (Group group : listGroups) {
             storeGroupAndParticipation(groupDAO, group);
         }
+
+
         dbAccess.closeConnection();
     }
     private static void storeGroupAndParticipation(GroupDAO groupDAO, Group group) {
@@ -59,19 +58,19 @@ public class LauncherBianca {
         // Haal de werkelijke gegevens op voor de invoegoperatie
         int groupId = group.getIdGroup();
         Course course = group.getCourseName();
-        int userId = group.getAdministrator().getIdUser();
+        int userId = group.getUserName().getIdUser();
 
         System.out.println("groupId: " + groupId + ", courseId: " + course.getIdCourse() + ", userId: " + userId);
 
-        // Controleer of de nodige gegevens al in de gerelateerde tabellen bestaan
-        if (groupId > 0 && course != null && userId > 0) {
+        // Controleer of de groep bestaat
+        if (groupId > 0) {
             // Voer de invoegoperatie uit in de "participation" tabel
-            System.out.println("groupId: " + groupId + ", courseId: " + course.getIdCourse() + ", userId: " + userId);
             fillParticipationTable(groupId, course.getIdCourse(), userId);
         } else {
-            System.err.println("Ongeldige gegevens voor invoegoperatie in participation-tabel.");
+            System.err.println("Groep met ID " + groupId + " bestaat niet.");
         }
     }
+
 
 
     // Methode om gegevens in te voegen in de "participation" tabel
