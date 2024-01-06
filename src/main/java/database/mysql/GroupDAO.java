@@ -67,7 +67,7 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
     @Override
     public void storeOne(Group group) {
         String sql = "INSERT INTO `group` (nameCourse, nameGroup, amountStudent, userName)" +
-                " VALUES (?, ?, ?);";
+                " VALUES (?, ?, ?, ?);";
         try {
             setupPreparedStatementWithKey(sql);
             preparedStatement.setString(1, group.getCourseName().getNameCourse());
@@ -109,11 +109,11 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
 
     // Methode om een Cursusobject te maken op basis van een ResultSet
     private Course getCourseFromResultSet(ResultSet resultSet) throws SQLException {
-        int idCourse = resultSet.getInt("idCourse");
+        User userName = getUserByUsername(resultSet.getString("userName"));
         String nameCourse = resultSet.getString("nameCourse");
         String difficulty = resultSet.getString("difficultyCourse");
 
-        return new Course(idCourse, nameCourse, difficulty);
+        return new Course(userName, nameCourse, difficulty);
     }
 
     // Methode om een gebruiker te verkrijgen op basis van gebruikersnaam
