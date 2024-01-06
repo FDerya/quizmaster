@@ -66,14 +66,14 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
     // Methode om een nieuwe groep op te slaan
     @Override
     public void storeOne(Group group) {
-        String sql = "INSERT INTO `group` (nameCourse, nameGroup, amountStudent, userName)" +
+        String sql = "INSERT INTO `group` (idUser, nameGroup, amountStudent, idCourse)" +
                 " VALUES (?, ?, ?, ?);";
         try {
             setupPreparedStatementWithKey(sql);
-            preparedStatement.setString(1, group.getCourseName().getNameCourse());
+            preparedStatement.setInt(1, group.getUserName().getIdUser());
             preparedStatement.setString(2, group.getGroupName());
             preparedStatement.setInt(3, group.getAmountStudent());
-            preparedStatement.setString(4, group.getUserName().getUsername());
+            preparedStatement.setInt(4, group.getCourseName().getIdCourse());
             executeManipulateStatement();
         } catch (SQLException sqlFout) {
             System.out.println(sqlFout.getMessage());
@@ -83,7 +83,7 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
     // Methode om een Group-object te maken van een ResultSet
     private Group getGroupFromResultSet(ResultSet resultSet) throws SQLException {
         int idGroup = resultSet.getInt("idGroup");
-        Course nameCourse = getCourseByCourseName("nameCourse"); 
+        Course nameCourse = getCourseByCourseName("nameCourse");
         String nameGroup = resultSet.getString("nameGroup");
         int amountStudent = resultSet.getInt("amountStudent");
         User userName = getUserByUsername(resultSet.getString("userName"));
@@ -109,20 +109,31 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
 
     // Methode om een Cursusobject te maken op basis van een ResultSet
     private Course getCourseFromResultSet(ResultSet resultSet) throws SQLException {
-        User userName = getUserByUsername(resultSet.getString("userName"));
+        int idCourse = resultSet.getInt("idCourse");
         String nameCourse = resultSet.getString("nameCourse");
         String difficulty = resultSet.getString("difficultyCourse");
 
-        return new Course(userName, nameCourse, difficulty);
+        return new Course(idCourse, nameCourse, difficulty);
     }
 
     // Methode om een gebruiker te verkrijgen op basis van gebruikersnaam
-    private User getUserByUsername(String username) {
-        return userDAO.getAll().stream()
-                .filter(user -> user.getUsername().equals(username))
-                .findFirst()
-                .orElse(null);
+    public User getUserByUsername(String username) {
+        String sql = "SELECT * FROM `User` WHERE `username` = ?";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setString(1, username);
+
+            try (ResultSet resultSet = executeSelectStatement()) {
+                if (resultSet.next()) {
+                    return createUserFromResultSet(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
+
 
     // Methode om een groepsobject te maken
     private Group createGroup(int idGroup, Course nameCourse, String nameGroup, int amountStudent,
@@ -275,6 +286,3 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         return -1;
     }
 }
-
-
-

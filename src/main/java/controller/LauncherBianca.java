@@ -33,15 +33,13 @@ public class LauncherBianca {
         CourseDAO courseDAO = new CourseDAO(dbAccess, userDAO);
         GroupDAO groupDAO = new GroupDAO(dbAccess, userDAO);
 
-        dbAccess.openConnection();
-
         // Lees gegevens uit het CSV-bestand
         List<String> test = FileReaderToArray();
         List<Group> listGroups = listGroups(test, userDAO, courseDAO);
         for (Group group : listGroups) {
             groupDAO.storeOne(group);
         }
-        dbAccess.closeConnection();
+        Main.getDBaccess().closeConnection();
     }
 
 
@@ -77,4 +75,3 @@ public class LauncherBianca {
     }
 
 }
-
