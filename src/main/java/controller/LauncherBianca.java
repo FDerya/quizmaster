@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static controller.LauncherTom.FileReaderToArray;
+
 public class LauncherBianca {
     // Bestands- en padnamen
     private static final String filepath = "src/main/java/database/Groepen.csv";
@@ -34,63 +36,14 @@ public class LauncherBianca {
         dbAccess.openConnection();
 
         // Lees gegevens uit het CSV-bestand
-//        List<String> test = FileReaderToArray();
-//        List<Group> listGroups = listGroups(test, userDAO, courseDAO);
-
-//        for (Group group : listGroups) {
-//            groupDAO.storeOne(group);
-//        }
-
-        // Lees gegevens uit het CSV-bestand en vul de "participation" tabel
         List<String> test = FileReaderToArray();
         List<Group> listGroups = listGroups(test, userDAO, courseDAO);
-
         for (Group group : listGroups) {
-            storeGroupAndParticipation(groupDAO, group);
+            groupDAO.storeOne(group);
         }
-
-
         dbAccess.closeConnection();
     }
-    private static void storeGroupAndParticipation(GroupDAO groupDAO, Group group) {
-        groupDAO.storeOne(group);
 
-        // Haal de werkelijke gegevens op voor de invoegoperatie
-        int groupId = group.getIdGroup();
-        Course course = group.getCourseName();
-        int userId = group.getUserName().getIdUser();
-
-        System.out.println("groupId: " + groupId + ", courseId: " + course.getIdCourse() + ", userId: " + userId);
-
-        // Controleer of de groep bestaat
-        if (groupId > 0) {
-            // Voer de invoegoperatie uit in de "participation" tabel
-            fillParticipationTable(groupId, course.getIdCourse(), userId);
-        } else {
-            System.err.println("Groep met ID " + groupId + " bestaat niet.");
-        }
-    }
-
-
-
-    // Methode om gegevens in te voegen in de "participation" tabel
-    private static void fillParticipationTable(int groupId, int courseId, int userId) {
-        String insertQuery = "INSERT INTO participation (idGroup, idCourse, idUser) VALUES (?, ?, ?)";
-
-        try (
-                Connection connection = DriverManager.getConnection(String.valueOf(Main.getDBaccess()));
-                PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)
-        ) {
-            preparedStatement.setInt(1, groupId);
-            preparedStatement.setInt(2, courseId);
-            preparedStatement.setInt(3, userId);
-            preparedStatement.executeUpdate();
-
-            System.out.println("Invoegen van participatiegegevens geslaagd.");
-        } catch (SQLException e) {
-            System.err.println("SQL-fout: " + e.getMessage());
-        }
-    }
 
     // Methode om gegevens uit het CSV-bestand naar een lijst te lezen
     public static List<String> FileReaderToArray() {
