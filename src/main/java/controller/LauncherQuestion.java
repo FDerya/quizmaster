@@ -55,16 +55,25 @@ public class LauncherQuestion {
         for (String line : lines) {
             QuizDAO quizDAO = new QuizDAO(dBaccess);
             String[] lineArray = line.split(";");
-            String question = lineArray[0];
+            String questionText = lineArray[0];
             String answerRight = lineArray[1];
             String answerWrong1 = lineArray[2];
             String answerWrong2 = lineArray[3];
             String answerWrong3 = lineArray[4];
+
+            // Check if the quiz exists in the database
             Quiz quiz = quizDAO.getOneByName(lineArray[5]);
-            questionList.add(new Question(quiz, question, answerRight, answerWrong1, answerWrong2, answerWrong3));
+            if (quiz != null) {
+                // Only create the Question object if the Quiz is not null
+                questionList.add(new Question(quiz, questionText, answerRight, answerWrong1, answerWrong2, answerWrong3));
+            } else {
+                // Handle the case where the quiz does not exist (you may want to log or print a message)
+                System.out.println("Quiz with name " + lineArray[5] + " not found.");
+            }
         }
         return questionList;
     }
+
 
     // Hulpmethode om vragen naar de database op te slaan
     private static void saveQuestionsToDatabase(DBAccess dBaccess, List<Question> questionList, QuestionDAO questionDAO) {

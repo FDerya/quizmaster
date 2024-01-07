@@ -128,4 +128,47 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
         }
         return questions;
     }
+
+    public void deleteOne(Question question) {
+        String sql = "DELETE FROM question WHERE idQuestion = ?;";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, question.getIdQuestion());
+            executeManipulateStatement();
+        } catch (SQLException sqlException) {
+            System.out.println("SQL fout " + sqlException.getMessage());
+        }
+    }
+
+    public int getLastQuestionId() {
+        int lastQuestionId = 0;
+        String sql = "SELECT MAX(idQuestion) FROM question;";
+        try {
+            setupPreparedStatement(sql);
+            ResultSet resultSet = executeSelectStatement();
+            if (resultSet.next()) {
+                lastQuestionId = resultSet.getInt(1);
+            }
+        } catch (SQLException sqlException) {
+            System.out.println("SQL fout " + sqlException.getMessage());
+        }
+        return lastQuestionId;
+    }
+
+    public void updateQuestion(Question question) {
+        String sql = "UPDATE question SET idQuiz=?, question=?, answerRight=?, answerWrong1=?, answerWrong2=?, answerWrong3=? WHERE idQuestion=?";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, question.getQuiz().getIdQuiz());
+            preparedStatement.setString(2, question.getQuestion());
+            preparedStatement.setString(3, question.getAnswerRight());
+            preparedStatement.setString(4, question.getAnswerWrong1());
+            preparedStatement.setString(5, question.getAnswerWrong2());
+            preparedStatement.setString(6, question.getAnswerWrong3());
+            preparedStatement.setInt(7, question.getIdQuestion());
+            executeManipulateStatement();
+        } catch (SQLException sqlException) {
+            System.out.println("SQL fout " + sqlException.getMessage());
+        }
+    }
 }

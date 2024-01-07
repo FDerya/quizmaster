@@ -42,7 +42,7 @@ public class ManageQuestionsController {
     public void doCreateQuestion() {
         Question selectedQuestion = questionList.getSelectionModel().getSelectedItem();
         if (selectedQuestion != null) {
-            Main.getSceneManager().showCreateUpdateQuestionScene(selectedQuestion);
+            Main.getSceneManager().showCreateUpdateQuestionScene(null);
             warningLabel.setVisible(false);
         } else {
             warningLabel.setVisible(true);
@@ -61,9 +61,19 @@ public class ManageQuestionsController {
     public void doDeleteQuestion(ActionEvent event) {
         Question selectedQuestion = questionList.getSelectionModel().getSelectedItem();
         if (selectedQuestion != null) {
-            questionList.getItems().remove(selectedQuestion);
-            warningLabel.setVisible(false);
+            // Show a confirmation dialog
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Bevestig Verwijderen");
+            alert.setHeaderText("Weet je zeker dat je de vraag wilt verwijderen?");
+            alert.setContentText("Vraag ID: " + selectedQuestion.getIdQuestion());
 
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                // User clicked OK, proceed with deletion
+                questionDAO.deleteOne(selectedQuestion);
+                questionList.getItems().remove(selectedQuestion);
+                warningLabel.setVisible(false);
+            }
         } else {
             warningLabel.setVisible(true);
             warningLabel.setText("Je moet eerst een vraag kiezen");
