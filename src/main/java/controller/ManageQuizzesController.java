@@ -1,28 +1,25 @@
 package controller;
 
 import database.mysql.QuizDAO;
-import database.mysql.DBAccess;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import model.*;
 import view.Main;
 
 import java.util.List;
 
 public class ManageQuizzesController {
-    private final QuizDAO quizDAO;
     @FXML
     ListView<Quiz> quizList;
-
-    private final DBAccess dbAccess;
+    private final QuizDAO quizDAO;
     @FXML
     TextField waarschuwingsTextField;
 
 
     public ManageQuizzesController() {
-        this.dbAccess = Main.getDBaccess();
         this.quizDAO = new QuizDAO(Main.getDBaccess());
     }
 
@@ -34,7 +31,21 @@ public class ManageQuizzesController {
         quizList.getSelectionModel().selectedItemProperty().addListener(
                 (observableValue, oldQuiz, newQuiz) ->
                         System.out.println("Geselecteerde quiz: " + observableValue + ", " + oldQuiz + ", " + newQuiz));
-
+        quizList.setCellFactory(param -> new ListCell<>() {
+            @Override
+            public void updateItem(Quiz item, boolean empty) {
+                super.updateItem(item, empty);
+                Label naam = new Label();
+                naam.setPrefWidth(200.0);
+                Label aantal = new Label();
+                HBox hBox = new HBox(naam, aantal);
+                if (!(item == null || empty)) {
+                    naam.setText(item.getNameQuiz());
+                    aantal.setText("`" + item.getAmountQuestions() + "`");
+                }
+                setGraphic(hBox);
+            }
+        });
     }
 
     public void doMenu(ActionEvent event) {

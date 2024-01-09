@@ -28,7 +28,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
     @Override
     public List<Quiz> getAll() {
         List<Quiz> totalListQuiz = new ArrayList<>();
-        String sql = "SELECT * FROM Quiz;";
+        String sql = "SELECT * FROM Quiz ORDER BY nameQuiz;";
         try {
             setupPreparedStatement(sql);
             ResultSet resultSet = executeSelectStatement();
