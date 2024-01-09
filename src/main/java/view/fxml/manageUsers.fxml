@@ -26,7 +26,7 @@
             <Font size="14.0" />
         </font>
     </Button>
-    <Button layoutX="178.0" layoutY="318.0" mnemonicParsing="false" onAction="#doAskDeleteUser" text="Verwijder">
+    <Button layoutX="178.0" layoutY="318.0" mnemonicParsing="false" onAction="#doDeleteUser" text="Verwijder">
         <font>
             <Font size="14.0" />
         </font>
@@ -38,21 +38,4 @@
     </Button>
    <Label fx:id="warningLabel" layoutX="300.0" layoutY="90.0" text="Je moet eerst een gebruiker selecteren" visible="false" />
    <Label fx:id="roleCounter" layoutX="300.0" layoutY="120.0" prefHeight="65.0" prefWidth="340.0" text="Placeholder text rolecounter" visible="false" />
-   <GridPane fx:id="deleteUserGrid" layoutX="300.0" layoutY="250.0" prefHeight="90.0" prefWidth="365.0" visible="false">
-     <columnConstraints>
-       <ColumnConstraints hgrow="SOMETIMES" maxWidth="112.0" minWidth="10.0" prefWidth="79.0" />
-       <ColumnConstraints hgrow="SOMETIMES" maxWidth="165.0" minWidth="10.0" prefWidth="165.0" />
-         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-     </columnConstraints>
-     <rowConstraints>
-       <RowConstraints maxHeight="48.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
-       <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES" />
-       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-     </rowConstraints>
-      <children>
-         <Label fx:id="deleteWarningLabel" prefHeight="60.0" prefWidth="384.0" text="Placeholder text delete warning" GridPane.columnSpan="2147483647" GridPane.rowSpan="2" />
-         <Button fx:id="deleteYesButton" mnemonicParsing="false" onAction="#doDeleteUser" prefHeight="25.0" prefWidth="56.0" text="Ja" GridPane.rowIndex="2" />
-         <Button fx:id="deleteNoButton" mnemonicParsing="false" onAction="#doNotDeleteUser" prefHeight="25.0" prefWidth="56.0" text="Nee" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      </children>
-   </GridPane>
 </AnchorPane>

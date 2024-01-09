@@ -9,8 +9,12 @@ import javafx.scene.control.*;
 import model.User;
 import view.Main;
 
+import java.util.Optional;
+
 public class CreateUpdateUserController {
     private final UserDAO userDAO;
+    private final String newUserAlertMessage = "Gebruiker opgeslagen";
+    private final String updateUserAlertMessage = "Gebruiker gewijzigd";
     private int idUser;         // Opslaan van idUser omdat deze nodig is om een gebruiker te wijzigen.
     @FXML
     Label titleLabel;
@@ -38,7 +42,9 @@ public class CreateUpdateUserController {
     // als er in het manageUsers scherm een gebruiker geselecteerd is.
     public void setup(User user) {
         roleComboBox.setItems(rollen);
+        Main.primaryStage.setTitle("Nieuwe gebruiker");
         if (user != null) {
+            Main.primaryStage.setTitle("Wijzig gebruiker");
             idUser = user.getIdUser();
             titleLabel.setText("Wijzig gebruiker");
             usernameTextfield.setText(String.valueOf(user.getUsername()));
@@ -57,15 +63,11 @@ public class CreateUpdateUserController {
         if (user != null) {
             if (titleLabel.getText().equals("Nieuwe gebruiker")) {
                 userDAO.storeOne(user);
-                Alert saved = new Alert(Alert.AlertType.INFORMATION);
-                saved.setContentText("Gebruiker opgeslagen");
-                saved.show();
+                showAlert(newUserAlertMessage);
             } else {
                 user.setIdUser(idUser);
                 userDAO.updateOne(user);
-                Alert updated = new Alert(Alert.AlertType.INFORMATION);
-                updated.setContentText("Gebruiker gewijzigd");
-                updated.show();
+                showAlert(updateUserAlertMessage);
             }
         }
     }
@@ -85,6 +87,8 @@ public class CreateUpdateUserController {
     // Methode om een nieuw object User te maken. Als foutieve informatie ingevuld wordt,
     // wordt hier een melding over gegeven.
     private User createUser() {
+        StringBuilder error = new StringBuilder();
+        error.append("Je hebt meerdere velden niet ingevuld: \n");
         boolean correctInput = true;
         String username = usernameTextfield.getText();
         String password = passwordTextfield.getText();
@@ -93,30 +97,30 @@ public class CreateUpdateUserController {
         String lastname = lastNameTextfield.getText();
         String role = roleComboBox.getSelectionModel().getSelectedItem();
 
-        StringBuilder error = new StringBuilder();
+        // Idee voor foutieve invoer: sterretjes zetten bij verplichte invoer. Geef melding: niet alles ingevuld, kijk naar de met * gemarkeerde velden
 
         if (username.isEmpty()) {
-            error.append("Je moet een gebruikersnaam invullen. ");
+            error.append("Je moet een gebruikersnaam invullen. \n");
             correctInput = false;
         }
 
         if (password.isEmpty()) {
-            error.append("Je moet een wachtwoord invullen. ");
+            error.append("Je moet een wachtwoord invullen. \n");
             correctInput = false;
         }
 
         if (firstname.isEmpty()) {
-            error.append("Je moet een voornaam invullen. ");
+            error.append("Je moet een voornaam invullen. \n");
             correctInput = false;
         }
 
         if (lastname.isEmpty()) {
-            error.append("Je moet een achternaam invullen. ");
+            error.append("Je moet een achternaam invullen. \n");
             correctInput = false;
         }
 
-        if (role.isEmpty() || role == null) {
-            error.append("Er is geen rol gekozen." );
+        if (role == null) {
+            error.append("Er is geen rol gekozen.\n" );
             correctInput = false;
         }
 
@@ -126,6 +130,16 @@ public class CreateUpdateUserController {
             return null;
         } else {
             return new User(0, username, password, firstname, prefix, lastname, role);
+        }
+    }
+
+    // Methode om een Alert te laten zien en je daarna terug te sturen naar de manage user scene
+    private static void showAlert(String alertMessage) {
+        Alert saved = new Alert(Alert.AlertType.INFORMATION);
+        saved.setContentText(alertMessage);
+        Optional<ButtonType> result = saved.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            Main.getSceneManager().showManageUserScene();
         }
     }
 }
