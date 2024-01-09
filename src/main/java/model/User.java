@@ -31,17 +31,8 @@ public class User {
     // Methods
     @Override
     public String toString() {
-/*
-        StringBuilder resultString = new StringBuilder();
-        resultString.append(firstName).append(" ");
-        if (!prefix.isEmpty()) {
-            resultString.append(prefix).append(" ");
-        }
-        resultString.append(surname).append(", ");
-        resultString.append(role);
-        return resultString.toString();
-*/
-        return String.format("%s %s %s, %s", firstName, (getPrefix() == null) ? "" : getPrefix(), getSurname(), getRole());
+        return getFullName() + ", " + getRole();
+//        String.format("%s %s %s, %s", firstName, (getPrefix() == null) ? "" : getPrefix(), getSurname(), getRole());
     }
 
     // Getters & Setters
@@ -108,5 +99,9 @@ public class User {
 
     public static void setCurrentUser(User currentUser) {
         User.currentUser = currentUser;
+    }
+
+    public String getFullName() {
+        return String.format("%s %s %s", firstName, (getPrefix() == null) ? "" : getPrefix(), getSurname());
     }
 }

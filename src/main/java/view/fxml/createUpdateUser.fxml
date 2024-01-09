@@ -7,12 +7,12 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateUpdateUserController">
    <children>
-      <Label fx:id="titleLabel" layoutX="214.0" layoutY="127.0" prefHeight="17.0" prefWidth="308.0" text="Nieuwe gebruiker">
+      <Label fx:id="titleLabel" layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="308.0" text="Nieuwe gebruiker">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <GridPane layoutX="130.0" layoutY="200.0" prefHeight="151.0" prefWidth="400.0">
+      <GridPane layoutX="-70.0" layoutY="87.0" prefHeight="151.0" prefWidth="400.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="197.0" minWidth="10.0" prefWidth="197.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="199.0" />
@@ -73,9 +73,9 @@
             <Insets right="5.0" />
          </padding>
       </GridPane>
-      <Button layoutX="241.0" layoutY="400.0" mnemonicParsing="false" onAction="#doSaveUser" text="Opslaan" />
-      <Button layoutX="313.0" layoutY="400.0" mnemonicParsing="false" onAction="#doShowManageUsers" text="Gebruikerslijst" />
-      <Button layoutX="419.0" layoutY="400.0" mnemonicParsing="false" onAction="#doShowMenu" text="Menu" />
-      <Label fx:id="warningLabel" layoutX="241.0" layoutY="459.0" prefHeight="17.0" prefWidth="308.0" text="Label" visible="false" />
+      <Button layoutX="41.0" layoutY="287.0" mnemonicParsing="false" onAction="#doSaveUser" text="Opslaan" />
+      <Button layoutX="113.0" layoutY="287.0" mnemonicParsing="false" onAction="#doShowManageUsers" text="Gebruikerslijst" />
+      <Button layoutX="219.0" layoutY="287.0" mnemonicParsing="false" onAction="#doShowMenu" text="Menu" />
+      <Label fx:id="warningLabel" layoutX="41.0" layoutY="346.0" prefHeight="128.0" prefWidth="308.0" text="Label" visible="false" />
    </children>
 </AnchorPane>
