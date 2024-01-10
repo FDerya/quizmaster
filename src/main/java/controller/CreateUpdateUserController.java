@@ -9,12 +9,13 @@ import javafx.scene.control.*;
 import model.User;
 import view.Main;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public class CreateUpdateUserController {
     private final UserDAO userDAO;
-    private final String newUserAlertMessage = "Gebruiker opgeslagen";
-    private final String updateUserAlertMessage = "Gebruiker gewijzigd";
     private int idUser;         // Opslaan van idUser omdat deze nodig is om een gebruiker te wijzigen.
     @FXML
     Label titleLabel;
@@ -32,6 +33,16 @@ public class CreateUpdateUserController {
     ComboBox<String> roleComboBox;
     @FXML
     Label warningLabel;
+    @FXML
+    Label usernameLabel;
+    @FXML
+    Label passwordLabel;
+    @FXML
+    Label firstnameLabel;
+    @FXML
+    Label surnameLabel;
+    @FXML
+    Label roleLabel;
     ObservableList<String> rollen = FXCollections.observableArrayList("Student", "Docent", "Coördinator", "Administrator", "Functioneel Beheerder");
 
     public CreateUpdateUserController() {
@@ -60,6 +71,8 @@ public class CreateUpdateUserController {
     @FXML
     public void doSaveUser(ActionEvent actionEvent) {
         User user = createUser();
+        String updateUserAlertMessage = "Gebruiker gewijzigd";
+        String newUserAlertMessage = "Gebruiker opgeslagen";
         if (user != null) {
             if (titleLabel.getText().equals("Nieuwe gebruiker")) {
                 userDAO.storeOne(user);
@@ -87,8 +100,7 @@ public class CreateUpdateUserController {
     // Methode om een nieuw object User te maken. Als foutieve informatie ingevuld wordt,
     // wordt hier een melding over gegeven.
     private User createUser() {
-        StringBuilder error = new StringBuilder();
-        error.append("Je hebt meerdere velden niet ingevuld: \n");
+        String errorMessage = "Je hebt niet alle velden ingevuld.\nVelden met een * zijn verplicht.";
         boolean correctInput = true;
         String username = usernameTextfield.getText();
         String password = passwordTextfield.getText();
@@ -96,41 +108,25 @@ public class CreateUpdateUserController {
         String prefix = prefixTextfield.getText();
         String lastname = lastNameTextfield.getText();
         String role = roleComboBox.getSelectionModel().getSelectedItem();
-
-        // Idee voor foutieve invoer: sterretjes zetten bij verplichte invoer. Geef melding: niet alles ingevuld, kijk naar de met * gemarkeerde velden
-
-        if (username.isEmpty()) {
-            error.append("Je moet een gebruikersnaam invullen. \n");
-            correctInput = false;
-        }
-
-        if (password.isEmpty()) {
-            error.append("Je moet een wachtwoord invullen. \n");
-            correctInput = false;
-        }
-
-        if (firstname.isEmpty()) {
-            error.append("Je moet een voornaam invullen. \n");
-            correctInput = false;
-        }
-
-        if (lastname.isEmpty()) {
-            error.append("Je moet een achternaam invullen. \n");
-            correctInput = false;
-        }
-
-        if (role == null) {
-            error.append("Er is geen rol gekozen.\n" );
-            correctInput = false;
-        }
-
+        correctInput = isCorrectInput(username, password, firstname, lastname, role, correctInput);
         if (!correctInput) {
-            warningLabel.setText(error.toString());
+            warningLabel.setText(errorMessage);
             warningLabel.setVisible(true);
             return null;
         } else {
             return new User(0, username, password, firstname, prefix, lastname, role);
         }
+    }
+
+    private boolean isCorrectInput(String username, String password, String firstname, String lastname, String role, boolean correctInput) {
+        if (username.isEmpty() || password.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || role == null) {
+            correctInput = false;
+            List<Label> mandatoryFields = new ArrayList<>(Arrays.asList(usernameLabel, passwordLabel, firstnameLabel, surnameLabel, roleLabel));
+            for (Label label : mandatoryFields) {
+                label.setText(label.getText() + " *");
+            }
+        }
+        return correctInput;
     }
 
     // Methode om een Alert te laten zien en je daarna terug te sturen naar de manage user scene

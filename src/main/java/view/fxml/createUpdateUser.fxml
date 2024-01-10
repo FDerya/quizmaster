@@ -26,17 +26,17 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Gebruikersnaam" GridPane.halignment="RIGHT">
+            <Label fx:id="usernameLabel" text="Gebruikersnaam" GridPane.halignment="RIGHT">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </Label>
-            <Label text="Wachtwoord" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+            <Label fx:id="passwordLabel" text="Wachtwoord" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </Label>
-            <Label text="Voornaam" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+            <Label fx:id="firstnameLabel" text="Voornaam" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
@@ -46,12 +46,12 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </Label>
-            <Label text="Achternaam" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+            <Label fx:id="surnameLabel" text="Achternaam" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </Label>
-            <Label text="Rol" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+            <Label fx:id="roleLabel" text="Rol" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                <padding>
                   <Insets left="10.0" />
                </padding>

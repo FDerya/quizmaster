@@ -73,10 +73,9 @@ public class ManageUsersController {
         deleteAlert.setTitle("Verwijder gebruiker");
         deleteAlert.setHeaderText(null);
         deleteAlert.setContentText("Je gaat gebruiker " + user.getFullName() + " verwijderen.\n" +
-                        "Dit kan niet ongedaan gemaakt worden.\n" +
-                        "Weet je het zeker?");
-        ButtonType buttonYes = new ButtonType("Ja (enter)", ButtonBar.ButtonData.OK_DONE);
-        ButtonType buttonNo = new ButtonType("Nee (escape)", ButtonBar.ButtonData.NO);
+                        "Dit kan niet ongedaan gemaakt worden.\n");
+        ButtonType buttonYes = new ButtonType("Verwijder", ButtonBar.ButtonData.OK_DONE);
+        ButtonType buttonNo = new ButtonType("Annuleer", ButtonBar.ButtonData.NO);
         deleteAlert.getButtonTypes().setAll(buttonYes,buttonNo);
         Optional<ButtonType> clickedButton = deleteAlert.showAndWait();
         if (clickedButton.isPresent() && clickedButton.get() == buttonYes) {
