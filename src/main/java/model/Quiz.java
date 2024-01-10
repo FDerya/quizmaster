@@ -24,6 +24,9 @@ public class Quiz {
         this(0,course, "","",0);
     }
 
+    public Quiz(){
+        this(0,null,"","",0);
+    }
     @Override
     public String toString() {
         StringBuilder resultString = new StringBuilder();

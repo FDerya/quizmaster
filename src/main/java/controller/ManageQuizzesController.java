@@ -1,23 +1,21 @@
 package controller;
-
+// Tom van Beek, 500941521.
 import database.mysql.QuizDAO;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import model.*;
 import view.Main;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ManageQuizzesController {
     @FXML
     ListView<Quiz> quizList;
     private final QuizDAO quizDAO;
-    @FXML
-    TextField waarschuwingsTextField;
-
 
     public ManageQuizzesController() {
         this.quizDAO = new QuizDAO(Main.getDBaccess());
@@ -52,36 +50,58 @@ public class ManageQuizzesController {
         Main.getSceneManager().showWelcomeScene();
     }
 
-
+    // Nieuwe quiz maken met leeg scherm
     public void doCreateQuiz(ActionEvent event) {
         Quiz quiz = quizList.getSelectionModel().getSelectedItem();
-        if (quiz == (null)) {
-            waarschuwingsTextField.setVisible(true);
-            waarschuwingsTextField.setText("Je moet eerst een quiz kiezen");
+        if (quiz == null) {
+            Quiz newQuiz = new Quiz();
+            Main.getSceneManager().showCreateUpdateQuizScene(newQuiz);
         } else {
             Main.getSceneManager().showCreateUpdateQuizScene(quiz);
 
         }
     }
-
+    // Quiz bewerken met vooraf ingevuld scherm
     public void doUpdateQuiz(ActionEvent event) {
         Quiz quiz = quizList.getSelectionModel().getSelectedItem();
         if (quiz == null) {
-            waarschuwingsTextField.setVisible(true);
-            waarschuwingsTextField.setText("Je moet eerst een quiz kiezen");
+            showWarning();
         } else {
             Main.getSceneManager().showCreateUpdateQuizScene(quiz);
         }
     }
-
+    // Waarschuwing in pop-up scherm weergeven
+    private void showWarning() {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Waarschuwing");
+            alert.setHeaderText(null);
+            alert.setContentText("Selecteer een quiz.");
+            alert.showAndWait();
+        });
+    }
+    //Waarschuwing in pop-up scherm weergeven voor verwijderen quiz
+    private boolean confirmDeletion(Quiz selectedQuiz) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Verwijder quiz");
+        alert.setHeaderText("Quiz `" + selectedQuiz.getNameQuiz() + "` wordt verwijderd.");
+        alert.setContentText("Weet je het zeker?");
+        ButtonType buttonTypeYes = new ButtonType("Ja");
+        ButtonType buttonTypeNo = new ButtonType("Nee");
+        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == buttonTypeYes;
+    }
+    // Quiz verwijderen uit de database én de Listview
     public void doDeleteQuiz(ActionEvent event) {
-        Quiz quiz = quizList.getSelectionModel().getSelectedItem();
-        if (quiz == null) {
-            waarschuwingsTextField.setVisible(true);
-            waarschuwingsTextField.setText("Je moet eerst een quiz kiezen");
-        } else {
-            quizDAO.deleteQuiz(quiz);
-            quizList.getItems().remove(quiz);
+        Quiz selectedQuiz = quizList.getSelectionModel().getSelectedItem();
+        if (selectedQuiz == null) {
+            showWarning();
+            return;
+        }
+        if (confirmDeletion(selectedQuiz)) {
+            quizDAO.deleteQuiz(selectedQuiz);
+            quizList.getItems().remove(selectedQuiz);
         }
     }
 }

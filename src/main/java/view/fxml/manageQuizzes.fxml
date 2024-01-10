@@ -37,8 +37,6 @@
             <Font size="14.0" />
         </font>
     </Button>
-    <TextField fx:id="waarschuwingsTextField" layoutX="94.0" layoutY="323.0" prefHeight="27.0" prefWidth="368.0" visible="false">
-</TextField>
     <Button layoutX="14.0" layoutY="329.0" mnemonicParsing="false" onAction="#doMenu" text="Menu">
         <font>
             <Font size="14.0" />
