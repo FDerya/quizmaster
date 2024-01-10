@@ -9,6 +9,11 @@ import javafx.scene.control.*;
 import model.User;
 import view.Main;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
 public class CreateUpdateUserController {
     private final UserDAO userDAO;
     private int idUser;         // Opslaan van idUser omdat deze nodig is om een gebruiker te wijzigen.
@@ -28,6 +33,16 @@ public class CreateUpdateUserController {
     ComboBox<String> roleComboBox;
     @FXML
     Label warningLabel;
+    @FXML
+    Label usernameLabel;
+    @FXML
+    Label passwordLabel;
+    @FXML
+    Label firstnameLabel;
+    @FXML
+    Label surnameLabel;
+    @FXML
+    Label roleLabel;
     ObservableList<String> rollen = FXCollections.observableArrayList("Student", "Docent", "Coördinator", "Administrator", "Functioneel Beheerder");
 
     public CreateUpdateUserController() {
@@ -38,7 +53,9 @@ public class CreateUpdateUserController {
     // als er in het manageUsers scherm een gebruiker geselecteerd is.
     public void setup(User user) {
         roleComboBox.setItems(rollen);
+        Main.primaryStage.setTitle("Nieuwe gebruiker");
         if (user != null) {
+            Main.primaryStage.setTitle("Wijzig gebruiker");
             idUser = user.getIdUser();
             titleLabel.setText("Wijzig gebruiker");
             usernameTextfield.setText(String.valueOf(user.getUsername()));
@@ -54,18 +71,16 @@ public class CreateUpdateUserController {
     @FXML
     public void doSaveUser(ActionEvent actionEvent) {
         User user = createUser();
+        String updateUserAlertMessage = "Gebruiker gewijzigd";
+        String newUserAlertMessage = "Gebruiker opgeslagen";
         if (user != null) {
             if (titleLabel.getText().equals("Nieuwe gebruiker")) {
                 userDAO.storeOne(user);
-                Alert saved = new Alert(Alert.AlertType.INFORMATION);
-                saved.setContentText("Gebruiker opgeslagen");
-                saved.show();
+                showAlert(newUserAlertMessage);
             } else {
                 user.setIdUser(idUser);
                 userDAO.updateOne(user);
-                Alert updated = new Alert(Alert.AlertType.INFORMATION);
-                updated.setContentText("Gebruiker gewijzigd");
-                updated.show();
+                showAlert(updateUserAlertMessage);
             }
         }
     }
@@ -85,6 +100,7 @@ public class CreateUpdateUserController {
     // Methode om een nieuw object User te maken. Als foutieve informatie ingevuld wordt,
     // wordt hier een melding over gegeven.
     private User createUser() {
+        String errorMessage = "Je hebt niet alle velden ingevuld.\nVelden met een * zijn verplicht.";
         boolean correctInput = true;
         String username = usernameTextfield.getText();
         String password = passwordTextfield.getText();
@@ -92,40 +108,34 @@ public class CreateUpdateUserController {
         String prefix = prefixTextfield.getText();
         String lastname = lastNameTextfield.getText();
         String role = roleComboBox.getSelectionModel().getSelectedItem();
-
-        StringBuilder error = new StringBuilder();
-
-        if (username.isEmpty()) {
-            error.append("Je moet een gebruikersnaam invullen. ");
-            correctInput = false;
-        }
-
-        if (password.isEmpty()) {
-            error.append("Je moet een wachtwoord invullen. ");
-            correctInput = false;
-        }
-
-        if (firstname.isEmpty()) {
-            error.append("Je moet een voornaam invullen. ");
-            correctInput = false;
-        }
-
-        if (lastname.isEmpty()) {
-            error.append("Je moet een achternaam invullen. ");
-            correctInput = false;
-        }
-
-        if (role.isEmpty() || role == null) {
-            error.append("Er is geen rol gekozen." );
-            correctInput = false;
-        }
-
+        correctInput = isCorrectInput(username, password, firstname, lastname, role, correctInput);
         if (!correctInput) {
-            warningLabel.setText(error.toString());
+            warningLabel.setText(errorMessage);
             warningLabel.setVisible(true);
             return null;
         } else {
             return new User(0, username, password, firstname, prefix, lastname, role);
+        }
+    }
+
+    private boolean isCorrectInput(String username, String password, String firstname, String lastname, String role, boolean correctInput) {
+        if (username.isEmpty() || password.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || role == null) {
+            correctInput = false;
+            List<Label> mandatoryFields = new ArrayList<>(Arrays.asList(usernameLabel, passwordLabel, firstnameLabel, surnameLabel, roleLabel));
+            for (Label label : mandatoryFields) {
+                label.setText(label.getText() + " *");
+            }
+        }
+        return correctInput;
+    }
+
+    // Methode om een Alert te laten zien en je daarna terug te sturen naar de manage user scene
+    private static void showAlert(String alertMessage) {
+        Alert saved = new Alert(Alert.AlertType.INFORMATION);
+        saved.setContentText(alertMessage);
+        Optional<ButtonType> result = saved.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            Main.getSceneManager().showManageUserScene();
         }
     }
 }

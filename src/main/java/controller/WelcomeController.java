@@ -15,6 +15,7 @@ public class WelcomeController {
     private MenuButton taskMenuButton;
 
     public void setup() {
+//        Main.primaryStage.setTitle("Quizmaster - Prlwytzkofsky College");
         welcomeLabel.setText("Welkom " + User.getCurrentUser().getFirstName() + "\nU bent ingelogd als " + User.getCurrentUser().getRole().toLowerCase());
         // Menuitems voor de student
         MenuItem sMenuItem1 = new MenuItem("In- en uitschrijven");
@@ -37,7 +38,6 @@ public class WelcomeController {
         aMenuItem2.setOnAction(actionEvent -> Main.getSceneManager().showManageGroupsScene());
         MenuItem aMenuItem3 = new MenuItem("Studenten toewijzen aan groepen");
         aMenuItem3.setOnAction(actionEvent -> Main.getSceneManager().showAssignStudentsToGroupScene());
-
 
         // Menuitems voor de functioneel beheerder
         MenuItem fMenuItem1 = new MenuItem("Gebruikersbeheer");

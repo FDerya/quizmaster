@@ -3,13 +3,12 @@ package controller;
 import database.mysql.UserDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.*;
 import model.User;
 import view.Main;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ManageUsersController {
     private final UserDAO userDAO;
@@ -19,10 +18,6 @@ public class ManageUsersController {
     Label warningLabel;
     @FXML
     Label roleCounter;
-    @FXML
-    GridPane deleteUserGrid;
-    @FXML
-    Label deleteWarningLabel;
 
     public ManageUsersController() {
         this.userDAO = new UserDAO(Main.getDBaccess());
@@ -30,6 +25,7 @@ public class ManageUsersController {
 
     // Methode die ervoor zorgt dat de listView gevuld is en dat de eerste counter aangeroepen wordt.
     public void setup() {
+        Main.getPrimaryStage().setTitle("Gebruikersbeheer");
         List<User> users = userDAO.getAll();
         userList.getItems().addAll(users);
         userList.getSelectionModel().selectFirst();
@@ -61,35 +57,31 @@ public class ManageUsersController {
     }
 
     // Zorgt ervoor dat er een waarschuwing komt als je een gebruiker wilt verwijderen.
-    public void doAskDeleteUser (ActionEvent event) {
+    public void doDeleteUser (ActionEvent event) {
         User user = userList.getSelectionModel().getSelectedItem();
         if (user == null) {
             warningLabel.setVisible(true);
         } else {
             warningLabel.setVisible(false);
-            deleteUserGrid.setVisible(true);
-            deleteWarningLabel.setText("Je gaat gebruiker " + user + " verwijderen. \n" +
-                    "Dit kan niet ongedaan gemaakt worden.\n" +
-                    "Weet je het zeker?");
+            deleteWithAlert(user);
         }
     }
 
-    // Actie om de gebruiker definitief te verwijderen.
-    public void doDeleteUser(ActionEvent event) {
-        User user = userList.getSelectionModel().getSelectedItem();
-        if (user != null) {
+    // Deze methode handelt het verwijderen van de gebruiker, met waarschuwing, af.
+    private void deleteWithAlert(User user) {
+        Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        deleteAlert.setTitle("Verwijder gebruiker");
+        deleteAlert.setHeaderText(null);
+        deleteAlert.setContentText("Je gaat gebruiker " + user.getFullName() + " verwijderen.\n" +
+                        "Dit kan niet ongedaan gemaakt worden.\n");
+        ButtonType buttonYes = new ButtonType("Verwijder", ButtonBar.ButtonData.OK_DONE);
+        ButtonType buttonNo = new ButtonType("Annuleer", ButtonBar.ButtonData.NO);
+        deleteAlert.getButtonTypes().setAll(buttonYes,buttonNo);
+        Optional<ButtonType> clickedButton = deleteAlert.showAndWait();
+        if (clickedButton.isPresent() && clickedButton.get() == buttonYes) {
             userDAO.removeOne(user);
             userList.getItems().remove(user);
-            deleteUserGrid.setVisible(false);
-        } else {
-            warningLabel.setText("Houd de gebruiker geselecteerd.");
-            warningLabel.setVisible(true);
         }
-    }
-
-    // Actie om de gebruiker niet te verwijderen en het grid weer onzichtbaar te maken
-    public void doNotDeleteUser(ActionEvent event) {
-        deleteUserGrid.setVisible(false);
     }
 
     // Deze methode telt het aantal gebruikers dat eenzelfde rol heeft als de geselecteerde gebruiker.
@@ -102,12 +94,7 @@ public class ManageUsersController {
                     "of om een actie uit te voeren.");
             roleCounter.setVisible(true);
         } else {
-            int counter = 0;
-            for (User roleUsers : users) {
-                if (roleUsers.getRole().equals(user.getRole())) {
-                    counter++;
-                }
-            }
+            int counter = (int) users.stream().filter(roleUsers -> roleUsers.getRole().equals(user.getRole())).count();
             roleCounter.setVisible(true);
             roleCounter.setText("Van het type " + user.getRole().toLowerCase() + " zijn er " + counter + " gebruikers");
         }
