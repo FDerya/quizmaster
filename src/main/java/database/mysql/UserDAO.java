@@ -87,7 +87,12 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         String sql = "INSERT INTO user(username, password, firstName, prefix, surname, role) VALUES (?,?,?,?,?,?) ;";
         try {
             setupPreparedStatementWithKey(sql);
-            storeUpdateUser(user);
+            preparedStatement.setString(1, user.getUsername());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(3, user.getFirstName());
+            preparedStatement.setString(4, user.getPrefix());
+            preparedStatement.setString(5, user.getSurname());
+            preparedStatement.setString(6, user.getRole());
             int idUser = executeInsertStatementWithKey();
             user.setIdUser(idUser);
         } catch (SQLException sqlException) {
@@ -97,11 +102,15 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
 
     // Methode om een gebruiker in SQL te updaten.
     public void updateOne(User user) {
-        String sql = "UPDATE User SET username = ?, password = ?, firstName = ?, prefix = ?, surname = ?, role = ? WHERE idUser = ?;";
+        String sql = "UPDATE User SET username = ?, firstName = ?, prefix = ?, surname = ?, role = ? WHERE idUser = ?;";
         try {
             setupPreparedStatement(sql);
-            storeUpdateUser(user);
-            preparedStatement.setInt(7, user.getIdUser());
+            preparedStatement.setString(1, user.getUsername());
+            preparedStatement.setString(2, user.getFirstName());
+            preparedStatement.setString(3, user.getPrefix());
+            preparedStatement.setString(4, user.getSurname());
+            preparedStatement.setString(5, user.getRole());
+            preparedStatement.setInt(6, user.getIdUser());
             executeManipulateStatement();
         } catch (SQLException sqlException) {
             System.out.println("SQL error " + sqlException.getMessage());
@@ -130,16 +139,6 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         String role = resultSet.getString("role");
         return new User(idUser, username, password, firstName, prefix, surname, role);
     }
-
-    private void storeUpdateUser(User user) throws SQLException {
-        preparedStatement.setString(1, user.getUsername());
-        preparedStatement.setString(2, user.getPassword());
-        preparedStatement.setString(3, user.getFirstName());
-        preparedStatement.setString(4, user.getPrefix());
-        preparedStatement.setString(5, user.getSurname());
-        preparedStatement.setString(6, user.getRole());
-    }
-
 
 }
 
