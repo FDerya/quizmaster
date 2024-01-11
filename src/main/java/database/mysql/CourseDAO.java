@@ -31,7 +31,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
     @Override
     public List<Course> getAll() {
         List<Course> resultList = new ArrayList<>();
-        String sql = "SELECT * FROM Course;";
+        String sql = "SELECT * FROM Course ORDER BY nameCourse;";
         try {
             setupPreparedStatement(sql);
             ResultSet resultSet = executeSelectStatement();
@@ -88,13 +88,23 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         String sql = "INSERT INTO course (idUser, nameCourse, difficultyCourse) VALUES(?, ?, ?);";
         try {
             setupPreparedStatementWithKey(sql);
-            preparedStatement.setInt(1, course.getCoordinator().getIdUser());
-            preparedStatement.setString(2, course.getNameCourse());
-            preparedStatement.setString(3, course.getDifficultyCourse());
+            storeCourse(course);
             int primaryKey = executeInsertStatementWithKey();
             course.setIdCourse(primaryKey);
         } catch (SQLException sqlException){
             System.out.println("SQL fout " + sqlException.getMessage());
+        }
+    }
+
+    public void updateOne(Course course){
+        String sql = "UPDATE Course SET idUser = ?, nameCourse = ?, difficultyCourse = ? WHERE idCourse = ?;";
+        try {
+            setupPreparedStatement(sql);
+            storeCourse(course);
+            preparedStatement.setInt(4, course.getIdCourse());
+            executeManipulateStatement();
+        } catch (SQLException sqlException){
+            System.out.println("SQL error" + sqlException.getMessage());
         }
     }
 
@@ -118,5 +128,11 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         String difficultyCourse = resultSet.getString("difficultyCourse");
         User user = userDAO.getOneById(idCoordinator);
         return new Course(idCourse, user, nameCourse, difficultyCourse);
+    }
+
+    private void storeCourse(Course course) throws SQLException{
+        preparedStatement.setInt(1, course.getCoordinator().getIdUser());
+        preparedStatement.setString(2, course.getNameCourse());
+        preparedStatement.setString(3, course.getDifficultyCourse());
     }
 }
