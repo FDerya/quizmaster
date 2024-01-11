@@ -29,6 +29,23 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         return resultList;
     }
 
+    // Methode om een lijst van coordinatoren te krijgen
+    public List<User> getAllCoordinators() {
+        List<User> resultList = new ArrayList<>();
+        String sql = "SELECT * FROM user WHERE role = 'Coördinator' ORDER BY surname;";
+        try {
+            setupPreparedStatement(sql);
+            ResultSet resultSet = executeSelectStatement();
+            while(resultSet.next()) {
+                User user = getUser(resultSet);
+                resultList.add(user);
+            }
+        } catch (SQLException sqlException) {
+            System.out.println("SQL fout " + sqlException.getMessage());
+        }
+        return resultList;
+    }
+
     // Methode om een enkele gebruiker op te vragen uit de SQL database, waarvan je de parameter id meegeeft.
     // Je krijgt je select statement terug in de vorm van een object User.
     public User getOneById(int idUser) {
