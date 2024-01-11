@@ -22,8 +22,6 @@ public class CreateUpdateUserController {
     @FXML
     TextField usernameTextfield;
     @FXML
-    TextField passwordTextfield;
-    @FXML
     TextField firstNameTextfield;
     @FXML
     TextField prefixTextfield;
@@ -35,8 +33,6 @@ public class CreateUpdateUserController {
     Label warningLabel;
     @FXML
     Label usernameLabel;
-    @FXML
-    Label passwordLabel;
     @FXML
     Label firstnameLabel;
     @FXML
@@ -59,7 +55,6 @@ public class CreateUpdateUserController {
             idUser = user.getIdUser();
             titleLabel.setText("Wijzig gebruiker");
             usernameTextfield.setText(String.valueOf(user.getUsername()));
-            passwordTextfield.setText(String.valueOf(user.getPassword()));
             firstNameTextfield.setText(String.valueOf(user.getFirstName()));
             prefixTextfield.setText(String.valueOf(user.getPrefix()));
             lastNameTextfield.setText(String.valueOf(user.getSurname()));
@@ -103,25 +98,24 @@ public class CreateUpdateUserController {
         String errorMessage = "Je hebt niet alle velden ingevuld.\nVelden met een * zijn verplicht.";
         boolean correctInput = true;
         String username = usernameTextfield.getText();
-        String password = passwordTextfield.getText();
         String firstname = firstNameTextfield.getText();
         String prefix = prefixTextfield.getText();
         String lastname = lastNameTextfield.getText();
         String role = roleComboBox.getSelectionModel().getSelectedItem();
-        correctInput = isCorrectInput(username, password, firstname, lastname, role, correctInput);
+        correctInput = isCorrectInput(username, firstname, lastname, role, correctInput);
         if (!correctInput) {
             warningLabel.setText(errorMessage);
             warningLabel.setVisible(true);
             return null;
         } else {
-            return new User(0, username, password, firstname, prefix, lastname, role);
+            return new User(username, firstname, prefix, lastname, role);
         }
     }
 
-    private boolean isCorrectInput(String username, String password, String firstname, String lastname, String role, boolean correctInput) {
-        if (username.isEmpty() || password.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || role == null) {
+    private boolean isCorrectInput(String username, String firstname, String lastname, String role, boolean correctInput) {
+        if (username.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || role == null) {
             correctInput = false;
-            List<Label> mandatoryFields = new ArrayList<>(Arrays.asList(usernameLabel, passwordLabel, firstnameLabel, surnameLabel, roleLabel));
+            List<Label> mandatoryFields = new ArrayList<>(Arrays.asList(usernameLabel, firstnameLabel, surnameLabel, roleLabel));
             for (Label label : mandatoryFields) {
                 label.setText(label.getText() + " *");
             }

@@ -13,7 +13,7 @@ public class User {
     private String role;
     public static User currentUser;
 
-    // Constructors
+    // Constructors: all args, een met zelfgekozen password (voor csv bestand) en een met gegenereerd password
     public User(int idUser, String username, String password, String firstName, String prefix, String surname, String role) {
         this.idUser = idUser;
         this.username = username;
@@ -26,6 +26,10 @@ public class User {
 
     public User(String username, String password, String firstName, String prefix, String surname, String role) {
         this(0, username, password, firstName, prefix, surname, role);
+    }
+
+    public User(String username, String firstName, String prefix, String surname, String role) {
+        this(0, username, getRandomPassword(), firstName, prefix, surname, role);
     }
 
     // Methods
@@ -103,5 +107,19 @@ public class User {
 
     public String getFullName() {
         return String.format("%s %s %s", firstName, (getPrefix() == null) ? "" : getPrefix(), getSurname());
+    }
+
+    private static char getRandomChar() {
+        int randomInt = (int) (Math.random() * 93) + 33; // Lijken magic numbers, maar char 33 t/m 126 zijn speciale tekens
+        return (char) randomInt;
+    }
+
+    private static String getRandomPassword() {
+        int numberOfCharsInPassword = 10;
+        StringBuilder randomPassword = new StringBuilder();
+        for (int i = 0; i < numberOfCharsInPassword; i++) {
+            randomPassword.append(getRandomChar());
+        }
+        return randomPassword.toString();
     }
 }
