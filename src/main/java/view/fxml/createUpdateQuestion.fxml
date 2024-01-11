@@ -16,21 +16,21 @@
         <TextField fx:id="answerWrong1Textfield" layoutX="133.0" layoutY="250.0" promptText="Wrong Answer 1" />
         <TextField fx:id="answerWrong2Textfield" layoutX="133.0" layoutY="286.0" promptText="Wrong Answer 2" />
         <TextField fx:id="answerWrong3Textfield" layoutX="133.0" layoutY="324.0" promptText="Wrong Answer 3" />
-      <Button layoutX="21.0" layoutY="541.0" mnemonicParsing="false" onAction="#doMenu" prefHeight="32.0" prefWidth="101.0" text="Back" />
-        <ComboBox fx:id="quizlist" layoutX="129.0" layoutY="90.0" promptText="Select Quiz" />
-        <Button layoutX="131.0" layoutY="397.0" mnemonicParsing="false" onAction="#doStoreQuestion" prefHeight="32.0" prefWidth="155.0" text="Store Question" />
-      <Label layoutX="11.0" layoutY="58.0" text="Question Number" />
-      <Label layoutX="11.0" layoutY="94.0" text="Quiz Name" />
-      <Label layoutX="11.0" layoutY="160.0" text="Question " />
+      <Button layoutX="21.0" layoutY="541.0" mnemonicParsing="false" onAction="#doMenu" prefHeight="32.0" prefWidth="101.0" text="Terug" />
+        <ComboBox fx:id="quizlist" layoutX="129.0" layoutY="90.0" promptText="Selecteer Quiz" />
+        <Button layoutX="131.0" layoutY="397.0" mnemonicParsing="false" onAction="#doStoreQuestion" prefHeight="32.0" prefWidth="155.0" text="Store Vraag" />
+      <Label layoutX="11.0" layoutY="58.0" text="Vraag Nummer" />
+      <Label layoutX="11.0" layoutY="94.0" text="Quiz Naam" />
+      <Label layoutX="11.0" layoutY="160.0" text="Vraag" />
       <Label fx:id="warningLabel" layoutX="133.0" layoutY="481.0" prefHeight="76.0" prefWidth="510.0" textFill="RED" />
-      <Label layoutX="355.0" layoutY="8.0" prefHeight="30.0" prefWidth="190.0" text="Manage Question">
+      <Label layoutX="355.0" layoutY="8.0" prefHeight="30.0" prefWidth="190.0" text="Vragenbeheer">
          <font>
             <Font name="Calibri Bold" size="25.0" />
          </font>
       </Label>
-      <Label layoutX="14.0" layoutY="219.0" text="Right Answer" />
-      <Label layoutX="14.0" layoutY="254.0" text="Wrong Answer 1" />
-      <Label layoutX="14.0" layoutY="290.0" text="Wrong Answer 2" />
-      <Label layoutX="14.0" layoutY="328.0" text="Wrong Answer 3" />
+      <Label layoutX="14.0" layoutY="219.0" text="Juist Antwoord" />
+      <Label layoutX="14.0" layoutY="254.0" text="Fout Antwoord 1" />
+      <Label layoutX="14.0" layoutY="290.0" text="Fout Antwoord 2" />
+      <Label layoutX="14.0" layoutY="328.0" text="Fout Antwoord 3" />
     </children>
 </AnchorPane>

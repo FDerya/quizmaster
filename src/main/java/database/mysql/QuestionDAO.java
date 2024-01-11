@@ -31,7 +31,9 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
             System.out.println("SQL fout " + sqlException.getMessage());
         }
     }
-     //De methode die wordt gebruikt om alle vragen uit de database te halen
+
+
+    //De methode die wordt gebruikt om alle vragen uit de database te halen
     @Override
     public List<Question> getAll() {
         String sql = "SELECT * FROM question;";
@@ -96,13 +98,12 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
 
     }
 
-    // New method to get the count of questions for a specific quiz
-    public int getQuestionCountForQuiz(Quiz quizName) {
+    public int getQuestionCountForQuiz(Quiz quiz) {
         int count = 0;
-        String sql = "SELECT COUNT(*) FROM question q JOIN quiz z ON q.idQuiz = z.idQuiz WHERE z.nameQuiz = ?;";
+        String sql = "SELECT COUNT(*) FROM question WHERE idQuiz = ?;";
         try {
             setupPreparedStatement(sql);
-            preparedStatement.setString(1, String.valueOf(quizName));
+            preparedStatement.setInt(1, quiz.getIdQuiz());
             ResultSet resultSet = executeSelectStatement();
             if (resultSet.next()) {
                 count = resultSet.getInt(1);
@@ -112,6 +113,7 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
         }
         return count;
     }
+
 
     public List<Question> getQuestionsForQuiz(Quiz quiz) {
         List<Question> questions = new ArrayList<>();
@@ -171,4 +173,29 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
             System.out.println("SQL fout " + sqlException.getMessage());
         }
     }
+
+    public List<Question> getQuestionsForUser(int userId) {
+        List<Question> questions = new ArrayList<>();
+        String sql = "SELECT q.* " +
+                "FROM question q " +
+                "JOIN quiz z ON q.idQuiz = z.idQuiz " +
+                "JOIN course c ON z.idCourse = c.idCourse " +
+                "JOIN user u ON c.idUser = u.idUser " +
+                "WHERE u.idUser = ?;";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, userId);
+            ResultSet resultSet = executeSelectStatement();
+            while (resultSet.next()) {
+                questions.add(getQuestionFromResultSet(resultSet));
+            }
+        } catch (SQLException sqlException) {
+            System.out.println("SQL fout " + sqlException.getMessage());
+        }
+        return questions;
+    }
+
+
+
+
 }

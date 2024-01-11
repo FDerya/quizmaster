@@ -1,37 +1,61 @@
 package controller;
 
+import database.mysql.CourseDAO;
 import database.mysql.QuestionDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import model.Course;
 import model.Question;
+import model.User;
 import view.Main;
 import java.util.List;
 import java.util.Optional;
 
 public class ManageQuestionsController {
     private final QuestionDAO questionDAO;
+
+    private final CourseDAO courseDAO;
+
     @FXML
     ListView<Question> questionList;
     @FXML
     Label warningLabel;
     private Question question;
 
+    @FXML
+    Label questionCountLabel;
 
     public ManageQuestionsController() {
         this.questionDAO = new QuestionDAO(Main.getDBaccess());
-
-
+        this.courseDAO = new CourseDAO(Main.getDBaccess());
     }
 
     public void setup() {
-        List<Question> allQuestions = questionDAO.getAll();
+
+        User currentUser = User.getCurrentUser();
+        int userId = currentUser.getIdUser();
+        List<Question> userQuestions = questionDAO.getQuestionsForUser(userId);
         ObservableList<Question> questionObservableList =
-                FXCollections.observableArrayList(allQuestions);
+                FXCollections.observableArrayList(userQuestions);
         questionList.setItems(questionObservableList);
         questionList.getSelectionModel().selectFirst();
+
+        questionList.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> updateQuestionCount(newValue)
+        );
+
+        // Select the first item to trigger the listener
+        questionList.getSelectionModel().selectFirst();
+    }
+
+    private void updateQuestionCount(Question selectedQuestion) {
+        if (selectedQuestion != null) {
+            int questionCount = questionDAO.getQuestionCountForQuiz(selectedQuestion.getQuiz());
+            questionCountLabel.setText("Vragen in Quiz: " + questionCount);
+        }
     }
 
     // terug naar menu
