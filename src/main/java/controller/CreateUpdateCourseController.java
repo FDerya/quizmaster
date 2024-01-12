@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class CreateUpdateCourseController {
+// Attributes
     private final CourseDAO courseDAO;
     private final UserDAO userDAO = new UserDAO(Main.getDBaccess());
     private int idCourse;
@@ -38,11 +39,12 @@ public class CreateUpdateCourseController {
     List<User> coordinators = userDAO.getAllCoordinators();
     ObservableList<User> coordinatorOptions = FXCollections.observableArrayList(coordinators);
 
-
+// Contructor
     public CreateUpdateCourseController(){
         this.courseDAO = new CourseDAO(Main.getDBaccess());
     }
 
+// Method to setup the createUpdateCourse page
     public void setup(Course course) {
         levelComboBox.setItems(levelOptions);
         coordinatorComboBox.setItems(coordinatorOptions);
@@ -57,6 +59,7 @@ public class CreateUpdateCourseController {
         }
     }
 
+// Method to save a new or updated course
     public void doSaveCourse(ActionEvent actionEvent){
         Course course = createNewCourse();
         String updateCourseAlert = "Cursus gewijzigd";
@@ -73,10 +76,13 @@ public class CreateUpdateCourseController {
         }
     }
 
+// Method to get back to the Welcome page
     public void doMenu(ActionEvent actionEvent) {Main.getSceneManager().showWelcomeScene();}
 
+// Method to get back to the manageCourse page
     public void doShowManageCourse(ActionEvent actionEvent) {Main.getSceneManager().showManageCoursesScene();}
 
+// Method to create a new course with a warning if not all fields are filled in
     private Course createNewCourse(){
         String error = "Je hebt niet alle velden ingevuld.\nAlle velden zijn verplicht.";
         String courseName = courseNameTextField.getText();
@@ -91,6 +97,7 @@ public class CreateUpdateCourseController {
         }
     }
 
+// Method to show an alert to notify the user that they have save a new or updated course
     private static void showAlert(String message){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(message);
@@ -99,6 +106,4 @@ public class CreateUpdateCourseController {
             Main.getSceneManager().showManageCoursesScene();
         }
     }
-
-
 }
