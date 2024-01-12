@@ -46,9 +46,7 @@ public class CreateUpdateCourseController {
     public void setup(Course course) {
         levelComboBox.setItems(levelOptions);
         coordinatorComboBox.setItems(coordinatorOptions);
-        Main.primaryStage.setTitle("Nieuwe Cursus");
         if (course != null){
-            Main.primaryStage.setTitle("Wijzig cursus");
             idCourse = course.getIdCourse();
             titleLabel.setText("Wijzig cursus");
             courseNameTextField.setText(String.valueOf(course.getNameCourse()));

@@ -3,7 +3,6 @@ package view;
 import database.mysql.DBAccess;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import model.User;
 
 public class Main extends Application {
 
@@ -21,7 +20,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         Main.primaryStage = primaryStage;
-        primaryStage.setTitle("Make IT Work - Project 1");
+        primaryStage.setTitle("Quizmaster - Prlwytzkofsky College");
         getSceneManager().showLoginScene();
         primaryStage.show();
     }
