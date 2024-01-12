@@ -54,15 +54,7 @@ public class ManageQuizzesController {
 
     // Nieuwe quiz maken met leeg scherm
     public void doCreateQuiz(ActionEvent event) {
-        Quiz quiz = quizList.getSelectionModel().getSelectedItem();
-        if (quiz == null) {
-            Quiz newQuiz = new Quiz();
-            Main.getSceneManager().showCreateUpdateQuizScene(newQuiz);
-        } else {
-            Main.getSceneManager().showCreateUpdateQuizScene(quiz);
-
-        }
-    }
+        Main.getSceneManager().showCreateUpdateQuizScene(null);}
 
     // Quiz bewerken met vooraf ingevuld scherm
     public void doUpdateQuiz(ActionEvent event) {
@@ -91,11 +83,11 @@ public class ManageQuizzesController {
         alert.setTitle("Verwijder quiz");
         alert.setHeaderText("Quiz `" + selectedQuiz.getNameQuiz() + "` wordt verwijderd.");
         alert.setContentText("Weet je het zeker?");
-        ButtonType buttonTypeYes = new ButtonType("Ja");
-        ButtonType buttonTypeNo = new ButtonType("Nee");
-        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+        ButtonType buttonTypeCancel = new ButtonType("Annuleer");
+        ButtonType buttonTypeContinue = new ButtonType("Verwijder");
+        alert.getButtonTypes().setAll(buttonTypeCancel, buttonTypeContinue);
         Optional<ButtonType> result = alert.showAndWait();
-        return result.isPresent() && result.get() == buttonTypeYes;
+        return result.isPresent() && result.get() == buttonTypeContinue;
     }
 
     // Quiz verwijderen uit de database én de Listview
