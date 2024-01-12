@@ -65,11 +65,12 @@ public class CreateUpdateCourseController {
         if (course != null){
             if (titleLabel.getText().equals("Nieuwe Cursus")){
                 courseDAO.storeOne(course);
-                showAlert(newCourseAlert);
+                warningLabel.setText(newCourseAlert);
+                warningLabel.setVisible(true);
+
             }else {
                 course.setIdCourse(idCourse);
                 courseDAO.updateOne(course);
-                showAlert(updateCourseAlert);
             }
         }
     }
@@ -92,16 +93,6 @@ public class CreateUpdateCourseController {
             return null;
         } else {
             return new Course(0, coordinator, courseName, level);
-        }
-    }
-
-// Method to show an alert to notify the user that they have save a new or updated course
-    private static void showAlert(String message){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText(message);
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK){
-            Main.getSceneManager().showManageCoursesScene();
         }
     }
 }
