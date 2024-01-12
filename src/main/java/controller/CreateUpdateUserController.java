@@ -96,13 +96,13 @@ public class CreateUpdateUserController {
     // wordt hier een melding over gegeven.
     private User createUser() {
         String errorMessage = "Je hebt niet alle velden ingevuld.\nVelden met een * zijn verplicht.";
-        boolean correctInput = true;
+        boolean correctInput;
         String username = usernameTextfield.getText();
         String firstname = firstNameTextfield.getText();
         String prefix = prefixTextfield.getText();
         String lastname = lastNameTextfield.getText();
         String role = roleComboBox.getSelectionModel().getSelectedItem();
-        correctInput = isCorrectInput(username, firstname, lastname, role, correctInput);
+        correctInput = isCorrectInput(username, firstname, lastname, role);
         if (!correctInput) {
             warningLabel.setText(errorMessage);
             warningLabel.setVisible(true);
@@ -112,15 +112,15 @@ public class CreateUpdateUserController {
         }
     }
 
-    private boolean isCorrectInput(String username, String firstname, String lastname, String role, boolean correctInput) {
+    private boolean isCorrectInput(String username, String firstname, String lastname, String role) {
         if (username.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || role == null) {
-            correctInput = false;
             List<Label> mandatoryFields = new ArrayList<>(Arrays.asList(usernameLabel, firstnameLabel, surnameLabel, roleLabel));
             for (Label label : mandatoryFields) {
                 label.setText(label.getText() + " *");
             }
+            return false;
         }
-        return correctInput;
+        return true;
     }
 
     // Methode om een Alert te laten zien en je daarna terug te sturen naar de manage user scene

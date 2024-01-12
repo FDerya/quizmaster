@@ -1,5 +1,6 @@
 package controller;
 // Tom van Beek, 500941521.
+
 import database.mysql.QuizDAO;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -25,10 +26,6 @@ public class ManageQuizzesController {
     public void setup() {
         List<Quiz> quizzen = quizDAO.getAll();
         quizList.getItems().addAll(quizzen);
-        quizList.getSelectionModel().getSelectedItem();
-        quizList.getSelectionModel().selectedItemProperty().addListener(
-                (observableValue, oldQuiz, newQuiz) ->
-                        System.out.println("Geselecteerde quiz: " + observableValue + ", " + oldQuiz + ", " + newQuiz));
         quizList.setCellFactory(param -> new ListCell<>() {
             @Override
             public void updateItem(Quiz item, boolean empty) {
@@ -44,6 +41,11 @@ public class ManageQuizzesController {
                 setGraphic(hBox);
             }
         });
+        quizList.getSelectionModel().getSelectedItem();
+        quizList.getSelectionModel().selectedItemProperty().addListener(
+                (observableValue, oldQuiz, newQuiz) ->
+                        System.out.println("Geselecteerde quiz: " + observableValue + ", " + oldQuiz + ", " + newQuiz));
+
     }
 
     public void doMenu(ActionEvent event) {
@@ -61,6 +63,7 @@ public class ManageQuizzesController {
 
         }
     }
+
     // Quiz bewerken met vooraf ingevuld scherm
     public void doUpdateQuiz(ActionEvent event) {
         Quiz quiz = quizList.getSelectionModel().getSelectedItem();
@@ -70,6 +73,7 @@ public class ManageQuizzesController {
             Main.getSceneManager().showCreateUpdateQuizScene(quiz);
         }
     }
+
     // Waarschuwing in pop-up scherm weergeven
     private void showWarning() {
         Platform.runLater(() -> {
@@ -80,6 +84,7 @@ public class ManageQuizzesController {
             alert.showAndWait();
         });
     }
+
     //Waarschuwing in pop-up scherm weergeven voor verwijderen quiz
     private boolean confirmDeletion(Quiz selectedQuiz) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -92,6 +97,7 @@ public class ManageQuizzesController {
         Optional<ButtonType> result = alert.showAndWait();
         return result.isPresent() && result.get() == buttonTypeYes;
     }
+
     // Quiz verwijderen uit de database én de Listview
     public void doDeleteQuiz(ActionEvent event) {
         Quiz selectedQuiz = quizList.getSelectionModel().getSelectedItem();

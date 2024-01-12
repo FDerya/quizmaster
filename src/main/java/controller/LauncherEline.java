@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class LauncherEline {
-// Database access, UserDAO en CourseDAO objecten aanmaken
+// Create database access, UserDAO and CourseDAO objects
     final static String databaseName = "Quizmaster";
     final static String mainUser = "userQuizmaster";
     final static String mainUserPassword = "pwQuizmaster";
@@ -20,24 +20,24 @@ public class LauncherEline {
     static UserDAO userDAO = new UserDAO(dbAccess);
     static CourseDAO courseDAO = new CourseDAO(dbAccess, userDAO);
 
-// Initialiseren van courses csv bestand, om database te vullen
+// Initialize courses of csv file, to fill the database
     private static final String filepath = "src/main/java/database/Cursussen.csv";
     private static final File courseFile = new File(filepath);
 
 
     public static void main(String[] args) {
         dbAccess.openConnection();
-        // Csv naar een ArrayList wegschrijven
+        // Csv to an ArrayList
         List<String> test = fileReaderCourseToArray();
         List<Course> courseList = listCourses(test);
 
-        // Opslaan van courses in de database
+        // Save courses in database
         saveCoursesFromArray(courseList, courseDAO);
 
         dbAccess.closeConnection();
     }
 
-    // Leest csv bestand in en slaat deze op in ArrayList
+    // Reads csv file and saves it in an ArrayList
     public static List<String> fileReaderCourseToArray(){
         List<String> linesFromFile = new ArrayList<>();
         try {
@@ -51,7 +51,7 @@ public class LauncherEline {
         return linesFromFile;
     }
 
-    // Leest Arraylist fileReaderCourseToArray() en maakt een list van Courses
+    // Reads Arraylist fileReaderCourseToArray() and creates a list of Courses
     public static List<Course> listCourses(List<String> list){
         UserDAO userDAO = new UserDAO(dbAccess);
         List<Course> courseList = new ArrayList<>();
@@ -66,7 +66,7 @@ public class LauncherEline {
         return courseList;
     }
 
-    // Sla Course via CourseDAO op in database
+    // Saves Course via CourseDAO in database
     public static void saveCoursesFromArray(List<Course> courseList, CourseDAO courseDAO){
         dbAccess.openConnection();
         for (Course course : courseList){

@@ -27,7 +27,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         super(dbAccess);
     }
 
-// Alle courses ophalen
+// Get all courses
     @Override
     public List<Course> getAll() {
         List<Course> resultList = new ArrayList<>();
@@ -45,7 +45,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
     }
 
 
-// Course ophalen op basis van ID
+// Get courses by id
     @Override
     public Course getOneById(int id) {
         String sql = "SELECT * FROM Course WHERE idCourse = ?;";
@@ -64,7 +64,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         return course;
     }
 
-// Course ophalen op basis van naam
+// Get courses by name
     public Course getOneByName(String courseName) {
         String sql = "SELECT * FROM Course WHERE nameCourse = ?";
         try {
@@ -82,7 +82,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
     }
 
 
-// Nieuwe course opslaan
+// Save a new course
     @Override
     public void storeOne(Course course) {
         String sql = "INSERT INTO course (idUser, nameCourse, difficultyCourse) VALUES(?, ?, ?);";
@@ -96,6 +96,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         }
     }
 
+// Update one course
     public void updateOne(Course course){
         String sql = "UPDATE Course SET idUser = ?, nameCourse = ?, difficultyCourse = ? WHERE idCourse = ?;";
         try {
@@ -108,6 +109,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         }
     }
 
+// Delete one course
     public void deleteOne(Course course){
         String sql = "DELETE FROM course WHERE idCourse = ?;";
         try {
@@ -119,7 +121,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         }
     }
 
-// Course object maken vanuit resultSet
+// Create course object from resultSet
     private Course getCourse(ResultSet resultSet) throws SQLException {
         UserDAO userDAO = new UserDAO(dbAccess);
         int idCourse = resultSet.getInt("idCourse");
@@ -130,6 +132,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         return new Course(idCourse, user, nameCourse, difficultyCourse);
     }
 
+// Method of preparedStatements for saving and updating a course
     private void storeCourse(Course course) throws SQLException{
         preparedStatement.setInt(1, course.getCoordinator().getIdUser());
         preparedStatement.setString(2, course.getNameCourse());
