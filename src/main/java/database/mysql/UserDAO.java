@@ -16,34 +16,14 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
     public List<User> getAll() {
         List<User> resultList = new ArrayList<>();
         String sql = "SELECT * FROM User ORDER BY surname;";
-        try {
-            setupPreparedStatement(sql);
-            ResultSet resultSet = executeSelectStatement();
-            while(resultSet.next()) {
-                User user = getUser(resultSet);
-                resultList.add(user);
-            }
-        } catch (SQLException sqlException) {
-            System.out.println("SQL fout " + sqlException.getMessage());
-        }
-        return resultList;
+        return makeUserList(resultList, sql);
     }
 
     // Methode om een lijst van coordinatoren te krijgen
     public List<User> getAllCoordinators() {
         List<User> resultList = new ArrayList<>();
         String sql = "SELECT * FROM user WHERE role = 'Coördinator' ORDER BY surname;";
-        try {
-            setupPreparedStatement(sql);
-            ResultSet resultSet = executeSelectStatement();
-            while(resultSet.next()) {
-                User user = getUser(resultSet);
-                resultList.add(user);
-            }
-        } catch (SQLException sqlException) {
-            System.out.println("SQL fout " + sqlException.getMessage());
-        }
-        return resultList;
+        return makeUserList(resultList, sql);
     }
 
     // Methode om een enkele gebruiker op te vragen uit de SQL database, waarvan je de parameter id meegeeft.
@@ -63,9 +43,9 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         }
         return user;
     }
-    
     // Methode nodig bij het inloggen: het vraagt om een userName en geeft een object User terug, waarvan je met de
     // getters het wachtwoord kan controleren.
+
     public User getOneByUsername(String userName) {
         String sql = "SELECT * FROM User WHERE username = ?";
         User user = null;
@@ -81,8 +61,8 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         }
         return user;
     }
-
     // Methode om een object User (zonder userId, want de tabel User gebruikt auto-increment) toe te voegen aan SQL.
+
     public void storeOne(User user) {
         String sql = "INSERT INTO user(username, password, firstName, prefix, surname, role) VALUES (?,?,?,?,?,?) ;";
         try {
@@ -99,8 +79,8 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
             System.out.println("SQL fout " + sqlException.getMessage());
         }
     }
-
     // Methode om een gebruiker in SQL te updaten.
+
     public void updateOne(User user) {
         String sql = "UPDATE User SET username = ?, firstName = ?, prefix = ?, surname = ?, role = ? WHERE idUser = ?;";
         try {
@@ -116,8 +96,8 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
             System.out.println("SQL error " + sqlException.getMessage());
         }
     }
-
     // Methode om een gebruiker uit de database te verwijderen.
+
     public void removeOne(User user) {
         String sql = "DELETE FROM user WHERE idUser = ?;";
         try {
@@ -128,7 +108,6 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
             System.out.println("SQL fout " + sqlException.getMessage());
         }
     }
-
     private static User getUser(ResultSet resultSet) throws SQLException {
         int idUser = resultSet.getInt("idUser");
         String username = resultSet.getString("username");
@@ -140,5 +119,19 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         return new User(idUser, username, password, firstName, prefix, surname, role);
     }
 
+// Methode om een userList te maken. Geeft de resultList terug aan de hand van de meegegeven SQL statement
+    private List<User> makeUserList(List<User> resultList, String sql) {
+        try {
+            setupPreparedStatement(sql);
+            ResultSet resultSet = executeSelectStatement();
+            while(resultSet.next()) {
+                User user = getUser(resultSet);
+                resultList.add(user);
+            }
+        } catch (SQLException sqlException) {
+            System.out.println("SQL fout " + sqlException.getMessage());
+        }
+        return resultList;
+    }
 }
 
