@@ -2,6 +2,7 @@ package controller;
 // Tom van Beek, 500941521.
 
 import database.mysql.CourseDAO;
+import database.mysql.UserDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,11 +13,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import view.Main;
 
+import java.util.ArrayList;
+
 public class CreateUpdateQuizController {
-    @FXML
-    ListView<Quiz> quizList;
-    @FXML
-    TextField waarschuwingsTextField;
+    private CourseDAO courseDAO;
     @FXML
     private TextField nameTextField;
     @FXML
@@ -26,17 +26,15 @@ public class CreateUpdateQuizController {
     @FXML
     private Label titelLabel;
     @FXML
-    ComboBox<String> levelComboBox;
+    ComboBox<String> levelsListComboBox;
     @FXML
-    ComboBox<String> courseComboBox;
+    ComboBox<String> coursesListComboBox;
 
     @FXML
     private TextField levelTextField;
-    @FXML
-    ListView<Course> courseList;
 
-    ObservableList<String> level = FXCollections.observableArrayList("Beginner", "Medium", "Gevorderd");
-    ObservableList<String> course = FXCollections.observableArrayList(courseList.getItems().toString());
+    ObservableList<String> levelsList = FXCollections.observableArrayList("Beginner", "Medium", "Gevorderd");
+    //ObservableList<Course> coursesList = FXCollections.observableArrayList(makeCoursesList());
 
     private final DBAccess dbAccess;
 
@@ -60,37 +58,46 @@ public class CreateUpdateQuizController {
             createQuiz();
         }
     }
-        private void createQuiz(){
-        Quiz quizNew = null;
-            titelLabel.setText("Maak nieuwe Quiz");
-            courseComboBox.getSelectionModel().getSelectedItem();
-            nameTextField.getText();
-            levelComboBox.getSelectionModel().getSelectedItem();
-            amountTextField.getText();
-            amountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-                if (!newValue.matches("\\d*")) {
-                    amountTextField.setText(oldValue);
-                }
-            });
+
+    private void createQuiz() {
+        levelsListComboBox.setItems(levelsList);
+        //coursesListComboBox.setItems(makeCoursesList());
+        titelLabel.setText("Maak nieuwe Quiz");
+        coursesListComboBox.getSelectionModel().getSelectedItem();
+        nameTextField.getText();
+        levelsListComboBox.getSelectionModel().getSelectedItem();
+        amountTextField.getText();
+        amountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                amountTextField.setText(oldValue);
             }
-        public void doMenuBack (ActionEvent event){
-            Main.getSceneManager().showManageQuizScene();
-        }
-
-        public void doMenu () {
-            Main.getSceneManager().showWelcomeScene();
-        }
-
-        public void doCreateUpdateQuiz (ActionEvent event){
-            Quiz quiz = null;
-            QuizDAO quizDAO = new QuizDAO(dbAccess);
-            CourseDAO courseDAO = new CourseDAO(dbAccess);
-            Course course = courseDAO.getOneByName(courseTextField.getText());
-            String nameQuiz = nameTextField.getText();
-            String level = levelTextField.getText();
-            int amountQuestions = 5;
-            quiz = new Quiz(course, nameQuiz, level, amountQuestions);
-            quizDAO.storeOne(quiz);
-        }
-
+        });
     }
+
+    public void doMenuBack(ActionEvent event) {
+        Main.getSceneManager().showManageQuizScene();
+    }
+
+    public void doMenu() {
+        Main.getSceneManager().showWelcomeScene();
+    }
+
+    public void doCreateUpdateQuiz(ActionEvent event) {
+        Quiz quiz = null;
+        QuizDAO quizDAO = new QuizDAO(dbAccess);
+        courseDAO = new CourseDAO(dbAccess);
+        Course course = courseDAO.getOneByName(courseTextField.getText());
+        String nameQuiz = nameTextField.getText();
+        String level = levelTextField.getText();
+        int amountQuestions = 5;
+        quiz = new Quiz(course, nameQuiz, level, amountQuestions);
+        quizDAO.storeOne(quiz);
+    }
+   /* public ArrayList<Course> makeCoursesList(){
+        CourseDAO courseDAOO = new CourseDAO(dbAccess, new UserDAO(dbAccess));
+        ArrayList<Course> coursesList = new ArrayList<>();
+        for (int i = 0; i < 20 ; i++) {
+            coursesList.add(courseDAOO.getOneById(i));
+        }return coursesList;
+    }*/
+}
