@@ -18,8 +18,8 @@
         <TextField fx:id="answerWrong3Textfield" layoutX="133.0" layoutY="324.0" promptText="Wrong Answer 3" />
       <Button layoutX="21.0" layoutY="541.0" mnemonicParsing="false" onAction="#doMenu" prefHeight="32.0" prefWidth="101.0" text="Terug" />
         <ComboBox fx:id="quizlist" layoutX="129.0" layoutY="90.0" promptText="Selecteer Quiz" />
-        <Button layoutX="131.0" layoutY="397.0" mnemonicParsing="false" onAction="#doStoreQuestion" prefHeight="32.0" prefWidth="155.0" text="Store Vraag" />
-      <Label layoutX="11.0" layoutY="58.0" text="Vraag Nummer" />
+        <Button layoutX="131.0" layoutY="397.0" mnemonicParsing="false" onAction="#doStoreQuestion" prefHeight="32.0" prefWidth="155.0" text="Opslaan " />
+      <Label layoutX="11.0" layoutY="58.0" />
       <Label layoutX="11.0" layoutY="94.0" text="Quiz Naam" />
       <Label layoutX="11.0" layoutY="160.0" text="Vraag" />
       <Label fx:id="warningLabel" layoutX="133.0" layoutY="481.0" prefHeight="76.0" prefWidth="510.0" textFill="RED" />
@@ -29,8 +29,8 @@
          </font>
       </Label>
       <Label layoutX="14.0" layoutY="219.0" text="Juist Antwoord" />
-      <Label layoutX="14.0" layoutY="254.0" text="Fout Antwoord 1" />
-      <Label layoutX="14.0" layoutY="290.0" text="Fout Antwoord 2" />
-      <Label layoutX="14.0" layoutY="328.0" text="Fout Antwoord 3" />
+      <Label layoutX="14.0" layoutY="254.0" text="Onjuist Antwoord 1" />
+      <Label layoutX="14.0" layoutY="290.0" text="Onjuist Antwoord 2" />
+      <Label layoutX="14.0" layoutY="328.0" text="Onjuist Antwoord 3" />
     </children>
 </AnchorPane>
