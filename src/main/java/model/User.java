@@ -28,15 +28,10 @@ public class User {
         this(0, username, password, firstName, prefix, surname, role);
     }
 
-    public User(String username, String firstName, String prefix, String surname, String role) {
-        this(0, username, getRandomPassword(), firstName, prefix, surname, role);
-    }
-
     // Methods
     @Override
     public String toString() {
         return getFullName() + ", " + getRole();
-//        String.format("%s %s %s, %s", firstName, (getPrefix() == null) ? "" : getPrefix(), getSurname(), getRole());
     }
 
     // Getters & Setters
@@ -106,20 +101,12 @@ public class User {
     }
 
     public String getFullName() {
-        return String.format("%s %s %s", firstName, (getPrefix() == null) ? "" : getPrefix(), getSurname());
-    }
-
-    private static char getRandomChar() {
-        int randomInt = (int) (Math.random() * 93) + 33; // Lijken magic numbers, maar char 33 t/m 126 zijn speciale tekens
-        return (char) randomInt;
-    }
-
-    private static String getRandomPassword() {
-        int numberOfCharsInPassword = 10;
-        StringBuilder randomPassword = new StringBuilder();
-        for (int i = 0; i < numberOfCharsInPassword; i++) {
-            randomPassword.append(getRandomChar());
+        StringBuilder fullName = new StringBuilder();
+        fullName.append(firstName).append(" ");
+        if (prefix != null) {
+            fullName.append(prefix).append(" ");
         }
-        return randomPassword.toString();
+        fullName.append(surname);
+        return fullName.toString();
     }
 }

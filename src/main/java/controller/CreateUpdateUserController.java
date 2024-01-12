@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.paint.Color;
 import model.User;
 import view.Main;
 
@@ -22,6 +23,8 @@ public class CreateUpdateUserController {
     @FXML
     TextField usernameTextfield;
     @FXML
+    TextField passwordTextfield;
+    @FXML
     TextField firstNameTextfield;
     @FXML
     TextField prefixTextfield;
@@ -30,9 +33,13 @@ public class CreateUpdateUserController {
     @FXML
     ComboBox<String> roleComboBox;
     @FXML
-    Label warningLabel;
+    Label warningLabelNoRole;
+    @FXML
+    Label warningLabelNoFields;
     @FXML
     Label usernameLabel;
+    @FXML
+    Label passwordLabel;
     @FXML
     Label firstnameLabel;
     @FXML
@@ -55,6 +62,7 @@ public class CreateUpdateUserController {
             idUser = user.getIdUser();
             titleLabel.setText("Wijzig gebruiker");
             usernameTextfield.setText(String.valueOf(user.getUsername()));
+            passwordTextfield.setText(String.valueOf(user.getPassword()));
             firstNameTextfield.setText(String.valueOf(user.getFirstName()));
             prefixTextfield.setText(String.valueOf(user.getPrefix()));
             lastNameTextfield.setText(String.valueOf(user.getSurname()));
@@ -95,26 +103,62 @@ public class CreateUpdateUserController {
     // Methode om een nieuw object User te maken. Als foutieve informatie ingevuld wordt,
     // wordt hier een melding over gegeven.
     private User createUser() {
-        String errorMessage = "Je hebt niet alle velden ingevuld.\nVelden met een * zijn verplicht.";
-        boolean correctInput;
+        String errorMessageNoFields = "Je hebt niet alle velden ingevuld.\nVul de rood gekleurde velden alsnog in.";
+        String errorMessageNoRole = "Je hebt geen rol gekozen voor de gebruiker.";
+        boolean correctInput = true;
         String username = usernameTextfield.getText();
+        String password = passwordTextfield.getText();
         String firstname = firstNameTextfield.getText();
         String prefix = prefixTextfield.getText();
         String lastname = lastNameTextfield.getText();
         String role = roleComboBox.getSelectionModel().getSelectedItem();
-        correctInput = isCorrectInput(username, firstname, lastname, role);
+
+        correctInput = isCorrectInput(username, correctInput, password, firstname, lastname);
+
+        if (role == null) {
+            warningLabelNoRole.setText(errorMessageNoRole);
+            warningLabelNoRole.setVisible(true);
+        } else {
+            warningLabelNoRole.setVisible(false);
+        }
+
         if (!correctInput) {
-            warningLabel.setText(errorMessage);
-            warningLabel.setVisible(true);
+            warningLabelNoFields.setText(errorMessageNoFields);
+            warningLabelNoFields.setVisible(true);
             return null;
         } else {
-            return new User(username, firstname, prefix, lastname, role);
+            warningLabelNoRole.setVisible(false);
+            warningLabelNoFields.setVisible(false);
+            return new User(username, password, firstname, prefix, lastname, role);
         }
     }
 
-    private boolean isCorrectInput(String username, String firstname, String lastname, String role) {
-        if (username.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || role == null) {
-            List<Label> mandatoryFields = new ArrayList<>(Arrays.asList(usernameLabel, firstnameLabel, surnameLabel, roleLabel));
+    private boolean isCorrectInput(String username, boolean correctInput, String password, String firstname, String lastname) {
+        if (username.isEmpty()) {
+            usernameLabel.setTextFill(Color.color(1, 0, 0));
+            correctInput = false;
+        }
+
+        if (password.isEmpty()) {
+            passwordLabel.setTextFill(Color.color(1,0,0));
+            correctInput = false;
+        }
+
+        if (firstname.isEmpty()) {
+            firstnameLabel.setTextFill(Color.color(1,0,0));
+            correctInput = false;
+        }
+
+        if (lastname.isEmpty()) {
+            surnameLabel.setTextFill(Color.color(1,0,0));
+            correctInput = false;
+        }
+        return correctInput;
+    }
+
+    private boolean isCorrectInput(String username, String password, String firstname, String lastname, String role) {
+        if (username.isEmpty() || password.isEmpty() || firstname.isEmpty() || lastname.isEmpty()) {
+            List<Label> mandatoryFields = new ArrayList<>(Arrays.asList(usernameLabel, passwordLabel, firstnameLabel, surnameLabel, roleLabel));
             for (Label label : mandatoryFields) {
                 label.setText(label.getText() + " *");
             }

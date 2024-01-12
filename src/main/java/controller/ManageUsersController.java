@@ -25,10 +25,8 @@ public class ManageUsersController {
 
     // Methode die ervoor zorgt dat de listView gevuld is en dat de eerste counter aangeroepen wordt.
     public void setup() {
-        Main.getPrimaryStage().setTitle("Gebruikersbeheer");
         List<User> users = userDAO.getAll();
         userList.getItems().addAll(users);
-        userList.getSelectionModel().selectFirst();
         doCounterRole();
         userList.getSelectionModel().selectedItemProperty().addListener((observableValue, user, t1) -> {
                 doCounterRole();
