@@ -101,7 +101,7 @@ public class ParticipationDAO extends AbstractDAO implements GenericDAO<Particip
     private Participation getParticipation(ResultSet resultSet) throws SQLException {
         UserDAO userDAO = new UserDAO(dbAccess);
         CourseDAO courseDAO = new CourseDAO(dbAccess, userDAO);
-        GroupDAO groupDAO = new GroupDAO(dbAccess, userDAO);
+        GroupDAO groupDAO = new GroupDAO(dbAccess, userDAO, courseDAO);
         int idUser = resultSet.getInt("idUser");
         int idCourse = resultSet.getInt("idCourse");
         int idGroup = resultSet.getInt("idGroep");
