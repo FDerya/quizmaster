@@ -66,7 +66,7 @@
                <GridPane.margin>
                   <Insets />
                </GridPane.margin></TextField>
-            <TextField fx:id="lastNameTextfield" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="surnameTextfield" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <ComboBox fx:id="roleComboBox" prefHeight="25.0" prefWidth="199.0" promptText="Kies een rol" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
          <padding>

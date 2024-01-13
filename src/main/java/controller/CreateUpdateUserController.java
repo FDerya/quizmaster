@@ -24,7 +24,7 @@ public class CreateUpdateUserController {
     @FXML
     TextField prefixTextfield;
     @FXML
-    TextField lastNameTextfield;
+    TextField surnameTextfield;
     @FXML
     ComboBox<String> roleComboBox;
     @FXML
@@ -54,14 +54,13 @@ public class CreateUpdateUserController {
     public void setup(User user) {
         roleComboBox.setItems(rollen);
         if (user != null) {
-            Main.primaryStage.setTitle("Wijzig gebruiker");
             idUser = user.getIdUser();
             titleLabel.setText("Wijzig gebruiker");
             usernameTextfield.setText(String.valueOf(user.getUsername()));
             passwordTextfield.setText(String.valueOf(user.getPassword()));
             firstNameTextfield.setText(String.valueOf(user.getFirstName()));
             prefixTextfield.setText(String.valueOf(user.getPrefix()));
-            lastNameTextfield.setText(String.valueOf(user.getSurname()));
+            surnameTextfield.setText(String.valueOf(user.getSurname()));
             roleComboBox.getSelectionModel().select(user.getRole());
         }
     }
@@ -105,16 +104,16 @@ public class CreateUpdateUserController {
         String password = passwordTextfield.getText();
         String firstname = firstNameTextfield.getText();
         String prefix = prefixTextfield.getText();
-        String lastname = lastNameTextfield.getText();
+        String surname = surnameTextfield.getText();
         String role = roleComboBox.getSelectionModel().getSelectedItem();
         isCorrectInputRole(role);
-        correctInput = isCorrectInput(username, password, firstname, lastname);
+        correctInput = isCorrectInput(username, password, firstname, surname);
         if (role == null || !correctInput) {
             return null;
         } else {
             warningLabelNoRole.setVisible(false);
             warningLabelNoFields.setVisible(false);
-            return new User(username, password, firstname, prefix, lastname, role);
+            return new User(username, password, firstname, prefix, surname, role);
         }
     }
 
