@@ -49,7 +49,6 @@ public class ManageCoursesController {
     public void setup() {
         List<Course> courses = courseDAO.getAll();
         courseList.getItems().addAll(courses);
-        courseList.getSelectionModel().selectFirst();
         doStudentCount();
         courseList.getSelectionModel().selectedItemProperty().addListener((observableValue, course, t1) -> {
             doStudentCount();
@@ -77,7 +76,7 @@ public class ManageCoursesController {
         } else {
             warningLabel.setVisible(false);
             deleteCourseGrid.setVisible(true);
-            deleteWarningLabel.setText("Je gaat de cursus " + course + " verwijderen. \n" +
+            deleteWarningLabel.setText("Je gaat de cursus \"" + course + "\" verwijderen. \n" +
                     "Dit kan niet ongedaan gemaakt worden.\nWeet je het zeker?");
         }
     }

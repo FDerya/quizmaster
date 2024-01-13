@@ -43,7 +43,7 @@
             <ComboBox fx:id="levelComboBox" prefHeight="25.0" prefWidth="200.0" promptText="Kies een niveau" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
-      <Label fx:id="warningLabel" layoutX="17.0" layoutY="300.0" prefHeight="69.0" prefWidth="290.0" text="Label" visible="false" />
+      <Label fx:id="warningLabel" layoutX="17.0" layoutY="300.0" prefHeight="69.0" prefWidth="290.0" />
       <GridPane layoutX="17.0" layoutY="221.0" AnchorPane.rightAnchor="581.4">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="90.0" />

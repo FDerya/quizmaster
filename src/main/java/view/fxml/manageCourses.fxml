@@ -48,8 +48,8 @@
      </rowConstraints>
       <children>
          <Label fx:id="deleteWarningLabel" prefHeight="58.0" prefWidth="382.0" text="Placeholder text" GridPane.columnSpan="2147483647" GridPane.rowSpan="2" />
-         <Button fx:id="deleteYesButton" mnemonicParsing="false" onAction="#doDeleteCourse" text="Ja" GridPane.rowIndex="2" />
-         <Button fx:id="deleteNoButton" mnemonicParsing="false" onAction="#doNotDeleteCourse" text="Nee" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         <Button fx:id="deleteYesButton" mnemonicParsing="false" onAction="#doDeleteCourse" text="Doorgaan" GridPane.rowIndex="2" />
+         <Button fx:id="deleteNoButton" mnemonicParsing="false" onAction="#doNotDeleteCourse" text="Annuleren" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       </children>
    </GridPane>
    <Label fx:id="warningLabel" layoutX="339.0" layoutY="78.0" text="Je moet eerst een cursus selecteren." visible="false" />

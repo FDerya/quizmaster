@@ -2,11 +2,15 @@ package controller;
 
 import database.mysql.CourseDAO;
 import database.mysql.UserDAO;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.util.Duration;
 import model.Course;
 import model.User;
 import view.Main;
@@ -38,6 +42,13 @@ public class CreateUpdateCourseController {
     ObservableList<String> levelOptions = FXCollections.observableArrayList("Beginner", "Medium", "Gevorderd");
     List<User> coordinators = userDAO.getAllCoordinators();
     ObservableList<User> coordinatorOptions = FXCollections.observableArrayList(coordinators);
+    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent actionEvent) {
+            Main.getSceneManager().showManageCoursesScene();
+        }
+    }));
+
 
 // Contructor
     public CreateUpdateCourseController(){
@@ -57,22 +68,22 @@ public class CreateUpdateCourseController {
         }
     }
 
-// Method to save a new or updated course
+    // Method to save a new or updated course
     public void doSaveCourse(ActionEvent actionEvent){
         Course course = createNewCourse();
-        String updateCourseAlert = "Cursus gewijzigd";
-        String newCourseAlert = "Cursus toegevoegd";
+        String warningLabelNewCourse = "Cursus is toegevoegd";
+        String warningLabalUpdatedCourse = "Cursus is aangepast en opgeslagen";
         if (course != null){
             if (titleLabel.getText().equals("Nieuwe Cursus")){
                 courseDAO.storeOne(course);
-                warningLabel.setText(newCourseAlert);
-                warningLabel.setVisible(true);
-
+                warningLabel.setText(warningLabelNewCourse);
             }else {
                 course.setIdCourse(idCourse);
                 courseDAO.updateOne(course);
+                warningLabel.setText(warningLabalUpdatedCourse);
             }
         }
+        timeline.play();
     }
 
 // Method to get back to the Welcome page
