@@ -73,15 +73,7 @@ public class SceneManager {
         controller.setup();
 
     }
-/*    public void showCreateUpdateGroupScene(Group group) {
-        FXMLLoader loader = getScene("/view/fxml/createUpdateGroup.fxml");
-        if (loader != null) {
-            CreateUpdateGroupController controller = loader.getController();
-            if (controller != null) {
-                controller.setup(group);
-            }
-        }
-    }*/
+
     public void showCreateUpdateGroupScene(Group group) {
         FXMLLoader loader = getScene("/view/fxml/createUpdateGroup.fxml");
         CreateUpdateGroupController controller = loader.getController();

@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class UserDAO extends AbstractDAO implements GenericDAO<User> {
+
     public UserDAO(DBAccess dbAccess) {
         super(dbAccess);
     }
@@ -122,7 +124,5 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         preparedStatement.setString(5, user.getSurname());
         preparedStatement.setString(6, user.getRole());
     }
-
-
 }
 

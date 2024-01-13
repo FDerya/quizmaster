@@ -1,6 +1,6 @@
 package controller;
 // Bianca Duijvesteijn, studentnummer 500940421
-//Wegschrijven van de cvs bestanden. Vullen van de tabel Participation
+//Writing the cvs files. Filling the Participation table
 
 import database.mysql.*;
 import model.Course;
@@ -8,32 +8,29 @@ import model.Group;
 import model.User;
 import view.Main;
 
-import java.io.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static controller.LauncherTom.FileReaderToArray;
 
 public class LauncherBianca {
-    // Bestands- en padnamen
+    // File and path names
     private static final String filepath = "src/main/java/database/Groepen.csv";
     private static final File userFile = new File(filepath);
+    private static String insertQuery = "INSERT INTO participation (idUser, idGroup, idCourse) VALUES (?, ?, ?)";
 
     public static void main(String[] args) {
-        // Configureer de toegang tot de database
+        // Configure access to the database
         DBAccess dbAccess = Main.getDBaccess();
 
-        // Initialisatie van data access objecten
-        UserDAO userDAO = new UserDAO(dbAccess);
-        CourseDAO courseDAO = new CourseDAO(dbAccess, userDAO);
-        GroupDAO groupDAO = new GroupDAO(dbAccess, userDAO);
+        // Initialization of data access objects
+        UserDAO userDAO = new UserDAO(Main.getDBaccess());
+        CourseDAO courseDAO = new CourseDAO(Main.getDBaccess());
+        GroupDAO groupDAO = new GroupDAO(dbAccess, userDAO, courseDAO);
 
-        // Lees gegevens uit het CSV-bestand
+        // Read data from the CSV file
         List<String> test = FileReaderToArray();
         List<Group> listGroups = listGroups(test, userDAO, courseDAO);
         for (Group group : listGroups) {
@@ -43,7 +40,7 @@ public class LauncherBianca {
     }
 
 
-    // Methode om gegevens uit het CSV-bestand naar een lijst te lezen
+    // Method to read data from the CSV file into a list
     public static List<String> FileReaderToArray() {
         List<String> linesFromFile = new ArrayList<>();
         try {
@@ -58,7 +55,7 @@ public class LauncherBianca {
         return linesFromFile;
     }
 
-    // Methode om een lijst van Group-objecten te maken vanuit een lijst van strings
+    // Method to create a list of Group objects from a list of strings
     public static List<Group> listGroups(List<String> list, UserDAO userDAO, CourseDAO courseDAO) {
         List<Group> groupList = new ArrayList<>();
 

@@ -7,6 +7,7 @@ package database.mysql;
 import model.Course;
 import model.Group;
 import model.User;
+import view.Main;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -110,7 +111,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
     }
 
 // Course object maken vanuit resultSet
-    private Course getCourse(ResultSet resultSet) throws SQLException {
+protected Course getCourse(ResultSet resultSet) throws SQLException {
         UserDAO userDAO = new UserDAO(dbAccess);
         int idCourse = resultSet.getInt("idCourse");
         int idCoordinator = resultSet.getInt("idUser");
