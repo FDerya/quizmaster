@@ -7,7 +7,6 @@ package database.mysql;
 import model.Course;
 import model.Group;
 import model.User;
-import view.Main;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +18,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
     private Course course = null;
 
 
-// Constructors
+    // Constructors
     public CourseDAO(DBAccess dbAccess, UserDAO userDAO) {
         super(dbAccess);
         this.userDAO = userDAO;
@@ -28,11 +27,11 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         super(dbAccess);
     }
 
-// Alle courses ophalen
+    // Get all courses
     @Override
     public List<Course> getAll() {
         List<Course> resultList = new ArrayList<>();
-        String sql = "SELECT * FROM Course;";
+        String sql = "SELECT * FROM Course ORDER BY nameCourse;";
         try {
             setupPreparedStatement(sql);
             ResultSet resultSet = executeSelectStatement();
@@ -46,7 +45,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
     }
 
 
-// Course ophalen op basis van ID
+    // Get courses by id
     @Override
     public Course getOneById(int id) {
         String sql = "SELECT * FROM Course WHERE idCourse = ?;";
@@ -65,7 +64,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         return course;
     }
 
-// Course ophalen op basis van naam
+    // Get courses by name
     public Course getOneByName(String courseName) {
         String sql = "SELECT * FROM Course WHERE nameCourse = ?";
         try {
@@ -83,15 +82,13 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
     }
 
 
-// Nieuwe course opslaan
+    // Save a new course
     @Override
     public void storeOne(Course course) {
         String sql = "INSERT INTO course (idUser, nameCourse, difficultyCourse) VALUES(?, ?, ?);";
         try {
             setupPreparedStatementWithKey(sql);
-            preparedStatement.setInt(1, course.getCoordinator().getIdUser());
-            preparedStatement.setString(2, course.getNameCourse());
-            preparedStatement.setString(3, course.getDifficultyCourse());
+            storeCourse(course);
             int primaryKey = executeInsertStatementWithKey();
             course.setIdCourse(primaryKey);
         } catch (SQLException sqlException){
@@ -99,6 +96,20 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         }
     }
 
+    // Update one course
+    public void updateOne(Course course){
+        String sql = "UPDATE Course SET idUser = ?, nameCourse = ?, difficultyCourse = ? WHERE idCourse = ?;";
+        try {
+            setupPreparedStatement(sql);
+            storeCourse(course);
+            preparedStatement.setInt(4, course.getIdCourse());
+            executeManipulateStatement();
+        } catch (SQLException sqlException){
+            System.out.println("SQL error" + sqlException.getMessage());
+        }
+    }
+
+    // Delete one course
     public void deleteOne(Course course){
         String sql = "DELETE FROM course WHERE idCourse = ?;";
         try {
@@ -110,8 +121,8 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         }
     }
 
-// Course object maken vanuit resultSet
-protected Course getCourse(ResultSet resultSet) throws SQLException {
+    // Create course object from resultSet
+    private Course getCourse(ResultSet resultSet) throws SQLException {
         UserDAO userDAO = new UserDAO(dbAccess);
         int idCourse = resultSet.getInt("idCourse");
         int idCoordinator = resultSet.getInt("idUser");
@@ -119,5 +130,12 @@ protected Course getCourse(ResultSet resultSet) throws SQLException {
         String difficultyCourse = resultSet.getString("difficultyCourse");
         User user = userDAO.getOneById(idCoordinator);
         return new Course(idCourse, user, nameCourse, difficultyCourse);
+    }
+
+    // Method of preparedStatements for saving and updating a course
+    private void storeCourse(Course course) throws SQLException{
+        preparedStatement.setInt(1, course.getCoordinator().getIdUser());
+        preparedStatement.setString(2, course.getNameCourse());
+        preparedStatement.setString(3, course.getDifficultyCourse());
     }
 }
