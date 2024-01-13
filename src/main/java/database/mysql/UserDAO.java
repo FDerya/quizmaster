@@ -43,9 +43,9 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         }
         return user;
     }
+
     // Methode nodig bij het inloggen: het vraagt om een userName en geeft een object User terug, waarvan je met de
     // getters het wachtwoord kan controleren.
-
     public User getOneByUsername(String userName) {
         String sql = "SELECT * FROM User WHERE username = ?";
         User user = null;
@@ -61,43 +61,44 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         }
         return user;
     }
-    // Methode om een object User (zonder userId, want de tabel User gebruikt auto-increment) toe te voegen aan SQL.
 
+    // Methode om een object User (zonder userId, want de tabel User gebruikt auto-increment) toe te voegen aan SQL.
     public void storeOne(User user) {
         String sql = "INSERT INTO user(username, password, firstName, prefix, surname, role) VALUES (?,?,?,?,?,?) ;";
         try {
             setupPreparedStatementWithKey(sql);
-            preparedStatement.setString(1, user.getUsername());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, user.getFirstName());
-            preparedStatement.setString(4, user.getPrefix());
-            preparedStatement.setString(5, user.getSurname());
-            preparedStatement.setString(6, user.getRole());
+            createUpdateUser(user);
             int idUser = executeInsertStatementWithKey();
             user.setIdUser(idUser);
         } catch (SQLException sqlException) {
             System.out.println("SQL fout " + sqlException.getMessage());
         }
     }
-    // Methode om een gebruiker in SQL te updaten.
 
+    // Methode om een gebruiker in SQL te updaten.
     public void updateOne(User user) {
-        String sql = "UPDATE User SET username = ?, firstName = ?, prefix = ?, surname = ?, role = ? WHERE idUser = ?;";
+        String sql = "UPDATE User SET username = ?, password = ?, firstName = ?, prefix = ?, surname = ?, role = ? WHERE idUser = ?;";
         try {
             setupPreparedStatement(sql);
-            preparedStatement.setString(1, user.getUsername());
-            preparedStatement.setString(2, user.getFirstName());
-            preparedStatement.setString(3, user.getPrefix());
-            preparedStatement.setString(4, user.getSurname());
-            preparedStatement.setString(5, user.getRole());
-            preparedStatement.setInt(6, user.getIdUser());
+            createUpdateUser(user);
+            preparedStatement.setInt(7, user.getIdUser());
             executeManipulateStatement();
         } catch (SQLException sqlException) {
             System.out.println("SQL error " + sqlException.getMessage());
         }
     }
-    // Methode om een gebruiker uit de database te verwijderen.
 
+    // Methode die de afzonderlijke attributen van een User klaarzet om in de mySQL database gezet te worden.
+    private void createUpdateUser(User user) throws SQLException {
+        preparedStatement.setString(1, user.getUsername());
+        preparedStatement.setString(2, user.getPassword());
+        preparedStatement.setString(3, user.getFirstName());
+        preparedStatement.setString(4, user.getPrefix());
+        preparedStatement.setString(5, user.getSurname());
+        preparedStatement.setString(6, user.getRole());
+    }
+
+    // Methode om een gebruiker uit de database te verwijderen.
     public void removeOne(User user) {
         String sql = "DELETE FROM user WHERE idUser = ?;";
         try {
@@ -108,6 +109,8 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
             System.out.println("SQL fout " + sqlException.getMessage());
         }
     }
+
+    // Methode om een User te verkrijgen vanuit SQL. Vanuit de resultSet wordt hier een User gemaakt.
     private static User getUser(ResultSet resultSet) throws SQLException {
         int idUser = resultSet.getInt("idUser");
         String username = resultSet.getString("username");

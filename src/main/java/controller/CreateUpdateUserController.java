@@ -10,11 +10,6 @@ import javafx.scene.paint.Color;
 import model.User;
 import view.Main;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
 public class CreateUpdateUserController {
     private final UserDAO userDAO;
     private int idUser;         // Opslaan van idUser omdat deze nodig is om een gebruiker te wijzigen.
@@ -46,6 +41,8 @@ public class CreateUpdateUserController {
     Label surnameLabel;
     @FXML
     Label roleLabel;
+    @FXML
+    Label createUpdateMessage;
     ObservableList<String> rollen = FXCollections.observableArrayList("Student", "Docent", "Coördinator", "Administrator", "Functioneel Beheerder");
 
     public CreateUpdateUserController() {
@@ -56,7 +53,6 @@ public class CreateUpdateUserController {
     // als er in het manageUsers scherm een gebruiker geselecteerd is.
     public void setup(User user) {
         roleComboBox.setItems(rollen);
-        Main.primaryStage.setTitle("Nieuwe gebruiker");
         if (user != null) {
             Main.primaryStage.setTitle("Wijzig gebruiker");
             idUser = user.getIdUser();
@@ -74,17 +70,18 @@ public class CreateUpdateUserController {
     @FXML
     public void doSaveUser(ActionEvent actionEvent) {
         User user = createUser();
-        String updateUserAlertMessage = "Gebruiker gewijzigd";
-        String newUserAlertMessage = "Gebruiker opgeslagen";
+        String updateUserMessage = "Gebruiker gewijzigd";
+        String createUserMessage = "Gebruiker opgeslagen";
         if (user != null) {
             if (titleLabel.getText().equals("Nieuwe gebruiker")) {
                 userDAO.storeOne(user);
-                showAlert(newUserAlertMessage);
+                createUpdateMessage.setText(createUserMessage);
             } else {
                 user.setIdUser(idUser);
                 userDAO.updateOne(user);
-                showAlert(updateUserAlertMessage);
+                createUpdateMessage.setText(updateUserMessage);
             }
+            createUpdateMessage.setVisible(true);
         }
     }
 
@@ -103,28 +100,16 @@ public class CreateUpdateUserController {
     // Methode om een nieuw object User te maken. Als foutieve informatie ingevuld wordt,
     // wordt hier een melding over gegeven.
     private User createUser() {
-        String errorMessageNoFields = "Je hebt niet alle velden ingevuld.\nVul de rood gekleurde velden alsnog in.";
-        String errorMessageNoRole = "Je hebt geen rol gekozen voor de gebruiker.";
-        boolean correctInput = true;
+        boolean correctInput;
         String username = usernameTextfield.getText();
         String password = passwordTextfield.getText();
         String firstname = firstNameTextfield.getText();
         String prefix = prefixTextfield.getText();
         String lastname = lastNameTextfield.getText();
         String role = roleComboBox.getSelectionModel().getSelectedItem();
-
-        correctInput = isCorrectInput(username, correctInput, password, firstname, lastname);
-
-        if (role == null) {
-            warningLabelNoRole.setText(errorMessageNoRole);
-            warningLabelNoRole.setVisible(true);
-        } else {
-            warningLabelNoRole.setVisible(false);
-        }
-
-        if (!correctInput) {
-            warningLabelNoFields.setText(errorMessageNoFields);
-            warningLabelNoFields.setVisible(true);
+        isCorrectInputRole(role);
+        correctInput = isCorrectInput(username, password, firstname, lastname);
+        if (role == null || !correctInput) {
             return null;
         } else {
             warningLabelNoRole.setVisible(false);
@@ -133,47 +118,37 @@ public class CreateUpdateUserController {
         }
     }
 
-    private boolean isCorrectInput(String username, boolean correctInput, String password, String firstname, String lastname) {
-        if (username.isEmpty()) {
-            usernameLabel.setTextFill(Color.color(1, 0, 0));
-            correctInput = false;
-        }
-
-        if (password.isEmpty()) {
-            passwordLabel.setTextFill(Color.color(1,0,0));
-            correctInput = false;
-        }
-
-        if (firstname.isEmpty()) {
-            firstnameLabel.setTextFill(Color.color(1,0,0));
-            correctInput = false;
-        }
-
-        if (lastname.isEmpty()) {
-            surnameLabel.setTextFill(Color.color(1,0,0));
-            correctInput = false;
-        }
-        return correctInput;
+    // Deze methode geeft een boolean terug als een bepaalde label zichtbaar is. Het label wordt zichbaar als een
+    // tekstveld leeg is (het label bij dat tekstveld wordt dan rood). Als de warningLabel zichtbaar is,
+    // is de invoer incorrect, dus geeft hij false terug.
+    private boolean isCorrectInput(String username, String password, String firstname, String lastname) {
+        checkAndChangeLabelColor(username.isEmpty(), usernameLabel);
+        checkAndChangeLabelColor(password.isEmpty(), passwordLabel);
+        checkAndChangeLabelColor(firstname.isEmpty(), firstnameLabel);
+        checkAndChangeLabelColor(lastname.isEmpty(), surnameLabel);
+        return !warningLabelNoFields.isVisible();
     }
 
-    private boolean isCorrectInput(String username, String password, String firstname, String lastname, String role) {
-        if (username.isEmpty() || password.isEmpty() || firstname.isEmpty() || lastname.isEmpty()) {
-            List<Label> mandatoryFields = new ArrayList<>(Arrays.asList(usernameLabel, passwordLabel, firstnameLabel, surnameLabel, roleLabel));
-            for (Label label : mandatoryFields) {
-                label.setText(label.getText() + " *");
-            }
-            return false;
+    // Deze methode kijkt of een tekstveld leeg is. Als het veld leeg is wordt het bijbehorende label roodgekleurd en
+    // wordt er een waarschuwing getoond.
+    private void checkAndChangeLabelColor(boolean emptyTextField, Label label) {
+        String errorMessageNoFields = "Je hebt niet alle velden ingevuld.\nVul de rood gekleurde velden alsnog in.";
+        if (emptyTextField) {
+            label.setTextFill(Color.color(1, 0, 0));
+            warningLabelNoFields.setText(errorMessageNoFields);
+            warningLabelNoFields.setVisible(true);
+        } else {
+            warningLabelNoFields.setVisible(false);
         }
-        return true;
     }
 
-    // Methode om een Alert te laten zien en je daarna terug te sturen naar de manage user scene
-    private static void showAlert(String alertMessage) {
-        Alert saved = new Alert(Alert.AlertType.INFORMATION);
-        saved.setContentText(alertMessage);
-        Optional<ButtonType> result = saved.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            Main.getSceneManager().showManageUserScene();
+    private void isCorrectInputRole(String role) {
+        String errorMessageNoRole = "Je hebt geen rol gekozen voor de gebruiker.";
+        if (role == null) {
+            warningLabelNoRole.setText(errorMessageNoRole);
+            warningLabelNoRole.setVisible(true);
+        } else {
+            warningLabelNoRole.setVisible(false);
         }
     }
 }

@@ -13,7 +13,7 @@ public class User {
     private String role;
     public static User currentUser;
 
-    // Constructors: all args, een met zelfgekozen password (voor csv bestand) en een met gegenereerd password
+    // Constructors
     public User(int idUser, String username, String password, String firstName, String prefix, String surname, String role) {
         this.idUser = idUser;
         this.username = username;
