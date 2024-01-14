@@ -48,8 +48,6 @@ public class CreateUpdateQuestionController {
     @FXML
     private Label warningLabel;
 
-
-
     public CreateUpdateQuestionController() {
         this.questionDAO = new QuestionDAO(Main.getDBaccess());
         this.quizDAO = new QuizDAO(Main.getDBaccess());
