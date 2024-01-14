@@ -2,7 +2,6 @@ package database.mysql;
 // Tom van Beek, 500941521.
 
 import model.*;
-import database.mysql.QuestionDAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -84,18 +83,34 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
     public void storeOne(Quiz quiz) {
         String sql = "INSERT INTO Quiz (idCourse, nameQuiz, levelQuiz, amountQuestion) VALUES(?, ?, ?, ?);";
         try {
+
             setupPreparedStatementWithKey(sql);
-            preparedStatement.setInt(1, quiz.getCourse().getIdCourse());
-            preparedStatement.setString(2, quiz.getNameQuiz());
-            preparedStatement.setString(3, quiz.getLevel());
-            preparedStatement.setInt(4, quiz.getAmountQuestions());
+            storeQuiz(quiz);
             int primaryKey = executeInsertStatementWithKey();
             quiz.setIdQuiz(primaryKey);
         } catch (SQLException sqlFout) {
             System.out.println("SQL fout " + sqlFout.getMessage());
         }
     }
-
+    //Update a quiz
+    public void updateOne(Quiz quiz){
+        String sql = "UPDATE Quiz SET idCourse = ?, nameQuiz = ?, levelQuiz = ?, amountQuestion = ? WHERE idQuiz = ?;";
+        try {
+            setupPreparedStatement(sql);
+            storeQuiz(quiz);
+            preparedStatement.setInt(5, quiz.getIdQuiz());
+            executeManipulateStatement();
+        } catch (SQLException sqlException){
+            System.out.println("SQL error" + sqlException.getMessage());
+        }
+    }
+    // Methode voor de storeOne en updateOne
+    private void storeQuiz(Quiz quiz) throws SQLException{
+        preparedStatement.setInt(1, quiz.getCourse().getIdCourse());
+        preparedStatement.setString(2, quiz.getNameQuiz());
+        preparedStatement.setString(3, quiz.getLevel());
+        preparedStatement.setInt(4, quiz.getAmountQuestions());
+    }
     private Quiz getQuiz(ResultSet resultSet, CourseDAO courseDAO, Quiz quiz) throws SQLException {
         int idQuiz = resultSet.getInt("idQuiz");
         int idCourse = resultSet.getInt("idCourse");
