@@ -3,11 +3,14 @@ package controller;
 import database.mysql.DBAccess;
 import database.mysql.QuestionDAO;
 import database.mysql.QuizDAO;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.util.Duration;
 import model.Question;
 import model.Quiz;
 import view.Main;
@@ -117,7 +120,7 @@ public class CreateUpdateQuestionController {
                 // No question ID provided, add a new question
                 questionDAO.storeOne(question);
                 questionNumberTextfield.setText(String.valueOf(question.getIdQuestion()));
-                warningLabel.setText("Vraag is opgeslagen");
+                showSuccessMessage("Vraag is opgeslagen");
             } else {
                 int id = Integer.parseInt(questionNumberTextfield.getText());
                 question.setIdQuestion(id);
@@ -128,14 +131,29 @@ public class CreateUpdateQuestionController {
                 if (existingQuestion != null) {
                     // Question ID exists, update the question
                     questionDAO.updateQuestion(question);
-                    warningLabel.setText("Vraag gewijzigd");
+                    showSuccessMessage("Vraag gewijzigd");
                 } else {
                     // Question ID doesn't exist, add a new question
                     questionDAO.storeOne(question);
                     questionNumberTextfield.setText(String.valueOf(question.getIdQuestion()));
-                    warningLabel.setText("Vraag is opgeslagen");
+                    showSuccessMessage("Vraag is opgeslagen");
                 }
             }
         }
+    }
+
+    // Display success message, wait for 2 seconds, then go back to the manage screen
+    private void showSuccessMessage(String message) {
+        warningLabel.setText(message);
+
+        // Create a timeline with a KeyFrame to wait for 2 seconds
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(2), event -> {
+                    // After 2 seconds, go back to the manage screen
+                    Main.getSceneManager().showManageQuestionsScene();
+                })
+        );
+
+        timeline.play();
     }
 }

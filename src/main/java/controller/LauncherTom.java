@@ -32,11 +32,11 @@ public class LauncherTom {
        // Quiz TestTom = new Quiz(course, "Jazz", "Medium", 6);
        // quizDAO.storeOne(TestTom);
         // Methodes aanroepen om het csv weg te schrijven naar een ArrayList met Quizzen.
-        //List<String> test = FileReaderToArray();
-        //List<Quiz> quizList = listQuiz(test, dbAccess);
+        List<String> test = FileReaderToArray();
+        List<Quiz> quizList = listQuiz(test, dbAccess);
        //saveQuizFromArray(dbAccess, quizList, quizDAO);
         // Quizzen opslaan in de database. Even achter "//", anders herhaalt de opdracht zich en heb je teveel info in de DBMS
-        // saveQuizFromArray(dBAccess, quizList, quizDAO);
+        saveQuizFromArray(dbAccess, quizList, quizDAO);
         dbAccess.closeConnection();
     }
 

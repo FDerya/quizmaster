@@ -11,13 +11,13 @@
     <children>
         <Label fx:id="titelLabel" layoutX="14.0" layoutY="14.0" text="" />
         <TextField fx:id="questionNumberTextfield" layoutX="131.0" layoutY="54.0" promptText="Question Number" />
-        <TextField fx:id="questionTextfield" layoutX="133.0" layoutY="130.0" prefHeight="76.0" prefWidth="294.0" promptText="Question" />
+        <TextField fx:id="questionTextfield" layoutX="133.0" layoutY="130.0" prefHeight="76.0" prefWidth="494.0" promptText="Question" />
         <TextField fx:id="answerRightTextfield" layoutX="133.0" layoutY="215.0" promptText="Right Answer" />
         <TextField fx:id="answerWrong1Textfield" layoutX="133.0" layoutY="250.0" promptText="Wrong Answer 1" />
         <TextField fx:id="answerWrong2Textfield" layoutX="133.0" layoutY="286.0" promptText="Wrong Answer 2" />
         <TextField fx:id="answerWrong3Textfield" layoutX="133.0" layoutY="324.0" promptText="Wrong Answer 3" />
       <Button layoutX="21.0" layoutY="541.0" mnemonicParsing="false" onAction="#doMenu" prefHeight="32.0" prefWidth="101.0" text="Terug" />
-        <ComboBox fx:id="quizlist" layoutX="129.0" layoutY="90.0" promptText="Selecteer Quiz" />
+        <ComboBox fx:id="quizlist" layoutX="131.0" layoutY="90.0" promptText="Selecteer Quiz" />
         <Button layoutX="131.0" layoutY="397.0" mnemonicParsing="false" onAction="#doStoreQuestion" prefHeight="32.0" prefWidth="155.0" text="Opslaan " />
       <Label layoutX="11.0" layoutY="58.0" />
       <Label layoutX="11.0" layoutY="94.0" text="Quiz Naam" />
