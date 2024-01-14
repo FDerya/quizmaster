@@ -12,12 +12,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import view.Main;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public class CreateUpdateQuizController {
     private final DBAccess dbAccess;
+
+    private int idQuiz;
     CourseDAO courseDAO = new CourseDAO(Main.getDBaccess());
+    private QuizDAO quizDAO = new QuizDAO(Main.getDBaccess());
     @FXML
     private TextField nameTextField;
     @FXML
@@ -28,6 +32,9 @@ public class CreateUpdateQuizController {
     private Label courseLabel;
     @FXML
     private Label courseText;
+    @FXML
+    Label warningLabel;
+
     @FXML
     ComboBox<String> levelsListComboBox;
     @FXML
@@ -47,6 +54,7 @@ public class CreateUpdateQuizController {
         coursesListComboBox.setItems(coursesList);
         titelLabel.setText("Maak nieuwe Quiz");
         if (quizOne != null) {
+            idQuiz = quizOne.getIdQuiz();
             titelLabel.setText("Wijzig Quiz");
             courseLabel.setText(quizOne.getCourse().getNameCourse());
             nameTextField.setText(quizOne.getNameQuiz());
@@ -73,14 +81,48 @@ public class CreateUpdateQuizController {
     }
 
     public void doCreateUpdateQuiz(ActionEvent event) {
-        QuizDAO quizDAO = new QuizDAO(dbAccess);
-        courseDAO = new CourseDAO(dbAccess);
-        Course course = coursesListComboBox.getSelectionModel().getSelectedItem();
+        Quiz quiz = createQuiz();
+        String updateQuizAlert = "Quiz gewijzigd";
+        String newQuizAlert = "Quiz toegevoegd";
+        if (quiz != null) {
+            if (titelLabel.getText().equals("Maak nieuwe Quiz")) {
+                quizDAO.storeOne(quiz);
+                showAlert(newQuizAlert);
+            } else {
+                quiz.setIdQuiz(idQuiz);
+                quizDAO.updateOne(quiz);
+                showAlert(updateQuizAlert);
+            }
+        }
+    }
+
+    private static void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(message);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            Main.getSceneManager().showManageQuizScene();
+        }
+    }
+
+    public Quiz createQuiz() {
+        String error = "Je hebt niet alle velden ingevuld.\nAlle velden zijn verplicht.";
+        String courseName = courseLabel.getText();
+        Course course = courseDAO.getOneByName(courseName);
+        if (courseName.equals("")) {
+            course = coursesListComboBox.getSelectionModel().getSelectedItem();
+        }
         String nameQuiz = nameTextField.getText();
         String level = levelsListComboBox.getValue();
         String amount = amountTextField.getText();
-        int amountQuestions = Integer.parseInt(amount);
-        Quiz quiz = new Quiz(course, nameQuiz, level, amountQuestions);
-        quizDAO.storeOne(quiz);
+        if (course == null || Objects.equals(nameQuiz, "") || level == null || amount.equals("")) {
+            warningLabel.setText(error);
+            warningLabel.setVisible(true);
+            return null;
+        } else {
+            int amountQuestions = Integer.parseInt(amount);
+            Quiz quiz = new Quiz(course, nameQuiz, level, amountQuestions);
+            return quiz;
+        }
     }
 }

@@ -36,7 +36,7 @@ public class ManageQuizzesController {
                 HBox hBox = new HBox(naam, aantal);
                 if (!(item == null || empty)) {
                     naam.setText(item.getNameQuiz());
-                    aantal.setText("`" + item.getAmountQuestions() + "`");
+                    aantal.setText(" " + item.getAmountQuestions() + " ");
                 }
                 setGraphic(hBox);
             }
