@@ -66,7 +66,7 @@
                <GridPane.margin>
                   <Insets />
                </GridPane.margin></TextField>
-            <TextField fx:id="lastNameTextfield" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="surnameTextfield" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <ComboBox fx:id="roleComboBox" prefHeight="25.0" prefWidth="199.0" promptText="Kies een rol" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
          <padding>
@@ -78,5 +78,6 @@
       <Button layoutX="221.0" layoutY="249.0" mnemonicParsing="false" onAction="#doShowMenu" text="Menu" />
       <Label fx:id="warningLabelNoRole" layoutX="41.0" layoutY="346.0" prefHeight="26.0" prefWidth="308.0" text="Label" visible="false" />
       <Label fx:id="warningLabelNoFields" layoutX="41.0" layoutY="399.0" prefHeight="104.0" prefWidth="308.0" text="Label" visible="false" />
+      <Label fx:id="createUpdateMessage" layoutX="51.0" layoutY="356.0" prefHeight="26.0" prefWidth="308.0" text="Label" visible="false" />
    </children>
 </AnchorPane>

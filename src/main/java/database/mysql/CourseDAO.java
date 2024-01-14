@@ -18,7 +18,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
     private Course course = null;
 
 
-// Constructors
+    // Constructors
     public CourseDAO(DBAccess dbAccess, UserDAO userDAO) {
         super(dbAccess);
         this.userDAO = userDAO;
@@ -26,6 +26,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
     public CourseDAO(DBAccess dbAccess){
         super(dbAccess);
     }
+
 
 // Get all courses
     @Override
@@ -64,6 +65,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         return course;
     }
 
+
 // Get courses by name
     public Course getOneByName(String courseName) {
         String sql = "SELECT * FROM Course WHERE nameCourse = ?";
@@ -82,6 +84,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
     }
 
 
+
 // Save a new course
     @Override
     public void storeOne(Course course) {
@@ -96,6 +99,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         }
     }
 
+
 // Update one course
     public void updateOne(Course course){
         String sql = "UPDATE Course SET idUser = ?, nameCourse = ?, difficultyCourse = ? WHERE idCourse = ?;";
@@ -109,6 +113,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         }
     }
 
+
 // Delete one course
     public void deleteOne(Course course){
         String sql = "DELETE FROM course WHERE idCourse = ?;";
@@ -121,6 +126,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         }
     }
 
+
 // Create course object from resultSet
     private Course getCourse(ResultSet resultSet) throws SQLException {
         UserDAO userDAO = new UserDAO(dbAccess);
@@ -132,7 +138,10 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         return new Course(idCourse, user, nameCourse, difficultyCourse);
     }
 
+
 // Method of preparedStatements for saving and updating a course
+
+
     private void storeCourse(Course course) throws SQLException{
         preparedStatement.setInt(1, course.getCoordinator().getIdUser());
         preparedStatement.setString(2, course.getNameCourse());

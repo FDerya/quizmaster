@@ -1,42 +1,38 @@
 package model;
 // Bianca Duijvesteijn, studentnummer 500940421
-//Beheert groepen in de UI, inclusief aanmaken, bijwerken, en verwijderen.
-// Toont de geselecteerde groep met cursusinformatie en het aantal gelijksoortige groepen.
+// Manages groups in the UI, including creating, updating, and deleting.
+// Shows the selected group with course information and the number of similar groups.
 
 public class Group {
     private int idGroup;
-    private Course courseName;
+    private Course course;
     private String groupName;
     private int amountStudent;
-    private User userName;
-
-
+    private User teacher;
 
     // Constructors
-    public Group(int idGroup, Course courseName, String groupName, int amountStudent, User userName) {
+    public Group(int idGroup, Course course, String groupName, int amountStudent, User teacher) {
         this.idGroup = idGroup;
-        this.courseName = courseName;
+        this.course = course;
         this.groupName = groupName;
         this.amountStudent = amountStudent;
-        this.userName = userName;
+        this.teacher = teacher;
     }
 
-    public Group(Course courseName, String groupName, int amountStudent, User userName) {
-        this.courseName = courseName;
+    public Group(Course course, String groupName, int amountStudent, User teacher) {
+        this.course = course;
         this.groupName = groupName;
         this.amountStudent = amountStudent;
-        this.userName = userName;
-    }
-
-    public Group() {
+        this.teacher = teacher;
     }
 
     // toString-methode
     @Override
     public String toString() {
-        return String.valueOf(courseName);
+        return String.valueOf(course);
     }
 
+    //Getters en setters
     public int getIdGroup() {
         return idGroup;
     }
@@ -45,37 +41,26 @@ public class Group {
         this.idGroup = idGroup;
     }
 
-    public Course getCourseName() {
-        return courseName;
+    public Course getCourse() {
+        return course;
     }
 
-    public void setCourseName(Course courseName) {
-        this.courseName = courseName;
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     public String getGroupName() {
         return groupName;
     }
 
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
     public int getAmountStudent() {
         return amountStudent;
     }
 
-    public void setAmountStudent(int amountStudent) {
-        this.amountStudent = amountStudent;
+    public User getTeacher() {
+        return teacher;
     }
 
-    public User getUserName() {
-        return userName;
-    }
-
-    public void setUserName(User userName) {
-        this.userName = userName;
-    }
 }
 
 

@@ -6,6 +6,7 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class Course {
 // Attributes
@@ -21,11 +22,6 @@ public class Course {
         this.nameCourse = nameCourse;
         this.difficultyCourse = difficultyCourse;
     }
-    public Course(int idCourse, String nameCourse, String difficulty) {
-        this.idCourse = idCourse;
-        this.nameCourse = nameCourse;
-        this.difficultyCourse = difficulty;
-    }
 
     public Course(User coordinator, String nameCourse, String difficultyCourse){
         this(0, coordinator, nameCourse, difficultyCourse);
@@ -36,6 +32,7 @@ public class Course {
     public String toString(){
         return String.format("%s", getNameCourse());
     }
+
 
 // Getters & Setters
     public int getIdCourse() {
