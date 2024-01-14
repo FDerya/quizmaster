@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.Course;
 import model.Group;
@@ -177,11 +178,18 @@ public class CreateUpdateGroupController {
 
     // Closes the currently displayed alert
     private void closeAlert() {
-        if (alert.isShowing()) {
+        if (alert != null && alert.isShowing()) {
             Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
             stage.close();
         }
     }
+
+/*    private void closeAlert() {
+        if (alert.isShowing()) {
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            stage.close();
+        }
+    }*/
 
     // Handles the "Menu" button click event, navigating back to the welcome scene
     @FXML
@@ -243,12 +251,27 @@ public class CreateUpdateGroupController {
         for (Map.Entry<String, String> entry : inputFields.entrySet()) {
             String fieldValue = getInputValue(entry.getKey());
             if (fieldValue.isEmpty()) {
+                error.append(entry.getValue()).append("\n");
+            }
+        }
+
+        warningLabel.setText(error.toString().trim());
+        warningLabel.setTextFill(Color.RED); // Stel de tekstkleur in op rood
+        warningLabel.setVisible(true);
+    }
+
+/*    private void setWarningLabel(Map<String, String> inputFields) {
+        StringBuilder error = new StringBuilder();
+
+        for (Map.Entry<String, String> entry : inputFields.entrySet()) {
+            String fieldValue = getInputValue(entry.getKey());
+            if (fieldValue.isEmpty()) {
                 error.append(entry.getValue()).append("\n"); // Add a newline for each error
             }
         }
         warningLabel.setText(error.toString().trim()); // Trim to remove the trailing newline
         warningLabel.setVisible(true);
-    }
+    }*/
 
     // Retrieves the value of a specific input field based on the field name.
     private String getInputValue(String fieldName) {
