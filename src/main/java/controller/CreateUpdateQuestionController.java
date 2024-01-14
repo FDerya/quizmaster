@@ -73,7 +73,7 @@ public class CreateUpdateQuestionController {
         }
 
     }
-     //Vult de keuzelijst (ComboBox) met beschikbare quizzen.
+    //Vult de keuzelijst (ComboBox) met beschikbare quizzen.
     public void fillComboBoxQuizzes() {
         List<Quiz> allQuizzes = quizDAO.getAll();
         ObservableList<Quiz> quizObservableList =
@@ -85,8 +85,8 @@ public class CreateUpdateQuestionController {
         Main.getSceneManager().showManageQuestionsScene();
     }
 
-   // Werkt de huidige vraag bij met de gegevens uit de velden.
-  //  @return De bijgewerkte vraag of null als er ongeldige gegevens zijn ingevoerd.
+    // Werkt de huidige vraag bij met de gegevens uit de velden.
+    //  @return De bijgewerkte vraag of null als er ongeldige gegevens zijn ingevoerd.
     public Question doUpdateQuestion() {
         // Update the currentQuestion object with the data from the fields
         String  quizText = quizlist.getPromptText();
@@ -104,7 +104,7 @@ public class CreateUpdateQuestionController {
             foutmelding.show();
             question = null;
         } else {
-           question = new Question(quiz, questionText, answerRight, answerWrong1, answerWrong2,
+            question = new Question(quiz, questionText, answerRight, answerWrong1, answerWrong2,
                     answerWrong3);
         }
 
