@@ -133,7 +133,7 @@ public class CreateUpdateUserController {
     private void checkAndChangeLabelColor(boolean emptyTextField, Label label) {
         String errorMessageNoFields = "Je hebt niet alle velden ingevuld.\nVul de rood gekleurde velden alsnog in.";
         if (emptyTextField) {
-            label.setTextFill(Color.color(1, 0, 0));
+            label.setTextFill(Color.RED);
             warningLabelNoFields.setText(errorMessageNoFields);
             warningLabelNoFields.setVisible(true);
         } else {
