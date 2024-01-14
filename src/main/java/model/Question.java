@@ -2,9 +2,7 @@ package model;
 
 public class Question {
 
-    /*
-    Fatma Tatar
-     */
+
     private int idQuestion;
     private Quiz quiz;
     private String question;

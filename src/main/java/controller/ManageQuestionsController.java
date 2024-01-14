@@ -70,7 +70,7 @@ public class ManageQuestionsController {
             warningLabel.setVisible(false);
         } else {
             warningLabel.setVisible(true);
-            warningLabel.setText("Je moet eerst een vraag kiezen");
+            warningLabel.setText("Je moet eerst een vraag kiezen!");
         }
     }
 
@@ -89,7 +89,7 @@ public class ManageQuestionsController {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Bevestig Verwijderen");
             alert.setHeaderText("Weet je zeker dat je de vraag wilt verwijderen?");
-            alert.setContentText("Vraag ID: " + selectedQuestion.getIdQuestion());
+            alert.setContentText("Vraag : " + selectedQuestion.getIdQuestion());
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -100,7 +100,7 @@ public class ManageQuestionsController {
             }
         } else {
             warningLabel.setVisible(true);
-            warningLabel.setText("Je moet eerst een vraag kiezen");
+            warningLabel.setText("Je moet eerst een vraag kiezen!");
         }
     }
 }
