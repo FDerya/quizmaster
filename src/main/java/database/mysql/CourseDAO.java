@@ -65,6 +65,23 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         return course;
     }
 
+// Get courses by idUser
+    public Course getOneByIdUser(int id) {
+        String sql = "SELECT * FROM Course WHERE idUser = ?;";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, id);
+            try (ResultSet resultSet = executeSelectStatement()) {
+                if (resultSet.next()) {
+                    course = getCourse(resultSet);
+                    return course;
+                }
+            }
+        } catch (SQLException sqlError) {
+            System.out.println("SQL error: " + sqlError.getMessage());
+        }
+        return course;
+    }
 
 // Get courses by name
     public Course getOneByName(String courseName) {
