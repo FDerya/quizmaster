@@ -41,7 +41,7 @@ public class CreateUpdateQuizController {
     ComboBox<Course> coursesListComboBox;
 
     ObservableList<String> levelsList = FXCollections.observableArrayList("Beginner", "Medium", "Gevorderd");
-    List<Course> courssList = courseDAO.getAll();
+    List<Course> courssList = courseDAO.getCoursesFromUser(User.getCurrentUser());
     ObservableList<Course> coursesList = FXCollections.observableArrayList(courssList);
 
 
@@ -49,6 +49,7 @@ public class CreateUpdateQuizController {
         this.dbAccess = Main.getDBaccess();
     }
 
+    //Quiz tonen om te wijzigen of leeg scherm voor het maken van een quiz
     public void setup(Quiz quizOne) {
         levelsListComboBox.setItems(levelsList);
         coursesListComboBox.setItems(coursesList);
@@ -80,10 +81,11 @@ public class CreateUpdateQuizController {
         Main.getSceneManager().showWelcomeScene();
     }
 
-    public void doCreateUpdateQuiz(ActionEvent event) {
+    // Quiz opslaan, met melding nieuwe of gewijzigde quiz
+    public void doCreateUpdateQuiz(ActionEvent event) throws InterruptedException {
         Quiz quiz = createQuiz();
         String updateQuizAlert = "Quiz gewijzigd";
-        String newQuizAlert = "Quiz toegevoegd";
+        String newQuizAlert = "Nieuwe quiz toegevoegd";
         if (quiz != null) {
             if (titelLabel.getText().equals("Maak nieuwe Quiz")) {
                 quizDAO.storeOne(quiz);
@@ -97,10 +99,11 @@ public class CreateUpdateQuizController {
     }
 
     private static void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.NONE);
         alert.setContentText(message);
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
+
             Main.getSceneManager().showManageQuizScene();
         }
     }
