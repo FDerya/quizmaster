@@ -184,7 +184,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         }
         return quizList;
     }
-    /*public List<Course> getCoursesFromUser(User user){
+    public List<Course> getCoursesFromUser(User user){
         List<Course> courzeList = new ArrayList<>();
         String sql = "select * from course where idUser = ?";
         try {
@@ -210,7 +210,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         User user = userDAO.getOneById(idCoordinator);
         return new Course(idCourse, user, nameCourse, difficultyCourse);
     }
-*/
+
 }
 
 

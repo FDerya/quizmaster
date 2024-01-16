@@ -41,7 +41,7 @@ public class CreateUpdateQuizController {
     ComboBox<Course> coursesListComboBox;
 
     ObservableList<String> levelsList = FXCollections.observableArrayList("Beginner", "Medium", "Gevorderd");
-    List<Course> courssList = courseDAO.getCoursesFromUser(User.getCurrentUser());
+    List<Course> courssList = quizDAO.getCoursesFromUser(User.getCurrentUser());
     ObservableList<Course> coursesList = FXCollections.observableArrayList(courssList);
 
 
@@ -99,11 +99,10 @@ public class CreateUpdateQuizController {
     }
 
     private static void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.NONE);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(message);
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-
             Main.getSceneManager().showManageQuizScene();
         }
     }
