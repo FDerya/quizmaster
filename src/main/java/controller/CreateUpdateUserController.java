@@ -125,7 +125,7 @@ public class CreateUpdateUserController {
         checkAndChangeLabelColor(password.isEmpty(), passwordLabel);
         checkAndChangeLabelColor(firstname.isEmpty(), firstnameLabel);
         checkAndChangeLabelColor(lastname.isEmpty(), surnameLabel);
-        return !warningLabelNoFields.isVisible();
+        return (!username.isEmpty() && !password.isEmpty() && !firstname.isEmpty() && !lastname.isEmpty());
     }
 
     // Deze methode kijkt of een tekstveld leeg is. Als het veld leeg is wordt het bijbehorende label roodgekleurd en
@@ -137,6 +137,7 @@ public class CreateUpdateUserController {
             warningLabelNoFields.setText(errorMessageNoFields);
             warningLabelNoFields.setVisible(true);
         } else {
+            label.setTextFill(Color.BLACK);
             warningLabelNoFields.setVisible(false);
         }
     }
