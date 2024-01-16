@@ -22,7 +22,7 @@ public class ManageQuizzesController {
         this.quizDAO = new QuizDAO(Main.getDBaccess());
     }
 
-    // Quizlijst afdrukken in scherm
+    // Quizlijst van coordinator (user) afdrukken in scherm
     public void setup() {
         User currentUser = User.getCurrentUser();
         List<Quiz> quizzen = quizDAO.getQuizzesFromUser(currentUser);
