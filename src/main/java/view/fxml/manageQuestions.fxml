@@ -15,7 +15,7 @@
             <Font size="18.0" />
         </font>
     </Label>
-    <ListView fx:id="questionList" layoutX="14.0" layoutY="78.0" prefHeight="236.0" prefWidth="735.0" />
+    <ListView fx:id="questionList" layoutX="14.0" layoutY="78.0" prefHeight="236.0" prefWidth="872.0" />
     <Button layoutX="13.0" layoutY="324.0" mnemonicParsing="false" onAction="#doCreateQuestion" text="Nieuw">
         <font>
             <Font size="14.0" />

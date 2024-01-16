@@ -13,6 +13,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
     private UserDAO userDAO = new UserDAO(Main.getDBaccess());
     private CourseDAO courseDAO = new CourseDAO(Main.getDBaccess(), userDAO);
     private Quiz quiz = null;
+    private Course courze = null;
 
     // Constructor met UserDAO als parameter
     public QuizDAO(DBAccess dbAccess, UserDAO userDAO) {
@@ -169,7 +170,6 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
     public List<Quiz> getQuizzesFromUser(User user) {
         List<Quiz> quizList = new ArrayList<>();
         String sql = "Select idQuiz, q.idCourse, nameQuiz, levelQuiz, amountQuestion from quiz q join course c on q.idCourse = c.idCourse where idUser = ?;";
-        CourseDAO courseDAO = new CourseDAO(dbAccess, userDAO);
         try {
             setupPreparedStatement(sql);
             preparedStatement.setInt(1, user.getIdUser());
@@ -184,6 +184,33 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         }
         return quizList;
     }
+    public List<Course> getCoursesFromUser(User user){
+        List<Course> courzeList = new ArrayList<>();
+        String sql = "select * from course where idUser = ?";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, user.getIdUser());
+            ResultSet resultSet = executeSelectStatement();
+            while (resultSet.next()) {
+                courze = getCourse(resultSet);
+                courzeList.add(courze);
+            }
+        } catch (
+                SQLException sqlFout) {
+            System.out.println("SQL fout " + sqlFout.getMessage());
+        }
+        return courzeList;
+    }
+    private Course getCourse(ResultSet resultSet) throws SQLException {
+        UserDAO userDAO = new UserDAO(dbAccess);
+        int idCourse = resultSet.getInt("idCourse");
+        int idCoordinator = resultSet.getInt("idUser");
+        String nameCourse = resultSet.getString("nameCourse");
+        String difficultyCourse = resultSet.getString("difficultyCourse");
+        User user = userDAO.getOneById(idCoordinator);
+        return new Course(idCourse, user, nameCourse, difficultyCourse);
+    }
+
 }
 
 

@@ -195,7 +195,28 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
         return questions;
     }
 
+    // Retrieve the course name based on the question ID
+    public String getCourseNameByQuestionId(int questionId) {
+        String sql = "SELECT c.nameCourse " +
+                "FROM quiz q " +
+                "JOIN course c ON q.idCourse = c.idCourse " +
+                "JOIN question qu ON q.idQuiz = qu.idQuiz " +
+                "WHERE qu.idQuestion = ?;";
 
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, questionId);
+            ResultSet resultSet = executeSelectStatement();
+
+            if (resultSet.next()) {
+                return resultSet.getString("nameCourse");
+            }
+        } catch (SQLException sqlException) {
+            System.out.println("SQL error" + sqlException.getMessage());
+        }
+
+        return null; // Return null if course name is not found
+    }
 
 
 
