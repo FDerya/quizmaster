@@ -109,10 +109,10 @@ public class CreateUpdateUserController {
         isCorrectInputRole(role);
         correctInput = isCorrectInput(username, password, firstname, surname);
         if (role == null || !correctInput) {
+            warningLabelNoFields.setVisible(!correctInput);
             return null;
         } else {
             warningLabelNoRole.setVisible(false);
-            warningLabelNoFields.setVisible(false);
             return new User(username, password, firstname, prefix, surname, role);
         }
     }
@@ -131,14 +131,10 @@ public class CreateUpdateUserController {
     // Deze methode kijkt of een tekstveld leeg is. Als het veld leeg is wordt het bijbehorende label roodgekleurd en
     // wordt er een waarschuwing getoond.
     private void checkAndChangeLabelColor(boolean emptyTextField, Label label) {
-        String errorMessageNoFields = "Je hebt niet alle velden ingevuld.\nVul de rood gekleurde velden alsnog in.";
         if (emptyTextField) {
             label.setTextFill(Color.RED);
-            warningLabelNoFields.setText(errorMessageNoFields);
-            warningLabelNoFields.setVisible(true);
         } else {
             label.setTextFill(Color.BLACK);
-            warningLabelNoFields.setVisible(false);
         }
     }
 
