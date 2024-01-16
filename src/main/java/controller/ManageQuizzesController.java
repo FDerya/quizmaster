@@ -43,9 +43,6 @@ public class ManageQuizzesController {
             }
         });
         quizList.getSelectionModel().getSelectedItem();
-        quizList.getSelectionModel().selectedItemProperty().addListener(
-                (observableValue, oldQuiz, newQuiz) ->
-                        System.out.println("Geselecteerde quiz: " + observableValue + ", " + oldQuiz + ", " + newQuiz));
 
     }
 

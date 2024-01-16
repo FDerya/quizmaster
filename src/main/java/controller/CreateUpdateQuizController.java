@@ -83,11 +83,11 @@ public class CreateUpdateQuizController {
             coursesListComboBox.setVisible(true);
         }
     }
-
+    // Menu terug gaan naar ManageQuiz
     public void doMenuBack(ActionEvent event) {
         Main.getSceneManager().showManageQuizScene();
     }
-
+    // Naar hoofdmenu
     public void doMenu() {
         Main.getSceneManager().showWelcomeScene();
     }
@@ -108,16 +108,13 @@ public class CreateUpdateQuizController {
             }
         }
     }
-
-    private static void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    // Alert weergeven met vertraging
+    private static void showAlert(String message) throws InterruptedException {
+        Alert alert = new Alert(Alert.AlertType.NONE);
         alert.setContentText(message);
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            Main.getSceneManager().showManageQuizScene();
-        }
+        Main.getSceneManager().showManageQuizScene();
     }
-
+    // Quiz maken om op te kunnen slaan en checken of alles is ingevuld
     public Quiz createQuiz() {
         boolean correctInput;
         String courseName = courseLabel.getText();
@@ -132,9 +129,9 @@ public class CreateUpdateQuizController {
         isCorrectInputLevel(level, levelQuizLabel);
         correctInput = isCorrectInput(nameQuiz, amount);
         if (course == null || !correctInput || level == null) {
+            warningLabelNoFields.setVisible(!correctInput);
             return null;
         } else {
-            warningLabelNoFields.setVisible(false);
             warningLabelNoFields.setVisible(false);
             int amountQuestions = Integer.parseInt(amount);
             Quiz quiz = new Quiz(course, nameQuiz, level, amountQuestions);
@@ -142,22 +139,21 @@ public class CreateUpdateQuizController {
         }
     }
 
+    // Check of textvelden zijn ingevuld
     private boolean isCorrectInput(String nameQuiz, String amountQuestions) {
         checkAndChangeLabelColor(nameQuiz.isEmpty(), nameQuizLabel);
         checkAndChangeLabelColor(amountQuestions.isEmpty(), amountQuestionsLabel);
-        return !warningLabelNoFields.isVisible();
+        return (!nameQuiz.isEmpty() && !amountQuestions.isEmpty());
     }
-
-    private void checkAndChangeLabelColor(boolean emptyTextField, Label label) {
-        String errorMessageNoFields = "Je hebt niet alle velden ingevuld.\nVul de rood gekleurde velden alsnog in.";
-        if (emptyTextField) {
+    // Niet-ingevulde velden rood markeren en melding tonen
+    private void checkAndChangeLabelColor(boolean emptyfields, Label label) {
+        if (emptyfields) {
             label.setTextFill(Color.RED);
-            warningLabelNoFields.setText(errorMessageNoFields);
-            warningLabelNoFields.setVisible(true);
-        } else {
-            warningLabelNoFields.setVisible(false);
+         } else {
+            label.setTextFill(Color.BLACK);
         }
     }
+    // Melding tonen en tekst rood kleuren wanneer geen cursus is gekozen
     private void isCorrectInputCourse(Course course, Label label) {
         String errorMessageNoCourse = "Je hebt geen cursus gekozen voor de gebruiker.";
         if (course == null) {
@@ -167,8 +163,10 @@ public class CreateUpdateQuizController {
 
         } else {
             warningLabelNoCourse.setVisible(false);
+            label.setTextFill(Color.BLACK);
         }
     }
+// Melding tonen en tekst rood kleuren wanneer geen level is gekozen
 
     private void isCorrectInputLevel(String level, Label label) {
         String errorMessageNoLevel = "Je hebt geen level gekozen voor de gebruiker.";
@@ -179,6 +177,7 @@ public class CreateUpdateQuizController {
 
         } else {
             warningLabelNoLevel.setVisible(false);
+            label.setTextFill(Color.BLACK);
         }
     }
 }
