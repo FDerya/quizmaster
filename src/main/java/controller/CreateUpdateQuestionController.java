@@ -1,5 +1,6 @@
 package controller;
 
+import database.mysql.CourseDAO;
 import database.mysql.DBAccess;
 import database.mysql.QuestionDAO;
 import database.mysql.QuizDAO;
@@ -20,6 +21,7 @@ import java.util.List;
 public class CreateUpdateQuestionController {
     private  QuestionDAO questionDAO;
     private QuizDAO quizDAO;
+    private CourseDAO courseDAO;
     @FXML
     private TextField answerRightTextfield;
 
@@ -51,12 +53,13 @@ public class CreateUpdateQuestionController {
     public CreateUpdateQuestionController() {
         this.questionDAO = new QuestionDAO(Main.getDBaccess());
         this.quizDAO = new QuizDAO(Main.getDBaccess());
+        this.courseDAO = new CourseDAO(Main.getDBaccess());
     }
 
     public void setup(Question question) {
         if (question != null) {
             titelLabel.setText("Wijzig vraag");
-            questionNumberTextfield.setText(String.valueOf(question.getIdQuestion()));
+            questionNumberTextfield.setText(question.getQuiz().getCourse().getNameCourse());
             questionTextfield.setText(question.getQuestion());
             answerRightTextfield.setText(question.getAnswerRight());
             answerWrong1Textfield.setText(question.getAnswerWrong1());
@@ -64,9 +67,13 @@ public class CreateUpdateQuestionController {
             answerWrong3Textfield.setText(question.getAnswerWrong3());
             quizlist.setPromptText("Wijzig de bijbehorende quiz:");
             fillComboBoxQuizzes();
+
+
+
         } else {
             int lastQuestionId = questionDAO.getLastQuestionId();
             questionNumberTextfield.setText(String.valueOf(lastQuestionId + 1));
+            String  quizText = quizlist.getPromptText();
             fillComboBoxQuizzes();
         }
 
