@@ -24,7 +24,8 @@ public class ManageQuizzesController {
 
     // Quizlijst afdrukken in scherm
     public void setup() {
-        List<Quiz> quizzen = quizDAO.getAll();
+        User currentUser = User.getCurrentUser();
+        List<Quiz> quizzen = quizDAO.getQuizzesFromUser(currentUser);
         quizList.getItems().addAll(quizzen);
         quizList.setCellFactory(param -> new ListCell<>() {
             @Override
