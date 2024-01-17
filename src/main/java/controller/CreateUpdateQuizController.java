@@ -47,6 +47,9 @@ public class CreateUpdateQuizController {
     Label levelQuizLabel;
 
     @FXML
+    Label quizSaveLabel;
+
+    @FXML
     ComboBox<String> levelsListComboBox;
     @FXML
     ComboBox<Course> coursesListComboBox;
@@ -83,10 +86,12 @@ public class CreateUpdateQuizController {
             coursesListComboBox.setVisible(true);
         }
     }
+
     // Menu terug gaan naar ManageQuiz
     public void doMenuBack(ActionEvent event) {
         Main.getSceneManager().showManageQuizScene();
     }
+
     // Naar hoofdmenu
     public void doMenu() {
         Main.getSceneManager().showWelcomeScene();
@@ -95,25 +100,39 @@ public class CreateUpdateQuizController {
     // Quiz opslaan, met melding nieuwe of gewijzigde quiz
     public void doCreateUpdateQuiz(ActionEvent event) throws InterruptedException {
         Quiz quiz = createQuiz();
-        String updateQuizAlert = "Quiz gewijzigd";
-        String newQuizAlert = "Nieuwe quiz toegevoegd";
-        if (quiz != null) {
+         if (quiz != null) {
             if (titelLabel.getText().equals("Maak nieuwe Quiz")) {
-                quizDAO.storeOne(quiz);
-                showAlert(newQuizAlert);
+            newQuiz(quiz);
             } else {
-                quiz.setIdQuiz(idQuiz);
-                quizDAO.updateOne(quiz);
-                showAlert(updateQuizAlert);
+                updateQuiz(quiz);
             }
         }
     }
+    private void updateQuiz(Quiz quiz) throws InterruptedException{
+        String newQuizAlert = "Nieuwe quiz toegevoegd";
+        quizSaveLabel.setText(newQuizAlert);
+        quizSaveLabel.setVisible(true);
+        quiz.setIdQuiz(idQuiz);
+        quizDAO.updateOne(quiz);
+        Thread.sleep(2000);
+        Main.getSceneManager().showManageQuizScene();
+    }
+    private void newQuiz(Quiz quiz) throws InterruptedException{
+        String updateQuizAlert = "Quiz gewijzigd";
+        quizSaveLabel.setText(updateQuizAlert);
+        quizSaveLabel.setVisible(true);
+        quizDAO.storeOne(quiz);
+        Thread.sleep(2000);
+        Main.getSceneManager().showManageQuizScene();
+    }
+
     // Alert weergeven met vertraging
     private static void showAlert(String message) throws InterruptedException {
         Alert alert = new Alert(Alert.AlertType.NONE);
         alert.setContentText(message);
         Main.getSceneManager().showManageQuizScene();
     }
+
     // Quiz maken om op te kunnen slaan en checken of alles is ingevuld
     public Quiz createQuiz() {
         boolean correctInput;
@@ -145,25 +164,29 @@ public class CreateUpdateQuizController {
         checkAndChangeLabelColor(amountQuestions.isEmpty(), amountQuestionsLabel);
         return (!nameQuiz.isEmpty() && !amountQuestions.isEmpty());
     }
+
     // Niet-ingevulde velden rood markeren en melding tonen
     private void checkAndChangeLabelColor(boolean emptyfields, Label label) {
         if (emptyfields) {
             label.setTextFill(Color.RED);
-         } else {
+        } else {
             label.setTextFill(Color.BLACK);
         }
     }
+
     // Melding tonen en tekst rood kleuren wanneer geen cursus is gekozen
     private void isCorrectInputCourse(Course course, Label label) {
         String errorMessageNoCourse = "Je hebt geen cursus gekozen voor de gebruiker.";
         if (course == null) {
-            warningLabelNoCourse.setText(errorMessageNoCourse);
-            warningLabelNoCourse.setVisible(true);
-            label.setTextFill(Color.RED);
+            if (courseLabel.getText().equals("")) {
+                warningLabelNoCourse.setText(errorMessageNoCourse);
+                warningLabelNoCourse.setVisible(true);
+                label.setTextFill(Color.RED);
 
-        } else {
-            warningLabelNoCourse.setVisible(false);
-            label.setTextFill(Color.BLACK);
+            } else {
+                warningLabelNoCourse.setVisible(false);
+                label.setTextFill(Color.BLACK);
+            }
         }
     }
 // Melding tonen en tekst rood kleuren wanneer geen level is gekozen

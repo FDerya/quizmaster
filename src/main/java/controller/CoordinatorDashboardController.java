@@ -84,8 +84,7 @@ public class CoordinatorDashboardController {
     public void doNewQuiz() {
         Quiz quiz = quizList.getSelectionModel().getSelectedItem();
         if (quiz == null) {
-            waarschuwingsLabel.setVisible(true);
-            waarschuwingsLabel.setText("Je moet eerst een quiz kiezen");
+            Main.getSceneManager().showCreateUpdateQuizScene(null);
         } else {
             Main.getSceneManager().showCreateUpdateQuizScene(quiz);
         }
