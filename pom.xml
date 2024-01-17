@@ -55,7 +55,7 @@
             <version>0.1.8</version>
         </dependency>
 
-      <dependency>
+        <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter</artifactId>
         <version>5.8.1</version>
@@ -76,6 +76,16 @@
         <artifactId>slf4j-simple</artifactId>
         <version>1.7.32</version>
       </dependency>
+        <dependency>
+            <groupId>org.lightcouch</groupId>
+            <artifactId>lightcouch</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.lightcouch</groupId>
+            <artifactId>lightcouch</artifactId>
+            <version>0.2.0</version>
+        </dependency>
 
     </dependencies>
 

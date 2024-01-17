@@ -7,6 +7,7 @@ package controller;
 import database.mysql.CourseDAO;
 import database.mysql.GroupDAO;
 import database.mysql.UserDAO;
+import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.Course;
 import model.Group;
 import model.User;
@@ -33,6 +35,14 @@ public class CreateUpdateGroupController {
     private ListView<String> groupList;
     @FXML
     Label titleLabel;
+    @FXML
+    Label courseLabel;
+    @FXML
+    Label nameGroupLabel;
+    @FXML
+    Label amountStudentLabel;
+    @FXML
+    Label teacherLabel;
     @FXML
     TextField nameGroupTextField;
     @FXML
@@ -93,17 +103,7 @@ public class CreateUpdateGroupController {
             } else {
                 teacherComboBox.getSelectionModel().selectFirst();
             }
-        } else {
-            clearFormFields();
         }
-    }
-
-    // Clears all form fields.
-    private void clearFormFields() {
-        courseComboBox.getSelectionModel().clearSelection();
-        nameGroupTextField.clear();
-        amountStudentTextField.clear();
-        teacherComboBox.getSelectionModel().clearSelection();
     }
 
     // Retrieves a list of teachers from the database
@@ -145,8 +145,17 @@ public class CreateUpdateGroupController {
 
     // Handles the saving of a new group, storing it in the database and displaying a confirmation alert
     private void saveNewGroup(Group group) {
-        groupDAO.storeOne(group);
-        showAlert(Alert.AlertType.INFORMATION, "Groep opgeslagen");
+        try {
+            groupDAO.storeOne(group);
+            setWarningLabel("Groep opgeslagen", Color.GREEN);
+            // Delay for 2 seconds before navigating back
+            PauseTransition delay = new PauseTransition(Duration.seconds(2));
+            delay.setOnFinished(this::doShowManageGroups);
+            delay.play();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setWarningLabel("Fout bij opslaan groep", Color.RED);
+        }
     }
 
     // Handles the updating of an existing group, modifying it in the database and displaying appropriate alerts
@@ -155,18 +164,15 @@ public class CreateUpdateGroupController {
         Group updatedGroup = groupDAO.updateOne(group);
 
         if (updatedGroup != null) {
-            showAlert(Alert.AlertType.INFORMATION, "Groep gewijzigd");
+            setWarningLabel("Groep gewijzigd", Color.GREEN);
 
+            // Delay for 2 seconds before navigating back
+            PauseTransition delay = new PauseTransition(Duration.seconds(2));
+            delay.setOnFinished(this::doShowManageGroups);
+            delay.play();
         } else {
-            showAlert(Alert.AlertType.ERROR, "Groep kon niet worden gewijzigd");
+            setWarningLabel("Groep kon niet worden gewijzigd", Color.RED);
         }
-    }
-
-    // Displays an alert with the specified type and content text
-    private void showAlert(Alert.AlertType alertType, String contentText) {
-        alert = new Alert(alertType);
-        alert.setContentText(contentText);
-        alert.show();
     }
 
     // Navigates to the "Manage Groups" scene and closes the currently displayed alert
@@ -183,13 +189,6 @@ public class CreateUpdateGroupController {
             stage.close();
         }
     }
-
-/*    private void closeAlert() {
-        if (alert.isShowing()) {
-            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-            stage.close();
-        }
-    }*/
 
     // Handles the "Menu" button click event, navigating back to the welcome scene
     @FXML
@@ -217,13 +216,14 @@ public class CreateUpdateGroupController {
 
     // Validates input fields, returns true if all fields are filled, false otherwise.
     private boolean validateInput() {
-        Map<String, String> inputFields = Map.of(
-                "course", "Er moet een cursus worden geselecteerd.",
-                "nameGroup", "U moet een groepsnaam invoeren.",
-                "amountStudent", "U dient een maximaal aantal studenten in te voeren.",
-                "selectedTeacher", "Er moet een docent worden geselecteerd."
-        );
+        Map<String, String> inputFields = new LinkedHashMap<>(); // Gebruik LinkedHashMap in plaats van Map
+        inputFields.put("course", "Er moet een cursus worden geselecteerd.");
+        inputFields.put("nameGroup", "U moet een groepsnaam invoeren.");
+        inputFields.put("amountStudent", "U dient een maximaal aantal studenten in te voeren.");
+        inputFields.put("selectedTeacher", "Er moet een docent worden geselecteerd.");
+
         boolean correctInput = validateFields(inputFields);
+
         if (!correctInput) {
             setWarningLabel(inputFields);
         }
@@ -238,40 +238,91 @@ public class CreateUpdateGroupController {
             String fieldValue = getInputValue(entry.getKey());
             if (fieldValue.isEmpty()) {
                 correctInput = false;
-                break;  // Stop the loop if an empty field is found
+                break;
             }
         }
         return correctInput;
     }
 
     // Sets the warning label based on the provided map of input fields and their corresponding error messages.
+    private void setWarningLabel(String message, Color color) {
+        warningLabel.setText(message);
+        warningLabel.setTextFill(color);
+        warningLabel.setVisible(true);
+
+        resetLabelColors();
+        setLabelErrorColor(courseLabel, "course");
+        setLabelErrorColor(nameGroupLabel, "nameGroup");
+        setLabelErrorColor(amountStudentLabel, "amountStudent");
+        setLabelErrorColor(teacherLabel, "teacher");
+    }
+
+    // validates input fields, updates labels with error messages, displays a red warning label
+    // if errors are present, and resets label colors.
     private void setWarningLabel(Map<String, String> inputFields) {
         StringBuilder error = new StringBuilder();
+        boolean hasError = false;
 
         for (Map.Entry<String, String> entry : inputFields.entrySet()) {
             String fieldValue = getInputValue(entry.getKey());
             if (fieldValue.isEmpty()) {
                 error.append(entry.getValue()).append("\n");
+
+                setLabelErrorColor(entry.getKey());
+                hasError = true;
+                break;
             }
         }
-
-        warningLabel.setText(error.toString().trim());
-        warningLabel.setTextFill(Color.RED); // Stel de tekstkleur in op rood
-        warningLabel.setVisible(true);
+        if (hasError) {
+            setWarningLabel(error.toString().trim(), Color.RED);
+            return;
+        }
+        resetLabelColors();
     }
 
-/*    private void setWarningLabel(Map<String, String> inputFields) {
-        StringBuilder error = new StringBuilder();
+    // sets the text color of the specific label in the grid to red
+    private void setLabelErrorColor(String fieldName) {
+        resetLabelColors();
 
-        for (Map.Entry<String, String> entry : inputFields.entrySet()) {
-            String fieldValue = getInputValue(entry.getKey());
-            if (fieldValue.isEmpty()) {
-                error.append(entry.getValue()).append("\n"); // Add a newline for each error
-            }
+        switch (fieldName) {
+            case "course":
+                setLabelErrorColor(courseLabel, fieldName);
+                break;
+            case "nameGroup":
+                setLabelErrorColor(nameGroupLabel, fieldName);
+                break;
+            case "amountStudent":
+                setLabelErrorColor(amountStudentLabel, fieldName);
+                break;
+            case "teacher":
+                setLabelErrorColor(teacherLabel, fieldName);
+                break;
         }
-        warningLabel.setText(error.toString().trim()); // Trim to remove the trailing newline
-        warningLabel.setVisible(true);
-    }*/
+    }
+
+    // Set the text color of the labels in the grid to red
+    private void setLabelErrorColor(Label label, String fieldName) {
+        String fieldValue = getInputValue(fieldName);
+        if (fieldValue.isEmpty() && !fieldName.equals("teacher")) {
+            label.setTextFill(Color.RED);
+        } else {
+            resetLabelColor(label);
+        }
+    }
+
+    // Resets the text color of the labels in the grid to the default color
+    private void resetLabelColor(Label label) {
+        label.setTextFill(Color.BLACK);
+    }
+
+    // Resets the text colors of labels
+    private void resetLabelColors() {
+        resetLabelColor(courseLabel);
+        resetLabelColor(nameGroupLabel);
+        resetLabelColor(amountStudentLabel);
+        resetLabelColor(teacherLabel);
+    }
+
 
     // Retrieves the value of a specific input field based on the field name.
     private String getInputValue(String fieldName) {

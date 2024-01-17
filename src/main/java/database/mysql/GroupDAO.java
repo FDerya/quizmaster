@@ -23,6 +23,7 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         this.courseDAO = courseDAO;
     }
 
+
     // Method to retrieve all groups
     @Override
     public List<Group> getAll() {
