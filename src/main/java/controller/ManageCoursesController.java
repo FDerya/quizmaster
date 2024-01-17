@@ -49,7 +49,6 @@ public class ManageCoursesController {
     public void setup() {
         List<Course> courses = courseDAO.getAll();
         courseList.getItems().addAll(courses);
-        doStudentCount();
         courseList.getSelectionModel().selectedItemProperty().addListener((observableValue, course, t1) -> {
             doStudentCount();
             warningLabel.setVisible(false);
