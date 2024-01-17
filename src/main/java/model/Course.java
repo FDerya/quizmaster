@@ -27,7 +27,8 @@ public class Course {
         this(0, coordinator, nameCourse, difficultyCourse);
     }
 
-// Methods
+
+    // Methods
     @Override
     public String toString(){
         return String.format("%s", getNameCourse());

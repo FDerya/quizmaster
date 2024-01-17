@@ -26,11 +26,26 @@ public class Group {
         this.teacher = teacher;
     }
 
+    public Group() {
+        super();
+    }
+
     // toString-methode
-    @Override
+    /*@Override
     public String toString() {
         return String.valueOf(course);
+    }*/
+    @Override
+    public String toString() {
+        return "Group{" +
+                "idGroup=" + idGroup +
+                ", course=" + course +
+                ", groupName='" + groupName + '\'' +
+                ", amountStudent=" + amountStudent +
+                ", teacher=" + teacher +
+                '}';
     }
+
 
     //Getters en setters
     public int getIdGroup() {
@@ -53,14 +68,23 @@ public class Group {
         return groupName;
     }
 
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
     public int getAmountStudent() {
         return amountStudent;
+    }
+
+    public void setAmountStudent(int amountStudent) {
+        this.amountStudent = amountStudent;
     }
 
     public User getTeacher() {
         return teacher;
     }
 
+    public void setTeacher(User teacher) {
+        this.teacher = teacher;
+    }
 }
-
-
