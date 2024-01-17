@@ -1,12 +1,15 @@
 package controller;
 
 import database.mysql.UserDAO;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import model.User;
 import view.Main;
 
@@ -44,6 +47,7 @@ public class CreateUpdateUserController {
     @FXML
     Label createUpdateMessage;
     ObservableList<String> rollen = FXCollections.observableArrayList("Student", "Docent", "Coördinator", "Administrator", "Functioneel Beheerder");
+    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), actionEvent -> Main.getSceneManager().showManageUserScene()));
 
     public CreateUpdateUserController() {
         this.userDAO = new UserDAO(Main.getDBaccess());
@@ -82,6 +86,7 @@ public class CreateUpdateUserController {
             }
             createUpdateMessage.setVisible(true);
         }
+        timeline.play();
     }
 
     // Actie om terug te gaan naar het manageUsers scherm
@@ -109,17 +114,27 @@ public class CreateUpdateUserController {
         isCorrectInputRole(role);
         correctInput = isCorrectInput(username, password, firstname, surname);
         if (role == null || !correctInput) {
-            warningLabelNoFields.setVisible(!correctInput);
-            return null;
+            return incorrectUser();
         } else {
-            warningLabelNoRole.setVisible(false);
-            return new User(username, password, firstname, prefix, surname, role);
+            return correctUser(username, password, firstname, prefix, surname, role);
         }
     }
 
-    // Deze methode geeft een boolean terug als een bepaalde label zichtbaar is. Het label wordt zichbaar als een
-    // tekstveld leeg is (het label bij dat tekstveld wordt dan rood). Als de warningLabel zichtbaar is,
-    // is de invoer incorrect, dus geeft hij false terug.
+    // Als aan de voorwaarden voor nieuwe gebruiker/wijzigen voldaan is, worden de warning labels weggehaald en return je een user
+    private User correctUser(String username, String password, String firstname, String prefix, String surname, String role) {
+        warningLabelNoRole.setVisible(false);
+        warningLabelNoFields.setVisible(false);
+        return new User(username, password, firstname, prefix, surname, role);
+    }
+
+    // Als niet aan de voorwaarden voor nieuwe/wijzigen gebruiker voldaan is, wordt een warning label getoond en return je null.
+    private User incorrectUser() {
+        warningLabelNoRole.setVisible(false);
+        warningLabelNoFields.setVisible(false);
+        return null;
+    }
+
+    // Deze methode roept checkAndChangeLabelColor aan en geeft een boolean terug of meegegeven velden ingevuld zijn of niet.
     private boolean isCorrectInput(String username, String password, String firstname, String lastname) {
         checkAndChangeLabelColor(username.isEmpty(), usernameLabel);
         checkAndChangeLabelColor(password.isEmpty(), passwordLabel);
@@ -138,6 +153,7 @@ public class CreateUpdateUserController {
         }
     }
 
+    // Deze methode geeft een warningLabel als er geen rol gekozen is. Als de rol wel gekozen is, wordt de label weggehaald.
     private void isCorrectInputRole(String role) {
         String errorMessageNoRole = "Je hebt geen rol gekozen voor de gebruiker.";
         if (role == null) {
