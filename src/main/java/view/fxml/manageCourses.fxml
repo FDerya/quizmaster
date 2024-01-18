@@ -26,7 +26,7 @@
             <Font size="14.0" />
         </font>
     </Button>
-    <Button layoutX="217.0" layoutY="285.0" mnemonicParsing="false" onAction="#doAskDeleteUser" text="Verwijder">
+    <Button layoutX="217.0" layoutY="285.0" mnemonicParsing="false" onAction="#doDeleteCourse" text="Verwijder">
         <font>
             <Font size="14.0" />
         </font>
@@ -36,22 +36,6 @@
             <Font size="14.0" />
         </font>
     </Button>
-   <GridPane fx:id="deleteCourseGrid" layoutX="353.0" layoutY="78.0" prefHeight="105.0" prefWidth="377.0" visible="false">
-     <columnConstraints>
-       <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.0" minWidth="10.0" prefWidth="99.0" />
-       <ColumnConstraints hgrow="SOMETIMES" maxWidth="278.0" minWidth="10.0" prefWidth="278.0" />
-     </columnConstraints>
-     <rowConstraints>
-       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-       <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
-       <RowConstraints maxHeight="36.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-     </rowConstraints>
-      <children>
-         <Label fx:id="deleteWarningLabel" prefHeight="58.0" prefWidth="382.0" text="Placeholder text" GridPane.columnSpan="2147483647" GridPane.rowSpan="2" />
-         <Button fx:id="deleteYesButton" mnemonicParsing="false" onAction="#doDeleteCourse" text="Doorgaan" GridPane.rowIndex="2" />
-         <Button fx:id="deleteNoButton" mnemonicParsing="false" onAction="#doNotDeleteCourse" text="Annuleren" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      </children>
-   </GridPane>
    <Label fx:id="warningLabel" layoutX="339.0" layoutY="78.0" text="Je moet eerst een cursus selecteren." visible="false" />
    <Label fx:id="studentCounter" layoutX="14.0" layoutY="377.0" prefHeight="58.0" prefWidth="463.0" text="Placeholder student counter" />
 </AnchorPane>

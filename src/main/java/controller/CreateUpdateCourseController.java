@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import model.Course;
 import model.User;
@@ -42,12 +43,8 @@ public class CreateUpdateCourseController {
     ObservableList<String> levelOptions = FXCollections.observableArrayList("Beginner", "Medium", "Gevorderd");
     List<User> coordinators = userDAO.getAllCoordinators();
     ObservableList<User> coordinatorOptions = FXCollections.observableArrayList(coordinators);
-    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent actionEvent) {
-            Main.getSceneManager().showManageCoursesScene();
-        }
-    }));
+    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), actionEvent
+            -> Main.getSceneManager().showManageCoursesScene()));
 
 
 // Contructor
@@ -82,8 +79,8 @@ public class CreateUpdateCourseController {
                 courseDAO.updateOne(course);
                 warningLabel.setText(warningLabalUpdatedCourse);
             }
+            timeline.play();
         }
-        timeline.play();
     }
 
 // Method to get back to the Welcome page
@@ -94,16 +91,25 @@ public class CreateUpdateCourseController {
 
 // Method to create a new course with a warning if not all fields are filled in
     private Course createNewCourse(){
-        String error = "Je hebt niet alle velden ingevuld.\nAlle velden zijn verplicht.";
+        courseNameLabel.setTextFill(Color.BLACK);
+        coordinatorLabel.setTextFill(Color.BLACK);
+        levelLabel.setTextFill(Color.BLACK);
         String courseName = courseNameTextField.getText();
         User coordinator = coordinatorComboBox.getSelectionModel().getSelectedItem();
         String level = levelComboBox.getSelectionModel().getSelectedItem();
         if (courseName.isEmpty() || coordinator == null || level == null) {
-            warningLabel.setText(error);
-            warningLabel.setVisible(true);
+            doWithEmptyFields(courseName, coordinator, level);
             return null;
         } else {
             return new Course(0, coordinator, courseName, level);
         }
+    }
+
+    private void doWithEmptyFields(String courseName, User coordinator, String level) {
+        warningLabel.setText("Je hebt niet alle velden ingevuld.\nAlle velden zijn verplicht.");
+        warningLabel.setVisible(true);
+        if (courseName.isEmpty()) {courseNameLabel.setTextFill(Color.RED);}
+        if (coordinator == null) {coordinatorLabel.setTextFill(Color.RED);}
+        if (level == null) {levelLabel.setTextFill(Color.RED);}
     }
 }
