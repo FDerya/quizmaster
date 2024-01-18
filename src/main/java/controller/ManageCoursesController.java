@@ -6,15 +6,14 @@ import database.mysql.ParticipationDAO;
 import database.mysql.UserDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import model.Course;
 import model.Participation;
 import view.Main;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ManageCoursesController {
 // Attributes
@@ -68,30 +67,32 @@ public class ManageCoursesController {
         Main.getSceneManager().showCreateUpdateCourseScene(course);
     }
 
-    public void doAskDeleteUser(ActionEvent actionEvent){
-        Course course = courseList.getSelectionModel().getSelectedItem();
-        if (course == null){
-            warningLabel.setVisible(true);
-        } else {
-            warningLabel.setVisible(false);
-            deleteCourseGrid.setVisible(true);
-            deleteWarningLabel.setText("Je gaat de cursus \"" + course + "\" verwijderen. \n" +
-                    "Dit kan niet ongedaan gemaakt worden.\nWeet je het zeker?");
-        }
-    }
     public void doDeleteCourse(ActionEvent actionEvent){
         Course course = courseList.getSelectionModel().getSelectedItem();
         if (course != null){
-            courseDAO.deleteOne(course);
-            courseList.getItems().remove(course);
-            deleteCourseGrid.setVisible(false);
+            showDeleteAlert(course);
         } else {
             warningLabel.setText("Houd de cursus geselecteerd.");
             warningLabel.setVisible(true);
         }
     }
-    public void doNotDeleteCourse(ActionEvent actionEvent) {
-        deleteCourseGrid.setVisible(false);
+
+    public void showDeleteAlert(Course course){
+        Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        deleteAlert.setContentText("Je gaat de cursus " + course.getNameCourse() + " verwijderen.\n" +
+                "Deze actie kan niet ongedaan gemaakt worden.\n");
+        deleteAlert.setTitle("Verwijder cursus");
+        deleteAlert.setHeaderText(null);
+        ButtonType buttonYes = new ButtonType("Doorgaan", ButtonBar.ButtonData.OK_DONE);
+        ButtonType buttonNo = new ButtonType("Annuleren", ButtonBar.ButtonData.NO);
+        deleteAlert.getButtonTypes().setAll(buttonYes, buttonNo);
+        Optional<ButtonType> result = deleteAlert.showAndWait();
+        if (result.get().equals(buttonYes)){
+            courseDAO.deleteOne(course);
+            courseList.getItems().remove(course);
+        } else if (result.get().equals(buttonNo)) {
+            deleteAlert.close();
+        }
     }
 
     public void doStudentCount(){
