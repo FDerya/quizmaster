@@ -25,22 +25,22 @@
             </rowConstraints>
             <children>
 
-                <Label text="Cursusnaam" GridPane.halignment="RIGHT">
+                <Label fx:id="courseLabel" text="Cursusnaam" GridPane.halignment="RIGHT">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
                 </Label>
-                <Label text="Groepsnaam" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                <Label fx:id="nameGroupLabel" text="Groepsnaam" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
                 </Label>
-                <Label text="Max Aantal studenten" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                <Label fx:id="amountStudentLabel" text="Max Aantal studenten" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
                 </Label>
-                <Label text="Docent" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                <Label fx:id="teacherLabel" text="Docent" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
@@ -73,6 +73,6 @@
         <Button layoutX="41.0" layoutY="249.0" mnemonicParsing="false" onAction="#doSaveGroup" text="Opslaan" />
         <Button layoutX="114.0" layoutY="249.0" mnemonicParsing="false" onAction="#doShowManageGroups" text="Groepenbeheer" />
         <Button layoutX="221.0" layoutY="249.0" mnemonicParsing="false" onAction="#doShowMenu" text="Menu" />
-        <Label fx:id="warningLabel" layoutX="241.0" layoutY="459.0" prefHeight="17.0" prefWidth="308.0" text="Label" visible="false" />
+        <Label fx:id="warningLabel" layoutX="41.0" layoutY="340.0" prefHeight="17.0" prefWidth="353.0" text="Label" visible="false" />
     </children>
 </AnchorPane>

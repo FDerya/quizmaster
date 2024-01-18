@@ -27,8 +27,10 @@ public class ManageGroupsController {
     @FXML
     private Label selectedCourseLabel;
 
+    // Constructor
     public ManageGroupsController() {
-        this.groupDAO = new GroupDAO(Main.getDBaccess(), new UserDAO(Main.getDBaccess()), new CourseDAO(Main.getDBaccess()));
+        this.groupDAO = new GroupDAO(Main.getDBaccess(), new UserDAO(Main.getDBaccess()),
+                new CourseDAO(Main.getDBaccess()));
     }
 
     // Clears the group list, retrieves and sorts groups, sets up list view properties, and updates labels
@@ -91,12 +93,10 @@ public class ManageGroupsController {
         }
         if (confirmDeletion(selectedGroup)) {
             groupDAO.deleteGroup(selectedGroup);
-            groupList.getItems().remove(selectedGroup); // No need to manually remove the item
-
-            // Use setAll to directly update the list with the new data
-            groupList.getItems().setAll(groupDAO.getAll());
-
-            updateGroupCountLabel(); // Update the group count label
+            groupList.getItems().remove(selectedGroup);
+            groupList.getItems().sort((group1, group2) -> group1.getCourse().getNameCourse().compareTo(group2
+                    .getCourse().getNameCourse()));
+            updateGroupCountLabel();
         }
     }
 
@@ -125,11 +125,6 @@ public class ManageGroupsController {
         return result.isPresent() && result.get() == buttonTypeYes;
     }
 
-    // Refreshes the group list by updating it with the latest data from the database.
-    private void refreshGroupList() {
-        setGroupListData(groupDAO.getAll());
-    }
-
     // Custom ListCell implementation for the Group class
     class GroupListCell extends ListCell<Group> {
         @Override
@@ -147,15 +142,12 @@ public class ManageGroupsController {
     // Updates the group count label and selected course label based on the selected group
     private void updateGroupCountLabel() {
         Group selectedGroup = groupList.getSelectionModel().getSelectedItem();
-
         if (selectedGroup == null) {
             clearLabels();
         } else {
             if (selectedGroup.getCourse() != null) {
                 groupCountLabel.setVisible(true);
-
                 long counter = groupDAO.countGroupsForCourse(selectedGroup.getCourse());
-
                 updateLabels(selectedGroup, counter);
             } else {
                 clearLabels();
