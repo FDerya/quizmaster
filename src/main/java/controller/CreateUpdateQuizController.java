@@ -122,7 +122,7 @@ public class CreateUpdateQuizController {
     }
 
     private void newQuiz(Quiz quiz) throws InterruptedException {
-        String newQuizAlert = "Nieuwe quiz toegevoegd";
+        String newQuizAlert = "Nieuwe quiz is toegevoegd";
         quizSaveLabel.setText(newQuizAlert);
         quizSaveLabel.setVisible(true);
         quiz.setIdQuiz(idQuiz);
@@ -130,7 +130,7 @@ public class CreateUpdateQuizController {
     }
 
     private void updateQuiz(Quiz quiz) throws InterruptedException {
-        String updateQuizAlert = "Quiz gewijzigd";
+        String updateQuizAlert = "Quiz is gewijzigd";
         quizSaveLabel.setText(updateQuizAlert);
         quizSaveLabel.setVisible(true);
         quizDAO.updateOne(quiz);
