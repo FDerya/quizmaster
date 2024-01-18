@@ -3,7 +3,6 @@ package controller;
 
 import database.mysql.CourseDAO;
 import javafx.animation.KeyFrame;
-import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,8 +17,6 @@ import javafx.scene.control.*;
 import view.Main;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 public class CreateUpdateQuizController {
     private final DBAccess dbAccess;
@@ -107,40 +104,29 @@ public class CreateUpdateQuizController {
         if (quiz != null) {
             if (titelLabel.getText().equals("Maak nieuwe Quiz")) {
                 newQuiz(quiz);
-            } else {
+            } else if (titelLabel.getText().equals("Wijzig Quiz")) {
                 updateQuiz(quiz);
             }
             Timeline timeline = new Timeline(new KeyFrame(
                     Duration.millis(2000),
                     ae -> Main.getSceneManager().showManageQuizScene()));
             timeline.play();
-
-
-
         }
-
     }
 
-    private void newQuiz(Quiz quiz) throws InterruptedException {
+    private void newQuiz(Quiz quiz) {
         String newQuizAlert = "Nieuwe quiz is toegevoegd";
         quizSaveLabel.setText(newQuizAlert);
         quizSaveLabel.setVisible(true);
-        quiz.setIdQuiz(idQuiz);
         quizDAO.storeOne(quiz);
     }
 
-    private void updateQuiz(Quiz quiz) throws InterruptedException {
+    private void updateQuiz(Quiz quiz) {
         String updateQuizAlert = "Quiz is gewijzigd";
         quizSaveLabel.setText(updateQuizAlert);
         quizSaveLabel.setVisible(true);
+        quiz.setIdQuiz(idQuiz);
         quizDAO.updateOne(quiz);
-    }
-
-    // Alert weergeven met vertraging
-    private static void showAlert(String message) throws InterruptedException {
-        Alert alert = new Alert(Alert.AlertType.NONE);
-        alert.setContentText(message);
-        Main.getSceneManager().showManageQuizScene();
     }
 
     // Quiz maken om op te kunnen slaan en checken of alles is ingevuld

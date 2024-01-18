@@ -13,7 +13,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
     private UserDAO userDAO = new UserDAO(Main.getDBaccess());
     private CourseDAO courseDAO = new CourseDAO(Main.getDBaccess(), userDAO);
     private Quiz quiz = null;
-    private Course courze = null;
+    private Course course = null;
 
     // Constructor met UserDAO als parameter
     public QuizDAO(DBAccess dbAccess, UserDAO userDAO) {
@@ -85,7 +85,6 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
     public void storeOne(Quiz quiz) {
         String sql = "INSERT INTO Quiz (idCourse, nameQuiz, levelQuiz, amountQuestion) VALUES(?, ?, ?, ?);";
         try {
-
             setupPreparedStatementWithKey(sql);
             storeQuiz(quiz);
             int primaryKey = executeInsertStatementWithKey();
@@ -100,8 +99,8 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         String sql = "UPDATE Quiz SET idCourse = ?, nameQuiz = ?, levelQuiz = ?, amountQuestion = ? WHERE idQuiz = ?;";
         try {
             setupPreparedStatement(sql);
-            storeQuiz(quiz);
             preparedStatement.setInt(5, quiz.getIdQuiz());
+            storeQuiz(quiz);
             executeManipulateStatement();
         } catch (SQLException sqlException) {
             System.out.println("SQL error" + sqlException.getMessage());
