@@ -2,10 +2,14 @@ package controller;
 // Tom van Beek, 500941521.
 
 import database.mysql.CourseDAO;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import model.*;
 import database.mysql.DBAccess;
 import database.mysql.QuizDAO;
@@ -55,7 +59,7 @@ public class CreateUpdateQuizController {
     ComboBox<Course> coursesListComboBox;
 
     ObservableList<String> levelsList = FXCollections.observableArrayList("Beginner", "Medium", "Gevorderd");
-    List<Course> courssList = quizDAO.getCoursesFromUser(User.getCurrentUser());
+    List<Course> courssList = courseDAO.getAllByIdUser(User.getCurrentUser().getIdUser());
     ObservableList<Course> coursesList = FXCollections.observableArrayList(courssList);
 
 
@@ -100,30 +104,36 @@ public class CreateUpdateQuizController {
     // Quiz opslaan, met melding nieuwe of gewijzigde quiz
     public void doCreateUpdateQuiz(ActionEvent event) throws InterruptedException {
         Quiz quiz = createQuiz();
-         if (quiz != null) {
+        if (quiz != null) {
             if (titelLabel.getText().equals("Maak nieuwe Quiz")) {
-            newQuiz(quiz);
+                newQuiz(quiz);
             } else {
                 updateQuiz(quiz);
             }
+            Timeline timeline = new Timeline(new KeyFrame(
+                    Duration.millis(2000),
+                    ae -> Main.getSceneManager().showManageQuizScene()));
+            timeline.play();
+
+
+
         }
+
     }
-    private void updateQuiz(Quiz quiz) throws InterruptedException{
+
+    private void newQuiz(Quiz quiz) throws InterruptedException {
         String newQuizAlert = "Nieuwe quiz toegevoegd";
         quizSaveLabel.setText(newQuizAlert);
         quizSaveLabel.setVisible(true);
         quiz.setIdQuiz(idQuiz);
         quizDAO.updateOne(quiz);
-        Thread.sleep(2000);
-        Main.getSceneManager().showManageQuizScene();
     }
-    private void newQuiz(Quiz quiz) throws InterruptedException{
+
+    private void updateQuiz(Quiz quiz) throws InterruptedException {
         String updateQuizAlert = "Quiz gewijzigd";
         quizSaveLabel.setText(updateQuizAlert);
         quizSaveLabel.setVisible(true);
         quizDAO.storeOne(quiz);
-        Thread.sleep(2000);
-        Main.getSceneManager().showManageQuizScene();
     }
 
     // Alert weergeven met vertraging
