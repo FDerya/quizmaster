@@ -126,14 +126,14 @@ public class CreateUpdateQuizController {
         quizSaveLabel.setText(newQuizAlert);
         quizSaveLabel.setVisible(true);
         quiz.setIdQuiz(idQuiz);
-        quizDAO.updateOne(quiz);
+        quizDAO.storeOne(quiz);
     }
 
     private void updateQuiz(Quiz quiz) throws InterruptedException {
         String updateQuizAlert = "Quiz gewijzigd";
         quizSaveLabel.setText(updateQuizAlert);
         quizSaveLabel.setVisible(true);
-        quizDAO.storeOne(quiz);
+        quizDAO.updateOne(quiz);
     }
 
     // Alert weergeven met vertraging
