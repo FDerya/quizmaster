@@ -10,7 +10,6 @@
 <AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateUpdateQuestionController">
     <children>
         <Label fx:id="titelLabel" layoutX="14.0" layoutY="14.0" text="" />
-        <TextField fx:id="questionNumberTextfield" layoutX="125.0" layoutY="54.0" prefHeight="25.0" prefWidth="155.0" promptText="Question Number" />
         <TextField fx:id="questionTextfield" layoutX="126.0" layoutY="130.0" prefHeight="141.0" prefWidth="716.0" promptText="Question" />
         <TextField fx:id="answerRightTextfield" layoutX="125.0" layoutY="288.0" prefHeight="25.0" prefWidth="453.0" promptText="Right Answer" />
         <TextField fx:id="answerWrong1Textfield" layoutX="125.0" layoutY="337.0" prefHeight="25.0" prefWidth="453.0" promptText="Wrong Answer 1" />
@@ -18,19 +17,21 @@
         <TextField fx:id="answerWrong3Textfield" layoutX="125.0" layoutY="428.0" prefHeight="25.0" prefWidth="453.0" promptText="Wrong Answer 3" />
       <Button layoutX="21.0" layoutY="541.0" mnemonicParsing="false" onAction="#doMenu" prefHeight="32.0" prefWidth="101.0" text="Terug" />
         <ComboBox fx:id="quizlist" layoutX="125.0" layoutY="90.0" prefHeight="25.0" prefWidth="124.0" promptText="Selecteer Quiz" />
-        <Button layoutX="122.0" layoutY="471.0" mnemonicParsing="false" onAction="#doStoreQuestion" prefHeight="32.0" prefWidth="155.0" text="Opslaan " />
+        <Button layoutX="122.0" layoutY="478.0" mnemonicParsing="false" onAction="#doStoreQuestion" prefHeight="25.0" prefWidth="155.0" text="Opslaan " />
       <Label layoutX="11.0" layoutY="58.0" />
-      <Label layoutX="37.0" layoutY="94.0" text="Quiz Naam" />
-      <Label layoutX="51.0" layoutY="184.0" text="Vraag" />
-      <Label fx:id="warningLabel" layoutX="133.0" layoutY="481.0" prefHeight="76.0" prefWidth="510.0" textFill="RED" />
+      <Label fx:id="label_Quiz" layoutX="37.0" layoutY="94.0" text="Quiz Naam" />
+      <Label fx:id="label_Vraag" layoutX="51.0" layoutY="184.0" text="Vraag" />
+      <Label fx:id="warningLabel" layoutX="290.0" layoutY="478.0" prefHeight="76.0" prefWidth="510.0" textFill="RED" />
       <Label layoutX="355.0" layoutY="8.0" prefHeight="30.0" prefWidth="190.0" text="Vragenbeheer">
          <font>
             <Font name="Calibri Bold" size="25.0" />
          </font>
       </Label>
-      <Label layoutX="27.0" layoutY="292.0" text="Juist Antwoord" />
-      <Label layoutX="15.0" layoutY="341.0" text="Onjuist Antwoord 1" />
-      <Label layoutX="14.0" layoutY="385.0" text="Onjuist Antwoord 2" />
-      <Label layoutX="14.0" layoutY="432.0" text="Onjuist Antwoord 3" />
+      <Label fx:id="label_Juist" layoutX="27.0" layoutY="292.0" text="Juist Antwoord" />
+      <Label fx:id="label_Antwood_1" layoutX="15.0" layoutY="341.0" text="Onjuist Antwoord 1" />
+      <Label fx:id="label_Antwood_2" layoutX="14.0" layoutY="385.0" text="Onjuist Antwoord 2" />
+      <Label fx:id="label_Antwood_3" layoutX="14.0" layoutY="432.0" text="Onjuist Antwoord 3" />
+      <Label layoutX="37.0" layoutY="58.0" text="Course Naam" />
+      <Label fx:id="label_Course" layoutX="126.0" layoutY="58.0" prefHeight="17.0" prefWidth="202.0" />
     </children>
 </AnchorPane>
