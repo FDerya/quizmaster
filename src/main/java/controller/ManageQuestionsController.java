@@ -6,11 +6,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import model.Course;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import model.Question;
 import model.User;
 import view.Main;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -23,10 +26,9 @@ public class ManageQuestionsController {
     ListView<Question> questionList;
     @FXML
     Label warningLabel;
-    private Question question;
-
     @FXML
     Label questionCountLabel;
+    private Question question;
 
     public ManageQuestionsController() {
         this.questionDAO = new QuestionDAO(Main.getDBaccess());
@@ -65,22 +67,22 @@ public class ManageQuestionsController {
 
     public void doCreateQuestion() {
         Question selectedQuestion = questionList.getSelectionModel().getSelectedItem();
-        if (selectedQuestion != null) {
-            Main.getSceneManager().showCreateUpdateQuestionScene(null);
-            warningLabel.setVisible(false);
-        } else {
+        if (selectedQuestion == null) {
             warningLabel.setVisible(true);
             warningLabel.setText("Je moet eerst een vraag kiezen!");
+            warningLabel.setStyle("-fx-text-fill: red;");
+        } else {
+            Main.getSceneManager().showCreateUpdateQuestionScene(null);
+            warningLabel.setVisible(false);
+
         }
     }
-
 
     public void doUpdateQuestion(ActionEvent event) {
         Question question = questionList.getSelectionModel().getSelectedItem();
         Main.getSceneManager().showCreateUpdateQuestionScene(question);
 
     }
-
 
     public void doDeleteQuestion(ActionEvent event) {
         Question selectedQuestion = questionList.getSelectionModel().getSelectedItem();
