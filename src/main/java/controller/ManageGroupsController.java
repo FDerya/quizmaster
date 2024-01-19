@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import model.Group;
 import view.Main;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,12 +36,17 @@ public class ManageGroupsController {
     }
 
     // Clears the group list, retrieves and sorts groups, sets up list view properties, and updates labels
+    // Clears the group list, retrieves and sorts groups, sets up list view properties, and updates labels
     @FXML
     public void setup() {
+        groupList.getItems().clear();
         setGroupListData(groupDAO.getAll());
+        /*groupList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        groupList.getSelectionModel().clearSelection();*/
         groupList.setCellFactory(param -> new GroupListCell());
-        warningTextField.setVisible(false);
-        groupList.getSelectionModel().selectedItemProperty().addListener((observableValue, group, t1) -> {
+        updateGroupCountLabel();
+        //warningTextField.setVisible(false);
+        groupList.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
             updateGroupCountLabel();
         });
     }
@@ -48,10 +54,9 @@ public class ManageGroupsController {
     // Clears the existing items in the groupList and populates it with the provided list of groups.
     private void setGroupListData(List<Group> groups) {
         groupList.getItems().clear();
-        groups.sort((group1, group2) -> group1.getCourse().getNameCourse().compareTo(group2.getCourse().getNameCourse()));
+        groups.sort(Comparator.comparing(group -> group.getCourse().getNameCourse()));
         groupList.getItems().addAll(groups);
     }
-
 
     // Handles the click event on the menu button and navigates back to the welcome scene
     @FXML
@@ -74,7 +79,8 @@ public class ManageGroupsController {
     private void doUpdateGroup() {
         Group selectedGroup = groupList.getSelectionModel().getSelectedItem();
         if (selectedGroup == null) {
-            showWarning();
+            // showWarning();
+            selectedCourseLabel.setText("Je moet eerst een cursus selecteren.");
         } else {
             Main.getSceneManager().showCreateUpdateGroupScene(selectedGroup);
         }
@@ -91,8 +97,7 @@ public class ManageGroupsController {
         if (confirmDeletion(selectedGroup)) {
             groupDAO.deleteGroup(selectedGroup);
             groupList.getItems().remove(selectedGroup);
-            groupList.getItems().sort((group1, group2) -> group1.getCourse().getNameCourse().compareTo(group2
-                    .getCourse().getNameCourse()));
+            groupList.getItems().sort(Comparator.comparing(group -> group.getCourse().getNameCourse()));
             updateGroupCountLabel();
         }
     }
@@ -123,7 +128,7 @@ public class ManageGroupsController {
     }
 
     // Custom ListCell implementation for the Group class
-    class GroupListCell extends ListCell<Group> {
+    static class GroupListCell extends ListCell<Group> {
         @Override
         protected void updateItem(Group item, boolean empty) {
             super.updateItem(item, empty);
