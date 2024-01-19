@@ -36,11 +36,11 @@ public class QuizCouchDBDAO extends AbstractCouchDBDAO{
         }
         return null;
     }
-    /*public void deleteQuiz(Quiz quiz){
+    public void deleteQuiz(Quiz quiz){
         String[] idAndRev = getIdAndRevQuiz(quiz);
         deleteDocument(idAndRev[0], idAndRev[1]);
     }
-   public String getIdAndRevQuiz(Quiz quiz){
+   public String[] getIdAndRevQuiz(Quiz quiz){
         String[] idAndRev= new String[2];
         for (JsonObject jsonObject : getAllDocuments()) {
             if (jsonObject.has("idQuiz") && jsonObject.get("idQuiz").getAsString().equals(quiz.getIdQuiz()){
@@ -50,5 +50,17 @@ public class QuizCouchDBDAO extends AbstractCouchDBDAO{
             }
         }
         return idAndRev;
-    }*/
+    }
+    public String updateVerbruiker(Quiz quiz) {
+        // Haal _id en _rev van document op behorend bij verbruiker
+        // Zet verbruiker om in JsonObject
+        String[] idAndRev = getIdAndRevQuiz(quiz);
+        String jsonString = gson.toJson(quiz);
+        JsonParser parser = new JsonParser();
+        JsonObject jsonObject = parser.parse(jsonString).getAsJsonObject();
+        // Voeg _id en _rev toe aan JsonObject, nodig voor de update van een document.
+        jsonObject.addProperty("_id" , idAndRev[0]);
+        jsonObject.addProperty("_rev" , idAndRev[1]);
+        return updateDocument(jsonObject);
+    }
 }
