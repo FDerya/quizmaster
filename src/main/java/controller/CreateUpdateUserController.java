@@ -85,8 +85,8 @@ public class CreateUpdateUserController {
                 createUpdateMessage.setText(updateUserMessage);
             }
             createUpdateMessage.setVisible(true);
+            timeline.play();
         }
-        timeline.play();
     }
 
     // Actie om terug te gaan naar het manageUsers scherm
@@ -129,8 +129,7 @@ public class CreateUpdateUserController {
 
     // Als niet aan de voorwaarden voor nieuwe/wijzigen gebruiker voldaan is, wordt een warning label getoond en return je null.
     private User incorrectUser() {
-        warningLabelNoRole.setVisible(false);
-        warningLabelNoFields.setVisible(false);
+        warningLabelNoFields.setVisible(true);
         return null;
     }
 
