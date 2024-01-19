@@ -13,13 +13,12 @@ import javafx.scene.control.ListView;
 import model.Question;
 import model.User;
 import view.Main;
-
 import java.util.List;
 import java.util.Optional;
 
 public class ManageQuestionsController {
-    private final QuestionDAO questionDAO;
 
+    private final QuestionDAO questionDAO;
     private final CourseDAO courseDAO;
 
     @FXML
