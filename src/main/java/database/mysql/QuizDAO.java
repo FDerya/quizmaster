@@ -13,7 +13,6 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
     private UserDAO userDAO = new UserDAO(Main.getDBaccess());
     private CourseDAO courseDAO = new CourseDAO(Main.getDBaccess(), userDAO);
     private Quiz quiz = null;
-    private Course course = null;
 
     // Constructor met UserDAO als parameter
     public QuizDAO(DBAccess dbAccess, UserDAO userDAO) {
