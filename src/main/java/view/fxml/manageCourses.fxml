@@ -37,5 +37,5 @@
         </font>
     </Button>
    <Label fx:id="warningLabel" layoutX="339.0" layoutY="78.0" text="Je moet eerst een cursus selecteren." visible="false" />
-   <Label fx:id="studentCounter" layoutX="14.0" layoutY="377.0" prefHeight="58.0" prefWidth="463.0" text="Placeholder student counter" />
+   <Label fx:id="studentCounter" layoutX="14.0" layoutY="377.0" prefHeight="58.0" prefWidth="463.0" text="Selecteer een cursus om te zien hoeveel studenten er ingeschreven voor een cursus." />
 </AnchorPane>
