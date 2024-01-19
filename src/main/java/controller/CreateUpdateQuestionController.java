@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.util.Duration;
 import model.Question;
 import model.Quiz;
+import model.User;
 import view.Main;
 
 import java.util.List;
@@ -77,6 +78,7 @@ public class CreateUpdateQuestionController {
     }
 
     public void setup(Question question) {
+
         fillComboBoxQuizzes();
 
         quizlist.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -113,10 +115,24 @@ public class CreateUpdateQuestionController {
 
     //Vult de keuzelijst (ComboBox) met beschikbare quizzen.
     public void fillComboBoxQuizzes() {
-        List<Quiz> allQuizzes = quizDAO.getAll();
-        ObservableList<Quiz> quizObservableList =
-                FXCollections.observableArrayList(allQuizzes);
-        quizlist.setItems(quizObservableList);
+        // Get the current user
+        User currentUser = User.getCurrentUser();
+        if (currentUser != null) {
+            // Get quizzes for the current user
+            List<Quiz> userQuizNames = questionDAO.getQuizNamesForUser(currentUser.getIdUser());
+
+            for (Quiz quiz : userQuizNames) {
+                System.out.println("Quiz ID: " + quiz.getIdQuiz());
+                System.out.println("Course Name: " + quiz.getCourse().getNameCourse());
+                System.out.println("Quiz Name: " + quiz.getNameQuiz());
+                System.out.println("Level: " + quiz.getLevel());
+                System.out.println("Amount of Questions: " + quiz.getAmountQuestions());
+                System.out.println("----------------------------------");
+            }
+            // Display the user's quizzes in the ComboBox
+            ObservableList<Quiz> quizObservableList = FXCollections.observableArrayList(userQuizNames);
+            quizlist.setItems(quizObservableList);
+        }
     }
 
     public void doMenu(ActionEvent event) {
@@ -124,7 +140,7 @@ public class CreateUpdateQuestionController {
     }
 
 
-    public Question doUpdateQuestion() {
+    public Question doUpdateQuestion()      {
         boolean correctInput;
         String quizList = quizlist.getPromptText();
         String questionText = questionTextfield.getText();
