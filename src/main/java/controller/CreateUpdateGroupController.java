@@ -66,6 +66,11 @@ public class CreateUpdateGroupController {
         idGroup = (group != null) ? group.getIdGroup() : 0;
         setLabelsAndTitle(group);
         initializeCourseComboBox();
+        amountStudentTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                amountStudentTextField.setText(oldValue);
+            }
+        });
         initializeTeacherComboBox();
         populateFields(group);
     }
@@ -220,7 +225,7 @@ public class CreateUpdateGroupController {
         inputFields.put("course", "Er moet een cursus worden geselecteerd.");
         inputFields.put("nameGroup", "U moet een groepsnaam invoeren.");
         inputFields.put("amountStudent", "U dient een maximaal aantal studenten in te voeren.");
-        inputFields.put("selectedTeacher", "Er moet een docent worden geselecteerd.");
+        inputFields.put("teacher", "Er moet een docent worden geselecteerd.");
 
         boolean correctInput = validateFields(inputFields);
 
@@ -303,7 +308,7 @@ public class CreateUpdateGroupController {
     // Set the text color of the labels in the grid to red
     private void setLabelErrorColor(Label label, String fieldName) {
         String fieldValue = getInputValue(fieldName);
-        if (fieldValue.isEmpty() && !fieldName.equals("teacher")) {
+        if (fieldValue.isEmpty()) {
             label.setTextFill(Color.RED);
         } else {
             resetLabelColor(label);
@@ -323,7 +328,6 @@ public class CreateUpdateGroupController {
         resetLabelColor(teacherLabel);
     }
 
-
     // Retrieves the value of a specific input field based on the field name.
     private String getInputValue(String fieldName) {
         switch (fieldName) {
@@ -334,9 +338,9 @@ public class CreateUpdateGroupController {
                 return nameGroupTextField.getText();
             case "amountStudent":
                 return amountStudentTextField.getText();
-            case "selectedTeacher":
+            case "teacher":
                 User selectedTeacher = teacherComboBox.getSelectionModel().getSelectedItem();
-                return (selectedTeacher != null) ? selectedTeacher.toString() : "";
+                return String.valueOf(selectedTeacher != null ? selectedTeacher.getFullName() : "");
             default:
                 return "";
         }
