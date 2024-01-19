@@ -41,6 +41,8 @@ public class CreateUpdateQuizController {
     @FXML
     Label warningLabelNoFields;
     @FXML
+    Label warningLabelNoNumber;
+    @FXML
     Label nameQuizLabel;
     @FXML
     Label amountQuestionsLabel;
@@ -69,6 +71,11 @@ public class CreateUpdateQuizController {
         levelsListComboBox.setItems(levelsList);
         coursesListComboBox.setItems(coursesList);
         titelLabel.setText("Maak nieuwe Quiz");
+        amountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                amountTextField.setText(oldValue);
+            }
+        });
         if (quizOne != null) {
             idQuiz = quizOne.getIdQuiz();
             titelLabel.setText("Wijzig Quiz");
@@ -76,11 +83,7 @@ public class CreateUpdateQuizController {
             nameTextField.setText(quizOne.getNameQuiz());
             levelsListComboBox.setValue(quizOne.getLevel());
             amountTextField.setText(String.valueOf(quizOne.getAmountQuestions()));
-            amountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-                if (!newValue.matches("\\d*")) {
-                    amountTextField.setText(oldValue);
-                }
-            });
+
         } else {
             courseText.setText("Naam van de cursus");
             courseText.setVisible(true);

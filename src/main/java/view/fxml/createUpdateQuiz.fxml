@@ -67,6 +67,7 @@
         <Button layoutX="420.0" layoutY="304.0" mnemonicParsing="false" onAction="#doMenu" text="Menu" />
         <Label fx:id="quizSaveLabel" layoutX="326.0" layoutY="337.0" prefHeight="27.0" prefWidth="272.0" text="Label" visible="false" />
         <Label fx:id="warningLabelNoFields" layoutX="16.0" layoutY="293.0" prefHeight="99.0" prefWidth="230.0" text="Je hebt niet alle velden ingevuld. &#10;Vul de rood gekleurde velden alsnog in." visible="false" />
+       <Label fx:id="warningLabelNoNumber" layoutX="405.0" layoutY="255.0" prefHeight="26.0" prefWidth="210.0" text="Je moet een getal invoeren" visible="false" />
         <Label fx:id="warningLabelNoLevel" layoutX="295.0" layoutY="216.0" prefHeight="27.0" prefWidth="318.0" text="Label" visible="false" />
         <Label fx:id="warningLabelNoCourse" layoutX="295.0" layoutY="148.0" prefHeight="27.0" prefWidth="312.0" text="Label" visible="false" />
 
