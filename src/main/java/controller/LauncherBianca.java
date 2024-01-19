@@ -318,12 +318,11 @@ public class LauncherBianca {
 
                         groupCouchDBDAO.saveSingleGroup(group);
                     } else {
-                        System.out.println("Group with ID " + group.getIdGroup() + " and Course ID " +
-                                group.getCourse().getIdCourse() + " already exists in the database. Skipping...");
+                        System.out.println("Group with ID " + group.getIdGroup() + " already exists in the database. Skipping...");
                     }
                 }
             } catch (Exception e) {
-                System.err.println("Fout bij het opslaan van groepen in CouchDB: " + e.getMessage());
+                System.err.println("Error saving groups in CouchDB: " + e.getMessage());
             }
         }
     }

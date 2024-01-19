@@ -16,6 +16,7 @@ import view.Main;
 import java.util.List;
 import java.util.Optional;
 
+
 public class ManageGroupsController {
     private final GroupDAO groupDAO;
     @FXML
@@ -36,14 +37,10 @@ public class ManageGroupsController {
     // Clears the group list, retrieves and sorts groups, sets up list view properties, and updates labels
     @FXML
     public void setup() {
-        groupList.getItems().clear();
         setGroupListData(groupDAO.getAll());
-        groupList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        groupList.getSelectionModel().clearSelection();
         groupList.setCellFactory(param -> new GroupListCell());
-        updateGroupCountLabel();
         warningTextField.setVisible(false);
-        groupList.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
+        groupList.getSelectionModel().selectedItemProperty().addListener((observableValue, group, t1) -> {
             updateGroupCountLabel();
         });
     }
