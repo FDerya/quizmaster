@@ -44,6 +44,7 @@ public class ManageCoursesController {
         this.courseDAO = new CourseDAO(Main.getDBaccess());
     }
 
+// Method to setup the manageCourses screen
     @FXML
     public void setup() {
         List<Course> courses = courseDAO.getAll();
@@ -55,19 +56,23 @@ public class ManageCoursesController {
         });
     }
 
+// Method to go back to the welcome screen
     public void doMenu(){
         Main.getSceneManager().showWelcomeScene();
     }
 
+// Method to go to the createUpdateCourse screen
     public void doCreateCourse(){
         Main.getSceneManager().showCreateUpdateCourseScene(null);
     }
 
+// Method to change a course in the database
     public void doUpdateCourse(ActionEvent actionEvent){
         Course course = courseList.getSelectionModel().getSelectedItem();
         Main.getSceneManager().showCreateUpdateCourseScene(course);
     }
 
+// Method to delete a course from the database
     public void doDeleteCourse(ActionEvent actionEvent){
         Course course = courseList.getSelectionModel().getSelectedItem();
         if (course != null){
@@ -78,6 +83,7 @@ public class ManageCoursesController {
         }
     }
 
+// Shows an alert when deleting a course to ask whether to continue
     public void showDeleteAlert(Course course){
         Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION);
         deleteAlert.setContentText("Je gaat de cursus " + course.getNameCourse() + " verwijderen.\n" +
@@ -96,12 +102,12 @@ public class ManageCoursesController {
         }
     }
 
+// Counts how many students are enrolled in a course
     public void doStudentCount(){
         Course course = courseList.getSelectionModel().getSelectedItem();
         if (course == null) {
             studentCounter.setText("Selecteer een cursus om te zien " +
-                    "hoeveel student zijn ingeschreven\n" +
-                    "of om een actie uit te voeren.");
+                    "hoeveel student zijn ingeschreven,\nof om een actie uit te voeren.");
         } else {
             List<Participation> participation = participationDAO.getParticipationPerCourse(course.getIdCourse());
             int counter = participation.size();

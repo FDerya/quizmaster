@@ -7,7 +7,6 @@ import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
@@ -17,7 +16,6 @@ import model.User;
 import view.Main;
 
 import java.util.List;
-import java.util.Optional;
 
 public class CreateUpdateCourseController {
 // Attributes
@@ -65,7 +63,7 @@ public class CreateUpdateCourseController {
         }
     }
 
-    // Method to save a new or updated course
+// Method to save a new or updated course
     public void doSaveCourse(ActionEvent actionEvent){
         Course course = createNewCourse();
         String warningLabelNewCourse = "Cursus is toegevoegd";
@@ -98,14 +96,15 @@ public class CreateUpdateCourseController {
         User coordinator = coordinatorComboBox.getSelectionModel().getSelectedItem();
         String level = levelComboBox.getSelectionModel().getSelectedItem();
         if (courseName.isEmpty() || coordinator == null || level == null) {
-            doWithEmptyFields(courseName, coordinator, level);
+            doWhenFieldEmpty(courseName, coordinator, level);
             return null;
         } else {
             return new Course(0, coordinator, courseName, level);
         }
     }
 
-    private void doWithEmptyFields(String courseName, User coordinator, String level) {
+// Method to set the labels to the colour red when a field is left empty and show a warning
+    private void doWhenFieldEmpty(String courseName, User coordinator, String level) {
         warningLabel.setText("Je hebt niet alle velden ingevuld.\nAlle velden zijn verplicht.");
         warningLabel.setVisible(true);
         if (courseName.isEmpty()) {courseNameLabel.setTextFill(Color.RED);}
