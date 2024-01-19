@@ -48,6 +48,7 @@ public class ManageCoursesController {
     public void setup() {
         List<Course> courses = courseDAO.getAll();
         courseList.getItems().addAll(courses);
+        doStudentCount();
         courseList.getSelectionModel().selectedItemProperty().addListener((observableValue, course, t1) -> {
             doStudentCount();
             warningLabel.setVisible(false);
@@ -83,7 +84,7 @@ public class ManageCoursesController {
                 "Deze actie kan niet ongedaan gemaakt worden.\n");
         deleteAlert.setTitle("Verwijder cursus");
         deleteAlert.setHeaderText(null);
-        ButtonType buttonYes = new ButtonType("Doorgaan", ButtonBar.ButtonData.OK_DONE);
+        ButtonType buttonYes = new ButtonType("Verwijderen", ButtonBar.ButtonData.OK_DONE);
         ButtonType buttonNo = new ButtonType("Annuleren", ButtonBar.ButtonData.NO);
         deleteAlert.getButtonTypes().setAll(buttonYes, buttonNo);
         Optional<ButtonType> result = deleteAlert.showAndWait();
@@ -97,23 +98,18 @@ public class ManageCoursesController {
 
     public void doStudentCount(){
         Course course = courseList.getSelectionModel().getSelectedItem();
-        List<Participation> participation = participationDAO.getParticipationPerCourse(course.getIdCourse());
         if (course == null) {
             studentCounter.setText("Selecteer een cursus om te zien " +
                     "hoeveel student zijn ingeschreven\n" +
                     "of om een actie uit te voeren.");
-            studentCounter.setVisible(true);
         } else {
-            int counter = 0;
-            for (Participation p : participation){
-                counter++;
-            }
+            List<Participation> participation = participationDAO.getParticipationPerCourse(course.getIdCourse());
+            int counter = participation.size();
             if (counter == 0){
                 studentCounter.setText("Voor de cursus " + course + " zijn nog geen studenten ingeschreven.");
             } else {
                 studentCounter.setText("Voor de cursus " + course + " zijn " + counter + " studenten ingeschreven.");
             }
-            studentCounter.setVisible(true);
         }
     }
 }
