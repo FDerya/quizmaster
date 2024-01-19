@@ -5,11 +5,11 @@
 package database.mysql;
 
 import model.Course;
-import model.Group;
 import model.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.List;
 

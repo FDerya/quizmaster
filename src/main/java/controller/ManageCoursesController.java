@@ -1,13 +1,10 @@
 package controller;
 
 import database.mysql.CourseDAO;
-import database.mysql.DBAccess;
 import database.mysql.ParticipationDAO;
-import database.mysql.UserDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import model.Course;
 import model.Participation;
 import view.Main;
@@ -26,14 +23,6 @@ public class ManageCoursesController {
     Button newCourseButton;
     @FXML
     Button menuButton;
-    @FXML
-    GridPane deleteCourseGrid;
-    @FXML
-    Label deleteWarningLabel;
-    @FXML
-    Button deleteYesButton;
-    @FXML
-    Button deleteNoButton;
     @FXML
     Label warningLabel;
     @FXML
@@ -94,10 +83,10 @@ public class ManageCoursesController {
         ButtonType buttonNo = new ButtonType("Annuleren", ButtonBar.ButtonData.NO);
         deleteAlert.getButtonTypes().setAll(buttonYes, buttonNo);
         Optional<ButtonType> result = deleteAlert.showAndWait();
-        if (result.get().equals(buttonYes)){
+        if (result.isPresent() && result.get().equals(buttonYes)){
             courseDAO.deleteOne(course);
             courseList.getItems().remove(course);
-        } else if (result.get().equals(buttonNo)) {
+        } else if (result.isPresent() && result.get().equals(buttonNo)) {
             deleteAlert.close();
         }
     }
