@@ -36,4 +36,19 @@ public class QuizCouchDBDAO extends AbstractCouchDBDAO{
         }
         return null;
     }
+    /*public void deleteQuiz(Quiz quiz){
+        String[] idAndRev = getIdAndRevQuiz(quiz);
+        deleteDocument(idAndRev[0], idAndRev[1]);
+    }
+   public String getIdAndRevQuiz(Quiz quiz){
+        String[] idAndRev= new String[2];
+        for (JsonObject jsonObject : getAllDocuments()) {
+            if (jsonObject.has("idQuiz") && jsonObject.get("idQuiz").getAsString().equals(quiz.getIdQuiz()){
+
+                idAndRev[0] = jsonObject.get("_id").getAsString();
+                idAndRev[1] = jsonObject.get("_rev").getAsString();
+            }
+        }
+        return idAndRev;
+    }*/
 }

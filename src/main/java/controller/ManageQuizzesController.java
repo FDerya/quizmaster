@@ -17,6 +17,8 @@ public class ManageQuizzesController {
     @FXML
     ListView<Quiz> quizList;
     private final QuizDAO quizDAO;
+    @FXML
+    Label quizChoice;
 
     public ManageQuizzesController() {
         this.quizDAO = new QuizDAO(Main.getDBaccess());
@@ -58,7 +60,7 @@ public class ManageQuizzesController {
     public void doUpdateQuiz(ActionEvent event) {
         Quiz quiz = quizList.getSelectionModel().getSelectedItem();
         if (quiz == null) {
-            showWarning();
+            quizChoice.setVisible(true);
         } else {
             Main.getSceneManager().showCreateUpdateQuizScene(quiz);
         }
