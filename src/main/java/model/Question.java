@@ -28,7 +28,7 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question: " + idQuestion + ", Quiz: " + quiz.getNameQuiz() + ", Text: " + question;
+        return  idQuestion + ", " + quiz.getNameQuiz() + ", " + question;
     }
 
     // Getters and Setters

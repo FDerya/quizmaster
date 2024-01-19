@@ -1,7 +1,10 @@
 package database.mysql;
 
+import model.Course;
 import model.Question;
 import model.Quiz;
+import model.User;
+import view.Main;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,9 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
-
+    private QuizDAO quizDAO;
     public QuestionDAO(DBAccess dbAccess) {
         super(dbAccess);
+        this.quizDAO = new QuizDAO(Main.getDBaccess());
     }
 
     @Override
@@ -194,6 +198,30 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
         }
         return questions;
     }
+
+
+
+    public List<Quiz> getQuizNamesForUser(int userId) {
+        List<Quiz> quizNames = new ArrayList<>();
+        String sql = "SELECT q.idQuiz, q.nameQuiz, q.levelQuiz, q.amountQuestion, c.nameCourse " +
+                "FROM quiz q " +
+                "JOIN course c ON q.idCourse = c.idCourse " +
+                "WHERE EXISTS (SELECT 1 FROM course c2 WHERE c2.idCourse = c.idCourse AND c2.idUser = ?)";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, userId);
+            ResultSet resultSet = executeSelectStatement();
+            while (resultSet.next()) {
+                String nameQuiz = resultSet.getString("nameQuiz");
+                Quiz quiz = quizDAO.getOneByName(nameQuiz);
+                quizNames.add(quiz);
+            }
+        } catch (SQLException sqlException) {
+            System.out.println("SQL fout " + sqlException.getMessage());
+        }
+        return quizNames;
+    }
+
 
     // Retrieve the course name based on the question ID
     public String getCourseNameByQuestionId(int questionId) {
