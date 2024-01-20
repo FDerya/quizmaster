@@ -4,13 +4,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.WelcomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.WelcomeController">
     <Label fx:id="welcomeLabel" layoutX="14.0" layoutY="14.0" text="Welkom gebruiker">
         <font>
             <Font size="18.0" />
         </font>
     </Label>
-    <Label layoutX="14.0" layoutY="72.0" text="Wat wilt u doen">
+    <Label layoutX="14.0" layoutY="72.0" text="Wat wil je doen">
         <font>
             <Font size="18.0" />
         </font>
