@@ -53,7 +53,6 @@ public class CreateUpdateUserController {
     @FXML
     Label roleLabel;
     @FXML
-    Label createUpdateMessage;
     ObservableList<String> userRoles = FXCollections.observableArrayList("Student", "Docent", "Coördinator", "Administrator", "Functioneel Beheerder");
     Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), actionEvent -> Main.getSceneManager().showManageUserScene()));
 
@@ -203,8 +202,8 @@ public class CreateUpdateUserController {
         return (!username.isEmpty() && !password.isEmpty() && !firstname.isEmpty() && !lastname.isEmpty());
     }
 
-    // Deze methode kijkt of een tekstveld leeg is. Als het veld leeg is wordt het bijbehorende label roodgekleurd en
-    // wordt er een waarschuwing getoond.
+    // Checks if a textfield is empty.
+    // If its empty, the label next to the textfield is colored red and a warning is showed.
     private void checkAndChangeLabelColor(boolean emptyTextField, Label label) {
         if (emptyTextField) {
             label.setTextFill(Color.RED);
@@ -213,7 +212,7 @@ public class CreateUpdateUserController {
         }
     }
 
-    // Deze methode geeft een warningLabel als er geen rol gekozen is. Als de rol wel gekozen is, wordt de label weggehaald.
+    // Shows warninglabel and sets label color if a role is null.
     private void isCorrectInputRole(String role) {
         if (role == null) {
             messageLabel.setVisible(true);
@@ -250,10 +249,17 @@ public class CreateUpdateUserController {
     }
 
     private boolean checkForDuplicates(User user) {
+        // Sets the id of the user, if you are editing an existing user.
+        if (!titleLabel.equals("Nieuwe gebruiker")) {
+            user.setIdUser(idUser);
+        }
+
+        // Creates a list from the database, iterates through that list and sets the value of boolean duplicate
+        // if the fullname and the userid are identical with the user in the parameter.
         List<User> allUsers = userDAO.getAll();
         boolean duplicate = false;
-            for (User user1 : allUsers) {
-                if ((user1.getFullName().equals(user.getFullName())) && (user1.getIdUser() != user.getIdUser())) {
+            for (User userInUserList : allUsers) {
+                if ((userInUserList.getFullName().equals(user.getFullName())) && (userInUserList.getIdUser() != user.getIdUser())) {
                     duplicate = true;
                 }
             }
