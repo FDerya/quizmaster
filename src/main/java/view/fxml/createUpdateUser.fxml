@@ -85,6 +85,6 @@
     <Button layoutX="120.0" layoutY="300.0" mnemonicParsing="false" onAction="#doShowManageUsers"
             text="Gebruikerslijst"/>
     <Button layoutX="226.0" layoutY="300.0" mnemonicParsing="false" onAction="#doShowMenu" text="Welkomstscherm"/>
-    <Label fx:id="messageLabel" layoutX="41.0" layoutY="346.0" prefHeight="26.0" prefWidth="308.0"
+    <Label fx:id="messageLabel" layoutX="41.0" layoutY="346.0" prefHeight="26.0" prefWidth="400.0"
            text="Je hebt niet alles ingevuld" visible="false" wrapText="true"/>
 </AnchorPane>

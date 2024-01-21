@@ -6,6 +6,7 @@ import javafx.scene.control.ListView;
 import model.Course;
 import model.Group;
 import model.User;
+import view.Main;
 
 public class AssignStudentsToGroupController {
 
@@ -31,5 +32,7 @@ public class AssignStudentsToGroupController {
 
     public void doRemove() {}
 
-    public void doMenu() {}
+    public void doMenu() {
+        Main.getSceneManager().showWelcomeScene();
+    }
 }
