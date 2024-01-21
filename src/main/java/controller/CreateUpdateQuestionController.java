@@ -17,6 +17,7 @@ import model.Quiz;
 import model.User;
 import view.Main;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -63,13 +64,18 @@ public class CreateUpdateQuestionController {
     private Label label_Vraag;
 
     @FXML
-    private ComboBox<Quiz> quizlist;
+    private ComboBox<String> quizlist;
+
 
     @FXML
     private Label titelLabel;
 
     @FXML
     private Label warningLabel;
+
+    private Boolean isUpdate;
+
+    private int existingQuestionId;
 
     public CreateUpdateQuestionController() {
         this.questionDAO = new QuestionDAO(Main.getDBaccess());
@@ -78,60 +84,40 @@ public class CreateUpdateQuestionController {
     }
 
     public void setup(Question question) {
-
+        // Filling up the combo box
         fillComboBoxQuizzes();
-
+        // Show course that is asocciated with user
         quizlist.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 // Update the course label based on the selected quiz
-                label_Course.setText(questionDAO.getCourseNameByQuizName(newValue.getNameQuiz()));
+                Quiz quiz = quizDAO.getOneByName(newValue);
+                label_Course.setText(questionDAO.getCourseNameByQuizName(quiz.getNameQuiz()));
             }
         });
-
-
+        // Update Question
         if (question != null) {
+            isUpdate = true;
+            existingQuestionId = question.getIdQuestion();
+            // Fill out question fields
             titelLabel.setText("Wijzig vraag");
-
             questionTextfield.setText(question.getQuestion());
             answerRightTextfield.setText(question.getAnswerRight());
             answerWrong1Textfield.setText(question.getAnswerWrong1());
             answerWrong2Textfield.setText(question.getAnswerWrong2());
             answerWrong3Textfield.setText(question.getAnswerWrong3());
-
-
-            quizlist.getSelectionModel().select(question.getQuiz());
+            String quizName = question.getQuiz().getNameQuiz();
+            quizlist.getSelectionModel().select(quizName);
             quizlist.setPromptText("Wijzig de bijbehorende quiz:");
-
-            label_Course.setText(questionDAO.getCourseNameByQuizName(quizlist.getSelectionModel().getSelectedItem().getNameQuiz()));
-
-
-        } else {
-            Quiz selectedQuiz = quizlist.getSelectionModel().getSelectedItem();
-            if (selectedQuiz != null) {
-                label_Course.setText(selectedQuiz.getCourse().getNameCourse());
-            }
+            label_Course.setText(questionDAO.getCourseNameByQuizName(quizName));
         }
-    }
-
-    //Vult de keuzelijst (ComboBox) met beschikbare quizzen.
-    public void fillComboBoxQuizzes() {
-        // Get the current user
-        User currentUser = User.getCurrentUser();
-        if (currentUser != null) {
-            // Get quizzes for the current user
-            List<Quiz> userQuizNames = questionDAO.getQuizNamesForUser(currentUser.getIdUser());
-
-            for (Quiz quiz : userQuizNames) {
-                System.out.println("Quiz ID: " + quiz.getIdQuiz());
-                System.out.println("Course Name: " + quiz.getCourse().getNameCourse());
-                System.out.println("Quiz Name: " + quiz.getNameQuiz());
-                System.out.println("Level: " + quiz.getLevel());
-                System.out.println("Amount of Questions: " + quiz.getAmountQuestions());
-                System.out.println("----------------------------------");
+        // New Question
+        else {
+            isUpdate = false;
+            String selectedQuizName = quizlist.getSelectionModel().getSelectedItem();
+            if (selectedQuizName != null) {
+                Quiz quiz = quizDAO.getOneByName(selectedQuizName);
+                label_Course.setText(quiz.getCourse().getNameCourse());
             }
-            // Display the user's quizzes in the ComboBox
-            ObservableList<Quiz> quizObservableList = FXCollections.observableArrayList(userQuizNames);
-            quizlist.setItems(quizObservableList);
         }
     }
 
@@ -139,26 +125,51 @@ public class CreateUpdateQuestionController {
         Main.getSceneManager().showManageQuestionsScene();
     }
 
+    // Opslaan
+    public void doStoreQuestion(ActionEvent actionEvent) {
+        Question question = doUpdateQuestion();
+        // Check if the quiz in the question is not null
+        if (!isUpdate) {
+            // Only attempt to store the question if the quiz is not null
+            questionDAO.storeOne(question);
+            showSuccessMessage("Vraag is opgeslagen");
+        } else if (isUpdate) {
+            updateExistingQuestion(question);
+        }
 
-    public Question doUpdateQuestion()      {
+    }
+
+    private void updateExistingQuestion(Question question) {
+        question.setIdQuestion(existingQuestionId);
+        Question existingQuestion = questionDAO.getOneById(existingQuestionId);
+
+        if (existingQuestion != null) {
+            questionDAO.updateQuestion(question);
+            showSuccessMessage("Vraag gewijzigd!");
+        }
+    }
+
+    public Question doUpdateQuestion() {
         boolean correctInput;
-        String quizList = quizlist.getPromptText();
+        // Gets values from textfields
+        String selectedQuiz = quizlist.getValue();
         String questionText = questionTextfield.getText();
         String answerRight = answerRightTextfield.getText();
         String answerWrong1 = answerWrong1Textfield.getText();
         String answerWrong2 = answerWrong2Textfield.getText();
         String answerWrong3 = answerWrong3Textfield.getText();
-
+        // Checks if the fields are not empty
         correctInput = isCorrectInput(questionText, answerRight, answerWrong1, answerWrong2, answerWrong3);
-
+        // If fields are empty, return false
         if (!correctInput) {
             return null;
         } else {
-            return createQuestion(quizList, questionText, answerRight, answerWrong1, answerWrong2, answerWrong3);
-
+            // If fields are not empty, return question
+            return createQuestion(selectedQuiz, questionText, answerRight, answerWrong1, answerWrong2, answerWrong3);
         }
     }
 
+    // Checks if fields are empty
     private boolean areFieldsEmpty(String... fields) {
         for (String field : fields) {
             if (field.isEmpty()) {
@@ -168,13 +179,16 @@ public class CreateUpdateQuestionController {
         return false;
     }
 
-    private Question createQuestion(String quizText, String questionText, String answerRight,
+    // Creating a new question
+    private Question createQuestion(String quizName, String questionText, String answerRight,
                                     String answerWrong1, String answerWrong2, String answerWrong3) {
         String[] answers = {answerRight, answerWrong1, answerWrong2, answerWrong3};
-        Quiz quiz = quizDAO.getOneByName(quizText);
 
-        return new Question(quiz, questionText, answers[0], answers[1], answers[2], answers[3]);
+        // Using quizName to return the full quiz
+        Quiz quizNew = quizDAO.getOneByName(quizName);
+        return new Question(quizNew, questionText, answers[0], answers[1], answers[2], answers[3]);
     }
+
 
     private boolean isCorrectInput(String questionText, String answerRight,
                                    String answerWrong1, String answerWrong2, String answerWrong3) {
@@ -204,44 +218,10 @@ public class CreateUpdateQuestionController {
         }
     }
 
-    public void doStoreQuestion(ActionEvent actionEvent) {
-        Question question = doUpdateQuestion();
-
-        if (question != null) {
-            if (areFieldsEmpty(
-                    questionTextfield.getText(),
-                    answerRightTextfield.getText(),
-                    answerWrong1Textfield.getText(),
-                    answerWrong2Textfield.getText(),
-                    answerWrong3Textfield.getText(),
-                    quizlist.getValue() == null ? "" : quizlist.getValue().toString())) {
-                return;
-            }
-
-        }
-    }
-
-    private void storeNewQuestion(Question question) {
-        questionDAO.storeOne(question);
-
-        showSuccessMessage("Vraag is opgeslagen");
-    }
-
-    private void updateExistingQuestion(Question question) {
-        Question existingQuestion = questionDAO.getOneById(question.getIdQuestion());
-
-        if (existingQuestion != null) {
-            questionDAO.updateQuestion(question);
-            showSuccessMessage("Vraag gewijzigd");
-        } else {
-            questionDAO.storeOne(question);
-
-            showSuccessMessage("Vraag is opgeslagen");
-        }
-    }
 
     // Display success message, wait for 2 seconds, then go back to the manage screen
     private void showSuccessMessage(String message) {
+        warningLabel.setVisible(true);
         warningLabel.setText(message);
 
         // Create a timeline with a KeyFrame to wait for 2 seconds
@@ -255,5 +235,18 @@ public class CreateUpdateQuestionController {
         timeline.play();
     }
 
-
+    //Vult de keuzelijst (ComboBox) met beschikbare quizzen.
+    public void fillComboBoxQuizzes() {
+        // Get the current user
+        User currentUser = User.getCurrentUser();
+        if (currentUser != null) {
+            // Get quizzes for the current user
+            List<Quiz> userQuizNames = questionDAO.getQuizNamesForUser(currentUser.getIdUser());
+            List<String> quizNames = new ArrayList<>();
+            // Display the user's quizzes in the ComboBox
+            quizlist.setItems(FXCollections.observableArrayList(quizNames));
+        }
+    }
 }
+
+

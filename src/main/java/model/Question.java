@@ -28,8 +28,9 @@ public class Question {
 
     @Override
     public String toString() {
-        return  idQuestion + ", " + quiz.getNameQuiz() + ", " + question;
+        return quiz.getNameQuiz() + " - " + question;
     }
+
 
     // Getters and Setters
     public int getIdQuestion() {

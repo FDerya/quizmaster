@@ -6,13 +6,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import model.Question;
 import model.User;
 import view.Main;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -35,23 +35,51 @@ public class ManageQuestionsController {
     }
 
     public void setup() {
-
+        // Gets the current user
         User currentUser = User.getCurrentUser();
         int userId = currentUser.getIdUser();
+
+        // Gets the current user's questions
         List<Question> userQuestions = questionDAO.getQuestionsForUser(userId);
-        ObservableList<Question> questionObservableList =
-                FXCollections.observableArrayList(userQuestions);
-        questionList.setItems(questionObservableList);
-        questionList.getSelectionModel().selectFirst();
 
-        questionList.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> updateQuestionCount(newValue)
-        );
+        // Tracking changes when occuring
+        if (!userQuestions.isEmpty()) {
+            ObservableList<Question> questionObservableList = FXCollections.observableArrayList(userQuestions);
+            questionList.setItems(questionObservableList);
 
-        // Select the first item to trigger the listener
-        questionList.getSelectionModel().selectFirst();
+            // Set the selection mode to SINGLE
+            questionList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+            // Added a HBOX to create a column between quiz name and question
+            questionList.setCellFactory(param -> new ListCell<>() {
+                @Override
+                protected void updateItem(Question item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        HBox hbox = new HBox(10);
+
+                        Label quizLabel = new Label(item.getQuiz().getNameQuiz());
+                        Label questionLabel = new Label(item.getQuestion());
+
+                        hbox.getChildren().addAll(quizLabel, questionLabel);
+
+                        setGraphic(hbox);
+                    }
+                }
+            });
+            // How many questions in a quiz
+            questionList.getSelectionModel().selectedItemProperty().addListener(
+                    (observable, oldValue, newValue) -> updateQuestionCount(newValue)
+            );
+        }
+        // Clear the selection after populating the items
+        questionList.getSelectionModel().clearSelection();
     }
 
+    // How many questions in a quiz
     private void updateQuestionCount(Question selectedQuestion) {
         if (selectedQuestion != null) {
             int questionCount = questionDAO.getQuestionCountForQuiz(selectedQuestion.getQuiz());
@@ -64,7 +92,9 @@ public class ManageQuestionsController {
         Main.getSceneManager().showWelcomeScene();
     }
 
+    // Creates a new question
     public void doCreateQuestion() {
+        // Gets the selected question
         Question selectedQuestion = questionList.getSelectionModel().getSelectedItem();
         if (selectedQuestion == null) {
             warningLabel.setVisible(true);
@@ -73,17 +103,24 @@ public class ManageQuestionsController {
         } else {
             Main.getSceneManager().showCreateUpdateQuestionScene(null);
             warningLabel.setVisible(false);
-
         }
     }
 
     public void doUpdateQuestion(ActionEvent event) {
+        // Gets the selected question
         Question question = questionList.getSelectionModel().getSelectedItem();
-        Main.getSceneManager().showCreateUpdateQuestionScene(question);
-
+        if (question == null) {
+            warningLabel.setVisible(true);
+            warningLabel.setText("Je moet eerst een vraag kiezen!");
+            warningLabel.setStyle("-fx-text-fill: red;");
+        } else {
+            Main.getSceneManager().showCreateUpdateQuestionScene(question);
+            warningLabel.setVisible(false);
+        }
     }
 
     public void doDeleteQuestion(ActionEvent event) {
+        // Gets the selected question
         Question selectedQuestion = questionList.getSelectionModel().getSelectedItem();
         if (selectedQuestion != null) {
             // Show a confirmation dialog
@@ -102,6 +139,7 @@ public class ManageQuestionsController {
         } else {
             warningLabel.setVisible(true);
             warningLabel.setText("Je moet eerst een vraag kiezen!");
+            warningLabel.setStyle("-fx-text-fill: red;");
         }
     }
 }
