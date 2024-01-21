@@ -9,32 +9,23 @@ public class Group {
     private String groupName;
     private int amountStudent;
     private User teacher;
+    private boolean isNew;
 
     // Constructors
-    public Group(int idGroup, Course course, String groupName, int amountStudent, User teacher) {
-        this.idGroup = idGroup;
+    public Group(int idGroup, Course course, String groupName, int amountStudent, User teacher){
+        this.idGroup =idGroup;
         this.course = course;
         this.groupName = groupName;
         this.amountStudent = amountStudent;
         this.teacher = teacher;
-    }
-
-    public Group(Course course, String groupName, int amountStudent, User teacher) {
-        this.course = course;
-        this.groupName = groupName;
-        this.amountStudent = amountStudent;
-        this.teacher = teacher;
+        this.isNew= false;
     }
 
     public Group() {
         super();
     }
 
-    // toString-methode
-    /*@Override
-    public String toString() {
-        return String.valueOf(course);
-    }*/
+    // toString methode
     @Override
     public String toString() {
         return "Group{" +
@@ -45,7 +36,6 @@ public class Group {
                 ", teacher=" + teacher +
                 '}';
     }
-
 
     //Getters en setters
     public int getIdGroup() {
@@ -84,7 +74,11 @@ public class Group {
         return teacher;
     }
 
-    public void setTeacher(User teacher) {
-        this.teacher = teacher;
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setNew(boolean aNew) {
+        isNew = aNew;
     }
 }

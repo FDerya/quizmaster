@@ -16,6 +16,8 @@ import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
+import javafx.util.converter.IntegerStringConverter;
 import model.Course;
 import model.Group;
 import model.User;
@@ -28,11 +30,12 @@ public class CreateUpdateGroupController {
     private final UserDAO userDAO;
     private final GroupDAO groupDAO;
     private final CourseDAO courseDAO;
-    private int idGroup;
-    private Alert alert;
+    private static final int MAX_NAME_LENGTH = 45;
     private final ObservableList<Course> allCourses = FXCollections.observableArrayList();
-    @FXML
-    private ListView<String> groupList;
+    private final ObservableList<String> groupList = FXCollections.observableArrayList();
+    public static List<Group> newGroups = new ArrayList<>();
+    private Group selectedGroup;
+    private int idGroup;
     @FXML
     Label titleLabel;
     @FXML
@@ -50,7 +53,7 @@ public class CreateUpdateGroupController {
     @FXML
     ComboBox<Course> courseComboBox;
     @FXML
-    private ComboBox<User> teacherComboBox;
+    ComboBox<User> teacherComboBox;
     @FXML
     Label warningLabel;
 
@@ -66,12 +69,14 @@ public class CreateUpdateGroupController {
         idGroup = (group != null) ? group.getIdGroup() : 0;
         setLabelsAndTitle(group);
         initializeCourseComboBox();
+        limitTextFieldLength(nameGroupTextField, MAX_NAME_LENGTH);
         amountStudentTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 amountStudentTextField.setText(oldValue);
             }
         });
         initializeTeacherComboBox();
+        this.selectedGroup = group;
         populateFields(group);
     }
 
@@ -86,6 +91,23 @@ public class CreateUpdateGroupController {
         allCourses.setAll(courses);
         allCourses.sort(Comparator.comparing(Course::getNameCourse));
         courseComboBox.setItems(allCourses);
+    }
+
+    // Limits the length of the input in a TextField to the specified length
+    private void limitTextFieldLength(TextField textField, int maxLength) {
+        StringConverter<Integer> converter = new IntegerStringConverter();
+        TextFormatter<Integer> textFormatter = new TextFormatter<>(
+                converter,
+                null,
+                change -> {
+                    String newText = change.getControlNewText();
+                    if (newText.length() <= maxLength) {
+                        return change;
+                    }
+                    return null;
+                }
+        );
+        textField.setTextFormatter(textFormatter);
     }
 
     // Initializes the teacher combo box with a list of all available teachers.
@@ -113,12 +135,17 @@ public class CreateUpdateGroupController {
 
     // Retrieves a list of teachers from the database
     public List<User> getTeachers() {
-        return userDAO.getAll().stream()
-                .filter(user -> "Docent".equals(user.getRole()))
-                .sorted(Comparator.comparing(User::getSurname)
-                        .thenComparing(User::getPrefix)
-                        .thenComparing(User::getFirstName))
-                .collect(Collectors.toList());
+        try {
+            return userDAO.getAll().stream()
+                    .filter(user -> "Docent".equals(user.getRole()))
+                    .sorted(Comparator.comparing(User::getSurname)
+                            .thenComparing(User::getPrefix)
+                            .thenComparing(User::getFirstName))
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
     }
 
     // Custom ListCell implementation for displaying User objects in a ComboBox
@@ -130,7 +157,7 @@ public class CreateUpdateGroupController {
             if (empty || user == null) {
                 setText(null);
             } else {
-                setText(String.format("%s %s, %s", user.getPrefix(), user.getSurname(), user.getFirstName()));
+                setText(String.format("%s", user.getFullName()));
             }
         }
     }
@@ -152,8 +179,8 @@ public class CreateUpdateGroupController {
     private void saveNewGroup(Group group) {
         try {
             groupDAO.storeOne(group);
-            setWarningLabel("Groep opgeslagen", Color.GREEN);
-            // Delay for 2 seconds before navigating back
+            setWarningLabel("Groep '" + group.getGroupName() + "' opgeslagen", Color.BLACK);
+
             PauseTransition delay = new PauseTransition(Duration.seconds(2));
             delay.setOnFinished(this::doShowManageGroups);
             delay.play();
@@ -163,20 +190,21 @@ public class CreateUpdateGroupController {
         }
     }
 
-    // Handles the updating of an existing group, modifying it in the database and displaying appropriate alerts
+    // Handles the updating of an existing group
     private void updateExistingGroup(Group group) {
-        group.setIdGroup(idGroup);
-        Group updatedGroup = groupDAO.updateOne(group);
+        if (isGroupNameUnique(group.getGroupName(), selectedGroup)) {
+            group.setIdGroup(idGroup);
+            Group updatedGroup = groupDAO.updateOne(group);
 
-        if (updatedGroup != null) {
-            setWarningLabel("Groep gewijzigd", Color.GREEN);
+            if (updatedGroup != null) {
+                setWarningLabel("Groep '" + updatedGroup.getGroupName() + "' gewijzigd", Color.BLACK);
 
-            // Delay for 2 seconds before navigating back
-            PauseTransition delay = new PauseTransition(Duration.seconds(2));
-            delay.setOnFinished(this::doShowManageGroups);
-            delay.play();
-        } else {
-            setWarningLabel("Groep kon niet worden gewijzigd", Color.RED);
+                PauseTransition delay = new PauseTransition(Duration.seconds(2));
+                delay.setOnFinished(this::doShowManageGroups);
+                delay.play();
+            } else {
+                setWarningLabel("Groep kon niet worden gewijzigd", Color.RED);
+            }
         }
     }
 
@@ -184,15 +212,6 @@ public class CreateUpdateGroupController {
     @FXML
     public void doShowManageGroups(ActionEvent actionEvent) {
         Main.getSceneManager().showManageGroupsScene();
-        closeAlert();
-    }
-
-    // Closes the currently displayed alert
-    private void closeAlert() {
-        if (alert != null && alert.isShowing()) {
-            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-            stage.close();
-        }
     }
 
     // Handles the "Menu" button click event, navigating back to the welcome scene
@@ -205,27 +224,75 @@ public class CreateUpdateGroupController {
         }
     }
 
-    // Handles the "Create Group" button click event, creating a new group and adding it to the list
-    public Group createGroup() {
+    // Creates and returns a new group after validating input and performing necessary operations
+    private Group createGroup() {
+        Group newGroup = validateAndBuildGroup();
+
+        if (newGroup != null) {
+            handleGroupNameValidation(newGroup);
+            handleGroupSave(newGroup);
+            return newGroup;
+        }
+
+        return null;
+    }
+
+    // Validates input and builds a new group object if input is correct
+    private Group validateAndBuildGroup() {
         boolean correctInput = validateInput();
 
         if (correctInput) {
             Group newGroup = buildGroupObject();
-            updateGroupList(newGroup);
-
+            newGroup.setNew(true);
             return newGroup;
-        } else {
-            return null;
         }
+        return null;
+    }
+
+    // Handles validation of the group name, displaying a warning if the name is not unique
+    private void handleGroupNameValidation(Group newGroup) {
+        if (selectedGroup != null && !newGroup.getGroupName().equals(selectedGroup.getGroupName()) &&
+                !isGroupNameUnique(newGroup.getGroupName(), selectedGroup)) {
+            setWarningLabel("De groep bestaat al. Kies een andere naam.", Color.RED);
+        }
+    }
+
+    // Handles the save operation for the new group, updating the group list and displaying a success message
+    private void handleGroupSave(Group newGroup) {
+        updateGroupList(newGroup);
+        resetLabelColors();
+
+        if (!newGroups.contains(newGroup)) {
+            newGroups.add(newGroup);
+        }
+
+        setWarningLabel("Groep '" + newGroup.getGroupName() + "' opgeslagen", Color.BLACK);
+    }
+
+    // Checks if the group name is unique, considering the edited group
+    private boolean isGroupNameUnique(String groupName, Group editingGroup) {
+        try {
+            List<Group> allGroups = groupDAO.getAll();
+            for (Group group : allGroups) {
+                if (group.getGroupName().equals(groupName) && (editingGroup == null || group.getIdGroup() != editingGroup.getIdGroup())) {
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            setWarningLabel("Fout bij het controleren van de groepsnaam.", Color.RED);
+            return false;
+        }
+        return true;
     }
 
     // Validates input fields, returns true if all fields are filled, false otherwise.
     private boolean validateInput() {
-        Map<String, String> inputFields = new LinkedHashMap<>(); // Gebruik LinkedHashMap in plaats van Map
-        inputFields.put("course", "Er moet een cursus worden geselecteerd.");
-        inputFields.put("nameGroup", "U moet een groepsnaam invoeren.");
-        inputFields.put("amountStudent", "U dient een maximaal aantal studenten in te voeren.");
-        inputFields.put("teacher", "Er moet een docent worden geselecteerd.");
+        Map<String, String> inputFields = new LinkedHashMap<>();
+        inputFields.put("course", "Je hebt niet alles ingevuld");
+        inputFields.put("nameGroup", "Je hebt niet alles ingevuld");
+        inputFields.put("amountStudent", "Je hebt niet alles ingevuld");
+        inputFields.put("teacher", "Je hebt niet alles ingevuld");
 
         boolean correctInput = validateFields(inputFields);
 
@@ -279,7 +346,7 @@ public class CreateUpdateGroupController {
             }
         }
         if (hasError) {
-            setWarningLabel(error.toString().trim(), Color.RED);
+            setWarningLabel(error.toString().trim(), Color.BLACK);
             return;
         }
         resetLabelColors();
@@ -358,8 +425,8 @@ public class CreateUpdateGroupController {
 
     // Updates the group list with the name of the newly added group.
     private void updateGroupList(Group newGroup) {
-        if (groupList != null && groupList.getItems() != null) {
-            groupList.getItems().add(newGroup.getGroupName());
+        if (groupList != null) {
+            groupList.add(newGroup.getGroupName());
         }
     }
 }

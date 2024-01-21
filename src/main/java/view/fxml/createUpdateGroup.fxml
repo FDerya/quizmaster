@@ -50,12 +50,12 @@
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
                 </ComboBox>
-                <TextField fx:id="nameGroupTextField" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <TextField fx:id="nameGroupTextField" prefHeight="25.0" prefWidth="200.0" promptText="verplicht" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
                 </TextField>
-                <TextField fx:id="amountStudentTextField" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <TextField fx:id="amountStudentTextField" prefHeight="25.0" prefWidth="200.0" promptText="verplicht" GridPane.columnIndex="1" GridPane.rowIndex="2">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
@@ -71,8 +71,8 @@
             </padding>
         </GridPane>
         <Button layoutX="41.0" layoutY="249.0" mnemonicParsing="false" onAction="#doSaveGroup" text="Opslaan" />
-        <Button layoutX="114.0" layoutY="249.0" mnemonicParsing="false" onAction="#doShowManageGroups" text="Groepenbeheer" />
-        <Button layoutX="221.0" layoutY="249.0" mnemonicParsing="false" onAction="#doShowMenu" text="Menu" />
+        <Button layoutX="111.0" layoutY="249.0" mnemonicParsing="false" onAction="#doShowManageGroups" text="Groepenbeheer" />
+        <Button layoutX="221.0" layoutY="249.0" mnemonicParsing="false" onAction="#doShowMenu" text="Welkomstscherm" />
         <Label fx:id="warningLabel" layoutX="41.0" layoutY="340.0" prefHeight="17.0" prefWidth="353.0" text="Label" visible="false" />
     </children>
 </AnchorPane>
