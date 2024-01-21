@@ -44,5 +44,5 @@
             <Font size="14.0" />
         </font>
     </Button>
-   <Label fx:id="quizChoice" layoutX="113.0" layoutY="335.0" prefHeight="27.0" prefWidth="180.0" text="Je moet een quiz kiezen" visible="false" />
+   <Label fx:id="choiceLabel" layoutX="213.0" layoutY="335.0" prefHeight="27.0" prefWidth="180.0" text="Label" visible="false" />
 </AnchorPane>

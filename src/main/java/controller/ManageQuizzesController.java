@@ -13,7 +13,7 @@ import view.Main;
 import java.util.List;
 import java.util.Optional;
 
-public class ManageQuizzesController {
+public class ManageQuizzesController extends WarningAlertController{
     @FXML
     ListView<Quiz> quizList;
     private final QuizDAO quizDAO;
@@ -60,44 +60,22 @@ public class ManageQuizzesController {
     public void doUpdateQuiz(ActionEvent event) {
         Quiz quiz = quizList.getSelectionModel().getSelectedItem();
         if (quiz == null) {
-            quizChoice.setVisible(true);
+            setChoice("quiz", true);
         } else {
             Main.getSceneManager().showCreateUpdateQuizScene(quiz);
         }
     }
 
-    // Waarschuwing in pop-up scherm weergeven
-    private void showWarning() {
-        Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Waarschuwing");
-            alert.setHeaderText(null);
-            alert.setContentText("Selecteer een quiz.");
-            alert.showAndWait();
-        });
-    }
 
-    //Waarschuwing in pop-up scherm weergeven voor verwijderen quiz
-    private boolean confirmDeletion(Quiz selectedQuiz) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Verwijder quiz");
-        alert.setHeaderText("Quiz `" + selectedQuiz.getNameQuiz() + "` wordt verwijderd.");
-        alert.setContentText("Weet je het zeker?");
-        ButtonType buttonTypeCancel = new ButtonType("Annuleer");
-        ButtonType buttonTypeContinue = new ButtonType("Verwijder");
-        alert.getButtonTypes().setAll(buttonTypeCancel, buttonTypeContinue);
-        Optional<ButtonType> result = alert.showAndWait();
-        return result.isPresent() && result.get() == buttonTypeContinue;
-    }
 
     // Quiz verwijderen uit de database én de Listview
     public void doDeleteQuiz(ActionEvent event) {
         Quiz selectedQuiz = quizList.getSelectionModel().getSelectedItem();
         if (selectedQuiz == null) {
-            showWarning();
+            setChoice("quiz", true);
             return;
         }
-        if (confirmDeletion(selectedQuiz)) {
+        if (confirmDeletion(selectedQuiz.getNameQuiz(), "Quiz")) {
             quizDAO.deleteQuiz(selectedQuiz);
             quizList.getItems().remove(selectedQuiz);
         }

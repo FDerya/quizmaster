@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-public class CreateUpdateQuizController {
+public class CreateUpdateQuizController extends WarningAlertController{
     private final DBAccess dbAccess;
     private int idQuiz;
     CourseDAO courseDAO = new CourseDAO(Main.getDBaccess());
@@ -36,21 +36,11 @@ public class CreateUpdateQuizController {
     @FXML
     private Label courseText;
     @FXML
-    Label warningLabelNoCourse;
-    @FXML
-    Label warningLabelNoLevel;
-    @FXML
-    Label warningLabelNoFields;
-    @FXML
-    Label warningLabelNoNumber;
-    @FXML
     Label nameQuizLabel;
     @FXML
     Label amountQuestionsLabel;
     @FXML
     Label levelQuizLabel;
-    @FXML
-    Label quizSaveLabel;
     @FXML
     ComboBox<String> levelsListComboBox;
     @FXML
@@ -116,16 +106,12 @@ public class CreateUpdateQuizController {
     }
 
     private void newQuiz(Quiz quiz) {
-        String newQuizAlert = "Nieuwe quiz is toegevoegd";
-        quizSaveLabel.setText(newQuizAlert);
-        quizSaveLabel.setVisible(true);
-        quizDAO.storeOne(quiz);
+       showSaved(quiz.getNameQuiz());
+          quizDAO.storeOne(quiz);
     }
 
     private void updateQuiz(Quiz quiz) {
-        String updateQuizAlert = "Quiz is gewijzigd";
-        quizSaveLabel.setText(updateQuizAlert);
-        quizSaveLabel.setVisible(true);
+        showUpdated(quiz.getNameQuiz());
         quiz.setIdQuiz(idQuiz);
         quizDAO.updateOne(quiz);
     }
@@ -145,10 +131,10 @@ public class CreateUpdateQuizController {
         isCorrectInputLevel(level);
         correctInput = isCorrectInput(nameQuiz, amount);
         if ( course == null || !correctInput || level == null){
-            warningLabelNoFields.setVisible(!correctInput);
+            showWarningLabel(true);
             return null;
         } else{
-            warningLabelNoFields.setVisible(false);
+            showWarningLabel(false);
             int amountQuestions = Integer.parseInt(amount);
             Quiz quiz = new Quiz(course, nameQuiz, level, amountQuestions);
             return quiz;
@@ -164,13 +150,6 @@ public class CreateUpdateQuizController {
     }
 
     // Niet-ingevulde velden rood markeren en melding tonen
-    private void checkAndChangeLabelColor(boolean emptyfields, Label label) {
-        if (emptyfields) {
-            label.setTextFill(Color.RED);
-        } else {
-            label.setTextFill(Color.BLACK);
-        }
-    }
 
     // Melding tonen en tekst rood kleuren wanneer geen cursus is gekozen
     private void isCorrectInputCourse(Course course, Label label) {
@@ -182,13 +161,4 @@ public class CreateUpdateQuizController {
                 }
             }
         }
-
-    // Melding tonen en tekst rood kleuren wanneer geen level is gekozen
-    private void isCorrectInputLevel(String level) {
-        if (level == null) {
-            levelQuizLabel.setTextFill(Color.RED);
-        } else {
-            levelQuizLabel.setTextFill(Color.BLACK);
-        }
-    }
 }
