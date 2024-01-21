@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-public class CreateUpdateQuizController extends WarningAlertController{
+public class CreateUpdateQuizController extends WarningAlertController {
     private final DBAccess dbAccess;
     private int idQuiz;
     CourseDAO courseDAO = new CourseDAO(Main.getDBaccess());
@@ -93,21 +93,36 @@ public class CreateUpdateQuizController extends WarningAlertController{
     public void doCreateUpdateQuiz(ActionEvent event) throws InterruptedException {
         Quiz quiz = createQuiz();
         if (quiz != null) {
-            if (titelLabel.getText().equals("Maak nieuwe Quiz")) {
-                newQuiz(quiz);
-            } else if (titelLabel.getText().equals("Wijzig Quiz")) {
-                updateQuiz(quiz);
+            if (!checkDuplicate(quiz.getNameQuiz())) {
+                if (titelLabel.getText().equals("Maak nieuwe Quiz")) {
+                    newQuiz(quiz);
+                } else if (titelLabel.getText().equals("Wijzig Quiz")) {
+                    updateQuiz(quiz);
+                }
+                Timeline timeline = new Timeline(new KeyFrame(
+                        Duration.millis(2000),
+                        ae -> Main.getSceneManager().showManageQuizScene()));
+                timeline.play();
             }
-            Timeline timeline = new Timeline(new KeyFrame(
-                    Duration.millis(2000),
-                    ae -> Main.getSceneManager().showManageQuizScene()));
-            timeline.play();
         }
     }
 
+    private boolean checkDuplicate(String nameQuiz) {
+        boolean showDuplicate = false;
+        showSame(true);
+        List<Quiz> quizNamen = quizDAO.getAll();
+        for (Quiz naamquiz : quizNamen) {
+            if (nameQuiz.equals(naamquiz.getNameQuiz())) {
+                checkAndChangeLabelColor(true, nameQuizLabel);
+                showDuplicate = true;
+            } else showSame(false);
+        }
+        return showDuplicate;
+    }
+
     private void newQuiz(Quiz quiz) {
-       showSaved(quiz.getNameQuiz());
-          quizDAO.storeOne(quiz);
+        showSaved(quiz.getNameQuiz());
+        quizDAO.storeOne(quiz);
     }
 
     private void updateQuiz(Quiz quiz) {
@@ -130,10 +145,10 @@ public class CreateUpdateQuizController extends WarningAlertController{
         isCorrectInputCourse(coursesListComboBox.getSelectionModel().getSelectedItem(), courseText);
         isCorrectInputLevel(level);
         correctInput = isCorrectInput(nameQuiz, amount);
-        if ( course == null || !correctInput || level == null){
+        if (course == null || !correctInput || level == null) {
             showWarningLabel(true);
             return null;
-        } else{
+        } else {
             showWarningLabel(false);
             int amountQuestions = Integer.parseInt(amount);
             Quiz quiz = new Quiz(course, nameQuiz, level, amountQuestions);
@@ -157,8 +172,8 @@ public class CreateUpdateQuizController extends WarningAlertController{
             if (courseLabel.getText().equals("")) {
                 label.setTextFill(Color.RED);
             } else {
-                    label.setTextFill(Color.BLACK);
-                }
+                label.setTextFill(Color.BLACK);
             }
         }
+    }
 }
