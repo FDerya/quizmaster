@@ -11,79 +11,80 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateUpdateUserController">
-   <children>
-      <Label fx:id="titleLabel" layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="308.0" text="Nieuwe gebruiker">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <GridPane layoutX="-70.0" layoutY="87.0" prefHeight="135.0" prefWidth="398.0">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
+            prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.CreateUpdateUserController">
+    <Label fx:id="titleLabel" layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="308.0" text="Nieuwe gebruiker">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </Label>
+    <GridPane layoutX="-70.0" layoutY="87.0" prefHeight="200.0" prefWidth="450.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="197.0" minWidth="10.0" prefWidth="197.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="199.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="215.0" minWidth="10.0" prefWidth="215.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="178.0"/>
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="49.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="55.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="46.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="49.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES"/>
         </rowConstraints>
-         <children>
-            <Label fx:id="usernameLabel" text="Gebruikersnaam" GridPane.halignment="RIGHT">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </Label>
-             <Label fx:id="passwordLabel" text="Wachtwoord" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
-                 <GridPane.margin>
-                     <Insets left="10.0" right="10.0" />
-                 </GridPane.margin>
-             </Label>
-             <Label fx:id="firstnameLabel" text="Voornaam" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </Label>
-            <Label text="Tussenvoegsel" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </Label>
-            <Label fx:id="surnameLabel" text="Achternaam" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </Label>
-            <Label fx:id="roleLabel" text="Rol" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
-               <GridPane.margin>
-                  <Insets right="10.0" />
-               </GridPane.margin>
-            </Label>
-            <TextField fx:id="usernameTextfield" GridPane.columnIndex="1" />
-             <TextField fx:id="passwordTextfield" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-             <TextField fx:id="firstNameTextfield" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="prefixTextfield" GridPane.columnIndex="1" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin></TextField>
-            <TextField fx:id="surnameTextfield" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <ComboBox fx:id="roleComboBox" prefHeight="25.0" prefWidth="199.0" promptText="Kies een rol" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-         </children>
-         <padding>
-            <Insets right="5.0" />
-         </padding>
-      </GridPane>
-      <Button layoutX="41.0" layoutY="249.0" mnemonicParsing="false" onAction="#doSaveUser" text="Opslaan" />
-      <Button layoutX="114.0" layoutY="249.0" mnemonicParsing="false" onAction="#doShowManageUsers" text="Gebruikerslijst" />
-      <Button layoutX="221.0" layoutY="249.0" mnemonicParsing="false" onAction="#doShowMenu" text="Menu" />
-      <Label fx:id="warningLabelNoRole" layoutX="41.0" layoutY="346.0" prefHeight="26.0" prefWidth="308.0" text="Label" visible="false" />
-      <Label fx:id="warningLabelNoFields" layoutX="41.0" layoutY="399.0" prefHeight="104.0" prefWidth="308.0" text="Je hebt niet alle velden ingevuld. &#10;Vul de rood gekleurde velden alsnog in." visible="false" wrapText="true" />
-      <Label fx:id="createUpdateMessage" layoutX="51.0" layoutY="356.0" prefHeight="26.0" prefWidth="308.0" text="Label" visible="false" />
-   </children>
+        <padding>
+            <Insets right="5.0"/>
+        </padding>
+        <Label fx:id="usernameLabel" text="Gebruikersnaam" GridPane.halignment="RIGHT">
+            <GridPane.margin>
+                <Insets left="10.0" right="10.0"/>
+            </GridPane.margin>
+        </Label>
+        <Label fx:id="passwordLabel" text="Wachtwoord" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+            <GridPane.margin>
+                <Insets left="10.0" right="10.0"/>
+            </GridPane.margin>
+        </Label>
+        <Label fx:id="firstnameLabel" text="Voornaam" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+            <GridPane.margin>
+                <Insets left="10.0" right="10.0"/>
+            </GridPane.margin>
+        </Label>
+        <Label text="Tussenvoegsel" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+            <GridPane.margin>
+                <Insets left="10.0" right="10.0"/>
+            </GridPane.margin>
+        </Label>
+        <Label fx:id="surnameLabel" text="Achternaam" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+            <GridPane.margin>
+                <Insets left="10.0" right="10.0"/>
+            </GridPane.margin>
+        </Label>
+        <Label fx:id="roleLabel" text="Rol" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+            <padding>
+                <Insets left="10.0"/>
+            </padding>
+            <GridPane.margin>
+                <Insets right="10.0"/>
+            </GridPane.margin>
+        </Label>
+        <TextField fx:id="usernameTextfield" promptText="verplicht" GridPane.columnIndex="1"/>
+        <TextField fx:id="passwordTextfield" promptText="verplicht" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <TextField fx:id="firstNameTextfield" promptText="verplicht" GridPane.columnIndex="1"
+                   GridPane.rowIndex="2"/>
+        <TextField fx:id="prefixTextfield" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <GridPane.margin>
+                <Insets/>
+            </GridPane.margin>
+        </TextField>
+        <TextField fx:id="surnameTextfield" promptText="verplicht" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+        <ComboBox fx:id="roleComboBox" prefHeight="25.0" prefWidth="250.0" promptText="Kies een rol"
+                  GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+    </GridPane>
+    <Button layoutX="41.0" layoutY="300.0" mnemonicParsing="false" onAction="#doSaveUser" text="Opslaan"/>
+    <Button layoutX="120.0" layoutY="300.0" mnemonicParsing="false" onAction="#doShowManageUsers"
+            text="Gebruikerslijst"/>
+    <Button layoutX="226.0" layoutY="300.0" mnemonicParsing="false" onAction="#doShowMenu" text="Welkomstscherm"/>
+    <Label fx:id="messageLabel" layoutX="41.0" layoutY="346.0" prefHeight="26.0" prefWidth="308.0"
+           text="Je hebt niet alles ingevuld" visible="false" wrapText="true"/>
 </AnchorPane>

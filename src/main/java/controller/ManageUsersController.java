@@ -4,6 +4,7 @@ import database.mysql.UserDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import model.User;
 import view.Main;
 
@@ -17,7 +18,7 @@ public class ManageUsersController {
     @FXML
     Label warningLabel;
     @FXML
-    Label roleCounter;
+    Label userInformation;
 
     public ManageUsersController() {
         this.userDAO = new UserDAO(Main.getDBaccess());
@@ -27,11 +28,23 @@ public class ManageUsersController {
     public void setup() {
         List<User> users = userDAO.getAll();
         userList.getItems().addAll(users);
-        doCounterRole();
-        userList.getSelectionModel().selectedItemProperty().addListener((observableValue, user, t1) -> {
-                doCounterRole();
-                warningLabel.setVisible(false);
+        userList.setCellFactory(param -> new ListCell<>() {
+            @Override
+            public void updateItem(User item, boolean empty) {
+            super.updateItem(item, empty);
+            Label nameUser = new Label();
+            nameUser.setPrefWidth(200.0);
+            Label roleUser = new Label();
+            HBox hbox = new HBox(nameUser, roleUser);
+            if (!(item == null || empty)) {
+                nameUser.setText(item.getFullName());
+                roleUser.setText(item.getRole());
+            }
+            setGraphic(hbox);
+            }
         });
+        doCounterRole();
+        userList.getSelectionModel().selectedItemProperty().addListener((observableValue, user, t1) -> doCounterRole());
     }
 
     // Terug naar welcomeScene passend bij de rol.
@@ -50,7 +63,7 @@ public class ManageUsersController {
         if (user != null) {
             Main.getSceneManager().showCreateUpdateUserScene(user);
         } else {
-            warningLabel.setVisible(true);
+            userInformation.setText("Kies een gebruiker");
         }
     }
 
@@ -62,6 +75,7 @@ public class ManageUsersController {
         } else {
             warningLabel.setVisible(false);
             deleteWithAlert(user);
+            userList.getSelectionModel().clearSelection();
         }
     }
 
@@ -88,13 +102,35 @@ public class ManageUsersController {
         List<User> users = userDAO.getAll();
 
         if (user == null) {
-            roleCounter.setText("Selecteer een gebruiker om te zien \nhoeveel gebruikers dezelfde rol hebben \n" +
-                    "of om een actie uit te voeren.");
-            roleCounter.setVisible(true);
+            userInformation.setText("Kies een gebruiker");
+            userInformation.setVisible(true);
         } else {
             int counter = (int) users.stream().filter(roleUsers -> roleUsers.getRole().equals(user.getRole())).count();
-            roleCounter.setVisible(true);
-            roleCounter.setText("Van het type " + user.getRole().toLowerCase() + " zijn er " + counter + " gebruikers");
+            userInformation.setVisible(true);
+            userInformation.setText(counter == 1 ? "Er is " + counter + " " + user.getRole().toLowerCase() :
+                    "Er zijn " + counter + " " + getRoleTextInPlural(user.getRole()).toLowerCase());
+            }
+    }
+
+    private String getRoleTextInPlural(String role) {
+        String pluralRole = "";
+        switch (role) {
+            case "Student":
+                pluralRole = "Studenten";
+                break;
+            case "Administrator":
+                pluralRole = "Administratoren";
+                break;
+            case "Coördinator":
+                pluralRole = "Coördinatoren";
+                break;
+            case "Functioneel Beheerder":
+                pluralRole = "Functioneel Beheerders";
+                break;
+            case "Docent":
+                pluralRole = "Docenten";
+                break;
         }
+        return pluralRole;
     }
 }

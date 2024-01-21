@@ -15,7 +15,7 @@ public class WelcomeController {
     private MenuButton taskMenuButton;
 
     public void setup() {
-        welcomeLabel.setText("Welkom " + User.getCurrentUser().getFirstName() + "\nU bent ingelogd als " + User.getCurrentUser().getRole().toLowerCase());
+        welcomeLabel.setText("Welkom " + User.getCurrentUser().getFirstName() + "\nJe bent ingelogd als " + User.getCurrentUser().getRole().toLowerCase());
         // Shows menu buttons by role
         String role = User.currentUser.getRole();
         switch (role) {

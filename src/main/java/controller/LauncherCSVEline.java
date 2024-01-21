@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class LauncherEline {
+public class LauncherCSVEline {
 // Create database access, UserDAO and CourseDAO objects
     final static String databaseName = "Quizmaster";
     final static String mainUser = "userQuizmaster";

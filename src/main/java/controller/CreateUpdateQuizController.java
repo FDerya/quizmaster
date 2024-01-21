@@ -16,11 +16,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import view.Main;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
-public class CreateUpdateQuizController {
+public class CreateUpdateQuizController extends WarningAlertController{
     private final DBAccess dbAccess;
-
     private int idQuiz;
     CourseDAO courseDAO = new CourseDAO(Main.getDBaccess());
     private QuizDAO quizDAO = new QuizDAO(Main.getDBaccess());
@@ -35,23 +36,11 @@ public class CreateUpdateQuizController {
     @FXML
     private Label courseText;
     @FXML
-    Label warningLabelNoCourse;
-    @FXML
-    Label warningLabelNoLevel;
-    @FXML
-    Label warningLabelNoFields;
-    @FXML
-    Label warningLabelNoNumber;
-    @FXML
     Label nameQuizLabel;
     @FXML
     Label amountQuestionsLabel;
     @FXML
     Label levelQuizLabel;
-
-    @FXML
-    Label quizSaveLabel;
-
     @FXML
     ComboBox<String> levelsListComboBox;
     @FXML
@@ -83,9 +72,8 @@ public class CreateUpdateQuizController {
             nameTextField.setText(quizOne.getNameQuiz());
             levelsListComboBox.setValue(quizOne.getLevel());
             amountTextField.setText(String.valueOf(quizOne.getAmountQuestions()));
-
         } else {
-            courseText.setText("Naam van de cursus");
+            courseText.setText("Naam cursus");
             courseText.setVisible(true);
             coursesListComboBox.setVisible(true);
         }
@@ -118,16 +106,12 @@ public class CreateUpdateQuizController {
     }
 
     private void newQuiz(Quiz quiz) {
-        String newQuizAlert = "Nieuwe quiz is toegevoegd";
-        quizSaveLabel.setText(newQuizAlert);
-        quizSaveLabel.setVisible(true);
-        quizDAO.storeOne(quiz);
+       showSaved(quiz.getNameQuiz());
+          quizDAO.storeOne(quiz);
     }
 
     private void updateQuiz(Quiz quiz) {
-        String updateQuizAlert = "Quiz is gewijzigd";
-        quizSaveLabel.setText(updateQuizAlert);
-        quizSaveLabel.setVisible(true);
+        showUpdated(quiz.getNameQuiz());
         quiz.setIdQuiz(idQuiz);
         quizDAO.updateOne(quiz);
     }
@@ -144,62 +128,37 @@ public class CreateUpdateQuizController {
         String level = levelsListComboBox.getValue();
         String amount = amountTextField.getText();
         isCorrectInputCourse(coursesListComboBox.getSelectionModel().getSelectedItem(), courseText);
-        isCorrectInputLevel(level, levelQuizLabel);
+        isCorrectInputLevel(level);
         correctInput = isCorrectInput(nameQuiz, amount);
-        if (course == null || !correctInput || level == null) {
-            warningLabelNoFields.setVisible(!correctInput);
+        if ( course == null || !correctInput || level == null){
+            showWarningLabel(true);
             return null;
-        } else {
-            warningLabelNoFields.setVisible(false);
+        } else{
+            showWarningLabel(false);
             int amountQuestions = Integer.parseInt(amount);
             Quiz quiz = new Quiz(course, nameQuiz, level, amountQuestions);
             return quiz;
         }
     }
 
+
     // Check of textvelden zijn ingevuld
     private boolean isCorrectInput(String nameQuiz, String amountQuestions) {
         checkAndChangeLabelColor(nameQuiz.isEmpty(), nameQuizLabel);
         checkAndChangeLabelColor(amountQuestions.isEmpty(), amountQuestionsLabel);
-        return (!nameQuiz.isEmpty() && !amountQuestions.isEmpty());
+        return (!amountQuestions.isEmpty());
     }
 
     // Niet-ingevulde velden rood markeren en melding tonen
-    private void checkAndChangeLabelColor(boolean emptyfields, Label label) {
-        if (emptyfields) {
-            label.setTextFill(Color.RED);
-        } else {
-            label.setTextFill(Color.BLACK);
-        }
-    }
 
     // Melding tonen en tekst rood kleuren wanneer geen cursus is gekozen
     private void isCorrectInputCourse(Course course, Label label) {
-        String errorMessageNoCourse = "Je hebt geen cursus gekozen voor de gebruiker.";
         if (course == null) {
             if (courseLabel.getText().equals("")) {
-                warningLabelNoCourse.setText(errorMessageNoCourse);
-                warningLabelNoCourse.setVisible(true);
                 label.setTextFill(Color.RED);
-
             } else {
-                warningLabelNoCourse.setVisible(false);
-                label.setTextFill(Color.BLACK);
+                    label.setTextFill(Color.BLACK);
+                }
             }
         }
-    }
-// Melding tonen en tekst rood kleuren wanneer geen level is gekozen
-
-    private void isCorrectInputLevel(String level, Label label) {
-        String errorMessageNoLevel = "Je hebt geen level gekozen voor de gebruiker.";
-        if (level == null) {
-            warningLabelNoLevel.setText(errorMessageNoLevel);
-            warningLabelNoLevel.setVisible(true);
-            label.setTextFill(Color.RED);
-
-        } else {
-            warningLabelNoLevel.setVisible(false);
-            label.setTextFill(Color.BLACK);
-        }
-    }
 }

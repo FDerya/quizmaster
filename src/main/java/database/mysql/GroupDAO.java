@@ -23,7 +23,6 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         this.courseDAO = courseDAO;
     }
 
-
     // Method to retrieve all groups
     @Override
     public List<Group> getAll() {
@@ -143,7 +142,6 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
             preparedStatement.setString(1, group.getGroupName());
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Groep succesvol verwijderd.");
             } else {
                 System.out.println("Groep niet verwijderd.\nMogelijk bestaat de groep niet of er is een probleem met de query.");
             }
@@ -156,7 +154,7 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
     public int countGroupsForCourse(Course course) {
         String sql = "SELECT COUNT(*) FROM `Group` WHERE idCourse = ?";
         try {
-                setupPreparedStatement(sql);
+            setupPreparedStatement(sql);
             preparedStatement.setInt(1, course.getIdCourse());
 
             try (ResultSet resultSet = executeSelectStatement()) {
