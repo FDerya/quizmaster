@@ -203,10 +203,10 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
 
     public List<Quiz> getQuizNamesForUser(int userId) {
         List<Quiz> quizNames = new ArrayList<>();
-        String sql = "SELECT q.idQuiz, q.nameQuiz, q.levelQuiz, q.amountQuestion, c.nameCourse " +
+        String sql = "SELECT q.* " +
                 "FROM quiz q " +
                 "JOIN course c ON q.idCourse = c.idCourse " +
-                "WHERE EXISTS (SELECT 1 FROM course c2 WHERE c2.idCourse = c.idCourse AND c2.idUser = ?)";
+                "WHERE c.idUser = ?;";
         try {
             setupPreparedStatement(sql);
             preparedStatement.setInt(1, userId);

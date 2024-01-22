@@ -236,17 +236,25 @@ public class CreateUpdateQuestionController {
     }
 
     //Vult de keuzelijst (ComboBox) met beschikbare quizzen.
+//Vult de keuzelijst (ComboBox) met beschikbare quizzen.
     public void fillComboBoxQuizzes() {
         // Get the current user
         User currentUser = User.getCurrentUser();
         if (currentUser != null) {
             // Get quizzes for the current user
-            List<Quiz> userQuizNames = questionDAO.getQuizNamesForUser(currentUser.getIdUser());
+            List<Quiz> userQuizzes = questionDAO.getQuizNamesForUser(currentUser.getIdUser());
+
+            // Extract quiz names from the list of quizzes
             List<String> quizNames = new ArrayList<>();
+            for (Quiz quiz : userQuizzes) {
+                quizNames.add(quiz.getNameQuiz());
+            }
+
             // Display the user's quizzes in the ComboBox
             quizlist.setItems(FXCollections.observableArrayList(quizNames));
         }
     }
+
 }
 
 
