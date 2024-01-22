@@ -25,36 +25,25 @@ public class CoordinatorDashboardController {
     private final DBAccess dbAccess;
 
     private final QuestionDAO questionDAO;
+    private final CourseDAO courseDAO;
+    private final UserDAO userDAO;
+    private final QuizDAO quizDAO;
 
     public CoordinatorDashboardController() {
         this.userDAO = new UserDAO(Main.getDBaccess());
         this.dbAccess = Main.getDBaccess();
         this.quizDAO = new QuizDAO(Main.getDBaccess());
         this.questionDAO = new QuestionDAO(Main.getDBaccess());
+        this.courseDAO = new CourseDAO(Main.getDBaccess());
     }
 
-
-    private final UserDAO userDAO;
-    private final QuizDAO quizDAO;
-
-
     public void setup() {
+        List<Course> course = courseDAO.getAll();
+        courseList.getItems().addAll(course);
+        courseList.getSelectionModel().getSelectedItem();
         courseList.getSelectionModel().selectedItemProperty().addListener(
                 (observableValue, oldCourse, newCourse) ->
-                        System.out.println("Geselecteerde cursus: " + observableValue + ", " + oldCourse + ", " + newCourse));
-
-        List<Quiz> quizzen = new ArrayList<>();
-        Quiz quiz =quizDAO.getOneByName(courseList.getSelectionModel().getSelectedItem().getNameCourse());
-        quizzen.add(quiz);
-        quizList.getItems().addAll(quizzen);
-        quizList.getSelectionModel().getSelectedItem();
-        quizList.getSelectionModel().selectedItemProperty().addListener(
-                (observableValue, oldQuiz, newQuiz) -> {
-                    System.out.println("Geselecteerde quiz: " + observableValue + ", " + oldQuiz + ", " + newQuiz);
-                    displayQuestionsForQuiz(newQuiz);
-                });
-
-
+                displayQuizForCourse(newCourse));
 
         // Vragen laden voor de initieel geselecteerde test
         Quiz initialSelectedQuiz = quizList.getSelectionModel().getSelectedItem();
@@ -62,12 +51,21 @@ public class CoordinatorDashboardController {
             displayQuestionsForQuiz(initialSelectedQuiz);
         }
 
-        List<Question> question = questionDAO.getAll();
-        questionList.getItems().addAll(question);
-        questionList.getSelectionModel().getSelectedItem();
-        questionList.getSelectionModel().selectedItemProperty().addListener(
-                (observableValue, oldQuestion, newQuestion) ->
-                        System.out.println("Geselecteerde question: " + observableValue + ", " + oldQuestion + ", " + newQuestion));
+        quizList.getSelectionModel().selectedItemProperty().addListener(
+                (observableValue, oldQuiz, newQuiz) ->
+                       displayQuestionsForQuiz(newQuiz));
+    }
+
+    private void displayQuizForCourse(Course initialSelectedCourse) {
+        // Verwijder bestaande vragen
+        questionList.getItems().clear();
+        quizList.getItems().clear();
+
+        // Vragen ophalen en tonen voor de geselecteerde test
+        if (initialSelectedCourse != null) {
+            List<Quiz> quiz = questionDAO.getQuizForCourse(initialSelectedCourse);
+            quizList.getItems().addAll(quiz);
+        }
     }
 
     private void displayQuestionsForQuiz(Quiz quiz) {
