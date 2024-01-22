@@ -38,5 +38,5 @@
         </font>
     </Button>
    <Label fx:id="warningLabel" layoutX="121.0" layoutY="362.0" prefHeight="93.0" prefWidth="408.0" />
-   <Label fx:id="questionCountLabel" layoutX="385.0" layoutY="378.0" prefHeight="93.0" prefWidth="408.0" />
+   <Label fx:id="questionCountLabel" layoutX="590.0" layoutY="362.0" prefHeight="93.0" prefWidth="281.0" />
 </AnchorPane>

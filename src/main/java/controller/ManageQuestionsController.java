@@ -61,7 +61,7 @@ public class ManageQuestionsController {
                     } else {
                         HBox hbox = new HBox(10);
 
-                        Label quizLabel = new Label(item.getQuiz().getNameQuiz());
+                        Label quizLabel = new Label(item.getQuiz().getNameQuiz() + " :");
                         Label questionLabel = new Label(item.getQuestion());
 
                         hbox.getChildren().addAll(quizLabel, questionLabel);
@@ -94,16 +94,8 @@ public class ManageQuestionsController {
 
     // Creates a new question
     public void doCreateQuestion() {
-        // Gets the selected question
-        Question selectedQuestion = questionList.getSelectionModel().getSelectedItem();
-        if (selectedQuestion == null) {
-            warningLabel.setVisible(true);
-            warningLabel.setText("Je moet eerst een vraag kiezen!");
-            warningLabel.setStyle("-fx-text-fill: red;");
-        } else {
-            Main.getSceneManager().showCreateUpdateQuestionScene(null);
-            warningLabel.setVisible(false);
-        }
+        Main.getSceneManager().showCreateUpdateQuestionScene(null);
+        warningLabel.setVisible(false);
     }
 
     public void doUpdateQuestion(ActionEvent event) {

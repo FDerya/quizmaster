@@ -28,7 +28,7 @@ public class Question {
 
     @Override
     public String toString() {
-        return quiz.getNameQuiz() + " - " + question;
+        return quiz.getNameQuiz() + ": - " + question;
     }
 
 

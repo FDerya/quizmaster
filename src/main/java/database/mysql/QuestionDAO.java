@@ -135,6 +135,50 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
         return questions;
     }
 
+    public List<Quiz> getQuizForCourse(Course course) {
+        List<Quiz> quizzes = new ArrayList<>();
+        String sql = "SELECT * FROM quiz WHERE idCourse = ?;";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, course.getIdCourse());
+            ResultSet resultSet = executeSelectStatement();
+            while (resultSet.next()) {
+                Quiz quiz = getQuizFromResultSet(resultSet);
+                System.out.println("Quiz ID: " + quiz.getIdQuiz());
+                System.out.println("Name: " + quiz.getNameQuiz());
+                System.out.println("Level: " + quiz.getLevel());
+                System.out.println("Amount of Questions: " + quiz.getAmountQuestions());
+                System.out.println("Course ID: " + quiz.getCourse().getIdCourse());
+                System.out.println("Course Name: " + quiz.getCourse().getNameCourse());
+                System.out.println("--------------------------");
+
+                quizzes.add(quiz);
+            }
+        } catch (SQLException sqlException) {
+            System.out.println("SQL fout " + sqlException.getMessage());
+        }
+        return quizzes;
+    }
+
+
+
+// Helper method that creates a Quiz object from the result set
+    private Quiz getQuizFromResultSet(ResultSet resultSet) throws SQLException {
+        int idQuiz = resultSet.getInt("idQuiz");
+        int idCourse = resultSet.getInt("idCourse");
+        String nameQuiz = resultSet.getString("nameQuiz");
+        String level = resultSet.getString("levelQuiz");
+        int amountQuestions = resultSet.getInt("amountQuestion");
+
+        // Retrieve Course object based on the course ID with CourseDAO
+        CourseDAO courseDAO = new CourseDAO(dbAccess);
+        Course course = courseDAO.getOneById(idCourse);
+
+        // Create and return the Quiz object with the generated information
+        return new Quiz(idQuiz, course, nameQuiz, level, amountQuestions);
+    }
+
+
     public void deleteOne(Question question) {
         String sql = "DELETE FROM question WHERE idQuestion = ?;";
         try {
