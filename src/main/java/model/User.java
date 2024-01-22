@@ -31,7 +31,7 @@ public class User {
     // Methods
     @Override
     public String toString() {
-        return getFullName() + ", " + getRole();
+        return getFullName();
     }
 
     // Getters & Setters

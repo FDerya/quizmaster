@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedMap;
 
 public class ParticipationDAO extends AbstractDAO implements GenericDAO<Participation> {
     private UserDAO userDAO;
@@ -48,7 +49,7 @@ public class ParticipationDAO extends AbstractDAO implements GenericDAO<Particip
     }
     public List<Participation> getParticipationPerCourse(int id){
         List<Participation> resultList = new ArrayList<>();
-        String sql = "Select * From Participation WHERE idCourse = ?;";
+        String sql = "Select * From Participation WHERE idCourse = ? AND idGroup = null;";
         try {
             setupPreparedStatement(sql);
             preparedStatement.setInt(1, id);
@@ -57,6 +58,22 @@ public class ParticipationDAO extends AbstractDAO implements GenericDAO<Particip
                 resultList.add(getParticipation(resultSet));
             }
         } catch (SQLException sqlFout){
+            System.out.println("SQL error " + sqlFout.getMessage());
+        }
+        return resultList;
+    }
+
+    public List<Participation> getGroupsPerCourse(int id) {
+        List<Participation> resultList = new ArrayList<>();
+        String sql = "SELECT * FROM Participation WHERE idCourse = ? AND idGroup is not null";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = executeSelectStatement();
+            while (resultSet.next()) {
+                resultList.add(getParticipation(resultSet));
+            }
+        } catch (SQLException sqlFout) {
             System.out.println("SQL error " + sqlFout.getMessage());
         }
         return resultList;
@@ -85,7 +102,7 @@ public class ParticipationDAO extends AbstractDAO implements GenericDAO<Particip
 // Nieuwe participation opslaan
     @Override
     public void storeOne(Participation participation) {
-        String sql = "INSERT INTO Participation (idUser, idCourse, idGroep) VALUES(?, ?, ?);";
+        String sql = "INSERT INTO Participation (idUser, idCourse, idGroup) VALUES(?, ?, ?);";
         try {
             setupPreparedStatement(sql);
             preparedStatement.setInt(1, participation.getUser().getIdUser());
@@ -97,6 +114,19 @@ public class ParticipationDAO extends AbstractDAO implements GenericDAO<Particip
         }
     }
 
+    public void updateGroup(Group group, Course course, User user) {
+        String sql = "UPDATE Participation SET idGroup = ? WHERE idCourse = ? AND idUser = ?;";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, group.getIdGroup());
+            preparedStatement.setInt(2, course.getIdCourse());
+            preparedStatement.setInt(3, user.getIdUser());
+            executeManipulateStatement();
+        } catch (SQLException sqlException) {
+            System.out.println("SQL error " + sqlException.getMessage());
+        }
+    }
+
 // Participation object maken vanuit resultSet
     private Participation getParticipation(ResultSet resultSet) throws SQLException {
         UserDAO userDAO = new UserDAO(dbAccess);
@@ -104,7 +134,7 @@ public class ParticipationDAO extends AbstractDAO implements GenericDAO<Particip
         GroupDAO groupDAO = new GroupDAO(dbAccess, userDAO, courseDAO);
         int idUser = resultSet.getInt("idUser");
         int idCourse = resultSet.getInt("idCourse");
-        int idGroup = resultSet.getInt("idGroep");
+        int idGroup = resultSet.getInt("idGroup");
         User user = userDAO.getOneById(idUser);
         Course course = courseDAO.getOneById(idCourse);
         Group group = groupDAO.getOneById(idGroup);

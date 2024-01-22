@@ -17,6 +17,11 @@ public class Participation {
         this.group = group;
     }
 
+    // Methods
+    @Override
+    public String toString() {
+        return user.getFullName();
+    }
 
     // Getters & Setters
     public User getUser() {
