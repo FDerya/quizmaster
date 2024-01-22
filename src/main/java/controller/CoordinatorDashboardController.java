@@ -3,6 +3,7 @@ package controller;
 import database.mysql.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Label;
@@ -25,10 +26,12 @@ public class CoordinatorDashboardController {
     private final DBAccess dbAccess;
 
     private final QuestionDAO questionDAO;
+    private final CourseDAO courseDAO;
 
     public CoordinatorDashboardController() {
         this.userDAO = new UserDAO(Main.getDBaccess());
         this.dbAccess = Main.getDBaccess();
+        this.courseDAO = new CourseDAO(dbAccess, userDAO);
         this.quizDAO = new QuizDAO(Main.getDBaccess());
         this.questionDAO = new QuestionDAO(Main.getDBaccess());
     }
@@ -39,16 +42,16 @@ public class CoordinatorDashboardController {
 
 
     public void setup() {
+        User currentUser = User.getCurrentUser();
+        List<Course> courseUserList = courseDAO.getAllByIdUser(currentUser.getIdUser());
+        courseList.setItems(FXCollections.observableList(courseUserList));
         courseList.getSelectionModel().selectedItemProperty().addListener(
-                (observableValue, oldCourse, newCourse) ->
-                        System.out.println("Geselecteerde cursus: " + observableValue + ", " + oldCourse + ", " + newCourse));
+                (observableValue, oldCourse, newCourse) -> {
+                    List<Quiz> quizzen = quizDAO.getAllByCourseId(newCourse.getIdCourse());
+                    quizList.setItems(FXCollections.observableList(quizzen));
+                });
 
-        List<Quiz> quizzen = new ArrayList<>();
-        Quiz quiz =quizDAO.getOneByName(courseList.getSelectionModel().getSelectedItem().getNameCourse());
-        quizzen.add(quiz);
-        quizList.getItems().addAll(quizzen);
-        quizList.getSelectionModel().getSelectedItem();
-        quizList.getSelectionModel().selectedItemProperty().addListener(
+         quizList.getSelectionModel().selectedItemProperty().addListener(
                 (observableValue, oldQuiz, newQuiz) -> {
                     System.out.println("Geselecteerde quiz: " + observableValue + ", " + oldQuiz + ", " + newQuiz);
                     displayQuestionsForQuiz(newQuiz);

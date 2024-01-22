@@ -42,6 +42,23 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         }
         return totalListQuiz;
     }
+    public List<Quiz> getAllByCourseId(int idCourse) {
+        List<Quiz> courseTotalListQuiz = new ArrayList<>();
+        String sql = "SELECT * FROM Quiz where idCourse = ? ORDER BY nameQuiz;";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, idCourse);
+            ResultSet resultSet = executeSelectStatement();
+            while (resultSet.next()) {
+                quiz = getQuiz(resultSet, courseDAO, quiz);
+                courseTotalListQuiz.add(quiz);
+            }
+        } catch (
+                SQLException sqlFout) {
+            System.out.println("SQL fout " + sqlFout.getMessage());
+        }
+        return courseTotalListQuiz;
+    }
     // Zoek een specifieke quiz aan de hand van idQuiz
     @Override
     public Quiz getOneById(int id) {
