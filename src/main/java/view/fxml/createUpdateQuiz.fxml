@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="416.0" prefWidth="619.0" xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateUpdateQuizController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="416.0" prefWidth="619.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateUpdateQuizController">
     <children>
-        <Label fx:id="titelLabel" layoutX="54.0" layoutY="65.0" prefHeight="27.0" prefWidth="386.0" text="Nieuwe quiz" textAlignment="LEFT">
+        <Label fx:id="titelLabel" layoutX="54.0" layoutY="65.0" prefHeight="27.0" prefWidth="108.0" text="Nieuwe quiz" textAlignment="LEFT">
             <font>
                 <Font size="18.0" />
             </font>
@@ -56,17 +56,18 @@
                         <Insets right="5.0" />
                     </GridPane.margin>
                 </Label>
-                <ComboBox fx:id="coursesListComboBox" editable="false" prefHeight="26.0" prefWidth="146.0" promptText="Kies een quiz" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <ComboBox fx:id="coursesListComboBox" editable="false" prefHeight="26.0" prefWidth="230.0" promptText="Kies een quiz" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                 <TextField fx:id="nameTextField" promptText="verplicht" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <ComboBox fx:id="levelsListComboBox" prefHeight="26.0" prefWidth="124.0" promptText="Kies een level" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <ComboBox fx:id="levelsListComboBox" prefHeight="26.0" prefWidth="230.0" promptText="Kies een level" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <TextField fx:id="amountTextField" promptText="verplicht" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                 </children>
         </GridPane>
         <Button layoutX="49.0" layoutY="304.0" mnemonicParsing="false" onAction="#doMenuBack" prefHeight="26.0" prefWidth="80.0" text="Quizbeheer" />
         <Button layoutX="170.0" layoutY="304.0" mnemonicParsing="false" onAction="#doCreateUpdateQuiz" prefHeight="26.0" prefWidth="67.0" text="Opslaan" />
         <Button layoutX="259.0" layoutY="304.0" mnemonicParsing="false" onAction="#doMenu" prefHeight="26.0" prefWidth="108.0" text="Welkomstscherm" />
-        <Label fx:id="warningLabelNoFields" layoutX="16.0" layoutY="337.0" prefHeight="55.0" prefWidth="298.0" text="Je hebt niet alles ingevuld" visible="false" />
+        <Label fx:id="warningLabelNoFields" layoutX="16.0" layoutY="337.0" prefHeight="55.0" prefWidth="298.0" text="Label" visible="false" />
         <Label fx:id="saveNewLabel" layoutX="170.0" layoutY="343.0" prefHeight="34.0" prefWidth="162.0" text="Label" visible="false" />
         <Label fx:id="saveUpdateLabel" layoutX="170.0" layoutY="343.0" prefHeight="34.0" prefWidth="162.0" text="Label" visible="false" />
+        <Label fx:id="sameNameLabel" layoutX="402.0" layoutY="179.0" prefHeight="104.0" prefWidth="210.0" text="Label" visible="false" />
     </children>
 </AnchorPane>

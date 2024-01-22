@@ -16,15 +16,9 @@ import model.User;
 import view.Main;
 
 import java.util.List;
-import java.util.Optional;
 
 public class CreateUpdateUserController {
     private final UserDAO userDAO;
-    private final int maxCharsUsername = 10;
-    private final int maxCharsPassword = 25;
-    private final int maxCharsFirstname = 45;
-    private final int maxCharsPrefix = 10;
-    private final int maxCharsSurname = 45;
     private int idUser;         // Opslaan van idUser omdat deze nodig is om een gebruiker te wijzigen.
     @FXML
     Label titleLabel;
@@ -67,10 +61,15 @@ public class CreateUpdateUserController {
             textField.textProperty().addListener((observableValue, oldValue, newValue) -> messageLabel.setVisible(false));
         }
         // Sets a max amount of characters to the username, same as the max amount in the SQL database.
+        int maxCharsUsername = 10;
         usernameTextfield.setTextFormatter(setMaxAmountOfCharactersInTextField(maxCharsUsername));
+        int maxCharsPassword = 25;
         passwordTextfield.setTextFormatter(setMaxAmountOfCharactersInTextField(maxCharsPassword));
+        int maxCharsFirstname = 45;
         firstNameTextfield.setTextFormatter(setMaxAmountOfCharactersInTextField(maxCharsFirstname));
+        int maxCharsPrefix = 10;
         prefixTextfield.setTextFormatter(setMaxAmountOfCharactersInTextField(maxCharsPrefix));
+        int maxCharsSurname = 45;
         surnameTextfield.setTextFormatter(setMaxAmountOfCharactersInTextField(maxCharsSurname));
     }
 
@@ -102,27 +101,13 @@ public class CreateUpdateUserController {
         User user = createUser();
         if (user != null) {
             if (checkForDuplicates(user)) {
-                showDuplicateAlert(user);
+                usernameLabel.setTextFill(Color.RED);
+                messageLabel.setVisible(true);
+                messageLabel.setText("Gebruikersnaam " + user.getUsername() + " is al in gebruik, kies een andere gebruikersnaam");
             } else {
+                usernameLabel.setTextFill(Color.BLACK);
                 saveUser(user);
             }
-        }
-    }
-
-    private void showDuplicateAlert(User user) {
-        Alert duplicateAlert = new Alert(Alert.AlertType.WARNING);
-        duplicateAlert.setTitle("Naam bestaat al");
-        duplicateAlert.setHeaderText(null);
-        duplicateAlert.setContentText("Een gebruiker met deze naam bestaat al. " +
-                "\nWeet je zeker dat je nog een gebruiker met deze naam wilt maken?");
-        ButtonType buttonYes = new ButtonType("Ja", ButtonBar.ButtonData.OK_DONE);
-        ButtonType buttonNo = new ButtonType("Nee", ButtonBar.ButtonData.NO);
-        duplicateAlert.getButtonTypes().setAll(buttonYes,buttonNo);
-        Optional<ButtonType> clickedButton = duplicateAlert.showAndWait();
-        if (clickedButton.isPresent() && clickedButton.get() == buttonYes) {
-            saveUser(user);
-        } else {
-            clearTextFieldsAndRoleComboBox();
         }
     }
 
@@ -250,7 +235,7 @@ public class CreateUpdateUserController {
 
     private boolean checkForDuplicates(User user) {
         // Sets the id of the user, if you are editing an existing user.
-        if (!titleLabel.equals("Nieuwe gebruiker")) {
+        if (!titleLabel.getText().equals("Nieuwe gebruiker")) {
             user.setIdUser(idUser);
         }
 
@@ -259,8 +244,9 @@ public class CreateUpdateUserController {
         List<User> allUsers = userDAO.getAll();
         boolean duplicate = false;
             for (User userInUserList : allUsers) {
-                if ((userInUserList.getFullName().equals(user.getFullName())) && (userInUserList.getIdUser() != user.getIdUser())) {
+                if ((userInUserList.getUsername().equals(user.getUsername())) && (userInUserList.getIdUser() != user.getIdUser())) {
                     duplicate = true;
+                    break;
                 }
             }
         return duplicate;
