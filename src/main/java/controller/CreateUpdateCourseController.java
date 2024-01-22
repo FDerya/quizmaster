@@ -65,17 +65,16 @@ public class CreateUpdateCourseController {
 
 // Method to save a new or updated course
     public void doSaveCourse(ActionEvent actionEvent){
+        setColoursBackToBlack();
         Course course = createNewCourse();
-        String warningLabelNewCourse = "Cursus is toegevoegd";
-        String warningLabalUpdatedCourse = "Cursus is aangepast en opgeslagen";
         if (course != null){
             if (titleLabel.getText().equals("Nieuwe Cursus")){
                 courseDAO.storeOne(course);
-                warningLabel.setText(warningLabelNewCourse);
+                warningLabel.setText("De cursus " + course + " is toegevoegd");
             }else {
                 course.setIdCourse(idCourse);
                 courseDAO.updateOne(course);
-                warningLabel.setText(warningLabalUpdatedCourse);
+                warningLabel.setText("De cursus " + course + " is aangepast en opgeslagen");
             }
             timeline.play();
         }
@@ -89,14 +88,14 @@ public class CreateUpdateCourseController {
 
 // Method to create a new course with a warning if not all fields are filled in
     private Course createNewCourse(){
-        courseNameLabel.setTextFill(Color.BLACK);
-        coordinatorLabel.setTextFill(Color.BLACK);
-        levelLabel.setTextFill(Color.BLACK);
         String courseName = courseNameTextField.getText();
         User coordinator = coordinatorComboBox.getSelectionModel().getSelectedItem();
         String level = levelComboBox.getSelectionModel().getSelectedItem();
         if (courseName.isEmpty() || coordinator == null || level == null) {
             doWhenFieldEmpty(courseName, coordinator, level);
+            return null;
+        } else if (checkExistenceCourseName(courseName)) {
+            warningLabel.setText("De naam van de cursus bestaat al, kies een nieuwe naam.");
             return null;
         } else {
             return new Course(0, coordinator, courseName, level);
@@ -105,10 +104,28 @@ public class CreateUpdateCourseController {
 
 // Method to set the labels to the colour red when a field is left empty and show a warning
     private void doWhenFieldEmpty(String courseName, User coordinator, String level) {
-        warningLabel.setText("Je hebt niet alle velden ingevuld.\nAlle velden zijn verplicht.");
+        warningLabel.setText("Je hebt niet alles ingevuld.");
         warningLabel.setVisible(true);
         if (courseName.isEmpty()) {courseNameLabel.setTextFill(Color.RED);}
         if (coordinator == null) {coordinatorLabel.setTextFill(Color.RED);}
         if (level == null) {levelLabel.setTextFill(Color.RED);}
+    }
+    private void setColoursBackToBlack() {
+        courseNameLabel.setTextFill(Color.BLACK);
+        coordinatorLabel.setTextFill(Color.BLACK);
+        levelLabel.setTextFill(Color.BLACK);
+    }
+
+// Method to check whether the course name already exists
+    private boolean checkExistenceCourseName(String courseName) {
+        List<Course> courses = courseDAO.getAll();
+        boolean existenceCourseName = false;
+        for (Course course1 : courses){
+            if (courseName.equals(course1.getNameCourse())) {
+                existenceCourseName = true;
+                break;
+            }
+        }
+        return existenceCourseName;
     }
 }

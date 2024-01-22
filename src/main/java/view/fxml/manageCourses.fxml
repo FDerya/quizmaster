@@ -31,11 +31,10 @@
             <Font size="14.0" />
         </font>
     </Button>
-    <Button fx:id="menuButton" layoutX="14.0" layoutY="329.0" mnemonicParsing="false" onAction="#doMenu" text="Menu">
+    <Button fx:id="menuButton" layoutX="14.0" layoutY="329.0" mnemonicParsing="false" onAction="#doMenu" text="Welkomstscherm">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-   <Label fx:id="warningLabel" layoutX="339.0" layoutY="78.0" text="Je moet eerst een cursus selecteren." visible="false" />
-   <Label fx:id="studentCounter" layoutX="14.0" layoutY="377.0" prefHeight="58.0" prefWidth="463.0" text="Selecteer een cursus om te zien hoeveel studenten er ingeschreven voor een cursus." />
+   <Label fx:id="warningLabel" layoutX="339.0" layoutY="78.0" text="Selecteer een cursus." />
 </AnchorPane>
