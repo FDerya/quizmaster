@@ -25,8 +25,6 @@ public class ManageCoursesController {
     Button menuButton;
     @FXML
     Label warningLabel;
-    @FXML
-    Label studentCounter;
 
 //Constructor
     public ManageCoursesController(){
@@ -41,7 +39,6 @@ public class ManageCoursesController {
         doStudentCount();
         courseList.getSelectionModel().selectedItemProperty().addListener((observableValue, course, t1) -> {
             doStudentCount();
-            warningLabel.setVisible(false);
         });
     }
 
@@ -58,7 +55,11 @@ public class ManageCoursesController {
 // Method to change a course in the database
     public void doUpdateCourse(ActionEvent actionEvent){
         Course course = courseList.getSelectionModel().getSelectedItem();
-        Main.getSceneManager().showCreateUpdateCourseScene(course);
+        if (course == null){
+            warningLabel.setText("Selecteer eerst een cursus om die te wijzigen.");
+        } else {
+            Main.getSceneManager().showCreateUpdateCourseScene(course);
+        }
     }
 
 // Method to delete a course from the database
@@ -67,7 +68,7 @@ public class ManageCoursesController {
         if (course != null){
             showDeleteAlert(course);
         } else {
-            warningLabel.setText("Houd de cursus geselecteerd.");
+            warningLabel.setText("Selecteer eerst een cursus om die te verwijderen.");
             warningLabel.setVisible(true);
         }
     }
@@ -95,15 +96,14 @@ public class ManageCoursesController {
     public void doStudentCount(){
         Course course = courseList.getSelectionModel().getSelectedItem();
         if (course == null) {
-            studentCounter.setText("Selecteer een cursus om te zien " +
-                    "hoeveel student zijn ingeschreven,\nof om een actie uit te voeren.");
+            warningLabel.setText("Selecteer een cursus.");
         } else {
             List<Participation> participation = participationDAO.getParticipationPerCourse(course.getIdCourse());
             int counter = participation.size();
             if (counter == 0){
-                studentCounter.setText("Voor de cursus " + course + " zijn nog geen studenten ingeschreven.");
+                warningLabel.setText("Voor de cursus " + course + " zijn nog geen studenten ingeschreven.");
             } else {
-                studentCounter.setText("Voor de cursus " + course + " zijn " + counter + " studenten ingeschreven.");
+                warningLabel.setText("Voor de cursus " + course + " zijn " + counter + " studenten ingeschreven.");
             }
         }
     }
