@@ -2,7 +2,6 @@ package controller;
 // Tom van Beek, 500941521.
 
 import database.mysql.QuizDAO;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -11,7 +10,6 @@ import model.*;
 import view.Main;
 
 import java.util.List;
-import java.util.Optional;
 
 public class ManageQuizzesController extends WarningAlertController{
     @FXML
@@ -60,7 +58,7 @@ public class ManageQuizzesController extends WarningAlertController{
     public void doUpdateQuiz(ActionEvent event) {
         Quiz quiz = quizList.getSelectionModel().getSelectedItem();
         if (quiz == null) {
-            setChoice("quiz", true);
+            setEmptyChoice("quiz", true);
         } else {
             Main.getSceneManager().showCreateUpdateQuizScene(quiz);
         }
@@ -72,7 +70,7 @@ public class ManageQuizzesController extends WarningAlertController{
     public void doDeleteQuiz(ActionEvent event) {
         Quiz selectedQuiz = quizList.getSelectionModel().getSelectedItem();
         if (selectedQuiz == null) {
-            setChoice("quiz", true);
+            setEmptyChoice("quiz", true);
             return;
         }
         if (confirmDeletion(selectedQuiz.getNameQuiz(), "Quiz")) {

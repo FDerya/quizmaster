@@ -1,8 +1,6 @@
 package controller;
 
 import database.mysql.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -10,10 +8,9 @@ import javafx.scene.control.Label;
 import model.*;
 import view.Main;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class CoordinatorDashboardController {
+public class CoordinatorDashboardController extends WarningAlertController {
 
     @FXML
     private ListView<Course> courseList;
@@ -27,7 +24,7 @@ public class CoordinatorDashboardController {
 
     private final QuestionDAO questionDAO;
     private final CourseDAO courseDAO;
-   private final UserDAO userDAO;
+    private final UserDAO userDAO;
     private final QuizDAO quizDAO;
 
     public CoordinatorDashboardController() {
@@ -36,10 +33,10 @@ public class CoordinatorDashboardController {
         this.courseDAO = new CourseDAO(dbAccess, userDAO);
         this.quizDAO = new QuizDAO(Main.getDBaccess());
         this.questionDAO = new QuestionDAO(Main.getDBaccess());
-        }
+    }
 
     public void setup() {
-       User currentUser = User.getCurrentUser();
+        User currentUser = User.getCurrentUser();
         List<Course> courseUserList = courseDAO.getAllByIdUser(currentUser.getIdUser());
         courseList.setItems(FXCollections.observableList(courseUserList));
         courseList.getSelectionModel().selectedItemProperty().addListener(
@@ -48,12 +45,10 @@ public class CoordinatorDashboardController {
                     quizList.setItems(FXCollections.observableList(quizzen));
                 });
 
-         quizList.getSelectionModel().selectedItemProperty().addListener(
+        quizList.getSelectionModel().selectedItemProperty().addListener(
                 (observableValue, oldQuiz, newQuiz) -> {
-                    System.out.println("Geselecteerde quiz: " + observableValue + ", " + oldQuiz + ", " + newQuiz);
                     displayQuestionsForQuiz(newQuiz);
                 });
-
 
 
         // Vragen laden voor de initieel geselecteerde test
@@ -64,7 +59,7 @@ public class CoordinatorDashboardController {
 
         quizList.getSelectionModel().selectedItemProperty().addListener(
                 (observableValue, oldQuiz, newQuiz) ->
-                       displayQuestionsForQuiz(newQuiz));
+                        displayQuestionsForQuiz(newQuiz));
     }
 
     private void displayQuizForCourse(Course initialSelectedCourse) {
@@ -91,19 +86,13 @@ public class CoordinatorDashboardController {
     }
 
     public void doNewQuiz() {
-        Quiz quiz = quizList.getSelectionModel().getSelectedItem();
-        if (quiz == null) {
-            Main.getSceneManager().showCreateUpdateQuizScene(null);
-        } else {
-            Main.getSceneManager().showCreateUpdateQuizScene(quiz);
-        }
+        Main.getSceneManager().showCreateUpdateQuizScene(null);
     }
 
     public void doEditQuiz() {
         Quiz quiz = quizList.getSelectionModel().getSelectedItem();
         if (quiz == null) {
-            waarschuwingsLabel.setVisible(true);
-            waarschuwingsLabel.setText("Je moet eerst een quiz kiezen");
+            setEmptyChoice("quiz", true);
         } else {
             Main.getSceneManager().showCreateUpdateQuizScene(quiz);
         }
@@ -133,10 +122,9 @@ public class CoordinatorDashboardController {
         }
     }
 
+    public void doSave() {Main.getSceneManager().showCoordinatorDashboard();}
 
-    public void doMenu() {
-        Main.getSceneManager().showWelcomeScene();
-    }
+    public void doMenu() {Main.getSceneManager().showWelcomeScene();}
 
 
 }

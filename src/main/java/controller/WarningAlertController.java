@@ -1,13 +1,10 @@
 package controller;
 
-import database.mysql.DBAccess;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
-import model.Quiz;
-import view.Main;
 
 import java.util.Optional;
 
@@ -66,7 +63,7 @@ public class WarningAlertController {
         }
     }
 
-    public void setChoice(String insert, boolean trueorfalse) {
+    public void setEmptyChoice(String insert, boolean trueorfalse) {
         String choice = "Je moet eerst een " + insert + " kiezen.";
         choiceLabel.setText(choice);
         if (trueorfalse) {
@@ -80,11 +77,11 @@ public class WarningAlertController {
         alert.setTitle("Verwijder " + object);
         alert.setHeaderText(object + " " + insert + " wordt verwijderd.");
         alert.setContentText("Weet je het zeker?");
-        ButtonType buttonTypeCancel = new ButtonType("Annuleer");
-        ButtonType buttonTypeContinue = new ButtonType("Verwijder");
-        alert.getButtonTypes().setAll(buttonTypeCancel, buttonTypeContinue);
+        ButtonType buttonCancel = new ButtonType("Annuleer");
+        ButtonType buttonContinue = new ButtonType("Verwijder");
+        alert.getButtonTypes().setAll(buttonCancel, buttonContinue);
         Optional<ButtonType> result = alert.showAndWait();
-        return result.isPresent() && result.get() == buttonTypeContinue;
+        return result.isPresent() && result.get() == buttonContinue;
     }
 
     public void showSame(boolean trueorfalse) {

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CoordinatorDashboardController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CoordinatorDashboardController">
     <Label layoutX="14.0" layoutY="14.0" text="Coördinator dashboard">
         <font>
             <Font size="18.0" />
@@ -56,4 +56,14 @@
       </font>
    </Button>
    <Label fx:id="waarschuwingsLabel" layoutX="28.0" layoutY="461.0" prefHeight="68.0" prefWidth="605.0" />
+   <Label layoutX="477.0" layoutY="51.0" prefHeight="26.0" prefWidth="108.0" text="Aantal vragen">
+      <font>
+         <Font size="16.0" />
+      </font>
+   </Label>
+   <Button layoutX="784.0" layoutY="334.0" mnemonicParsing="false" onAction="#doSave" prefHeight="30.0" prefWidth="95.0" text="Opslaan">
+      <font>
+         <Font size="14.0" />
+      </font>
+   </Button>
 </AnchorPane>
