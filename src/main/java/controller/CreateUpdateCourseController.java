@@ -81,7 +81,7 @@ public class CreateUpdateCourseController {
     }
 
 // Method to get back to the Welcome page
-    public void doMenu(ActionEvent actionEvent) {Main.getSceneManager().showWelcomeScene();}
+    public void doMenu() {Main.getSceneManager().showWelcomeScene();}
 
 // Method to get back to the manageCourse page
     public void doShowManageCourse(ActionEvent actionEvent) {Main.getSceneManager().showManageCoursesScene();}

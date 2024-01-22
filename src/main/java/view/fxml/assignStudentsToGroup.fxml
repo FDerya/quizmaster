@@ -38,7 +38,7 @@
     </Button>
 
     <ListView fx:id="studentsInGroupList" layoutX="425.0" layoutY="106.0" prefHeight="200.0" prefWidth="300.0" />
-    <Button layoutX="11.0" layoutY="319.0" mnemonicParsing="false" onAction="#doMenu" text="Menu">
+    <Button layoutX="11.0" layoutY="319.0" mnemonicParsing="false" onAction="#doMenu" text="Welkomstscherm">
         <font>
             <Font size="14.0" />
         </font>
