@@ -36,8 +36,7 @@ public class CoordinatorDashboardController {
         this.courseDAO = new CourseDAO(dbAccess, userDAO);
         this.quizDAO = new QuizDAO(Main.getDBaccess());
         this.questionDAO = new QuestionDAO(Main.getDBaccess());
-        this.courseDAO = new CourseDAO(Main.getDBaccess());
-    }
+        }
 
     public void setup() {
        User currentUser = User.getCurrentUser();
