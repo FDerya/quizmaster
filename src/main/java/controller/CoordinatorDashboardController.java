@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
 import model.*;
 import view.Main;
 
@@ -17,7 +18,7 @@ public class CoordinatorDashboardController extends WarningAlertController {
     @FXML
     private ListView<Quiz> quizList;
     @FXML
-    private ListView<Question> questionList;
+    private ListView<String> questionList;
     @FXML
     private Label waarschuwingsLabel;
     private final DBAccess dbAccess;
@@ -60,6 +61,10 @@ public class CoordinatorDashboardController extends WarningAlertController {
         quizList.getSelectionModel().selectedItemProperty().addListener(
                 (observableValue, oldQuiz, newQuiz) ->
                         displayQuestionsForQuiz(newQuiz));
+
+
+        questionList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
     }
 
     private void displayQuizForCourse(Course initialSelectedCourse) {
@@ -80,7 +85,7 @@ public class CoordinatorDashboardController extends WarningAlertController {
 
         // Vragen ophalen en tonen voor de geselecteerde test
         if (quiz != null) {
-            List<Question> questions = questionDAO.getQuestionsForQuiz(quiz);
+            List<String> questions = questionDAO.getQuestionNamesForQuiz(quiz);
             questionList.getItems().addAll(questions);
         }
     }
@@ -99,20 +104,12 @@ public class CoordinatorDashboardController extends WarningAlertController {
     }
 
     public void doNewQuestion() {
-        Question question = questionList.getSelectionModel().getSelectedItem();
-        if (question == null) {
-            waarschuwingsLabel.setText("Je moet eerst een question kiezen");
-            waarschuwingsLabel.setVisible(true);
-
-        } else {
-            Main.getSceneManager().showCreateUpdateQuestionScene(question);
-        }
-
+        Main.getSceneManager().showCreateUpdateQuestionScene(null);
     }
 
     public void doEditQuestion() {
+        Question question = questionDAO.getQuestionByName(questionList.getSelectionModel().getSelectedItem());
 
-        Question question = questionList.getSelectionModel().getSelectedItem();
         if (question == null) {
             waarschuwingsLabel.setText("Je moet eerst een question kiezen");
             waarschuwingsLabel.setVisible(true);

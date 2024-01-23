@@ -128,15 +128,21 @@ public class CreateUpdateQuestionController {
     // Opslaan
     public void doStoreQuestion(ActionEvent actionEvent) {
         Question question = doUpdateQuestion();
-        // Check if the quiz in the question is not null
-        if (!isUpdate) {
-            // Only attempt to store the question if the quiz is not null
-            questionDAO.storeOne(question);
-            showSuccessMessage("Vraag is opgeslagen");
-        } else if (isUpdate) {
-            updateExistingQuestion(question);
-        }
 
+        if (question != null) {
+            // Check if the quiz in the question is not null
+            if (!isUpdate && question.getQuiz() != null) {
+                // Only attempt to store the question if the quiz is not null
+                questionDAO.storeOne(question);
+                clearFields();
+                warningLabel.setText("Vraag is opgeslagen");
+            } else if (isUpdate && question != null) {
+                updateExistingQuestion(question);
+            } else {
+                warningLabel.setVisible(true);
+                warningLabel.setText("Field/s are empty");
+            }
+        }
     }
 
     private void updateExistingQuestion(Question question) {
@@ -255,6 +261,16 @@ public class CreateUpdateQuestionController {
         }
     }
 
+    public void clearFields() {
+        questionTextfield.clear();
+        answerRightTextfield.clear();
+        answerWrong1Textfield.clear();
+        answerWrong2Textfield.clear();
+        answerWrong3Textfield.clear();
+        warningLabel.setText("");
+        quizlist.setValue(null);
+        quizlist.getSelectionModel().clearSelection();
+    }
 }
 
 

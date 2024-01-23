@@ -18,24 +18,28 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
         this.quizDAO = new QuizDAO(Main.getDBaccess());
     }
 
-    @Override
     public void storeOne(Question question) {
-        String sql = "INSERT INTO question(idQuiz,question,answerRight, answerWrong1, answerWrong2, answerWrong3) " + "VALUES (?, ?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO question (idQuiz, question, answerRight, answerWrong1, answerWrong2, answerWrong3) VALUES (?, ?, ?, ?, ?, ?)";
         try {
-            setupPreparedStatementWithKey(sql);
-            // Assuming getIdQuiz returns a String
-            preparedStatement.setInt(1, question.getQuiz().getIdQuiz());
+            setupPreparedStatement(sql);
+            // Check if the Quiz object is not null before getting its ID
+            Quiz quiz = question.getQuiz();
+            if (quiz != null) {
+                preparedStatement.setInt(1, quiz.getIdQuiz());
+            } else {
+                System.err.println("Error: Quiz in the question is null");
+                return;
+            }
             preparedStatement.setString(2, question.getQuestion());
             preparedStatement.setString(3, question.getAnswerRight());
             preparedStatement.setString(4, question.getAnswerWrong1());
             preparedStatement.setString(5, question.getAnswerWrong2());
             preparedStatement.setString(6, question.getAnswerWrong3());
-            question.setIdQuestion(executeInsertStatementWithKey());
+            executeManipulateStatement();
         } catch (SQLException sqlException) {
             System.out.println("SQL fout " + sqlException.getMessage());
         }
     }
-
 
     //De methode die wordt gebruikt om alle vragen uit de database te halen
     @Override
@@ -119,21 +123,26 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
     }
 
 
-    public List<Question> getQuestionsForQuiz(Quiz quiz) {
-        List<Question> questions = new ArrayList<>();
+    public List<String> getQuestionNamesForQuiz(Quiz quiz) {
+        List<String> questionNames = new ArrayList<>();
         String sql = "SELECT * FROM question WHERE idQuiz = ?;";
         try {
             setupPreparedStatement(sql);
             preparedStatement.setInt(1, quiz.getIdQuiz());
             ResultSet resultSet = executeSelectStatement();
             while (resultSet.next()) {
-                questions.add(getQuestionFromResultSet(resultSet));
+                questionNames.add(getQuestionNameFromResultSet(resultSet));
             }
         } catch (SQLException sqlException) {
             System.out.println("SQL fout " + sqlException.getMessage());
         }
-        return questions;
+        return questionNames;
     }
+
+    private String getQuestionNameFromResultSet(ResultSet resultSet) throws SQLException {
+        return resultSet.getString("question");
+    }
+
 
     public List<Quiz> getQuizForCourse(Course course) {
         List<Quiz> quizzes = new ArrayList<>();
@@ -265,6 +274,22 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
         }
         return quizNames;
     }
+
+    public Question getQuestionByName(String questionName) {
+        String sql = "SELECT * FROM question WHERE question = ?;";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setString(1, questionName);
+            ResultSet resultSet = executeSelectStatement();
+            if (resultSet.next()) {
+                return getQuestionFromResultSet(resultSet);
+            }
+        } catch (SQLException sqlException) {
+            System.out.println("SQL fout " + sqlException.getMessage());
+        }
+        return null;
+    }
+
 
 
     // Retrieve the course name based on the question ID
