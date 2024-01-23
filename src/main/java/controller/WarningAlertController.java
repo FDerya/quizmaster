@@ -10,6 +10,9 @@ import java.util.Optional;
 
 
 public class WarningAlertController {
+    public final int MAXLENGTH = 45;
+    public final int QUESTIONMAXLENGTH = 1000;
+    public final int USERNAMEMAXLENGTH = 10;
     @FXML
     Label warningLabelNoFields;
     @FXML

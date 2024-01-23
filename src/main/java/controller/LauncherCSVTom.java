@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class LauncherTom {
+public class LauncherCSVTom {
     // Eerst locatie benoemen csv
     private static final String filepath = "src/main/java/database/Quizzen.csv";
     private static final File userFile = new File(filepath);
