@@ -60,6 +60,12 @@ public class CreateUpdateQuizController extends WarningAlertController {
         levelsListComboBox.setItems(levelsList);
         coursesListComboBox.setItems(coursesList);
         titelLabel.setText("Maak nieuwe Quiz");
+        nameTextField.textProperty().addListener((observable, oldValue, newValue) ->{
+            if (nameTextField.getText().length()>MAXLENGTH){
+                String s = nameTextField.getText(0,MAXLENGTH);
+                nameTextField.setText(s);
+            }
+        });
         amountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 amountTextField.setText(oldValue);
@@ -103,13 +109,14 @@ public class CreateUpdateQuizController extends WarningAlertController {
                         Duration.millis(2000),
                         ae -> Main.getSceneManager().showManageQuizScene()));
                 timeline.play();
+            }else {
+                showSame(true);
             }
         }
     }
 
     private boolean checkDuplicate(String nameQuiz) {
         boolean showDuplicate = false;
-        showSame(true);
         List<Quiz> quizNamen = quizDAO.getAll();
         for (Quiz naamquiz : quizNamen) {
             if (nameQuiz.equals(naamquiz.getNameQuiz())) {
@@ -161,7 +168,7 @@ public class CreateUpdateQuizController extends WarningAlertController {
     private boolean isCorrectInput(String nameQuiz, String amountQuestions) {
         checkAndChangeLabelColor(nameQuiz.isEmpty(), nameQuizLabel);
         checkAndChangeLabelColor(amountQuestions.isEmpty(), amountQuestionsLabel);
-        return (!amountQuestions.isEmpty());
+        return (!amountQuestions.isEmpty()&&!nameQuiz.isEmpty());
     }
 
     // Niet-ingevulde velden rood markeren en melding tonen
