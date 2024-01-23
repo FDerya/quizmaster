@@ -13,22 +13,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedMap;
 
 public class ParticipationDAO extends AbstractDAO implements GenericDAO<Participation> {
-    private UserDAO userDAO;
-    private CourseDAO courseDAO;
-    private GroupDAO groupDAO;
 
-// Constructors
-    public ParticipationDAO(DBAccess dBaccess, UserDAO userDAO, CourseDAO courseDAO, GroupDAO groupDAO) {
+    // Constructors
+    public ParticipationDAO(DBAccess dBaccess) {
         super(dBaccess);
-        this.userDAO = userDAO;
-        this.courseDAO = courseDAO;
-        this.groupDAO = groupDAO;
-    }
-    public ParticipationDAO(DBAccess dbAccess){
-        super(dbAccess);
     }
 
 // Alle participations ophalen
@@ -49,10 +39,26 @@ public class ParticipationDAO extends AbstractDAO implements GenericDAO<Particip
     }
     public List<Participation> getParticipationPerCourse(int id){
         List<Participation> resultList = new ArrayList<>();
-        String sql = "Select * From Participation WHERE idCourse = ? AND idGroup = null;";
+        String sql = "Select * From Participation WHERE idCourse = ? AND idGroup is null;";
         try {
             setupPreparedStatement(sql);
             preparedStatement.setInt(1, id);
+            ResultSet resultSet = executeSelectStatement();
+            while (resultSet.next()){
+                resultList.add(getParticipation(resultSet));
+            }
+        } catch (SQLException sqlFout){
+            System.out.println("SQL error " + sqlFout.getMessage());
+        }
+        return resultList;
+    }
+    public List<Participation> getParticipationInGroup(int idCourse, int idGroup){
+        List<Participation> resultList = new ArrayList<>();
+        String sql = "Select * From Participation WHERE idCourse = ? AND idGroup = ?;";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, idCourse);
+            preparedStatement.setInt(2, idGroup);
             ResultSet resultSet = executeSelectStatement();
             while (resultSet.next()){
                 resultList.add(getParticipation(resultSet));
