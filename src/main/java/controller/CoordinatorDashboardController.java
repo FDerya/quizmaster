@@ -78,16 +78,6 @@ public class CoordinatorDashboardController extends WarningAlertController {
         }*/
     }
 
-    private void displayQuestionsForQuiz(Quiz quiz) {
-        // Verwijder bestaande vragen
-        questionList.getItems().clear();
-
-        // Vragen ophalen en tonen voor de geselecteerde test
-        if (quiz != null) {
-            List<String> questions = questionDAO.getQuestionNamesForQuiz(quiz);
-            questionList.getItems().addAll(questions);
-        }
-    }
 
     public void doNewQuiz() {
         Main.getSceneManager().showCreateUpdateQuizScene(null);
