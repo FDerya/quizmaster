@@ -38,14 +38,14 @@ public class WarningAlertController {
 
     public void showSaved(String insert) {
         String newAlert = "Nieuw: " + insert + "  is toegevoegd";
-        saveNewLabel.setText(newAlert);
-        saveNewLabel.setVisible(true);
+        warningLabelNoFields.setText(newAlert);
+        warningLabelNoFields.setVisible(true);
     }
 
     public void showUpdated(String insert) {
         String updateAlert = insert + " is gewijzigd";
-        saveUpdateLabel.setText(updateAlert);
-        saveUpdateLabel.setVisible(true);
+        warningLabelNoFields.setText(updateAlert);
+        warningLabelNoFields.setVisible(true);
 
     }
 
@@ -68,10 +68,10 @@ public class WarningAlertController {
 
     public void setEmptyChoice(String insert, boolean trueorfalse) {
         String choice = "Je moet eerst een " + insert + " kiezen.";
-        choiceLabel.setText(choice);
+        warningLabelNoFields.setText(choice);
         if (trueorfalse) {
-            choiceLabel.setVisible(true);
-        } else choiceLabel.setVisible(false);
+            warningLabelNoFields.setVisible(true);
+        } else warningLabelNoFields.setVisible(false);
     }
     //Waarschuwing in pop-up scherm weergeven voor verwijderen object
 
@@ -89,9 +89,9 @@ public class WarningAlertController {
 
     public void showSame(boolean trueorfalse) {
         String same = "Deze naam bestaat al.";
-        sameNameLabel.setText(same);
+        warningLabelNoFields.setText(same);
         if (trueorfalse) {
-            sameNameLabel.setVisible(true);
-        } else sameNameLabel.setVisible(false);
+            warningLabelNoFields.setVisible(true);
+        } else warningLabelNoFields.setVisible(false);
     }
 }
