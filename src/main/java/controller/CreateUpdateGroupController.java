@@ -14,10 +14,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
-import javafx.util.converter.IntegerStringConverter;
+import javafx.util.converter.DefaultStringConverter;
 import model.Course;
 import model.Group;
 import model.User;
@@ -69,15 +68,32 @@ public class CreateUpdateGroupController {
         idGroup = (group != null) ? group.getIdGroup() : 0;
         setLabelsAndTitle(group);
         initializeCourseComboBox();
-        limitTextFieldLength(nameGroupTextField, MAX_NAME_LENGTH);
+        limitTextFieldLength(nameGroupTextField, MAX_NAME_LENGTH, "[a-zA-Z0-9 ]*");
+        setNameGroupTextField();
+        setAmountStudentTextField();
+
+        initializeTeacherComboBox();
+        this.selectedGroup = group;
+        populateFields(group);
+    }
+
+    // Sets up the de nameGroup TextField
+    private void setNameGroupTextField() {
+        nameGroupTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[a-zA-Z0-9 ]*")) {
+                nameGroupTextField.setText(oldValue);
+            }
+        });
+    }
+
+    // Sets up the amount of students TextField
+    private void setAmountStudentTextField() {
         amountStudentTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 amountStudentTextField.setText(oldValue);
             }
         });
-        initializeTeacherComboBox();
-        this.selectedGroup = group;
-        populateFields(group);
+
     }
 
     // Sets labels and title based on the provided group.
@@ -94,14 +110,14 @@ public class CreateUpdateGroupController {
     }
 
     // Limits the length of the input in a TextField to the specified length
-    private void limitTextFieldLength(TextField textField, int maxLength) {
-        StringConverter<Integer> converter = new IntegerStringConverter();
-        TextFormatter<Integer> textFormatter = new TextFormatter<>(
+    private void limitTextFieldLength(TextField textField, int maxLength, String pattern) {
+        StringConverter<String> converter = new DefaultStringConverter();
+        TextFormatter<String> textFormatter = new TextFormatter<>(
                 converter,
                 null,
                 change -> {
                     String newText = change.getControlNewText();
-                    if (newText.length() <= maxLength) {
+                    if (newText.matches(pattern) && newText.length() <= maxLength) {
                         return change;
                     }
                     return null;
@@ -113,8 +129,9 @@ public class CreateUpdateGroupController {
     // Initializes the teacher combo box with a list of all available teachers.
     private void initializeTeacherComboBox() {
         List<User> teachers = getTeachers();
-        teacherComboBox.getItems().setAll(teachers);
+        teacherComboBox.setItems(FXCollections.observableArrayList(teachers));
         teacherComboBox.setCellFactory(param -> new UserListCell());
+        teacherComboBox.setButtonCell(new UserListCell());
     }
 
     // Populates form fields with information from the provided group.
@@ -274,7 +291,8 @@ public class CreateUpdateGroupController {
         try {
             List<Group> allGroups = groupDAO.getAll();
             for (Group group : allGroups) {
-                if (group.getGroupName().equals(groupName) && (editingGroup == null || group.getIdGroup() != editingGroup.getIdGroup())) {
+                if (group.getGroupName().equals(groupName) && (editingGroup == null || group.getIdGroup()
+                        != editingGroup.getIdGroup())) {
                     return false;
                 }
             }

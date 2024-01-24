@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import model.Quiz;
+import view.Main;
 
 public class FillOutQuizController {
 
@@ -26,5 +27,12 @@ public class FillOutQuizController {
 
     public void doPreviousQuestion() {}
 
-    public void doMenu() {}
+    @FXML
+    private void doMenu() {
+        try {
+            Main.getSceneManager().showWelcomeScene();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

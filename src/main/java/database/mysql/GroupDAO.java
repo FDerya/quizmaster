@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
     // Attributes
     private UserDAO userDAO;
@@ -21,6 +22,9 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         super(Main.getDBaccess());
         this.userDAO = userDAO;
         this.courseDAO = courseDAO;
+    }
+    public GroupDAO(DBAccess dbAccess) {
+        super(dbAccess);
     }
 
     // Method to retrieve all groups
@@ -166,5 +170,21 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
             e.printStackTrace();
         }
         return 0;
+    }
+    public List<Group> getGroupByIdCourse(int idCourse) {
+        List<Group> resultList = new ArrayList<>();
+        String sql = "SELECT * FROM Group WHERE idCourse = ?;";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, idCourse);
+            ResultSet resultSet = executeSelectStatement();
+            while (resultSet.next()) {
+                resultList.add(getGroupFromResultSet(resultSet));
+            }
+            System.out.println("Resulting groups for course " + idCourse + ": " + resultList);
+        } catch (SQLException sqlFout) {
+            System.out.println("SQL error " + sqlFout.getMessage());
+        }
+        return resultList;
     }
 }

@@ -114,3 +114,4 @@ public class AssignStudentsToGroupController {
         Main.getSceneManager().showWelcomeScene();
     }
 }
+
