@@ -94,18 +94,6 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
     }
 
 
-    public void removeOne(Question selectedQuestion) {
-        String sql = "DELETE FROM question WHERE idQuestion = ?;";
-        try {
-            setupPreparedStatement(sql);
-            preparedStatement.setInt(1, selectedQuestion.getIdQuestion());
-            executeManipulateStatement();
-        } catch (SQLException sqlException) {
-            System.out.println("SQL fout " + sqlException.getMessage());
-        }
-
-    }
-
     public int getQuestionCountForQuiz(Quiz quiz) {
         int count = 0;
         String sql = "SELECT COUNT(*) FROM question WHERE idQuiz = ?;";
@@ -142,51 +130,6 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
     private String getQuestionNameFromResultSet(ResultSet resultSet) throws SQLException {
         return resultSet.getString("question");
     }
-
-
-    public List<Quiz> getQuizForCourse(Course course) {
-        List<Quiz> quizzes = new ArrayList<>();
-        String sql = "SELECT * FROM quiz WHERE idCourse = ?;";
-        try {
-            setupPreparedStatement(sql);
-            preparedStatement.setInt(1, course.getIdCourse());
-            ResultSet resultSet = executeSelectStatement();
-            while (resultSet.next()) {
-                Quiz quiz = getQuizFromResultSet(resultSet);
-                System.out.println("Quiz ID: " + quiz.getIdQuiz());
-                System.out.println("Name: " + quiz.getNameQuiz());
-                System.out.println("Level: " + quiz.getLevel());
-                System.out.println("Amount of Questions: " + quiz.getAmountQuestions());
-                System.out.println("Course ID: " + quiz.getCourse().getIdCourse());
-                System.out.println("Course Name: " + quiz.getCourse().getNameCourse());
-                System.out.println("--------------------------");
-
-                quizzes.add(quiz);
-            }
-        } catch (SQLException sqlException) {
-            System.out.println("SQL fout " + sqlException.getMessage());
-        }
-        return quizzes;
-    }
-
-
-
-// Helper method that creates a Quiz object from the result set
-    private Quiz getQuizFromResultSet(ResultSet resultSet) throws SQLException {
-        int idQuiz = resultSet.getInt("idQuiz");
-        int idCourse = resultSet.getInt("idCourse");
-        String nameQuiz = resultSet.getString("nameQuiz");
-        String level = resultSet.getString("levelQuiz");
-        int amountQuestions = resultSet.getInt("amountQuestion");
-
-        // Retrieve Course object based on the course ID with CourseDAO
-        CourseDAO courseDAO = new CourseDAO(dbAccess);
-        Course course = courseDAO.getOneById(idCourse);
-
-        // Create and return the Quiz object with the generated information
-        return new Quiz(idQuiz, course, nameQuiz, level, amountQuestions);
-    }
-
 
     public void deleteOne(Question question) {
         String sql = "DELETE FROM question WHERE idQuestion = ?;";
@@ -253,28 +196,6 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
     }
 
 
-
-    public List<Quiz> getQuizNamesForUser(int userId) {
-        List<Quiz> quizNames = new ArrayList<>();
-        String sql = "SELECT q.* " +
-                "FROM quiz q " +
-                "JOIN course c ON q.idCourse = c.idCourse " +
-                "WHERE c.idUser = ?;";
-        try {
-            setupPreparedStatement(sql);
-            preparedStatement.setInt(1, userId);
-            ResultSet resultSet = executeSelectStatement();
-            while (resultSet.next()) {
-                String nameQuiz = resultSet.getString("nameQuiz");
-                Quiz quiz = quizDAO.getOneByName(nameQuiz);
-                quizNames.add(quiz);
-            }
-        } catch (SQLException sqlException) {
-            System.out.println("SQL fout " + sqlException.getMessage());
-        }
-        return quizNames;
-    }
-
     public Question getQuestionByName(String questionName) {
         String sql = "SELECT * FROM question WHERE question = ?;";
         try {
@@ -291,50 +212,6 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
     }
 
 
-
-    // Retrieve the course name based on the question ID
-    public String getCourseNameByQuestionId(int questionId) {
-        String sql = "SELECT c.nameCourse " +
-                "FROM quiz q " +
-                "JOIN course c ON q.idCourse = c.idCourse " +
-                "JOIN question qu ON q.idQuiz = qu.idQuiz " +
-                "WHERE qu.idQuestion = ?;";
-
-        try {
-            setupPreparedStatement(sql);
-            preparedStatement.setInt(1, questionId);
-            ResultSet resultSet = executeSelectStatement();
-
-            if (resultSet.next()) {
-                return resultSet.getString("nameCourse");
-            }
-        } catch (SQLException sqlException) {
-            System.out.println("SQL error" + sqlException.getMessage());
-        }
-
-        return null; // Return null if course name is not found
-    }
-
-    public String getCourseNameByQuizName(String quizName) {
-        String sql = "SELECT c.nameCourse " +
-                "FROM quiz q " +
-                "JOIN course c ON q.idCourse = c.idCourse " +
-                "WHERE q.nameQuiz = ?;";
-
-        try {
-            setupPreparedStatement(sql);
-            preparedStatement.setString(1, quizName);
-            ResultSet resultSet = executeSelectStatement();
-
-            if (resultSet.next()) {
-                return resultSet.getString("nameCourse");
-            }
-        } catch (SQLException sqlException) {
-            System.out.println("SQL error" + sqlException.getMessage());
-        }
-
-        return null; // Return null if course name is not found
-    }
 
 
 }
