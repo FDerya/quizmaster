@@ -198,6 +198,41 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         }
         return quizList;
     }
+
+
+    public List<Quiz> getQuizForCourse(Course course) {
+        List<Quiz> quizzes = new ArrayList<>();
+        String sql = "SELECT * FROM quiz WHERE idCourse = ?;";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, course.getIdCourse());
+            ResultSet resultSet = executeSelectStatement();
+            while (resultSet.next()) {
+                Quiz quiz = getQuizFromResultSet(resultSet);
+                quizzes.add(quiz);
+            }
+        } catch (SQLException sqlException) {
+            System.out.println("SQL fout " + sqlException.getMessage());
+        }
+        return quizzes;
+    }
+
+    // Helper method that creates a Quiz object from the result set
+    private Quiz getQuizFromResultSet(ResultSet resultSet) throws SQLException {
+        int idQuiz = resultSet.getInt("idQuiz");
+        int idCourse = resultSet.getInt("idCourse");
+        String nameQuiz = resultSet.getString("nameQuiz");
+        String level = resultSet.getString("levelQuiz");
+        int amountQuestions = resultSet.getInt("amountQuestion");
+
+        // Retrieve Course object based on the course ID with CourseDAO
+        CourseDAO courseDAO = new CourseDAO(dbAccess);
+        Course course = courseDAO.getOneById(idCourse);
+
+        // Create and return the Quiz object with the generated information
+        return new Quiz(idQuiz, course, nameQuiz, level, amountQuestions);
+    }
+
 }
 
 
