@@ -178,9 +178,9 @@ public class CreateUpdateQuizController extends WarningAlertController {
         if (course == null) {
             if (courseLabel.getText().equals("")) {
                 label.setTextFill(Color.RED);
-            } else {
-                label.setTextFill(Color.BLACK);
             }
+            }else {
+                label.setTextFill(Color.BLACK);
         }
     }
 }
