@@ -44,5 +44,6 @@
             <Font size="14.0" />
         </font>
     </Button>
-   <Label fx:id="choiceLabel" layoutX="213.0" layoutY="335.0" prefHeight="27.0" prefWidth="180.0" text="Label" visible="false" />
+   <Label fx:id="warningLabel" layoutX="213.0" layoutY="335.0" prefHeight="27.0" prefWidth="180.0" text="Label" visible="false" />
+   <Label fx:id="countLabel" layoutX="353.0" layoutY="135.0" prefHeight="27.0" prefWidth="280.0" text="Label" visible="true" />
 </AnchorPane>

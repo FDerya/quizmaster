@@ -19,6 +19,8 @@ import view.Main;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+
 
 public class ManageGroupsController {
     private final GroupDAO groupDAO;
@@ -44,7 +46,8 @@ public class ManageGroupsController {
 
         updateGroupCountLabel();
 
-        groupList.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> updateGroupCountLabel());
+        groupList.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection,
+                                                                          newSelection) -> updateGroupCountLabel());
     }
 
     // Clears the existing items in the groupList and populates it with the provided list of groups
@@ -116,10 +119,8 @@ public class ManageGroupsController {
             return;
         }
         boolean foundInNewGroups = isGroupInNewGroups(selectedGroup);
-
         if (selectedGroup.isNew() || foundInNewGroups) {
-            Platform.runLater(() -> showConfirmationDialog(selectedGroup));
-            deleteGroup(selectedGroup);
+            showConfirmationDialog(selectedGroup);
         } else {
             showWarningAndSetup(selectedGroup);
         }
@@ -138,16 +139,18 @@ public class ManageGroupsController {
     // Removes the specified group from the database, UI list, sorts the list by course names, and
     // updates the group count label.
     private void deleteGroup(Group selectedGroup) {
-        groupDAO.deleteGroup(selectedGroup);
-        groupList.getItems().remove(selectedGroup);
-        groupList.getItems().sort(Comparator.comparing(group -> group.getCourse().getNameCourse()));
-        updateGroupCountLabel();
+
+            groupDAO.deleteGroup(selectedGroup);
+            groupList.getItems().remove(selectedGroup);
+            groupList.getItems().sort(Comparator.comparing(group -> group.getCourse().getNameCourse()));
+            updateGroupCountLabel();
+
     }
 
     // Shows a warning, logs the message that the group cannot be deleted
     private void showWarningAndSetup(Group selectedGroup) {
         showWarningLabel();
-        System.out.println("Deze groep mag niet worden verwijderd " + selectedGroup.getGroupName());
+        System.out.println(selectedGroup.getGroupName() + " mag niet worden verwijderd uit de database.");
         fadeOutWarningLabel();
         setup();
     }
@@ -174,13 +177,24 @@ public class ManageGroupsController {
         ButtonType buttonTypeNo = new ButtonType("Nee");
         alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
 
-        alert.showAndWait().ifPresent(buttonType -> handleConfirmationButton(selectedGroup, buttonType));
+        Optional<ButtonType> result = alert.showAndWait();
+        result.ifPresent(buttonType -> handleDeleteConfirmation(selectedGroup, buttonType));
     }
 
     // Event handler for YES button
-    private void handleConfirmationButton(Group selectedGroup, ButtonType buttonType) {
-        if (buttonType == ButtonType.OK) {
-            deleteGroup(selectedGroup);
+    private void handleDeleteConfirmation(Group selectedGroup, ButtonType buttonType) {
+        String buttonText = buttonType.getText().toLowerCase();
+        if ("ja".equals(buttonText)) {
+            try {
+                if (selectedGroup.isNew()) {
+                    CreateUpdateGroupController.newGroups.remove(selectedGroup);
+                }
+                deleteGroup(selectedGroup);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            setup();
         }
     }
 

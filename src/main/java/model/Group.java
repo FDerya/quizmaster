@@ -28,13 +28,7 @@ public class Group {
     // toString methode
     @Override
     public String toString() {
-        return "Group{" +
-                "idGroup=" + idGroup +
-                ", course=" + course +
-                ", groupName='" + groupName + '\'' +
-                ", amountStudent=" + amountStudent +
-                ", teacher=" + teacher +
-                '}';
+        return groupName;
     }
 
     //Getters en setters

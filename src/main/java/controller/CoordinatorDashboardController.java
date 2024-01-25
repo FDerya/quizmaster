@@ -10,6 +10,7 @@ import model.*;
 import view.Main;
 import javacouchdb.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CoordinatorDashboardController extends WarningAlertController {
@@ -69,13 +70,16 @@ public class CoordinatorDashboardController extends WarningAlertController {
                 });
 
         questionList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-       /* if (questionList != null) {
-            int maxAmount = quizList.getSelectionModel().getSelectedItem().getAmountQuestions();
-            int questionsize = questionList.getItems().size();
-            if (questionsize == maxAmount) {
-                System.out.println("Maximum bereikt");
+        /*questionList.getSelectionModel().getSelectedItems().addListener(
+                (observableValue, oldQuestion, newQuestion) -> {
+            if (questionList != null) {
+                int maxAmount = quizList.getSelectionModel().getSelectedItem().getAmountQuestions();
+                int questionsize = questionList.getItems().size();
+                if (questionsize == maxAmount) {
+                    System.out.println("Maximum bereikt");
+                }
             }
-        }*/
+        });*/
     }
 
 
@@ -109,7 +113,13 @@ public class CoordinatorDashboardController extends WarningAlertController {
     }
 
     public void doSave(ActionEvent event) {
-        //questionCouchDBDAO.saveQuestionsForQuiz(event);
+        List<String> questions = new ArrayList<>();
+        questions.addAll(questionList.getSelectionModel().getSelectedItems());
+        List<Question> quizVragen = new ArrayList<>();
+        for (int i = 0; i < questions.size(); i++) {
+            quizVragen.add(questionDAO.getQuestionByName(questions.get(i)));
+        }
+        //questionCouchDBDAO.saveQuestionsForQuiz(quizVragen);
     Main.getSceneManager().showCoordinatorDashboard();}
 
     public void doMenu() {Main.getSceneManager().showWelcomeScene();}

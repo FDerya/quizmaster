@@ -99,22 +99,21 @@ public class CreateUpdateQuizController extends WarningAlertController {
     public void doCreateUpdateQuiz(ActionEvent event) throws InterruptedException {
         Quiz quiz = createQuiz();
         if (quiz != null) {
-            if (!checkDuplicate(quiz.getNameQuiz())) {
+            if (titelLabel.getText().equals("Wijzig Quiz")) {
+                updateQuiz(quiz);
+            } else if (!checkDuplicate(quiz.getNameQuiz())) {
                 if (titelLabel.getText().equals("Maak nieuwe Quiz")) {
                     newQuiz(quiz);
-                } else if (titelLabel.getText().equals("Wijzig Quiz")) {
-                    updateQuiz(quiz);
                 }
-                Timeline timeline = new Timeline(new KeyFrame(
-                        Duration.millis(2000),
-                        ae -> Main.getSceneManager().showManageQuizScene()));
-                timeline.play();
-            }else {
-                showSame(true);
             }
+            Timeline timeline = new Timeline(new KeyFrame(
+                    Duration.millis(2000),
+                    ae -> Main.getSceneManager().showManageQuizScene()));
+            timeline.play();
+        } else {
+            showSame(true);
         }
     }
-
     private boolean checkDuplicate(String nameQuiz) {
         boolean showDuplicate = false;
         List<Quiz> quizNamen = quizDAO.getAll();
@@ -178,9 +177,9 @@ public class CreateUpdateQuizController extends WarningAlertController {
         if (course == null) {
             if (courseLabel.getText().equals("")) {
                 label.setTextFill(Color.RED);
-            } else {
-                label.setTextFill(Color.BLACK);
             }
+            }else {
+                label.setTextFill(Color.BLACK);
         }
     }
 }

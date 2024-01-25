@@ -14,38 +14,30 @@ public class WarningAlertController {
     public final int QUESTIONMAXLENGTH = 1000;
     public final int USERNAMEMAXLENGTH = 10;
     @FXML
-    Label warningLabelNoFields;
-    @FXML
-    Label saveNewLabel;
-    @FXML
-    Label saveUpdateLabel;
+    Label warningLabel;
     @FXML
     Label levelLabel;
-    @FXML
-    Label choiceLabel;
-    @FXML
-    Label sameNameLabel;
 
     public void showWarningLabel(boolean trueorfalse) {
         String labelNoFields = "Je hebt niet alles ingevuld";
-        warningLabelNoFields.setText(labelNoFields);
+        warningLabel.setText(labelNoFields);
         if (trueorfalse) {
-            warningLabelNoFields.setVisible(true);
+            warningLabel.setVisible(true);
         } else {
-            warningLabelNoFields.setVisible(false);
+            warningLabel.setVisible(false);
         }
     }
 
     public void showSaved(String insert) {
         String newAlert = "Nieuw: " + insert + "  is toegevoegd";
-        saveNewLabel.setText(newAlert);
-        saveNewLabel.setVisible(true);
+        warningLabel.setText(newAlert);
+        warningLabel.setVisible(true);
     }
 
     public void showUpdated(String insert) {
         String updateAlert = insert + " is gewijzigd";
-        saveUpdateLabel.setText(updateAlert);
-        saveUpdateLabel.setVisible(true);
+        warningLabel.setText(updateAlert);
+        warningLabel.setVisible(true);
 
     }
 
@@ -68,10 +60,10 @@ public class WarningAlertController {
 
     public void setEmptyChoice(String insert, boolean trueorfalse) {
         String choice = "Je moet eerst een " + insert + " kiezen.";
-        choiceLabel.setText(choice);
+        warningLabel.setText(choice);
         if (trueorfalse) {
-            choiceLabel.setVisible(true);
-        } else choiceLabel.setVisible(false);
+            warningLabel.setVisible(true);
+        } else warningLabel.setVisible(false);
     }
     //Waarschuwing in pop-up scherm weergeven voor verwijderen object
 
@@ -89,9 +81,9 @@ public class WarningAlertController {
 
     public void showSame(boolean trueorfalse) {
         String same = "Deze naam bestaat al.";
-        sameNameLabel.setText(same);
+        warningLabel.setText(same);
         if (trueorfalse) {
-            sameNameLabel.setVisible(true);
-        } else sameNameLabel.setVisible(false);
+            warningLabel.setVisible(true);
+        } else warningLabel.setVisible(false);
     }
 }
