@@ -8,6 +8,7 @@ import model.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -18,8 +19,8 @@ public class LauncherCSVTom {
     private static final File userFile = new File(filepath);
 
     private static DBAccess dbAccess = null;
-
-    public static void main(String[] args) {
+    private static File file = new File("src/main/java/database/testQuiz.csv");
+    public static void main(String[] args) throws FileNotFoundException{
         final String databaseName = "Quizmaster";
         final String mainUser = "userQuizmaster";
         final String mainUserPassword = "pwQuizmaster";
@@ -34,9 +35,11 @@ public class LauncherCSVTom {
         // Methodes aanroepen om het csv weg te schrijven naar een ArrayList met Quizzen.
         List<String> test = FileReaderToArray();
         List<Quiz> quizList = listQuiz(test, dbAccess);
-       //saveQuizFromArray(dbAccess, quizList, quizDAO);
+        List<Quiz> listQuiz = quizDAO.getAll();
+        //Objecten wegschrijven naar een csv-bestand
+        //saveQuizToCSV(dbAccess,listQuiz,quizDAO);
         // Quizzen opslaan in de database. Even achter "//", anders herhaalt de opdracht zich en heb je teveel info in de DBMS
-        saveQuizFromArray(dbAccess, quizList, quizDAO);
+        // saveQuizFromArray(dbAccess, quizList, quizDAO);
         dbAccess.closeConnection();
     }
 
@@ -80,5 +83,17 @@ public class LauncherCSVTom {
         }
         dbAccess.closeConnection();
     }
+    private static void saveQuizToCSV(DBAccess dbAccess, List <Quiz> listQuiz, QuizDAO quizDAO)  {
+        dbAccess.openConnection();
+        try {
+            PrintWriter printWriter = new PrintWriter(file);
+            for (Quiz quiz : listQuiz){
+                printWriter.printf("%d, %s, %s, %s, %d\n", quiz.getIdQuiz(), quiz.getCourse(), quiz.getNameQuiz(), quiz.getLevel(), quiz.getAmountQuestions());
+            }
+            printWriter.close();
 
+        }catch (FileNotFoundException fileNotFoundException){
+            System.out.println("File not found: " + fileNotFoundException);
+        }
+    }
 }
