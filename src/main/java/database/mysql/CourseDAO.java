@@ -165,8 +165,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
     }
 
     public String getCourseNameByQuizName(String quizName) {
-        String sql = "SELECT c.nameCourse " +
-                "FROM quiz q " +
+        String sql = "SELECT c.nameCourse FROM quiz q " +
                 "JOIN course c ON q.idCourse = c.idCourse " +
                 "WHERE q.nameQuiz = ?;";
 
