@@ -171,9 +171,9 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         }
         return 0;
     }
-    public List<Group> getGroupByIdCourse(int idCourse) {
+    public List<Group> getGroupsByIdCourse(int idCourse) {
         List<Group> resultList = new ArrayList<>();
-        String sql = "SELECT * FROM Group WHERE idCourse = ?;";
+        String sql = "SELECT * FROM `group` WHERE idCourse = ?;";
         try {
             setupPreparedStatement(sql);
             preparedStatement.setInt(1, idCourse);
@@ -181,7 +181,6 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
             while (resultSet.next()) {
                 resultList.add(getGroupFromResultSet(resultSet));
             }
-            System.out.println("Resulting groups for course " + idCourse + ": " + resultList);
         } catch (SQLException sqlFout) {
             System.out.println("SQL error " + sqlFout.getMessage());
         }

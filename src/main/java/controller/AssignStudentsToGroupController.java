@@ -7,9 +7,7 @@ import database.mysql.UserDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
+import javafx.scene.control.*;
 import model.Course;
 import model.Group;
 import model.Participation;
@@ -17,6 +15,7 @@ import model.User;
 import view.Main;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class AssignStudentsToGroupController {
@@ -28,6 +27,8 @@ public class AssignStudentsToGroupController {
     ListView<User> studentList;
     @FXML
     ListView<User> studentsInGroupList;
+    @FXML
+    Label warningLabel;
     ParticipationDAO participationDAO;
     CourseDAO courseDAO;
     GroupDAO groupDAO;
@@ -50,31 +51,50 @@ public class AssignStudentsToGroupController {
     }
 
     private void fillStudentList() {
-        courseComboBox.getSelectionModel().selectedItemProperty().addListener(((observableValue, oldCourse, newCourse) -> {
-            studentList.getItems().clear();
-            List<Participation> participationPerCourse = participationDAO.getParticipationPerCourse(newCourse.getIdCourse());
-            List<User> usersInParticipation = new ArrayList<>();
-            for (Participation participation : participationPerCourse) {
-                usersInParticipation.add(participation.getUser());
-            }
-            studentList.getItems().addAll(FXCollections.observableArrayList(usersInParticipation));
-            studentList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        }));
+        courseComboBox.getSelectionModel().selectedItemProperty()
+                .addListener(((observableValue, oldCourse, newCourse) -> refreshStudentList(newCourse)));
     }
-    private void fillStudentInGroupList() {
-        Group selectedGroup = groupComboBox.getSelectionModel().getSelectedItem();
-        if (selectedGroup != null) {
-            courseComboBox.getSelectionModel().selectedItemProperty().addListener(((observableValue, oldCourse, newCourse) -> {
-                studentsInGroupList.getItems().clear();
-                List<Participation> participationPerCourse = participationDAO.getParticipationInGroup(newCourse.getIdCourse(), selectedGroup.getIdGroup());
-                List<User> usersInGroup = new ArrayList<>();
-                for (Participation participation : participationPerCourse) {
-                    usersInGroup.add(participation.getUser());
-                }
-                studentsInGroupList.getItems().addAll(FXCollections.observableArrayList(usersInGroup));
-                studentsInGroupList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-            }));
+
+    private void refreshStudentList(Course course) {
+        studentList.getItems().clear();
+        List<Participation> participationPerCourse = participationDAO.getParticipationPerCourse(course.getIdCourse());
+        fillListView(participationPerCourse, studentList);
+    }
+
+    public void fillStudentInGroupList() {
+        groupComboBox.getSelectionModel().selectedItemProperty()
+                .addListener((observableValue, oldGroup, newGroup) -> refreshStudentInGroupList(newGroup));
+    }
+
+    private void refreshStudentInGroupList(Group group) {
+        if (group != null) {
+            Course selectedCourse = courseComboBox.getSelectionModel().getSelectedItem();
+            studentsInGroupList.getItems().clear();
+            List<Participation> participationPerGroup = participationDAO.getParticipationInGroup(selectedCourse, group);
+            fillListView(participationPerGroup, studentsInGroupList);
+        } else {
+            studentsInGroupList.getItems().clear();
         }
+    }
+
+    public void fillListView(List<Participation> participations, ListView<User> students) {
+        List<User> users = new ArrayList<>();
+        for (Participation participation : participations) {
+            users.add(participation.getUser());
+            users.sort(Comparator.comparing(User::getSurname));
+        }
+        students.getItems().addAll(FXCollections.observableArrayList(users));
+        students.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    }
+
+    public void getGroupsPerCourse() {
+        courseComboBox.getSelectionModel().selectedItemProperty().addListener(((observableValue, oldCourse, newCourse) -> {
+            groupComboBox.getItems().clear();
+            setGroupComboBoxPromptText();
+            List<Group> groupsPerCourse = groupDAO.getGroupsByIdCourse(newCourse.getIdCourse());
+            groupComboBox.setItems(FXCollections.observableList(groupsPerCourse));
+            warningLabel.setVisible(groupsPerCourse.isEmpty());
+        }));
     }
 
     public void doAssign() {
@@ -84,34 +104,37 @@ public class AssignStudentsToGroupController {
         for (User user : selectedUsers) {
             participationDAO.updateGroup(selectedGroup, selectedCourse, user);
         }
+        refreshStudentList(selectedCourse);
+        refreshStudentInGroupList(selectedGroup);
     }
 
-    public void getGroupsPerCourse() {
-        courseComboBox.getSelectionModel().selectedItemProperty().addListener(((observableValue, oldCourse, newCourse) -> {
-            groupComboBox.getItems().clear();
-    //        List<Group> groupsPerCourse = groupDAO.getGroupsByIdCourse(newCourse.getIdCourse());
-    //        groupComboBox.setItems(FXCollections.observableList(groupsPerCourse));
-        }));
-//        Course selectedCourse = courseComboBox.getSelectionModel().getSelectedItem();
-//        List<Participation> participationPerCourse = participationDAO.getGroupsPerCourse(selectedCourse.getIdCourse());
-//        List<Group> groupsPerCourse = new ArrayList<>();
-//        for (Participation participation : participationPerCourse) {
-//            groupsPerCourse.add(participation.getGroup());
-//        }
-//
-//        ObservableList<Group> groupComboBoxList = FXCollections.observableArrayList(groupsPerCourse);
-//        groupComboBox.setItems(groupComboBoxList);
-    }
     public void doRemove() {
         Course selectedCourse = courseComboBox.getSelectionModel().getSelectedItem();
-        ObservableList<User> selectedUsers = studentList.getSelectionModel().getSelectedItems();
+        Group selectedGroup = groupComboBox.getSelectionModel().getSelectedItem();
+        ObservableList<User> selectedUsers = studentsInGroupList.getSelectionModel().getSelectedItems();
         for (User user : selectedUsers) {
-            participationDAO.updateGroup(null, selectedCourse, user);
+            participationDAO.updateGroupToNull(selectedCourse, user);
         }
+        refreshStudentList(selectedCourse);
+        refreshStudentInGroupList(selectedGroup);
     }
 
     public void doMenu() {
         Main.getSceneManager().showWelcomeScene();
+    }
+
+    private void setGroupComboBoxPromptText() {
+        groupComboBox.setPromptText("Groep");
+        groupComboBox.setButtonCell(new ListCell<>() {
+            protected void updateItem(Group group, boolean empty) {
+                super.updateItem(group, empty);
+                if (empty || group == null){
+                    setText("Groep");
+                } else {
+                    setText(group.getGroupName());
+                }
+            }
+        });
     }
 }
 
