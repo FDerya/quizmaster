@@ -11,9 +11,11 @@ import view.Main;
 
 import java.util.List;
 
-public class ManageQuizzesController extends WarningAlertController{
+public class ManageQuizzesController extends WarningAlertController {
     @FXML
     ListView<Quiz> quizList;
+    @FXML
+    Label countLabel;
     private final QuizDAO quizDAO;
     @FXML
     Label quizChoice;
@@ -26,6 +28,7 @@ public class ManageQuizzesController extends WarningAlertController{
     public void setup() {
         User currentUser = User.getCurrentUser();
         List<Quiz> quizzen = quizDAO.getQuizzesFromUser(currentUser);
+        countLabel.setText("Gemiddeld aantal vragen per quiz: "+ doCount(quizzen));
         quizList.getItems().addAll(quizzen);
         quizList.setCellFactory(param -> new ListCell<>() {
             @Override
@@ -52,7 +55,8 @@ public class ManageQuizzesController extends WarningAlertController{
 
     // Nieuwe quiz maken met leeg scherm
     public void doCreateQuiz(ActionEvent event) {
-        Main.getSceneManager().showCreateUpdateQuizScene(null);}
+        Main.getSceneManager().showCreateUpdateQuizScene(null);
+    }
 
     // Quiz bewerken met vooraf ingevuld scherm
     public void doUpdateQuiz(ActionEvent event) {
@@ -64,7 +68,16 @@ public class ManageQuizzesController extends WarningAlertController{
         }
     }
 
-
+    private double doCount(List<Quiz> quizzes) {
+        int count = 0;
+        int amount = 0;
+        for (int i = 0; i < quizzes.size(); i++) {
+            amount += quizzes.get(i).getAmountQuestions();
+            count++;
+        }
+        double avg = (amount*10 / count)/10.0;
+        return avg;
+    }
 
     // Quiz verwijderen uit de database én de Listview
     public void doDeleteQuiz(ActionEvent event) {
