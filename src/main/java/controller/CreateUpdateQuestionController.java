@@ -91,7 +91,7 @@ public class CreateUpdateQuestionController {
             if (newValue != null) {
                 // Update the course label based on the selected quiz
                 Quiz quiz = quizDAO.getOneByName(newValue);
-                label_Course.setText(courseDAO.getCourseNameByQuizName(quiz.getNameQuiz()));
+                label_Course.setText(quizDAO.getOneByName(newValue).getCourse().getNameCourse());
             }
         });
         // Update Question
@@ -108,7 +108,7 @@ public class CreateUpdateQuestionController {
             String quizName = question.getQuiz().getNameQuiz();
             quizlist.getSelectionModel().select(quizName);
             quizlist.setPromptText("Wijzig de bijbehorende quiz:");
-            label_Course.setText(courseDAO.getCourseNameByQuizName(quizName));
+            label_Course.setText(quizDAO.getOneByName(quizName).getCourse().getNameCourse());
         }
         // New Question
         else {

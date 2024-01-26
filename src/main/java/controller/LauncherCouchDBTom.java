@@ -1,5 +1,6 @@
 package controller;
 
+import database.mysql.CourseDAO;
 import database.mysql.QuizDAO;
 import javacouchdb.CouchDBAccess;
 import javacouchdb.QuizCouchDBDAO;
@@ -11,6 +12,7 @@ import java.util.List;
 
 public class LauncherCouchDBTom {
     private static QuizDAO quizDAO = new QuizDAO(Main.getDBaccess());
+    private static CourseDAO courseDAO = new CourseDAO(Main.getDBaccess());
     private static CouchDBAccess couchDBAccess;
     private static QuizCouchDBDAO quizCouchDBDAO;
 
@@ -20,7 +22,10 @@ public class LauncherCouchDBTom {
         //saveQuizList(quizList);
         getQuiz("1a8e646fc65d405288f79f33cf7ba2c7");
         updatQuiz("1a8e646fc65d405288f79f33cf7ba2c7");
-        //deleteQuiz("1a8e646fc65d405288f79f33cf7ba2c7");
+        Course course = courseDAO.getOneByName("An");
+        Quiz quizTest = new Quiz(course, "test", "medium", 12);
+        quizCouchDBDAO.saveSingleQuiz(quizTest);
+        deleteQuiz(quizTest);
         closeCouchDBAccess();
     }
     //Verbinding CouchDB openen
@@ -63,7 +68,8 @@ public class LauncherCouchDBTom {
         quizCouchDBDAO.saveSingleQuiz(quiz);
         System.out.println(quiz.toString());
     }
-   /* private static void deleteQuiz(String code){
-        Quiz quiz = quizCouchDBDAO.
-    }*/
+    private static void deleteQuiz(Quiz quiz){
+        System.out.println(quiz.toString());
+        quizCouchDBDAO.deleteQuiz(quiz);
+    }
 }

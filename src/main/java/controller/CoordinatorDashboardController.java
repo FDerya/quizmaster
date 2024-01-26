@@ -46,6 +46,7 @@ public class CoordinatorDashboardController extends WarningAlertController {
                 (observableValue, oldCourse, newCourse) -> {
                     List<Quiz> quizzen = quizDAO.getAllByCourseId(newCourse.getIdCourse());
                     quizList.setItems(FXCollections.observableList(quizzen));
+                    questionList.setItems(null);
                 });
         quizList.setCellFactory(param -> new ListCell<>() {
             @Override
@@ -70,7 +71,7 @@ public class CoordinatorDashboardController extends WarningAlertController {
                 });
 
         questionList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        /*questionList.getSelectionModel().getSelectedItems().addListener(
+       /* questionList.getSelectionModel().getSelectedItems().addListener(
                 (observableValue, oldQuestion, newQuestion) -> {
             if (questionList != null) {
                 int maxAmount = quizList.getSelectionModel().getSelectedItem().getAmountQuestions();
@@ -79,8 +80,9 @@ public class CoordinatorDashboardController extends WarningAlertController {
                     System.out.println("Maximum bereikt");
                 }
             }
-        });*/
-    }
+        });
+
+   */ }
 
 
     public void doNewQuiz() {
@@ -119,6 +121,7 @@ public class CoordinatorDashboardController extends WarningAlertController {
         for (int i = 0; i < questions.size(); i++) {
             quizVragen.add(questionDAO.getQuestionByName(questions.get(i)));
         }
+        System.out.println(quizVragen);
         //questionCouchDBDAO.saveQuestionsForQuiz(quizVragen);
     Main.getSceneManager().showCoordinatorDashboard();}
 
