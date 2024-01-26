@@ -33,7 +33,11 @@ public class AssignStudentsToGroupController {
     CourseDAO courseDAO;
     GroupDAO groupDAO;
     UserDAO userDAO;
+    final String noCourseNoGroupMessage = "Kies eerst een cursus en groep";
+    final String noGroupMessage = "Kies eerst een groep";
+    final String noUserSelectedMessage = "Selecteer eerst een of meer gebruikers";
 
+    // Controller
     public AssignStudentsToGroupController() {
         this.participationDAO = new ParticipationDAO(Main.getDBaccess());
         this.courseDAO = new CourseDAO(Main.getDBaccess());
@@ -41,13 +45,18 @@ public class AssignStudentsToGroupController {
         this.groupDAO = new GroupDAO(Main.getDBaccess(), userDAO, courseDAO);
     }
 
+    // Fills the comboboxes and userlists
     public void setup() {
+        fillCourseComboBox();
+        fillStudentList();
+        fillGroupComboBox();
+        fillStudentInGroupList();
+    }
+
+    private void fillCourseComboBox() {
         List<Course> allCourses = courseDAO.getAll();
         ObservableList<Course> courseComboBoxList = FXCollections.observableArrayList(allCourses);
         courseComboBox.setItems(courseComboBoxList);
-        fillStudentList();
-        getGroupsPerCourse();
-        fillStudentInGroupList();
     }
 
     private void fillStudentList() {
@@ -55,6 +64,7 @@ public class AssignStudentsToGroupController {
                 .addListener(((observableValue, oldCourse, newCourse) -> refreshStudentList(newCourse)));
     }
 
+    // Refreshes the studentList if when clicking the doAssign or doRemove button.
     private void refreshStudentList(Course course) {
         studentList.getItems().clear();
         List<Participation> participationPerCourse = participationDAO.getParticipationPerCourse(course.getIdCourse());
@@ -66,8 +76,10 @@ public class AssignStudentsToGroupController {
                 .addListener((observableValue, oldGroup, newGroup) -> refreshStudentInGroupList(newGroup));
     }
 
+    // Refreshes the studentInGroupList if when clicking the doAssign or doRemove button.
     private void refreshStudentInGroupList(Group group) {
         if (group != null) {
+            warningLabel.setVisible(false);
             Course selectedCourse = courseComboBox.getSelectionModel().getSelectedItem();
             studentsInGroupList.getItems().clear();
             List<Participation> participationPerGroup = participationDAO.getParticipationInGroup(selectedCourse, group);
@@ -87,20 +99,37 @@ public class AssignStudentsToGroupController {
         students.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
-    public void getGroupsPerCourse() {
+    public void fillGroupComboBox() {
+        String noGroupsInCourseMessage = "Voor deze cursus zijn er nog geen groepen aangemaakt.";
         courseComboBox.getSelectionModel().selectedItemProperty().addListener(((observableValue, oldCourse, newCourse) -> {
             groupComboBox.getItems().clear();
             setGroupComboBoxPromptText();
             List<Group> groupsPerCourse = groupDAO.getGroupsByIdCourse(newCourse.getIdCourse());
             groupComboBox.setItems(FXCollections.observableList(groupsPerCourse));
+            warningLabel.setText(noGroupsInCourseMessage);
             warningLabel.setVisible(groupsPerCourse.isEmpty());
         }));
     }
 
+    // Assigns students to a group and handles errors when course, group and/or users are not selected.
     public void doAssign() {
-        Group selectedGroup = groupComboBox.getSelectionModel().getSelectedItem();
-        Course selectedCourse = courseComboBox.getSelectionModel().getSelectedItem();
         ObservableList<User> selectedUsers = studentList.getSelectionModel().getSelectedItems();
+        Course selectedCourse = courseComboBox.getSelectionModel().getSelectedItem();
+        Group selectedGroup = groupComboBox.getSelectionModel().getSelectedItem();
+        if (selectedGroup == null && selectedCourse == null) {
+            setWarningLabel(noCourseNoGroupMessage);
+        } else if (selectedGroup == null) {
+            setWarningLabel(noGroupMessage);
+        } else if (selectedUsers.isEmpty()) {
+            setWarningLabel(noUserSelectedMessage);
+        } else {
+            assignStudentToGroup(selectedUsers, selectedGroup, selectedCourse);
+        }
+    }
+
+    // Assigns students when there are no errors
+    private void assignStudentToGroup(ObservableList<User> selectedUsers, Group selectedGroup, Course selectedCourse) {
+        warningLabel.setVisible(false);
         for (User user : selectedUsers) {
             participationDAO.updateGroup(selectedGroup, selectedCourse, user);
         }
@@ -108,10 +137,26 @@ public class AssignStudentsToGroupController {
         refreshStudentInGroupList(selectedGroup);
     }
 
+    // Removes students from a group and handles errors when course, group and/or users are not selected.
     public void doRemove() {
         Course selectedCourse = courseComboBox.getSelectionModel().getSelectedItem();
         Group selectedGroup = groupComboBox.getSelectionModel().getSelectedItem();
         ObservableList<User> selectedUsers = studentsInGroupList.getSelectionModel().getSelectedItems();
+        if (selectedCourse == null && selectedGroup == null) {
+            setWarningLabel(noCourseNoGroupMessage);
+        } else if (selectedGroup == null) {
+            setWarningLabel(noGroupMessage);
+        } else if (selectedUsers.isEmpty()) {
+            setWarningLabel(noUserSelectedMessage);
+        } else {
+            removeStudentFromGroup(selectedCourse, selectedUsers, selectedGroup);
+        }
+    }
+
+    // Removes students from a group when there are no errors
+    private void removeStudentFromGroup(Course selectedCourse, ObservableList<User> selectedUsers, Group selectedGroup) {
+        warningLabel.setVisible(false);
+        assert selectedCourse != null;
         for (User user : selectedUsers) {
             participationDAO.updateGroupToNull(selectedCourse, user);
         }
@@ -119,10 +164,17 @@ public class AssignStudentsToGroupController {
         refreshStudentInGroupList(selectedGroup);
     }
 
+    // Sets text for warning label in a given situation and shows the warning label.
+    private void setWarningLabel(String warningLabelMessage) {
+        warningLabel.setText(warningLabelMessage);
+        warningLabel.setVisible(true);
+    }
+
     public void doMenu() {
         Main.getSceneManager().showWelcomeScene();
     }
 
+    // Sets the prompt text for groupComboBox if there are no groups selected or assigned to a course
     private void setGroupComboBoxPromptText() {
         groupComboBox.setPromptText("Groep");
         groupComboBox.setButtonCell(new ListCell<>() {
