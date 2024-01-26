@@ -40,8 +40,6 @@ public class CreateUpdateQuizController extends WarningAlertController {
     @FXML
     Label amountQuestionsLabel;
     @FXML
-    Label levelQuizLabel;
-    @FXML
     ComboBox<String> levelsListComboBox;
     @FXML
     ComboBox<Course> coursesListComboBox;

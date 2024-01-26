@@ -153,34 +153,6 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         }
     }
 
-    // Presenteert een lijst met vragen van de quiz
-    public List<Question> getQuestions(Quiz quiz) {
-        QuestionDAO questionDAO = new QuestionDAO(dbAccess);
-        List<Question> quizList = new ArrayList<>();
-        List<Integer> randomNumbers = new ArrayList<>(getRandomNumbers(quiz));
-        for (int i = 0; i < quiz.getAmountQuestions(); i++) {
-            quizList.add(questionDAO.getOneById(randomNumbers.get(i)));
-        }
-        return quizList;
-    }
-
-    // Produceert een List van willekeurige cijfers, afhankelijk van het aantal vragen wat nodig is in de quiz
-    public List<Integer> getRandomNumbers(Quiz quiz) {
-        QuestionDAO questionDAO = new QuestionDAO(dbAccess);
-        List<Integer> questionAmount = new ArrayList<>();
-        List<Integer> quizRandomAmount = new ArrayList<>();
-        int maxQuestions = questionDAO.getQuestionCountForQuiz(quiz);
-        for (int i = 1; i <= maxQuestions; i++) {
-            questionAmount.add(i);
-        }
-        for (int i = 1; i <= quiz.getAmountQuestions(); i++) {
-            int randomNumber = (int) (Math.random() * questionAmount.size());
-            quizRandomAmount.add(questionAmount.get(randomNumber));
-            questionAmount.remove(randomNumber);
-        }
-        return quizRandomAmount;
-    }
-
     public List<Quiz> getQuizzesFromUser(User user) {
         List<Quiz> quizList = new ArrayList<>();
         String sql = "Select idQuiz, q.idCourse, nameQuiz, levelQuiz, amountQuestion from quiz q join course c on q.idCourse = c.idCourse where idUser = ?;";

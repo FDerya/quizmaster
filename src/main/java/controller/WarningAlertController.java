@@ -11,8 +11,6 @@ import java.util.Optional;
 
 public class WarningAlertController {
     public final int MAXLENGTH = 45;
-    public final int QUESTIONMAXLENGTH = 1000;
-    public final int USERNAMEMAXLENGTH = 10;
     @FXML
     Label warningLabel;
     @FXML
@@ -46,6 +44,8 @@ public class WarningAlertController {
         warningLabel.setVisible(true);
 
     }
+    // Melding tonen en tekst rood kleuren wanneer veld niet is ingevuld
+
     public void checkAndChangeLabelColor(boolean emptyfields, Label label) {
         if (emptyfields) {
             label.setTextFill(Color.RED);

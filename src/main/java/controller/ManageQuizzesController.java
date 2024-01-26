@@ -1,6 +1,7 @@
 package controller;
 // Tom van Beek, 500941521.
 
+import database.mysql.QuestionDAO;
 import database.mysql.QuizDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,11 +18,11 @@ public class ManageQuizzesController extends WarningAlertController {
     @FXML
     Label countLabel;
     private final QuizDAO quizDAO;
-    @FXML
-    Label quizChoice;
+    private final QuestionDAO questionDAO;
 
     public ManageQuizzesController() {
         this.quizDAO = new QuizDAO(Main.getDBaccess());
+        this.questionDAO = new QuestionDAO(Main.getDBaccess());
     }
 
     // Quizlijst van coordinator (user) afdrukken in scherm
@@ -40,7 +41,7 @@ public class ManageQuizzesController extends WarningAlertController {
                 HBox hBox = new HBox(naam, aantal);
                 if (!(item == null || empty)) {
                     naam.setText(item.getNameQuiz());
-                    aantal.setText(" " + item.getAmountQuestions() + " ");
+                    aantal.setText(" " + questionDAO.getQuestionCountForQuiz(item) + " ");
                 }
                 setGraphic(hBox);
             }
