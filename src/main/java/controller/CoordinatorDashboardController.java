@@ -22,10 +22,6 @@ public class CoordinatorDashboardController extends WarningAlertController {
     private ListView<Quiz> quizList;
     @FXML
     private ListView<String> questionList;
-    @FXML
-    private ListView<Integer> questionQuizList;
-    @FXML
-    private Label waarschuwingsLabel;
     private final DBAccess dbAccess;
 
     private final QuestionDAO questionDAO;
@@ -47,16 +43,6 @@ public class CoordinatorDashboardController extends WarningAlertController {
         setCourseList();
         setQuizList();
 
-        questionList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-     /*   questionQuizList.getSelectionModel().getSelectedItem();
-        ObservableList<String> questionQuiz = questionList.getSelectionModel().getSelectedItems();
-        if (questionQuiz != null) {
-            int maximumAmount = questionQuizList.getSelectionModel().getSelectedItem();
-            int questionsize = questionQuiz.size();
-            if (questionsize == maximumAmount) {
-                System.out.println("Maximum bereikt");
-            }
-        }*/
     }
 
     private void setCourseList() {
@@ -131,24 +117,10 @@ public class CoordinatorDashboardController extends WarningAlertController {
         Question question = questionDAO.getQuestionByName(questionList.getSelectionModel().getSelectedItem());
 
         if (question == null) {
-            waarschuwingsLabel.setText("Je moet eerst een question kiezen");
-            waarschuwingsLabel.setVisible(true);
-
+            setEmptyChoice("vraag", true);
         } else {
             Main.getSceneManager().showCreateUpdateQuestionScene(question);
         }
-    }
-
-    public void doSave(ActionEvent event) {
-        List<String> questions = new ArrayList<>();
-        questions.addAll(questionList.getSelectionModel().getSelectedItems());
-        List<Question> quizVragen = new ArrayList<>();
-        for (int i = 0; i < questions.size(); i++) {
-            quizVragen.add(questionDAO.getQuestionByName(questions.get(i)));
-        }
-        System.out.println(quizVragen);
-        //questionCouchDBDAO.saveQuestionsForQuiz(quizVragen);
-        Main.getSceneManager().showCoordinatorDashboard();
     }
 
     public void doMenu() {

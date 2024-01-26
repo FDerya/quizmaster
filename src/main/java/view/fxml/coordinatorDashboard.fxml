@@ -61,9 +61,4 @@
          <Font size="16.0" />
       </font>
    </Label>
-   <Button layoutX="784.0" layoutY="334.0" mnemonicParsing="false" onAction="#doSave" prefHeight="30.0" prefWidth="95.0" text="Opslaan">
-      <font>
-         <Font size="14.0" />
-      </font>
-        </Button>
 </AnchorPane>
