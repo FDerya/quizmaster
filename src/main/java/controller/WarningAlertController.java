@@ -40,7 +40,12 @@ public class WarningAlertController {
         warningLabel.setVisible(true);
 
     }
+    public void showEmpty(String type, String insert) {
+        String updateAlert = "Deze "+ type + " heeft geen " + insert;
+        warningLabel.setText(updateAlert);
+        warningLabel.setVisible(true);
 
+    }
     public void checkAndChangeLabelColor(boolean emptyfields, Label label) {
         if (emptyfields) {
             label.setTextFill(Color.RED);

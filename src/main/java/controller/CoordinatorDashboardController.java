@@ -2,6 +2,7 @@ package controller;
 
 import database.mysql.*;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -22,6 +23,8 @@ public class CoordinatorDashboardController extends WarningAlertController {
     @FXML
     private ListView<String> questionList;
     @FXML
+    private ListView<Integer> questionQuizList;
+    @FXML
     private Label waarschuwingsLabel;
     private final DBAccess dbAccess;
 
@@ -38,15 +41,58 @@ public class CoordinatorDashboardController extends WarningAlertController {
         this.questionDAO = new QuestionDAO(Main.getDBaccess());
     }
 
+    User currentUser = User.getCurrentUser();
+
     public void setup() {
-        User currentUser = User.getCurrentUser();
+        setCourseList();
+        setQuizList();
+
+        questionList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+     /*   questionQuizList.getSelectionModel().getSelectedItem();
+        ObservableList<String> questionQuiz = questionList.getSelectionModel().getSelectedItems();
+        if (questionQuiz != null) {
+            int maximumAmount = questionQuizList.getSelectionModel().getSelectedItem();
+            int questionsize = questionQuiz.size();
+            if (questionsize == maximumAmount) {
+                System.out.println("Maximum bereikt");
+            }
+        }*/
+    }
+
+    private void setCourseList() {
         List<Course> courseUserList = courseDAO.getAllByIdUser(currentUser.getIdUser());
         courseList.setItems(FXCollections.observableList(courseUserList));
         courseList.getSelectionModel().selectedItemProperty().addListener(
                 (observableValue, oldCourse, newCourse) -> {
                     List<Quiz> quizzen = quizDAO.getAllByCourseId(newCourse.getIdCourse());
-                    quizList.setItems(FXCollections.observableList(quizzen));
+                    if (quizzen.isEmpty()) {
+                        showEmpty("cursus", "quizzen");
+                        quizList.setItems(null);
+                        questionList.setItems(null);
+                    } else {
+                        warningLabel.setVisible(false);
+                        questionList.setItems(null);
+                        quizList.setItems(FXCollections.observableList(quizzen));
+                    }
                 });
+    }
+
+    private void setQuizList() {
+        makeColumns();
+        quizList.getSelectionModel().selectedItemProperty().addListener(
+                (observableValue, oldQuiz, newQuiz) -> {
+                    if (newQuiz != null) {
+                        List<String> questions = questionDAO.getQuestionNamesForQuiz(newQuiz);
+                        List<Integer> maxAmount = new ArrayList<>();
+                        int max = quizList.getSelectionModel().getSelectedItem().getAmountQuestions();
+                        maxAmount.add(max);
+                        questionList.setItems(FXCollections.observableList(questions));
+                        //questionQuizList.setItems(FXCollections.observableList(maxAmount));
+                    }
+                });
+    }
+
+    private void makeColumns() {
         quizList.setCellFactory(param -> new ListCell<>() {
             @Override
             public void updateItem(Quiz item, boolean empty) {
@@ -62,26 +108,7 @@ public class CoordinatorDashboardController extends WarningAlertController {
                 setGraphic(hBox);
             }
         });
-
-        quizList.getSelectionModel().selectedItemProperty().addListener(
-                (observableValue, oldQuiz, newQuiz) -> {
-                    List<String> questions = questionDAO.getQuestionNamesForQuiz(newQuiz);
-                    questionList.setItems(FXCollections.observableList(questions));
-                });
-
-        questionList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        /*questionList.getSelectionModel().getSelectedItems().addListener(
-                (observableValue, oldQuestion, newQuestion) -> {
-            if (questionList != null) {
-                int maxAmount = quizList.getSelectionModel().getSelectedItem().getAmountQuestions();
-                int questionsize = questionList.getItems().size();
-                if (questionsize == maxAmount) {
-                    System.out.println("Maximum bereikt");
-                }
-            }
-        });*/
     }
-
 
     public void doNewQuiz() {
         Main.getSceneManager().showCreateUpdateQuizScene(null);
@@ -119,10 +146,14 @@ public class CoordinatorDashboardController extends WarningAlertController {
         for (int i = 0; i < questions.size(); i++) {
             quizVragen.add(questionDAO.getQuestionByName(questions.get(i)));
         }
+        System.out.println(quizVragen);
         //questionCouchDBDAO.saveQuestionsForQuiz(quizVragen);
-    Main.getSceneManager().showCoordinatorDashboard();}
+        Main.getSceneManager().showCoordinatorDashboard();
+    }
 
-    public void doMenu() {Main.getSceneManager().showWelcomeScene();}
+    public void doMenu() {
+        Main.getSceneManager().showWelcomeScene();
+    }
 
 
 }

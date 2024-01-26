@@ -272,5 +272,3 @@ public class CreateUpdateQuestionController {
         quizlist.getSelectionModel().clearSelection();
     }
 }
-
-
