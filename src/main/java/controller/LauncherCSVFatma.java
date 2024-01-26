@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class LauncherQuestion {
+public class LauncherCSVFatma {
 
     private static final String FILE_PATH = "src/main/java/database/Vragen.csv";
 
