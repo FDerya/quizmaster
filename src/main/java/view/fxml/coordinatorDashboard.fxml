@@ -55,7 +55,7 @@
          <Font size="14.0" />
       </font>
    </Button>
-   <Label fx:id="waarschuwingsLabel" layoutX="28.0" layoutY="461.0" prefHeight="68.0" prefWidth="605.0" />
+   <Label fx:id="warningLabel" layoutX="316.0" layoutY="329.0" prefHeight="37.0" prefWidth="318.0" visible="false" />
    <Label layoutX="477.0" layoutY="51.0" prefHeight="26.0" prefWidth="108.0" text="Aantal vragen">
       <font>
          <Font size="16.0" />
@@ -65,5 +65,5 @@
       <font>
          <Font size="14.0" />
       </font>
-   </Button>
+        </Button>
 </AnchorPane>
