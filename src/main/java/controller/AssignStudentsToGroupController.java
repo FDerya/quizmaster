@@ -100,13 +100,12 @@ public class AssignStudentsToGroupController {
     }
 
     public void fillGroupComboBox() {
-        String noGroupsInCourseMessage = "Voor deze cursus zijn er nog geen groepen aangemaakt.";
         courseComboBox.getSelectionModel().selectedItemProperty().addListener(((observableValue, oldCourse, newCourse) -> {
             groupComboBox.getItems().clear();
             setGroupComboBoxPromptText();
             List<Group> groupsPerCourse = groupDAO.getGroupsByIdCourse(newCourse.getIdCourse());
             groupComboBox.setItems(FXCollections.observableList(groupsPerCourse));
-            warningLabel.setText(noGroupsInCourseMessage);
+            warningLabel.setText("Voor deze cursus zijn er nog geen groepen aangemaakt.");
             warningLabel.setVisible(groupsPerCourse.isEmpty());
         }));
     }
@@ -156,7 +155,6 @@ public class AssignStudentsToGroupController {
     // Removes students from a group when there are no errors
     private void removeStudentFromGroup(Course selectedCourse, ObservableList<User> selectedUsers, Group selectedGroup) {
         warningLabel.setVisible(false);
-        assert selectedCourse != null;
         for (User user : selectedUsers) {
             participationDAO.updateGroupToNull(selectedCourse, user);
         }
