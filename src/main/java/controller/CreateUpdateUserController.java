@@ -1,3 +1,7 @@
+// TO DO:
+// controleren of showSame is aangepast
+// comboboxen via warningAlert, als die aangepast is
+
 package controller;
 
 import database.mysql.UserDAO;
@@ -17,7 +21,7 @@ import view.Main;
 
 import java.util.List;
 
-public class CreateUpdateUserController {
+public class CreateUpdateUserController extends WarningAlertController {
     private final UserDAO userDAO;
     private int idUser;         // Opslaan van idUser omdat deze nodig is om een gebruiker te wijzigen.
     @FXML
@@ -34,8 +38,7 @@ public class CreateUpdateUserController {
     TextField surnameTextfield;
     @FXML
     ComboBox<String> roleComboBox;
-    @FXML
-    Label messageLabel;
+
     @FXML
     Label usernameLabel;
     @FXML
@@ -47,29 +50,36 @@ public class CreateUpdateUserController {
     @FXML
     Label roleLabel;
     @FXML
-    ObservableList<String> userRoles = FXCollections.observableArrayList("Student", "Docent", "Coördinator", "Administrator", "Functioneel Beheerder");
-    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), actionEvent -> Main.getSceneManager().showManageUserScene()));
-
+    ObservableList<String> userRoles = FXCollections.observableArrayList("Student", "Docent", "Coördinator",
+            "Administrator", "Functioneel Beheerder");
+    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), actionEvent ->
+            Main.getSceneManager().showManageUserScene()));
 
     public CreateUpdateUserController() {
         this.userDAO = new UserDAO(Main.getDBaccess());
     }
 
     public void initialize() {
-        // When the page initializes, gives the textfield a property to set the messagelabel to false when you type in the field.
+        // When the page initializes, gives the textfield a property to set the messagelabel to false
+        // when you type in the field.
         for (TextField textField : textFieldsInArray()) {
-            textField.textProperty().addListener((observableValue, oldValue, newValue) -> messageLabel.setVisible(false));
+            textField.textProperty().addListener((observableValue, oldValue, newValue) ->
+                    warningLabel.setVisible(false));
         }
-        // Sets a max amount of characters to the username, same as the max amount in the SQL database.
+        setMaxCharsForTextField();
+    }
+
+    // Sets a max amount of characters to the textfields, same as the max amount in the SQL database.
+    private void setMaxCharsForTextField() {
         int maxCharsUsername = 10;
-        usernameTextfield.setTextFormatter(setMaxAmountOfCharactersInTextField(maxCharsUsername));
         int maxCharsPassword = 25;
-        passwordTextfield.setTextFormatter(setMaxAmountOfCharactersInTextField(maxCharsPassword));
         int maxCharsFirstname = 45;
-        firstNameTextfield.setTextFormatter(setMaxAmountOfCharactersInTextField(maxCharsFirstname));
         int maxCharsPrefix = 10;
-        prefixTextfield.setTextFormatter(setMaxAmountOfCharactersInTextField(maxCharsPrefix));
         int maxCharsSurname = 45;
+        usernameTextfield.setTextFormatter(setMaxAmountOfCharactersInTextField(maxCharsUsername));
+        passwordTextfield.setTextFormatter(setMaxAmountOfCharactersInTextField(maxCharsPassword));
+        firstNameTextfield.setTextFormatter(setMaxAmountOfCharactersInTextField(maxCharsFirstname));
+        prefixTextfield.setTextFormatter(setMaxAmountOfCharactersInTextField(maxCharsPrefix));
         surnameTextfield.setTextFormatter(setMaxAmountOfCharactersInTextField(maxCharsSurname));
     }
 
@@ -79,8 +89,8 @@ public class CreateUpdateUserController {
                 c.getControlNewText().length() <= maxLength ? c : null);
     }
 
-    // In de setup wordt de combobox voor de rollen gevuld en worden textfields gevuld 
-    // als er in het manageUsers scherm een gebruiker geselecteerd is.
+    // Fills the combobox with the userRoles. If a user is selected when you enter the screen,
+    // it fills in the textfields and comboboxes.
     public void setup(User user) {
         roleComboBox.setItems(userRoles);
         if (user != null) {
@@ -95,15 +105,15 @@ public class CreateUpdateUserController {
         }
     }
 
-    // Deze methode slaat een nieuwe gebruiker op in de database of wijzigt een bestaande gebruiker.
+    // Before saving the user, it creates a user from the given input, checks if all mandatory fields are filled in and
+    // if there are no duplicates in the database. If all conditions are met, it saves or updates the user.
     @FXML
     public void doSaveUser(ActionEvent actionEvent) {
         User user = createUser();
         if (user != null) {
             if (checkForDuplicates(user)) {
                 usernameLabel.setTextFill(Color.RED);
-                messageLabel.setVisible(true);
-                messageLabel.setText("Gebruikersnaam " + user.getUsername() + " is al in gebruik, kies een andere gebruikersnaam");
+                showSame(checkForDuplicates(user));
             } else {
                 usernameLabel.setTextFill(Color.BLACK);
                 saveUser(user);
@@ -111,44 +121,41 @@ public class CreateUpdateUserController {
         }
     }
 
+    // Saves or updates a user to the database
     private void saveUser(User user) {
         if (titleLabel.getText().equals("Nieuwe gebruiker")) {
             saveNewUser(user);
         } else {
-            saveExistingUser(user);
+            updateUser(user);
         }
-        messageLabel.setVisible(true);
+        warningLabel.setVisible(true);
     }
 
-    private void saveExistingUser(User user) {
-        String updateUserMessage = "Gebruiker " + user.getFullName() + " gewijzigd";
+    private void updateUser(User user) {
         user.setIdUser(idUser);
         userDAO.updateOne(user);
-        messageLabel.setText(updateUserMessage);
+        showUpdated("Gebruiker " + user.getFullName());
         timeline.play();
     }
 
     private void saveNewUser(User user) {
-        String createUserMessage = "Gebruiker " + user.getFullName() + " opgeslagen";
         userDAO.storeOne(user);
-        messageLabel.setText(createUserMessage);
+        showSaved("Gebruiker " + user.getFullName());
         clearTextFieldsAndRoleComboBox();
     }
 
-    // Actie om terug te gaan naar het manageUsers scherm
     @FXML
     public void doShowManageUsers(ActionEvent actionEvent) {
         Main.getSceneManager().showManageUserScene();
     }
 
-    // Actie om terug te gaan naar het welcomeScene scherm
     @FXML
     public void doShowMenu(ActionEvent actionEvent) {
         Main.getSceneManager().showWelcomeScene();
     }
 
-    // Methode om een nieuw object User te maken. Als foutieve informatie ingevuld wordt,
-    // wordt hier een melding over gegeven.
+    // Creates an object user. If not all fields are filled in correctly,
+    // shows a warning label and marks the incorrect fields.
     private User createUser() {
         boolean correctInput;
         String username = usernameTextfield.getText();
@@ -166,19 +173,19 @@ public class CreateUpdateUserController {
         }
     }
 
-    // Als aan de voorwaarden voor nieuwe gebruiker/wijzigen voldaan is, worden de warning labels weggehaald en return je een user
+    // Removes the warning label and returns the user if all conditions for creating/updating are met
     private User correctUser(String username, String password, String firstname, String prefix, String surname, String role) {
-        messageLabel.setVisible(false);
+        showWarningLabel(false);
         return new User(username, password, firstname, prefix, surname, role);
     }
 
-    // Als niet aan de voorwaarden voor nieuwe/wijzigen gebruiker voldaan is, wordt een warning label getoond en return je null.
+    // Shows a warning label if not all conditions for creating/updating are met
     private User incorrectUser() {
-        messageLabel.setVisible(true);
+        showWarningLabel(true);
         return null;
     }
 
-    // Deze methode roept checkAndChangeLabelColor aan en geeft een boolean terug of meegegeven velden ingevuld zijn of niet.
+    // Checks if a field is filled in, marks the textlabel for that textfield red.
     private boolean isCorrectInput(String username, String password, String firstname, String lastname) {
         checkAndChangeLabelColor(username.isEmpty(), usernameLabel);
         checkAndChangeLabelColor(password.isEmpty(), passwordLabel);
@@ -187,23 +194,13 @@ public class CreateUpdateUserController {
         return (!username.isEmpty() && !password.isEmpty() && !firstname.isEmpty() && !lastname.isEmpty());
     }
 
-    // Checks if a textfield is empty.
-    // If its empty, the label next to the textfield is colored red and a warning is showed.
-    private void checkAndChangeLabelColor(boolean emptyTextField, Label label) {
-        if (emptyTextField) {
-            label.setTextFill(Color.RED);
-        } else {
-            label.setTextFill(Color.BLACK);
-        }
-    }
-
     // Shows warninglabel and sets label color if a role is null.
     private void isCorrectInputRole(String role) {
         if (role == null) {
-            messageLabel.setVisible(true);
+            showWarningLabel(true);
             roleLabel.setTextFill(Color.RED);
         } else {
-            messageLabel.setVisible(false);
+            showWarningLabel(false);
             roleLabel.setTextFill(Color.BLACK);
         }
     }
@@ -229,12 +226,13 @@ public class CreateUpdateUserController {
         });
     }
 
+    // All textFields in an array, to loop through the array.
     private TextField[] textFieldsInArray() {
         return new TextField[]{usernameTextfield, passwordTextfield, firstNameTextfield, prefixTextfield, surnameTextfield};
     }
 
     private boolean checkForDuplicates(User user) {
-        // Sets the id of the user, if you are editing an existing user.
+        // Sets the id of the user, if you are not creating a new user.
         if (!titleLabel.getText().equals("Nieuwe gebruiker")) {
             user.setIdUser(idUser);
         }
@@ -243,12 +241,12 @@ public class CreateUpdateUserController {
         // if the fullname and the userid are identical with the user in the parameter.
         List<User> allUsers = userDAO.getAll();
         boolean duplicate = false;
-            for (User userInUserList : allUsers) {
-                if ((userInUserList.getUsername().equals(user.getUsername())) && (userInUserList.getIdUser() != user.getIdUser())) {
-                    duplicate = true;
-                    break;
-                }
+        for (User userInUserList : allUsers) {
+            if ((userInUserList.getUsername().equals(user.getUsername())) && (userInUserList.getIdUser() != user.getIdUser())) {
+                duplicate = true;
+                break;
             }
+        }
         return duplicate;
     }
 }
