@@ -40,6 +40,7 @@ public class DennisNoSQLLauncher {
         // Write database to .csv file, sorted by idUser
         File userFile = new File("src/resources/usersFromCouchDB.csv");
         try {
+            // ik ben aan het werk
             List<JsonObject> allUsers = userCouchDBDAO.getAllDocuments();
             PrintWriter printWriter = new PrintWriter(userFile);
             allUsers.sort(Comparator.comparing(user -> user.get("idUser").getAsInt()));
