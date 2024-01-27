@@ -137,7 +137,7 @@ public class StudentSignInOutController {
     // Adds new participations to the database
     private void addParticipationsToDatabase(ParticipationDAO participationDAO, List<Participation> participationsToAdd) {
         for (Participation newParticipation : participationsToAdd) {
-            participationDAO.storeOne(newParticipation);
+            participationDAO.storeOneWhereGroupIsNull(newParticipation);
         }
     }
 
