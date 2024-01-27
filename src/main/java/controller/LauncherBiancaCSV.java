@@ -3,10 +3,7 @@ package controller;
 // Reads CSV data into a list, and creating a list of Group objects,
 // which are then stored in the database
 
-import database.mysql.CourseDAO;
-import database.mysql.DBAccess;
-import database.mysql.GroupDAO;
-import database.mysql.UserDAO;
+import database.mysql.*;
 import model.Course;
 import model.Group;
 import model.User;
@@ -41,7 +38,6 @@ public class LauncherBiancaCSV {
         Main.getDBaccess().closeConnection();
         System.out.println("Connectie gesloten");
     }
-
 
     // Method to read data from the CSV file into a list
     public static List<String> FileReaderToArray() {

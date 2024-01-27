@@ -105,15 +105,57 @@ public class ParticipationDAO extends AbstractDAO implements GenericDAO<Particip
         return participation;
     }
 
-// Nieuwe participation opslaan
+    // Doorgeven aan Eline
+    public List<Participation> getParticipationsByIdUser(int idUser) {
+        List<Participation> resultList = new ArrayList<>();
+        String sql = "SELECT * FROM Participation WHERE idUser = ?;";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, idUser);
+            ResultSet resultSet = executeSelectStatement();
+            while (resultSet.next()) {
+                resultList.add(getParticipation(resultSet));
+            }
+        } catch (SQLException sqlError) {
+            System.out.println("SQL error: " + sqlError.getMessage());
+        }
+        return resultList;
+    }
+
+    public void deleteParticipation(int userId, int courseId) {
+        String sql = "DELETE FROM Participation WHERE idUser = ? AND idCourse = ?;";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, courseId);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException sqlException) {
+            System.out.println("SQL fout bij het verwijderen van de deelname: " + sqlException.getMessage());
+        }
+    }
+
+
+    // Nieuwe participation opslaan
     @Override
     public void storeOne(Participation participation) {
-        String sql = "INSERT INTO Participation (idUser, idCourse, idGroup) VALUES(?, ?, ?);";
+       // String sql = "INSERT INTO Participation (idUser, idCourse, idGroup) VALUES(?, ?, ?);";
+
+        String sql = "INSERT INTO Participation (idUser, idCourse, idGroup) VALUES(?, ?, ?) " +
+                "ON DUPLICATE KEY UPDATE idGroup = VALUES(idGroup);";
         try {
             setupPreparedStatement(sql);
             preparedStatement.setInt(1, participation.getUser().getIdUser());
             preparedStatement.setInt(2, participation.getCourse().getIdCourse());
-            preparedStatement.setInt(3, participation.getGroup().getIdGroup());
+            // preparedStatement.setInt(3, participation.getGroup().getIdGroup());
+            // Doorgeven aan Eline
+            Group group = participation.getGroup();
+            if (group != null) {
+                preparedStatement.setInt(3, group.getIdGroup());
+            } else {
+                preparedStatement.setNull(3, java.sql.Types.INTEGER);
+            }
+
             executeManipulateStatement();
         } catch (SQLException sqlException){
             System.out.println("SQL fout " + sqlException.getMessage());

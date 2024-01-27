@@ -15,7 +15,7 @@
             <Font size="16.0" />
         </font>
     </Label>
-    <ListView fx:id="courseListView" layoutX="11.0" layoutY="96.0" prefHeight="200.0" prefWidth="400.0" />
+    <ListView fx:id="signedInCourseList" layoutX="11.0" layoutY="96.0" prefHeight="200.0" prefWidth="400.0" />
     <Button layoutX="425.0" layoutY="152.0" mnemonicParsing="false" onAction="#doSignIn" text="-&gt;">
         <font>
             <Font size="18.0" />
@@ -31,11 +31,11 @@
             <Font size="16.0" />
         </font>
     </Label>
-    <ListView fx:id="enrolledCoursesListView" layoutX="483.0" layoutY="96.0" prefHeight="200.0" prefWidth="400.0" />
+    <ListView fx:id="signedOutCourseList" layoutX="483.0" layoutY="96.0" prefHeight="200.0" prefWidth="400.0" />
     <Button layoutX="11.0" layoutY="309.0" mnemonicParsing="false" onAction="#doMenu" text="Welkomstscherm">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-    <Label fx:id="warningLabel" layoutX="21.0" layoutY="405.0" prefHeight="17.0" prefWidth="353.0" text="warningLabel" visible="false" />
+    <!--<Label fx:id="warningLabel" layoutX="21.0" layoutY="405.0" prefHeight="17.0" prefWidth="353.0" text="warningLabel" visible="false" />-->
 </AnchorPane>

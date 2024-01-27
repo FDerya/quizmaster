@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
     // Attributes
     private UserDAO userDAO;
@@ -171,6 +170,7 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         }
         return 0;
     }
+
     public List<Group> getGroupByIdCourse(int idCourse) {
         List<Group> resultList = new ArrayList<>();
         String sql = "SELECT * FROM Group WHERE idCourse = ?;";
