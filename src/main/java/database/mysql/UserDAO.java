@@ -14,22 +14,21 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         super(dbAccess);
     }
 
-    // Methode om een lijst van alle gebruikers te krijgen vanuit de database, gesorteerd op achternaam.
+    // Get all users from the database, sorted by surname first, then firstname.
     public List<User> getAll() {
         List<User> resultList = new ArrayList<>();
         String sql = "SELECT * FROM User ORDER BY surname, firstName;";
         return makeUserList(resultList, sql);
     }
 
-    // Methode om een lijst van coordinatoren te krijgen
+    // Get all coordinators from databse
     public List<User> getAllCoordinators() {
         List<User> resultList = new ArrayList<>();
         String sql = "SELECT * FROM user WHERE role = 'Coördinator' ORDER BY surname;";
         return makeUserList(resultList, sql);
     }
 
-    // Methode om een enkele gebruiker op te vragen uit de SQL database, waarvan je de parameter id meegeeft.
-    // Je krijgt je select statement terug in de vorm van een object User.
+    // Search the database for a user with a given idUser. Returns that user if it's in the database.
     public User getOneById(int idUser) {
         String sql = "SELECT * FROM User WHERE idUser = ?";
         User user = null;
@@ -46,8 +45,8 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         return user;
     }
 
-    // Methode nodig bij het inloggen: het vraagt om een userName en geeft een object User terug, waarvan je met de
-    // getters het wachtwoord kan controleren.
+    // Needed to verify login credentials: you return an object User with a given userName,
+    // where you can check its password.
     public User getOneByUsername(String userName) {
         String sql = "SELECT * FROM User WHERE username = ?";
         User user = null;
@@ -64,7 +63,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         return user;
     }
 
-    // Methode om een object User (zonder userId, want de tabel User gebruikt auto-increment) toe te voegen aan SQL.
+    // Stores a user to the database from a given user. idUser is set because database uses auto-increment.
     public void storeOne(User user) {
         String sql = "INSERT INTO user(username, password, firstName, prefix, surname, role) VALUES (?,?,?,?,?,?) ;";
         try {
@@ -77,7 +76,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         }
     }
 
-    // Methode om een gebruiker in SQL te updaten.
+    // Updates a given user
     public void updateOne(User user) {
         String sql = "UPDATE User SET username = ?, password = ?, firstName = ?, prefix = ?, surname = ?, role = ? WHERE idUser = ?;";
         try {
@@ -90,7 +89,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         }
     }
 
-    // Methode die de afzonderlijke attributen van een User klaarzet om in de mySQL database gezet te worden.
+    // Sets the parameters for the SQL statement, from the given user
     private void createUpdateUser(User user) throws SQLException {
         preparedStatement.setString(1, user.getUsername());
         preparedStatement.setString(2, user.getPassword());
@@ -100,7 +99,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         preparedStatement.setString(6, user.getRole());
     }
 
-    // Methode om een gebruiker uit de database te verwijderen.
+    // Removes a user from the database
     public void removeOne(User user) {
         String sql = "DELETE FROM user WHERE idUser = ?;";
         try {
@@ -112,7 +111,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         }
     }
 
-    // Methode om een User te verkrijgen vanuit SQL. Vanuit de resultSet wordt hier een User gemaakt.
+    // Creates and returns a user from the database query.
     private static User getUser(ResultSet resultSet) throws SQLException {
         int idUser = resultSet.getInt("idUser");
         String username = resultSet.getString("username");
@@ -124,7 +123,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         return new User(idUser, username, password, firstName, prefix, surname, role);
     }
 
-// Methode om een userList te maken. Geeft de resultList terug aan de hand van de meegegeven SQL statement
+// Creates a List of users from a resultset and adds all users to that list.
     private List<User> makeUserList(List<User> resultList, String sql) {
         try {
             setupPreparedStatement(sql);
