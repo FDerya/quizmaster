@@ -74,7 +74,7 @@ public class StudentSignInOutController {
     // Retrieves the list of courses in which the student is enrolled
     private List<Course> getEnrolledCourses(int userId) {
         ParticipationDAO participationDAO = new ParticipationDAO(Main.getDBaccess());
-        List<Participation> participations = participationDAO.getParticipationsByIdUser(userId);
+        List<Participation> participations = participationDAO.getParticipationByIdUser(userId);
 
         List<Course> enrolledCourses = new ArrayList<>();
         for (Participation participation : participations) {
@@ -137,9 +137,10 @@ public class StudentSignInOutController {
     // Adds new participations to the database
     private void addParticipationsToDatabase(ParticipationDAO participationDAO, List<Participation> participationsToAdd) {
         for (Participation newParticipation : participationsToAdd) {
-            participationDAO.storeOneWhereGroupIsNull(newParticipation);
+            participationDAO.storeOneWhereGroupIsNull(newParticipation.getUser().getIdUser(), newParticipation.getCourse().getIdCourse());
         }
     }
+
 
     // Updates the database with newly enrolled courses if any
     private void updateEnrolledCoursesInDatabase(Course selectedCourse, boolean isEnrolled) {
