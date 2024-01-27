@@ -107,7 +107,8 @@ public class SceneManager {
     public void showStudentSignInOutScene() {
         FXMLLoader loader = getScene("/view/fxml/studentSignInOut.fxml");
         StudentSignInOutController controller = loader.getController();
-        controller.setup();
+        int idUser = User.getCurrentUser().getIdUser();
+        controller.setup(idUser);
     }
 
     public void showSelectQuizForStudent() {

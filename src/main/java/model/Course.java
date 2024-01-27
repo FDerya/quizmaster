@@ -4,6 +4,8 @@
 
 package model;
 
+import java.util.List;
+
 public class Course {
 // Attributes
     private int idCourse;
