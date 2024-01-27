@@ -185,4 +185,3 @@ public class ParticipationDAO extends AbstractDAO implements GenericDAO<Particip
     }
 }
 
-
