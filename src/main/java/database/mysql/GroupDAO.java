@@ -171,7 +171,9 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         return 0;
     }
 
+    // Retrieves a list of groups associated with a specified course ID from the database
     public List<Group> getGroupsByIdCourse(int idCourse) {
+
         List<Group> resultList = new ArrayList<>();
         String sql = "SELECT * FROM `group` WHERE idCourse = ?;";
         try {
