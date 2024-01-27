@@ -1,5 +1,6 @@
 package controller;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import javacouchdb.CouchDBAccess;
 import javacouchdb.UserCouchDBDAO;
@@ -37,16 +38,19 @@ public class DennisNoSQLLauncher {
             userCouchDBDAO.saveSingleUser(user);
         }
 
-        // Write database to .csv file, sorted by idUser
+        // Write database to .csv file, sorted by idUser.
+        // Per user: first line is the toString of the user, second line are the JSON values
         File userFile = new File("src/resources/usersFromCouchDB.csv");
+        Gson gson = new Gson();
         try {
+            User singleUser;
             List<JsonObject> allUsers = userCouchDBDAO.getAllDocuments();
             PrintWriter printWriter = new PrintWriter(userFile);
             allUsers.sort(Comparator.comparing(user -> user.get("idUser").getAsInt()));
             for (JsonObject user : allUsers) {
-                user.remove("_id");
-                user.remove("_rev");
-                printWriter.println(user.getAsJsonObject());
+                singleUser = gson.fromJson(user, User.class);
+                printWriter.println("Gebruiker: " + singleUser);
+                printWriter.println("JSON waarde: " + gson.toJson(singleUser));
             }
             printWriter.close();
         } catch (FileNotFoundException fileNotFound) {
@@ -54,19 +58,19 @@ public class DennisNoSQLLauncher {
         }
 
 
-        // Read user
+        // Reads user
         System.out.println("Student uit couchDB gehaald met idUser = 1:");
         User getUser = userCouchDBDAO.getUser(1);
         System.out.println(getUser + ", " + getUser.getRole());
 
-        // Update user
+        // Updates user
         testUserOne.setRole("Docent");
         userCouchDBDAO.updateUser(testUserOne);
         User updatedUser = userCouchDBDAO.getUser(1);
         System.out.println("The student becomes the master:");
         System.out.println(updatedUser + ", " + updatedUser.getRole());
 
-        // Delete user
+        // Deletes user
         userCouchDBDAO.deleteUser(testUserOne);
         System.out.println("\nHelaas wordt Frits ontslagen en uit het systeem verwijderd");
         System.out.println("Hier stond ooit Frits Sissing, maar nu: " + userCouchDBDAO.getUser(1));
