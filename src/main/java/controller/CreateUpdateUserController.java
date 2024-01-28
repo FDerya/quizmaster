@@ -113,7 +113,7 @@ public class CreateUpdateUserController extends WarningAlertController {
         if (user != null) {
             if (checkForDuplicates(user)) {
                 usernameLabel.setTextFill(Color.RED);
-                showSame(checkForDuplicates(user));
+                showSame(checkForDuplicates(user), "");
             } else {
                 usernameLabel.setTextFill(Color.BLACK);
                 saveUser(user);

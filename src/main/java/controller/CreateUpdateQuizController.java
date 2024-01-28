@@ -95,26 +95,26 @@ public class CreateUpdateQuizController extends WarningAlertController {
     public void doCreateUpdateQuiz(ActionEvent event) throws InterruptedException {
         Quiz quiz = createQuiz();
         if (quiz != null) {
-            if (titelLabel.getText().equals("Wijzig Quiz")) {
-                updateQuiz(quiz);
-            } else if (!checkDuplicate(quiz.getNameQuiz())) {
-                if (titelLabel.getText().equals("Maak nieuwe Quiz")) {
+            if (!checkDuplicate(quiz)) {
+                if (titelLabel.getText().equals("Wijzig Quiz")) {
+                    updateQuiz(quiz);
+                } else if (titelLabel.getText().equals("Maak nieuwe Quiz")) {
                     newQuiz(quiz);
+
                 }
-            }
-            Timeline timeline = new Timeline(new KeyFrame(
-                    Duration.millis(2000),
-                    ae -> Main.getSceneManager().showManageQuizScene()));
-            timeline.play();
-        } else {
-            showSame(true, "quiz");
-        }
+
+                Timeline timeline = new Timeline(new KeyFrame(
+                        Duration.millis(2000),
+                        ae -> Main.getSceneManager().showManageQuizScene()));
+                timeline.play();
+            }else showSame(true, "quiz");
     }
-    private boolean checkDuplicate(String nameQuiz) {
+    }
+    private boolean checkDuplicate(Quiz nameQuiz) {
         boolean showDuplicate = false;
         List<Quiz> quizNamen = quizDAO.getAll();
         for (Quiz naamquiz : quizNamen) {
-            if (nameQuiz.equals(naamquiz.getNameQuiz())) {
+            if (nameQuiz.getNameQuiz().equals(naamquiz.getNameQuiz()) && nameQuiz.getIdQuiz()!=naamquiz.getIdQuiz()) {
                 checkAndChangeLabelColor(true, nameQuizLabel);
                 showDuplicate = true;
             } else showSame(false, "quiz");
