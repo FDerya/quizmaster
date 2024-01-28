@@ -29,9 +29,8 @@ public class FillOutQuizController {
         if (titleLabel.getText().equals("Vraag 1")) {
          previousQuestionButton.setVisible(false);
          questionArea.setText("test");
-//         List<Question> questionList = questionDAO.getQuestionNamesForQuiz(quiz);
+         List<Question> questionList = questionDAO.getQuestionsForQuiz(quiz);
         }
-
     }
 
     public void doRegisterA() {}
