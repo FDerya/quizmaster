@@ -1,7 +1,3 @@
-// TO DO:
-// controleren of showSame is aangepast
-// comboboxen via warningAlert, als die aangepast is
-
 package controller;
 
 import database.mysql.UserDAO;
@@ -23,7 +19,7 @@ import java.util.List;
 
 public class CreateUpdateUserController extends WarningAlertController {
     private final UserDAO userDAO;
-    private int idUser;         // Opslaan van idUser omdat deze nodig is om een gebruiker te wijzigen.
+    private int idUser;         // saves the users id in the global scope, so you can set it later on to edit a user.
     @FXML
     Label titleLabel;
     @FXML
@@ -113,7 +109,7 @@ public class CreateUpdateUserController extends WarningAlertController {
         if (user != null) {
             if (checkForDuplicates(user)) {
                 usernameLabel.setTextFill(Color.RED);
-                showSame(checkForDuplicates(user), "");
+                showSame(checkForDuplicates(user), "gebruikers");
             } else {
                 usernameLabel.setTextFill(Color.BLACK);
                 saveUser(user);
@@ -197,10 +193,8 @@ public class CreateUpdateUserController extends WarningAlertController {
     // Shows warninglabel and sets label color if a role is null.
     private void isCorrectInputRole(String role) {
         if (role == null) {
-            showWarningLabel(true);
             roleLabel.setTextFill(Color.RED);
         } else {
-            showWarningLabel(false);
             roleLabel.setTextFill(Color.BLACK);
         }
     }
