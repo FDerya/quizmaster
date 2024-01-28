@@ -91,6 +91,9 @@ public class CreateUpdateQuizController extends WarningAlertController {
         Main.getSceneManager().showWelcomeScene();
     }
 
+    // Naar CoordinatorDashboard
+    public void doDashboard() { Main.getSceneManager().showCoordinatorDashboard();}
+
     // Quiz opslaan, met melding nieuwe of gewijzigde quiz
     public void doCreateUpdateQuiz(ActionEvent event) throws InterruptedException {
         Quiz quiz = createQuiz();
