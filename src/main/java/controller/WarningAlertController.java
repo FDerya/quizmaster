@@ -14,7 +14,7 @@ public class WarningAlertController {
     @FXML
     Label warningLabel;
     @FXML
-    Label levelLabel;
+    Label comboLabel;
 
     public void showWarningLabel(boolean trueorfalse) {
         String labelNoFields = "Je hebt niet alles ingevuld";
@@ -55,11 +55,11 @@ public class WarningAlertController {
     }
 
     // Melding tonen en tekst rood kleuren wanneer geen level is gekozen
-    public void isCorrectInputLevel(String level) {
-        if (level == null) {
-            levelLabel.setTextFill(Color.RED);
+    public void isCorrectInputComboBox(String insert) {
+        if (insert == null) {
+            comboLabel.setTextFill(Color.RED);
         } else {
-            levelLabel.setTextFill(Color.BLACK);
+            comboLabel.setTextFill(Color.BLACK);
         }
     }
 
@@ -84,8 +84,8 @@ public class WarningAlertController {
         return result.isPresent() && result.get() == buttonContinue;
     }
 
-    public void showSame(boolean trueorfalse) {
-        String same = "Deze naam bestaat al.";
+    public void showSame(boolean trueorfalse, String insert) {
+        String same = "Deze "+insert+"naam bestaat al.";
         warningLabel.setText(same);
         if (trueorfalse) {
             warningLabel.setVisible(true);
