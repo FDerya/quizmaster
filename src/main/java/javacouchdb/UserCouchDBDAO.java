@@ -15,8 +15,7 @@ public class UserCouchDBDAO extends AbstractCouchDBDAO {
 
     public String saveSingleUser(User user) {
         String jsonString = gson.toJson(user);
-        JsonParser parser = new JsonParser();
-        JsonObject jsonObject = parser.parse(jsonString).getAsJsonObject();
+        JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
         return saveDocument(jsonObject);
     }
 
@@ -54,8 +53,7 @@ public class UserCouchDBDAO extends AbstractCouchDBDAO {
     public String updateUser(User user) {
         String[] idAndRev = getIdAndRevUser(user);
         String jsonString = gson.toJson(user);
-        JsonParser parser = new JsonParser();
-        JsonObject jsonObject = parser.parse(jsonString).getAsJsonObject();
+        JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
         jsonObject.addProperty("_id", idAndRev[0]);
         jsonObject.addProperty("_rev", idAndRev[1]);
         return updateDocument(jsonObject);
