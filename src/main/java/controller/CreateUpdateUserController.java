@@ -232,7 +232,7 @@ public class CreateUpdateUserController extends WarningAlertController {
         }
 
         // Creates a list from the database, iterates through that list and sets the value of boolean duplicate
-        // if the fullname and the userid are identical with the user in the parameter.
+        // if the username and the userid are identical with the user in the parameter.
         List<User> allUsers = userDAO.getAll();
         boolean duplicate = false;
         for (User userInUserList : allUsers) {
