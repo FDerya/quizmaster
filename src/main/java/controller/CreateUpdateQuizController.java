@@ -16,9 +16,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import view.Main;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 public class CreateUpdateQuizController extends WarningAlertController {
     private final DBAccess dbAccess;
@@ -109,7 +107,7 @@ public class CreateUpdateQuizController extends WarningAlertController {
                     ae -> Main.getSceneManager().showManageQuizScene()));
             timeline.play();
         } else {
-            showSame(true);
+            showSame(true, "quiz");
         }
     }
     private boolean checkDuplicate(String nameQuiz) {
@@ -119,7 +117,7 @@ public class CreateUpdateQuizController extends WarningAlertController {
             if (nameQuiz.equals(naamquiz.getNameQuiz())) {
                 checkAndChangeLabelColor(true, nameQuizLabel);
                 showDuplicate = true;
-            } else showSame(false);
+            } else showSame(false, "quiz");
         }
         return showDuplicate;
     }
@@ -147,7 +145,7 @@ public class CreateUpdateQuizController extends WarningAlertController {
         String level = levelsListComboBox.getValue();
         String amount = amountTextField.getText();
         isCorrectInputCourse(coursesListComboBox.getSelectionModel().getSelectedItem(), courseText);
-        isCorrectInputLevel(level);
+        isCorrectInputComboBox(level);
         correctInput = isCorrectInput(nameQuiz, amount);
         if (course == null || !correctInput || level == null) {
             showWarningLabel(true);

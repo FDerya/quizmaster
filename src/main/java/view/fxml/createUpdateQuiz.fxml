@@ -46,7 +46,7 @@
                         <Insets right="5.0" />
                     </GridPane.margin>
                 </Label>
-                <Label fx:id="levelLabel" text="Level Quiz" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+                <Label fx:id="comboLabel" text="Level Quiz" GridPane.halignment="LEFT" GridPane.rowIndex="2">
                     <GridPane.margin>
                         <Insets right="5.0" />
                     </GridPane.margin>
