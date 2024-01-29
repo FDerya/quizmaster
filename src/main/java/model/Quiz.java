@@ -27,12 +27,10 @@ public class Quiz {
     public Quiz(){
         this(0,null,"","",0);
     }
+
     @Override
     public String toString() {
-        StringBuilder resultString = new StringBuilder();
-        resultString.append(nameQuiz).append("\t\t\t") ;
-        resultString.append(amountQuestions);
-        return resultString.toString();
+        return super.toString();
     }
 
     //Getters en setters
