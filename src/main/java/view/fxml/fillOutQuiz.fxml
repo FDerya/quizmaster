@@ -1,25 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FillOutQuizController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FillOutQuizController">
     <Label fx:id="titleLabel" layoutX="14.0" layoutY="14.0" text="Vraag 1">
         <font>
             <Font size="18.0" />
         </font>
     </Label>
-    <TextArea fx:id="questionArea" layoutX="14.0" layoutY="49.0" prefHeight="300.0" prefWidth="600.0" promptText="Deze textarea bevat de vraag en de vier antwoorden." editable="false" />
+    <TextArea fx:id="questionArea" editable="false" layoutX="14.0" layoutY="49.0" prefHeight="300.0" prefWidth="600.0" promptText="Deze textarea bevat de vraag en de vier antwoorden." wrapText="true" />
     <Button layoutX="14.0" layoutY="366.0" mnemonicParsing="false" onAction="#doRegisterA" text="Antwoord A" />
     <Button layoutX="104.0" layoutY="366.0" mnemonicParsing="false" onAction="#doRegisterB" text="Antwoord B" />
     <Button layoutX="194.0" layoutY="366.0" mnemonicParsing="false" onAction="#doRegisterC" text="Antwoord C" />
     <Button layoutX="284.0" layoutY="366.0" mnemonicParsing="false" onAction="#doRegisterD" text="Antwoord D" />
-    <Button fx:id="previousQuestionButton" layoutX="481.0" layoutY="366.0" mnemonicParsing="false" onAction="#doPreviousQuestion" text="Vorige" />
+    <Button fx:id="previousQuestionButton" layoutX="481.0" layoutY="366.0" mnemonicParsing="false" onAction="#doPreviousQuestion" text="Vorige" visible="false" />
     <Button fx:id="nextQuestionButton" layoutX="546.0" layoutY="366.0" mnemonicParsing="false" onAction="#doNextQuestion" text="Volgende" />
-    <Button layoutX="14.0" layoutY="422.0" mnemonicParsing="false" onAction="#doMenu" text="Menu">
+    <Button layoutX="14.0" layoutY="422.0" mnemonicParsing="false" onAction="#doMenu" text="Welkomstscherm">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
+   <Button layoutX="152.0" layoutY="424.0" mnemonicParsing="false" onAction="#doQuizSelect" text="Quizoverzicht" />
+   <Button fx:id="turnInButton" layoutX="546.0" layoutY="366.0" mnemonicParsing="false" onAction="#doTurnIn" prefWidth="71.0" text="Inleveren" visible="false" />
 </AnchorPane>
