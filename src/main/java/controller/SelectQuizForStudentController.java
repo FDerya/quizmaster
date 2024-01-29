@@ -28,7 +28,7 @@ public class SelectQuizForStudentController extends WarningAlertController {
     public void setup() {
         User user = User.getCurrentUser();
         Participation oneQuiz = participationDAO.getOneById(user.getIdUser());
-        if (oneQuiz != null) {
+        if (oneQuiz != null && oneQuiz.getGroup() != null) {
             int course = oneQuiz.getCourse().getIdCourse();
             List<Quiz> quizzen = quizDAO.getAllByCourseId(course);
             quizList.setCellFactory(param -> new ListCell<>() {

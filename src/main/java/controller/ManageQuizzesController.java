@@ -70,12 +70,8 @@ public class ManageQuizzesController extends WarningAlertController {
     }
 
     private double doCount(List<Quiz> quizzes) {
-        int count = 0;
-        int amount = 0;
-        for (int i = 0; i < quizzes.size(); i++) {
-            amount += quizzes.get(i).getAmountQuestions();
-            count++;
-        }
+        int count = quizzes.size();
+        int amount = questionDAO.getQuestionCountFromUser(User.getCurrentUser());
         double avg = (amount*10 / count)/10.0;
         return avg;
     }

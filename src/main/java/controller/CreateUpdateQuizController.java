@@ -55,10 +55,10 @@ public class CreateUpdateQuizController extends WarningAlertController {
     public void setup(Quiz quizOne) {
         levelsListComboBox.setItems(levelsList);
         coursesListComboBox.setItems(coursesList);
-        titelLabel.setText("Maak nieuwe Quiz");
-        nameTextField.textProperty().addListener((observable, oldValue, newValue) ->{
-            if (nameTextField.getText().length()>MAXLENGTH){
-                String s = nameTextField.getText(0,MAXLENGTH);
+        titelLabel.setText("Nieuwe quiz");
+        nameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (nameTextField.getText().length() > MAXLENGTH) {
+                String s = nameTextField.getText(0, MAXLENGTH);
                 nameTextField.setText(s);
             }
         });
@@ -69,7 +69,7 @@ public class CreateUpdateQuizController extends WarningAlertController {
         });
         if (quizOne != null) {
             idQuiz = quizOne.getIdQuiz();
-            titelLabel.setText("Wijzig Quiz");
+            titelLabel.setText("Wijzig quiz");
             courseLabel.setText(quizOne.getCourse().getNameCourse());
             nameTextField.setText(quizOne.getNameQuiz());
             levelsListComboBox.setValue(quizOne.getLevel());
@@ -91,36 +91,46 @@ public class CreateUpdateQuizController extends WarningAlertController {
         Main.getSceneManager().showWelcomeScene();
     }
 
+    // Naar CoordinatorDashboard
+    public void doDashboard() {
+        Main.getSceneManager().showCoordinatorDashboard();
+    }
+
     // Quiz opslaan, met melding nieuwe of gewijzigde quiz
     public void doCreateUpdateQuiz(ActionEvent event) throws InterruptedException {
         Quiz quiz = createQuiz();
         if (quiz != null) {
-            if (!checkDuplicate(quiz)) {
-                if (titelLabel.getText().equals("Wijzig Quiz")) {
+            if (checkDuplicate(quiz)) {
+                showSame(true, "quiz");
+            } else {
+                if (titelLabel.getText().equals("Wijzig quiz")) {
                     updateQuiz(quiz);
-                } else if (titelLabel.getText().equals("Maak nieuwe Quiz")) {
+                } else if (titelLabel.getText().equals("Nieuwe quiz")) {
                     newQuiz(quiz);
-
                 }
-
                 Timeline timeline = new Timeline(new KeyFrame(
                         Duration.millis(2000),
                         ae -> Main.getSceneManager().showManageQuizScene()));
                 timeline.play();
-            }else showSame(true, "quiz");
+            }
+        }
     }
-    }
+
     private boolean checkDuplicate(Quiz nameQuiz) {
+        if (titelLabel.getText().equals("Wijzig quiz")) {
+            nameQuiz.setIdQuiz(idQuiz);
+        }
         boolean showDuplicate = false;
         List<Quiz> quizNamen = quizDAO.getAll();
         for (Quiz naamquiz : quizNamen) {
-            if (nameQuiz.getNameQuiz().equals(naamquiz.getNameQuiz()) && nameQuiz.getIdQuiz()!=naamquiz.getIdQuiz()) {
+            if (nameQuiz.getNameQuiz().equals(naamquiz.getNameQuiz()) && (nameQuiz.getIdQuiz() != naamquiz.getIdQuiz())) {
                 checkAndChangeLabelColor(true, nameQuizLabel);
                 showDuplicate = true;
             } else showSame(false, "quiz");
         }
         return showDuplicate;
     }
+
 
     private void newQuiz(Quiz quiz) {
         showSaved(quiz.getNameQuiz());
@@ -163,7 +173,7 @@ public class CreateUpdateQuizController extends WarningAlertController {
     private boolean isCorrectInput(String nameQuiz, String amountQuestions) {
         checkAndChangeLabelColor(nameQuiz.isEmpty(), nameQuizLabel);
         checkAndChangeLabelColor(amountQuestions.isEmpty(), amountQuestionsLabel);
-        return (!amountQuestions.isEmpty()&&!nameQuiz.isEmpty());
+        return (!amountQuestions.isEmpty() && !nameQuiz.isEmpty());
     }
 
     // Niet-ingevulde velden rood markeren en melding tonen
@@ -174,8 +184,8 @@ public class CreateUpdateQuizController extends WarningAlertController {
             if (courseLabel.getText().equals("")) {
                 label.setTextFill(Color.RED);
             }
-            }else {
-                label.setTextFill(Color.BLACK);
+        } else {
+            label.setTextFill(Color.BLACK);
         }
     }
 }

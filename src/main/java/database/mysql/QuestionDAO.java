@@ -227,7 +227,27 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
         return null;
     }
 
-
+    // Returns the number of the questions based on userID
+    public int getQuestionCountForUser(User user) {
+        int count = 0;
+        String sql = "SELECT COUNT(*) " +
+                "FROM question q " +
+                "JOIN quiz z ON q.idQuiz = z.idQuiz " +
+                "JOIN course c ON z.idCourse = c.idCourse " +
+                "JOIN user u ON c.idUser = u.idUser " +
+                "WHERE u.idUser = ?;";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, user.getIdUser());
+            ResultSet resultSet = executeSelectStatement();
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (SQLException sqlException) {
+            System.out.println("SQL fout " + sqlException.getMessage());
+        }
+        return count;
+    }
 
 
 }
