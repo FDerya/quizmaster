@@ -7,6 +7,9 @@ import model.*;
 
 import javax.xml.transform.Result;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class QuizResultCouchDBDAO extends AbstractCouchDBDAO {
     private final Gson gson;
@@ -21,16 +24,18 @@ public class QuizResultCouchDBDAO extends AbstractCouchDBDAO {
         JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
         return saveDocument(jsonObject);
     }
-    public QuizResult getSingleQuizResult(Quiz quiz, User user){
-        QuizResult result;
+
+    public List<QuizResult> getQuizResults(Quiz quiz, User user) {
+        List<QuizResult> resultList = new ArrayList<>();
         for (JsonObject jsonObject : getAllDocuments()) {
-            result = gson.fromJson(jsonObject, QuizResult.class);
-            if (result.getQuiz().equals(quiz.getNameQuiz()) && result.getUser().equals(user.getUsername())) {
-                return result;
+            QuizResult result = gson.fromJson(jsonObject, QuizResult.class);
+            if (result.getQuiz().equals(quiz.getNameQuiz()) && result.getUser().equals(user.getFullName())) {
+                resultList.add(result);
             }
         }
-        return null;
+        // resultList op datum sorteren
+        resultList.sort(Comparator.comparing(quizResult -> quizResult.getLocalDate()));
+        return resultList;
     }
-
-    }
+}
 
