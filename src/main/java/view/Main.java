@@ -14,7 +14,7 @@ public class Main extends Application {
     private static final String databaseName = "Quizmaster";
     private static final String mainUser = "userQuizmaster";
     private static final String mainUserPassword = "pwQuizmaster";
-    private static final String couchDBDatabaseName = "quizmaster";
+    private static final String couchDBDatabaseName = "quizmaster-quizresult";
     private static final String couchDBMainUser = "admin";
     private static final String couchDBPassword = "admin";
 

@@ -18,6 +18,12 @@ public class SelectQuizForStudentController extends WarningAlertController {
     private final UserDAO userDAO;
     private final QuizDAO quizDAO;
     private final ParticipationDAO participationDAO;
+    private QuizResultCouchDBDAO quizResultCouchDBDAO = new QuizResultCouchDBDAO(Main.getCouchDBaccess());
+
+    private QuizResult latestQuizResult;
+    private List<QuizResult> finishedQuizzes = new ArrayList<>();
+    private List<String> datum = new ArrayList<>();
+    private List<String> score = new ArrayList<>();
     @FXML
     ListView<Quiz> quizList;
 
@@ -30,12 +36,12 @@ public class SelectQuizForStudentController extends WarningAlertController {
     public void setup() {
         User user = User.getCurrentUser();
         List<Participation> participation = participationDAO.getParticipationByIdUserGroupNotNull(user.getIdUser());
+
         if (!participation.isEmpty()) {
             List<Quiz> quizzen = new ArrayList<>();
-            for(Participation course: participation){
+            for (Participation course : participation) {
                 quizzen.addAll(quizDAO.getAllByCourseId(course.getCourse().getIdCourse()));
             }
-           // getCouchDBResult(quizzen.get(0), User.getCurrentUser());
             quizList.setCellFactory(param -> new ListCell<>() {
                 @Override
                 public void updateItem(Quiz item, boolean empty) {
@@ -48,8 +54,8 @@ public class SelectQuizForStudentController extends WarningAlertController {
                     HBox hBox = new HBox(naam, datum, score);
                     if (!(item == null || empty)) {
                         naam.setText(item.getNameQuiz());
-                        datum.setText("Datum");
-                        score.setText("Score");
+                        datum.setText(getCouchDBDatum(item.getNameQuiz()));
+                        score.setText(getCouchDBScore(item.getNameQuiz()));
                     }
                     setGraphic(hBox);
                 }
@@ -71,25 +77,22 @@ public class SelectQuizForStudentController extends WarningAlertController {
         }
     }
 
-   /* private QuizResult getCouchDBResult(Quiz quiz, User user) {
-        QuizResultCouchDBDAO quizResultCouchDBDAO = new QuizResultCouchDBDAO(Main.getCouchDBaccess());
-        QuizResult quizResult = quizResultCouchDBDAO.getSingleQuizResult(quiz, user);
-        if (quizResult == null) {
-            System.out.println("Fout");
-        }return quizResult;
+
+    private String getCouchDBDatum(String nameQuiz) {
+        finishedQuizzes = quizResultCouchDBDAO.getQuizResults(quizDAO.getOneByName(nameQuiz), User.getCurrentUser());
+        if (!finishedQuizzes.isEmpty()) {
+            QuizResult lastQuiz = finishedQuizzes.get(finishedQuizzes.size() - 1);
+            String datum = lastQuiz.getLocalDate();
+            return datum;
+        }else return "";
     }
-    private String getCouchDBDatum(QuizResult quizResult) {
-        String datum = quizResult.getLocalDate();
-        if (quizResult == null) {
-            System.out.println("Fout");
-        }
-        return datum;
+
+    private String getCouchDBScore(String nameQuiz) {
+        finishedQuizzes = quizResultCouchDBDAO.getQuizResults(quizDAO.getOneByName(nameQuiz), User.getCurrentUser());
+        if (!finishedQuizzes.isEmpty()) {
+            QuizResult lastQuiz = finishedQuizzes.get(finishedQuizzes.size() - 1);
+            String score = lastQuiz.getScore();
+            return score;
+        }else return "";
     }
-    private String getCouchDBScore(QuizResult quizResult) {
-          String score = quizResult.getScore();
-        if (quizResult == null) {
-            System.out.println("Fout");
-        }
-        return score;
-    }*/
 }
