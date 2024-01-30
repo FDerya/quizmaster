@@ -69,10 +69,15 @@ public class ManageQuizzesController extends WarningAlertController {
         }
     }
 
-    private double doCount(List<Quiz> quizzes) {
+    protected double doCount(List<Quiz> quizzes) {
         int count = quizzes.size();
-        int amount = questionDAO.getQuestionCountFromUser(User.getCurrentUser());
-        double avg = (amount*10 / count)/10.0;
+        int amount = questionDAO.getQuestionCountForUser(User.getCurrentUser());
+        double avg = 0;
+        if (amount > 0) {
+            avg = (amount * 10.0 / count) / 10.0;
+        }else {
+            showEmpty("coordinator","vragen gemaakt" );
+        }
         return avg;
     }
 

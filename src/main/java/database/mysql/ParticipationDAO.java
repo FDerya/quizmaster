@@ -183,5 +183,10 @@ public class ParticipationDAO extends AbstractDAO implements GenericDAO<Particip
         Group group = groupDAO.getOneById(idGroup);
         return new Participation(user, course, group);
     }
+    public List<Participation> getParticipationByIdUserGroupNotNull(int idUser) {
+        List<Participation> resultList = new ArrayList<>();
+        String sql = "SELECT * FROM participation WHERE idUser = ? AND idGroup IS NOT NULL;";
+        return getParticipationList(idUser, resultList, sql);
+    }
 }
 

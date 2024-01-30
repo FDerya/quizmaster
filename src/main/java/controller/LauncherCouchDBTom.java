@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class LauncherCouchDBTom {
-    private static QuizDAO quizDAO = new QuizDAO(Main.getDBaccess());
-    private static CourseDAO courseDAO = new CourseDAO(Main.getDBaccess());
+    private static final QuizDAO quizDAO = new QuizDAO(Main.getDBaccess());
+    private static final CourseDAO courseDAO = new CourseDAO(Main.getDBaccess());
     private static CouchDBAccess couchDBAccess;
     private static QuizCouchDBDAO quizCouchDBDAO;
 

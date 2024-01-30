@@ -22,7 +22,7 @@ public class CreateUpdateQuizController extends WarningAlertController {
     private final DBAccess dbAccess;
     private int idQuiz;
     CourseDAO courseDAO = new CourseDAO(Main.getDBaccess());
-    private QuizDAO quizDAO = new QuizDAO(Main.getDBaccess());
+    private final QuizDAO quizDAO = new QuizDAO(Main.getDBaccess());
     @FXML
     private TextField nameTextField;
     @FXML
@@ -97,7 +97,7 @@ public class CreateUpdateQuizController extends WarningAlertController {
     }
 
     // Quiz opslaan, met melding nieuwe of gewijzigde quiz
-    public void doCreateUpdateQuiz(ActionEvent event) throws InterruptedException {
+    public void doCreateUpdateQuiz(ActionEvent event){
         Quiz quiz = createQuiz();
         if (quiz != null) {
             if (checkDuplicate(quiz)) {
@@ -163,8 +163,8 @@ public class CreateUpdateQuizController extends WarningAlertController {
         } else {
             showWarningLabel(false);
             int amountQuestions = Integer.parseInt(amount);
-            Quiz quiz = new Quiz(course, nameQuiz, level, amountQuestions);
-            return quiz;
+            Quiz newQuiz = new Quiz(course, nameQuiz, level, amountQuestions);
+            return newQuiz;
         }
     }
 

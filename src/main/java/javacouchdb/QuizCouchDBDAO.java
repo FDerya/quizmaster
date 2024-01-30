@@ -51,7 +51,7 @@ public class QuizCouchDBDAO extends AbstractCouchDBDAO{
         }
         return idAndRev;
     }
-    public String updateVerbruiker(Quiz quiz) {
+    public String updateQuiz(Quiz quiz) {
         // Haal _id en _rev van document op behorend bij verbruiker
         // Zet verbruiker om in JsonObject
         String[] idAndRev = getIdAndRevQuiz(quiz);
