@@ -27,7 +27,7 @@ public class DennisNoSQLLauncher {
         testUsers.add(testUserThree);
 
         // Initialize couchDB access
-        CouchDBAccess couchDBAccess = new CouchDBAccess("quizmaster", "admin", "admin");
+        CouchDBAccess couchDBAccess = new CouchDBAccess("usersinquizmaster", "admin", "admin");
         UserCouchDBDAO userCouchDBDAO = new UserCouchDBDAO(couchDBAccess);
 
         // Open connection
