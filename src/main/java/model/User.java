@@ -103,7 +103,7 @@ public class User {
     public String getFullName() {
         StringBuilder fullName = new StringBuilder();
         fullName.append(firstName).append(" ");
-        if (prefix != null) {
+        if (!prefix.isEmpty()) {
             fullName.append(prefix).append(" ");
         }
         fullName.append(surname);
