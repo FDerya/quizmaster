@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public class ManageGroupsController {
+public class ManageGroupsController extends WarningAlertController {
     private final GroupDAO groupDAO;
     @FXML
     private ListView<Group> groupList;
@@ -120,7 +120,8 @@ public class ManageGroupsController {
         }
         boolean foundInNewGroups = isGroupInNewGroups(selectedGroup);
         if (selectedGroup.isNew() || foundInNewGroups) {
-            showConfirmationDialog(selectedGroup);
+            // confirmDeletion("groep", selectedGroup.getGroupName());
+           showConfirmationDialog(selectedGroup);
         } else {
             showWarningAndSetup(selectedGroup);
         }
@@ -140,10 +141,10 @@ public class ManageGroupsController {
     // updates the group count label.
     private void deleteGroup(Group selectedGroup) {
 
-            groupDAO.deleteGroup(selectedGroup);
-            groupList.getItems().remove(selectedGroup);
-            groupList.getItems().sort(Comparator.comparing(group -> group.getCourse().getNameCourse()));
-            updateGroupCountLabel();
+        groupDAO.deleteGroup(selectedGroup);
+        groupList.getItems().remove(selectedGroup);
+        groupList.getItems().sort(Comparator.comparing(group -> group.getCourse().getNameCourse()));
+        updateGroupCountLabel();
 
     }
 

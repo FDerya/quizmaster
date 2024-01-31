@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class LauncherBiancaCSV {
+public class LauncherCSVBianca {
     // File and path names
     private static final String filepath = "src/main/java/database/Groepen.csv";
     private static final File userFile = new File(filepath);
