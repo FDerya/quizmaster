@@ -36,12 +36,12 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
                 quiz = getQuiz(resultSet, courseDAO, quiz);
                 totalListQuiz.add(quiz);
             }
-        } catch (
-                SQLException sqlFout) {
+        } catch (SQLException sqlFout) {
             System.out.println("SQL fout " + sqlFout.getMessage());
         }
         return totalListQuiz;
     }
+
     public List<Quiz> getAllByCourseId(int idCourse) {
         List<Quiz> courseTotalListQuiz = new ArrayList<>();
         String sql = "SELECT * FROM Quiz where idCourse = ? ORDER BY nameQuiz;";
@@ -53,12 +53,12 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
                 quiz = getQuiz(resultSet, courseDAO, quiz);
                 courseTotalListQuiz.add(quiz);
             }
-        } catch (
-                SQLException sqlFout) {
+        } catch (SQLException sqlFout) {
             System.out.println("SQL fout " + sqlFout.getMessage());
         }
         return courseTotalListQuiz;
     }
+
     // Zoek een specifieke quiz aan de hand van idQuiz
     @Override
     public Quiz getOneById(int id) {
@@ -70,8 +70,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
             while (resultSet.next()) {
                 quiz = getQuiz(resultSet, courseDAO, quiz);
             }
-        } catch (
-                SQLException sqlFout) {
+        } catch (SQLException sqlFout) {
             System.out.println("SQL fout " + sqlFout.getMessage());
         }
         return quiz;
@@ -88,8 +87,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
             while (resultSet.next()) {
                 quiz = getQuiz(resultSet, courseDAO, quiz);
             }
-        } catch (
-                SQLException sqlFout) {
+        } catch (SQLException sqlFout) {
             System.out.println("SQL fout " + sqlFout.getMessage());
         }
         return quiz;
@@ -164,8 +162,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
                 quiz = getQuiz(resultSet, courseDAO, quiz);
                 quizList.add(quiz);
             }
-        } catch (
-                SQLException sqlFout) {
+        } catch (SQLException sqlFout) {
             System.out.println("SQL fout " + sqlFout.getMessage());
         }
         return quizList;
