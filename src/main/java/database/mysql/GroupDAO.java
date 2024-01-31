@@ -170,4 +170,22 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         }
         return resultList;
     }
+
+    public boolean groupExists(Group group) {
+        String sql = "SELECT COUNT(*) FROM `group` WHERE nameGroup = ? AND idCourse = ?";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setString(1, group.getGroupName());
+            preparedStatement.setInt(2, group.getCourse().getIdCourse());
+
+            try (ResultSet resultSet = executeSelectStatement()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
