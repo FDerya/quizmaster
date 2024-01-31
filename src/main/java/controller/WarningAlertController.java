@@ -85,7 +85,7 @@ public class WarningAlertController {
     }
 
     public void showSame(boolean trueorfalse) {
-        String same = "Deze naam bestaat al.";
+        String same = "Deze naam bestaat al";
         warningLabel.setText(same);
         if (trueorfalse) {
             warningLabel.setVisible(true);
