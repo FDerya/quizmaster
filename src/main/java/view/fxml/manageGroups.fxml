@@ -21,18 +21,18 @@
         </font>
     </Label>
 
-    <ListView fx:id="groupList" focusTraversable="false" layoutX="14.0" layoutY="78.0" prefHeight="200.0" prefWidth="288.0" />
+    <ListView fx:id="groupList" focusTraversable="true" layoutX="14.0" layoutY="78.0" prefHeight="200.0" prefWidth="300.0" />
     <Button layoutX="15.0" layoutY="288.0" mnemonicParsing="false" onAction="#doCreateGroup" text="Nieuw">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-    <Button layoutX="115.0" layoutY="288.0" mnemonicParsing="false" onAction="#doUpdateGroup" text="Wijzig">
+    <Button layoutX="85.0" layoutY="288.0" mnemonicParsing="false" onAction="#doUpdateGroup" text="Wijzig">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-    <Button layoutX="215.0" layoutY="288.0" mnemonicParsing="false" onAction="#doDeleteGroup" text="Verwijder">
+    <Button layoutX="155.0" layoutY="288.0" mnemonicParsing="false" onAction="#doDeleteGroup" text="Verwijder">
         <font>
             <Font size="14.0" />
         </font>
@@ -42,12 +42,7 @@
             <Font size="14.0" />
         </font>
     </Button>
-    <Label fx:id="selectedCourseLabel" layoutX="392.0" layoutY="125.0" text="Cursusnaam" visible="false">
-        <font>
-            <Font size="14.0" />
-        </font>
-    </Label>
-    <Label fx:id="groupCountLabel" layoutX="392.0" layoutY="151.0" prefHeight="0.0" prefWidth="207.0" text="Aantal groepen die cursus volgen" visible="false">
+    <Label fx:id="groupCountLabel" layoutX="346.0" layoutY="107.0" prefHeight="0.0" prefWidth="207.0" text="Aantal groepen die cursus volgen" visible="true">
         <font>
             <Font size="14.0" />
         </font>

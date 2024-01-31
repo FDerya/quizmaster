@@ -12,7 +12,7 @@
         <TextField fx:id="answerWrong1Textfield" layoutX="125.0" layoutY="337.0" prefHeight="25.0" prefWidth="453.0" promptText="Wrong Answer 1" />
         <TextField fx:id="answerWrong2Textfield" layoutX="125.0" layoutY="381.0" prefHeight="25.0" prefWidth="453.0" promptText="Wrong Answer 2" />
         <TextField fx:id="answerWrong3Textfield" layoutX="125.0" layoutY="428.0" prefHeight="25.0" prefWidth="453.0" promptText="Wrong Answer 3" />
-      <Button layoutX="21.0" layoutY="541.0" mnemonicParsing="false" onAction="#doMenu" prefHeight="32.0" prefWidth="101.0" text="Terug" />
+      <Button layoutX="23.0" layoutY="528.0" mnemonicParsing="false" onAction="#doMenu" prefHeight="32.0" prefWidth="101.0" text="Terug" />
         <ComboBox fx:id="quizlist" layoutX="125.0" layoutY="90.0" prefHeight="25.0" prefWidth="308.0" promptText="Selecteer Quiz" />
         <Button layoutX="122.0" layoutY="478.0" mnemonicParsing="false" onAction="#doStoreQuestion" prefHeight="25.0" prefWidth="155.0" text="Opslaan " />
       <Label layoutX="11.0" layoutY="58.0" />
@@ -30,5 +30,6 @@
       <Label fx:id="label_Antwood_3" layoutX="14.0" layoutY="432.0" text="Onjuist Antwoord 3" />
       <Label layoutX="37.0" layoutY="58.0" text="Cursus" />
       <Label fx:id="label_Course" layoutX="126.0" layoutY="58.0" prefHeight="17.0" prefWidth="242.0" text="(Selecteer een quiz om de cursus te tonen)" />
+      <Button layoutX="217.0" layoutY="527.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="104.0" text="Dashboard" />
     </children>
 </AnchorPane>

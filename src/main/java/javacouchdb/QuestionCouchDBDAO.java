@@ -4,6 +4,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import model.Question;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class QuestionCouchDBDAO extends AbstractCouchDBDAO {
 
     private final Gson gson;
@@ -19,6 +22,7 @@ public class QuestionCouchDBDAO extends AbstractCouchDBDAO {
         JsonObject jsonObject = parser.parse(jsonString).getAsJsonObject();
         return saveDocument(jsonObject);
     }
+
 
     public Question getQuestionById(String doc_Id) {
         return gson.fromJson(getDocumentById(doc_Id), Question.class);

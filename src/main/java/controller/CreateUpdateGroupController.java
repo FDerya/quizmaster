@@ -7,6 +7,7 @@ package controller;
 import database.mysql.CourseDAO;
 import database.mysql.GroupDAO;
 import database.mysql.UserDAO;
+import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,16 +26,13 @@ import view.Main;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class CreateUpdateGroupController {
+public class CreateUpdateGroupController extends WarningAlertController {
     private final UserDAO userDAO;
     private final GroupDAO groupDAO;
     private final CourseDAO courseDAO;
-    private static final int MAX_NAME_LENGTH = 45;
     private final ObservableList<Course> allCourses = FXCollections.observableArrayList();
-    private final ObservableList<String> groupList = FXCollections.observableArrayList();
     public static List<Group> newGroups = new ArrayList<>();
     private Group selectedGroup;
-    private int idGroup;
     @FXML
     Label titleLabel;
     @FXML
@@ -53,8 +51,6 @@ public class CreateUpdateGroupController {
     ComboBox<Course> courseComboBox;
     @FXML
     ComboBox<User> teacherComboBox;
-    @FXML
-    Label warningLabel;
 
     // Initializes the CreateUpdateGroupController with the provided group.
     public CreateUpdateGroupController() {
@@ -65,10 +61,10 @@ public class CreateUpdateGroupController {
 
     // Sets up the controller with the specified group, initializing UI elements and populating fields.
     public void setup(Group group) {
-        idGroup = (group != null) ? group.getIdGroup() : 0;
+        int idGroup = (group != null) ? group.getIdGroup() : 0;
         setLabelsAndTitle(group);
         initializeCourseComboBox();
-        limitTextFieldLength(nameGroupTextField, MAX_NAME_LENGTH, "[a-zA-Z0-9 ]*");
+        limitTextFieldLength(nameGroupTextField, "[a-zA-Z0-9 ]*");
         setNameGroupTextField();
         setAmountStudentTextField();
 
@@ -93,7 +89,6 @@ public class CreateUpdateGroupController {
                 amountStudentTextField.setText(oldValue);
             }
         });
-
     }
 
     // Sets labels and title based on the provided group.
@@ -110,14 +105,14 @@ public class CreateUpdateGroupController {
     }
 
     // Limits the length of the input in a TextField to the specified length
-    private void limitTextFieldLength(TextField textField, int maxLength, String pattern) {
+    private void limitTextFieldLength(TextField textField, String pattern) {
         StringConverter<String> converter = new DefaultStringConverter();
         TextFormatter<String> textFormatter = new TextFormatter<>(
                 converter,
                 null,
                 change -> {
                     String newText = change.getControlNewText();
-                    if (newText.matches(pattern) && newText.length() <= maxLength) {
+                    if (newText.matches(pattern) && newText.length() <= MAXLENGTH) {
                         return change;
                     }
                     return null;
@@ -179,52 +174,6 @@ public class CreateUpdateGroupController {
         }
     }
 
-    // Handles the "Save Group" button click event, stores or updates the group in the database
-    @FXML
-    public void doSaveGroup(ActionEvent actionEvent) {
-        Group group = createGroup();
-        if (group != null) {
-            if (titleLabel.getText().equals("Nieuwe groep")) {
-                saveNewGroup(group);
-            } else {
-                updateExistingGroup(group);
-            }
-        }
-    }
-
-    // Handles the saving of a new group, storing it in the database and displaying a confirmation alert
-    private void saveNewGroup(Group group) {
-        try {
-            groupDAO.storeOne(group);
-            setWarningLabel("Groep '" + group.getGroupName() + "' opgeslagen", Color.BLACK);
-
-            PauseTransition delay = new PauseTransition(Duration.seconds(2));
-            delay.setOnFinished(this::doShowManageGroups);
-            delay.play();
-        } catch (Exception e) {
-            e.printStackTrace();
-            setWarningLabel("Fout bij opslaan groep", Color.RED);
-        }
-    }
-
-    // Handles the updating of an existing group
-    private void updateExistingGroup(Group group) {
-        if (isGroupNameUnique(group.getGroupName(), selectedGroup)) {
-            group.setIdGroup(idGroup);
-            Group updatedGroup = groupDAO.updateOne(group);
-
-            if (updatedGroup != null) {
-                setWarningLabel("Groep '" + updatedGroup.getGroupName() + "' gewijzigd", Color.BLACK);
-
-                PauseTransition delay = new PauseTransition(Duration.seconds(2));
-                delay.setOnFinished(this::doShowManageGroups);
-                delay.play();
-            } else {
-                setWarningLabel("Groep kon niet worden gewijzigd", Color.RED);
-            }
-        }
-    }
-
     // Navigates to the "Manage Groups" scene and closes the currently displayed alert
     @FXML
     public void doShowManageGroups(ActionEvent actionEvent) {
@@ -241,23 +190,130 @@ public class CreateUpdateGroupController {
         }
     }
 
+    // Handles the "Save Group" button click event, stores or updates the group in the database
+    @FXML
+    public void doSaveGroup(ActionEvent actionEvent) {
+        Group group = createGroup();
+        if (group != null) {
+            if (titleLabel.getText().equals("Nieuwe groep")) {
+                boolean isUnique = isGroupNameUniqueForCourse(group.getGroupName(),
+                        group.getCourse().getIdCourse(), group.getIdGroup());
+                if (isUnique) {
+                    saveNewGroup(group);
+                }
+            } else {
+                updateExistingGroup(group);
+            }
+        }
+    }
+
+    // Handles the saving of a new group, storing it in the database and displaying a confirmation alert
+    private void saveNewGroup(Group group) {
+        try {
+            groupDAO.storeOne(group);
+            showSaved(group.getGroupName());
+            delayAndShowManageGroups();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setWarningLabel("Fout bij opslaan groep", Color.RED);
+        }
+    }
+
     // Creates and returns a new group after validating input and performing necessary operations
     private Group createGroup() {
         Group newGroup = validateAndBuildGroup();
-
         if (newGroup != null) {
-            handleGroupNameValidation(newGroup);
-            handleGroupSave(newGroup);
-            return newGroup;
+            if (titleLabel.getText().equals("Nieuwe groep")) {
+                handleNewGroup(newGroup);
+            } else {
+                handleExistingGroup(newGroup);
+            }
         }
+        return newGroup;
+    }
 
-        return null;
+    // Handles the creation of a new group, saving it if the group name is unique within the course
+    private void handleNewGroup(Group newGroup) {
+        boolean isUnique = isGroupNameUniqueForCourse(newGroup.getGroupName(), newGroup.getCourse().getIdCourse(),
+                newGroup.getIdGroup());
+        if (isUnique) {
+            saveNewGroup(newGroup);
+            newGroups.add(newGroup);
+        } else {
+            showSame(true, "groeps");
+        }
+    }
+
+    // Handles an existing group by validating input and updating the group if input is valid
+    private void handleExistingGroup(Group group) {
+        if (validateInput()) {
+            updateExistingGroup(group);
+            newGroups.add(group);
+        } else {
+            showSame(true, "groeps");
+        }
+    }
+
+    // Handles the update of a group, storing it in the database and displaying a confirmation alert
+    private void updateExistingGroup(Group group) {
+        if (!isGroupInfoChanged(group)) {
+            return;
+        }
+        if (!isGroupUnique(group, selectedGroup.getIdGroup())) {
+            showSame(true, "groeps");
+
+            return;
+        }
+        try {
+            group.setIdGroup(selectedGroup.getIdGroup());
+            Group updatedGroup = updateGroupInDatabase(group);
+
+            if (updatedGroup != null) {
+                showUpdated(group.getGroupName());
+                delayAndShowManageGroups();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Checks if the group information has changed
+    private boolean isGroupInfoChanged(Group group) {
+        return !group.getGroupName().equals(selectedGroup.getGroupName()) ||
+                !group.getCourse().equals(selectedGroup.getCourse()) ||
+                !isGroupNameUniqueForCourse(group.getGroupName(), group.getCourse().getIdCourse(),
+                        group.getIdGroup());
+    }
+
+    // Updates the group in the database
+    private Group updateGroupInDatabase(Group group) {
+        try {
+            groupDAO.updateGroupById(group);
+            return group;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // checks if a group name is unique within its course, considering the case when updating a group
+    // with a specified group ID.
+    private boolean isGroupUnique(Group group, int groupId) {
+        String groupName = group.getGroupName();
+        int courseId = group.getCourse().getIdCourse();
+        return isGroupNameUniqueForCourse(groupName, courseId, groupId);
+    }
+
+    // Delays the return to the ManageGroups by 2 secondes
+    private void delayAndShowManageGroups() {
+        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+        delay.setOnFinished(this::doShowManageGroups);
+        delay.play();
     }
 
     // Validates input and builds a new group object if input is correct
     private Group validateAndBuildGroup() {
         boolean correctInput = validateInput();
-
         if (correctInput) {
             Group newGroup = buildGroupObject();
             newGroup.setNew(true);
@@ -266,39 +322,17 @@ public class CreateUpdateGroupController {
         return null;
     }
 
-    // Handles validation of the group name, displaying a warning if the name is not unique
-    private void handleGroupNameValidation(Group newGroup) {
-        if (selectedGroup != null && !newGroup.getGroupName().equals(selectedGroup.getGroupName()) &&
-                !isGroupNameUnique(newGroup.getGroupName(), selectedGroup)) {
-            setWarningLabel("De groep bestaat al. Kies een andere naam.", Color.RED);
-        }
-    }
-
-    // Handles the save operation for the new group, updating the group list and displaying a success message
-    private void handleGroupSave(Group newGroup) {
-        updateGroupList(newGroup);
-        resetLabelColors();
-
-        if (!newGroups.contains(newGroup)) {
-            newGroups.add(newGroup);
-        }
-
-        setWarningLabel("Groep '" + newGroup.getGroupName() + "' opgeslagen", Color.BLACK);
-    }
-
-    // Checks if the group name is unique, considering the edited group
-    private boolean isGroupNameUnique(String groupName, Group editingGroup) {
+    // Checks if the group name is unique within the course, considering the case when updating a group
+    private boolean isGroupNameUniqueForCourse(String groupName, int courseId, int groupId) {
         try {
-            List<Group> allGroups = groupDAO.getAll();
-            for (Group group : allGroups) {
-                if (group.getGroupName().equals(groupName) && (editingGroup == null || group.getIdGroup()
-                        != editingGroup.getIdGroup())) {
+            List<Group> courseGroups = groupDAO.getGroupsByIdCourse(courseId);
+            for (Group group : courseGroups) {
+                if (group.getGroupName().equals(groupName) && group.getIdGroup() != groupId) {
                     return false;
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            setWarningLabel("Fout bij het controleren van de groepsnaam.", Color.RED);
             return false;
         }
         return true;
@@ -345,6 +379,18 @@ public class CreateUpdateGroupController {
         setLabelErrorColor(nameGroupLabel, "nameGroup");
         setLabelErrorColor(amountStudentLabel, "amountStudent");
         setLabelErrorColor(teacherLabel, "teacher");
+        fadeOutWarningLabel();
+    }
+
+    // Fades out the warning message
+    private void fadeOutWarningLabel() {
+        FadeTransition fadeOut = new FadeTransition(Duration.seconds(2), warningLabel);
+        fadeOut.setFromValue(1.0);
+        fadeOut.setToValue(0.0);
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(5));
+        pause.setOnFinished(event -> fadeOut.play());
+        pause.play();
     }
 
     // validates input fields, updates labels with error messages, displays a red warning label
@@ -373,7 +419,6 @@ public class CreateUpdateGroupController {
     // sets the text color of the specific label in the grid to red
     private void setLabelErrorColor(String fieldName) {
         resetLabelColors();
-
         switch (fieldName) {
             case "course":
                 setLabelErrorColor(courseLabel, fieldName);
@@ -439,12 +484,5 @@ public class CreateUpdateGroupController {
         User selectedTeacher = teacherComboBox.getSelectionModel().getSelectedItem();
 
         return new Group(0, selectedCourse, nameGroup, Integer.parseInt(amountStudent), selectedTeacher);
-    }
-
-    // Updates the group list with the name of the newly added group.
-    private void updateGroupList(Group newGroup) {
-        if (groupList != null) {
-            groupList.add(newGroup.getGroupName());
-        }
     }
 }
