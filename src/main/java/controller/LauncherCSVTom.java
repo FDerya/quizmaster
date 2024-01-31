@@ -158,11 +158,11 @@ import javafx.stage.FileChooser.ExtensionFilter;
             }
         }
 
-        /*private static void saveQuizToTXT(DBAccess dbAccess, List<Quiz> listQuiz, QuizDAO quizDAO, User user) {
+        private static void saveQuizToTXT(DBAccess dbAccess, List<Quiz> listQuiz, QuizDAO quizDAO, User user) {
             dbAccess.openConnection();
             int amountQuiz = listQuiz.size();
-            int amountQuestion = questionDAO.getQuestionCountFromUser(user);
-            double avgQuestion = ((amountQuestion *10/amountQuiz)/10.0);
+            int amountQuestion = questionDAO.getQuestionCountForUser(user);
+            double avgQuestion = (Math.round(amountQuestion *10/amountQuiz)/10.0);
             try {
                 PrintWriter printWriter = new PrintWriter(fileTXT);
                 printWriter.printf("%-30s %-30s %-15s %-10s\n", "Cursus", "Quiznaam", "Level", "Aantal vragen per quiz");
@@ -176,5 +176,5 @@ import javafx.stage.FileChooser.ExtensionFilter;
                 System.out.println("File not found: " + fileNotFoundException);
             }
         }
-*/
+
     }
