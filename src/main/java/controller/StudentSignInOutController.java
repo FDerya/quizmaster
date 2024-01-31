@@ -3,6 +3,7 @@ package controller;
 import database.mysql.CourseDAO;
 import database.mysql.ParticipationDAO;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import model.Course;
@@ -21,6 +22,8 @@ public class StudentSignInOutController {
     private ListView<Course> signedOutCourseList;
     @FXML
     private ListView<Course> signedInCourseList;
+    @FXML
+    private Label warningLabel;
     private List<Course> allCourses;
     private List<Course> enrolledCourses;
     private List<Course> notEnrolledCourses;
@@ -100,6 +103,11 @@ public class StudentSignInOutController {
     public void doSignIn() {
         List<Course> selectedCourses = new ArrayList<>(signedInCourseList.getSelectionModel().getSelectedItems());
 
+        if (selectedCourses.isEmpty()) {
+            setWarningLabel("Selecteer een cursus");
+            return;
+        }
+
         for (Course selectedCourse : selectedCourses) {
             if (!enrolledCourses.contains(selectedCourse)) {
                 enrolledCourses.add(selectedCourse);
@@ -112,18 +120,26 @@ public class StudentSignInOutController {
     // Handles the action when the student signs out from selected courses, updating views and database accordingly
     public void doSignOut() {
         List<Course> selectedCourses = new ArrayList<>(signedOutCourseList.getSelectionModel().getSelectedItems());
-
         ParticipationDAO participationDAO = new ParticipationDAO(Main.getDBaccess());
-
+        if (selectedCourses.isEmpty()) {
+            setWarningLabel("Selecteer een cursus");
+            return;
+        }
         for (Course course : selectedCourses) {
             if (enrolledCourses.contains(course)) {
                 enrolledCourses.remove(course);
                 participationDAO.deleteParticipation(idUser, course.getIdCourse());
             }
         }
-
         updateListViews();
     }
+
+    // Sets warninglabel
+    private void setWarningLabel(String message) {
+        warningLabel.setText(message);
+        warningLabel.setVisible(true);
+    }
+
 
     // Updates the list views after changes in enrolled courses, refreshing the displayed courses
     private void updateListViews() {

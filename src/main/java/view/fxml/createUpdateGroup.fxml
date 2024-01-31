@@ -12,10 +12,10 @@
                 <Font size="18.0" />
             </font>
         </Label>
-        <GridPane layoutX="-62.0" layoutY="89.0" prefHeight="135.0" prefWidth="398.0">
+        <GridPane layoutX="5.0" layoutY="99.0" prefHeight="137.0" prefWidth="331.0">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="197.0" minWidth="10.0" prefWidth="197.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="199.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="197.0" minWidth="10.0" prefWidth="137.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="207.6666742960612" minWidth="10.0" prefWidth="189.0" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -25,22 +25,22 @@
             </rowConstraints>
             <children>
 
-                <Label fx:id="courseLabel" text="Cursusnaam" GridPane.halignment="RIGHT">
+                <Label fx:id="courseLabel" text="Cursusnaam" GridPane.halignment="LEFT">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
                 </Label>
-                <Label fx:id="nameGroupLabel" text="Groepsnaam" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                <Label fx:id="nameGroupLabel" text="Groepsnaam" GridPane.halignment="LEFT" GridPane.rowIndex="1">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
                 </Label>
-                <Label fx:id="amountStudentLabel" text="Max Aantal studenten" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                <Label fx:id="amountStudentLabel" text="Max Aantal studenten" GridPane.halignment="LEFT" GridPane.rowIndex="2">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
                 </Label>
-                <Label fx:id="teacherLabel" text="Docent" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                <Label fx:id="teacherLabel" text="Docent" GridPane.halignment="LEFT" GridPane.rowIndex="3">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </GridPane.margin>
@@ -70,9 +70,9 @@
                 <Insets right="5.0" />
             </padding>
         </GridPane>
-        <Button layoutX="41.0" layoutY="249.0" mnemonicParsing="false" onAction="#doSaveGroup" text="Opslaan" />
-        <Button layoutX="111.0" layoutY="249.0" mnemonicParsing="false" onAction="#doShowManageGroups" text="Groepenbeheer" />
-        <Button layoutX="221.0" layoutY="249.0" mnemonicParsing="false" onAction="#doShowMenu" text="Welkomstscherm" />
+        <Button layoutX="15.0" layoutY="249.0" mnemonicParsing="false" onAction="#doSaveGroup" text="Opslaan" />
+        <Button layoutX="85.0" layoutY="249.0" mnemonicParsing="false" onAction="#doShowManageGroups" text="Groepenbeheer" />
+        <Button layoutX="195.0" layoutY="249.0" mnemonicParsing="false" onAction="#doShowMenu" text="Welkomstscherm" />
         <Label fx:id="warningLabel" layoutX="41.0" layoutY="340.0" prefHeight="17.0" prefWidth="353.0" text="Label" visible="false" />
     </children>
 </AnchorPane>
