@@ -74,7 +74,7 @@ public class ManageQuizzesController extends WarningAlertController {
         int amount = questionDAO.getQuestionCountForUser(User.getCurrentUser());
         double avg = 0;
         if (amount > 0) {
-            avg = (amount * 10.0 / count) / 10.0;
+            avg = Math.round((amount * 10.0 / count)) / 10.0;
         }else {
             showEmpty("coordinator","vragen gemaakt" );
         }
