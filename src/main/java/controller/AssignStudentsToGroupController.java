@@ -1,22 +1,30 @@
 package controller;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import database.mysql.CourseDAO;
 import database.mysql.GroupDAO;
 import database.mysql.ParticipationDAO;
 import database.mysql.UserDAO;
+import javacouchdb.QuizResultCouchDBDAO;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import model.Course;
-import model.Group;
-import model.Participation;
-import model.User;
+import javafx.scene.layout.GridPane;
+import javafx.util.Duration;
+import model.*;
 import view.Main;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 public class AssignStudentsToGroupController {
     @FXML
@@ -29,13 +37,25 @@ public class AssignStudentsToGroupController {
     ListView<User> studentsInGroupList;
     @FXML
     Label warningLabel;
+    @FXML
+    Label savedLabel;
     ParticipationDAO participationDAO;
     CourseDAO courseDAO;
     GroupDAO groupDAO;
     UserDAO userDAO;
+    QuizResultCouchDBDAO quizResultCouchDBDAO;
     final String noCourseNoGroupMessage = "Kies eerst een cursus en groep";
     final String noGroupMessage = "Kies eerst een groep";
     final String noUserSelectedMessage = "Selecteer eerst een of meer gebruikers";
+    final String path = "src/resources/";
+    String textfile = "quizresults";
+    final String extension = ".txt";
+    File file = new File(path+textfile+extension);
+    Gson gson = new Gson();
+    List<JsonObject> listJsonObject = new ArrayList<>();
+    List<QuizResult> listQuizResult = new ArrayList<>();
+    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), actionEvent ->
+            savedLabel.setVisible(false)));
 
     // Controller
     public AssignStudentsToGroupController() {
@@ -43,6 +63,7 @@ public class AssignStudentsToGroupController {
         this.courseDAO = new CourseDAO(Main.getDBaccess());
         this.userDAO = new UserDAO(Main.getDBaccess());
         this.groupDAO = new GroupDAO(Main.getDBaccess(), userDAO, courseDAO);
+        this.quizResultCouchDBDAO = new QuizResultCouchDBDAO(Main.getCouchDBaccess());
     }
 
     // Fills the comboboxes and userlists
@@ -51,6 +72,8 @@ public class AssignStudentsToGroupController {
         fillStudentList();
         fillGroupComboBox();
         fillStudentInGroupList();
+        listJsonObject = quizResultCouchDBDAO.getAllDocuments();
+        listQuizResult = fillQuizResultList();
     }
 
     private void fillCourseComboBox() {
@@ -109,6 +132,18 @@ public class AssignStudentsToGroupController {
             warningLabel.setVisible(groupsPerCourse.isEmpty());
         }));
     }
+    
+    // Fills a List<QuizResult> from the List<JsonObject>, by converting the JsonObject to a QuizResult.
+    // Sorts by username.
+    public List<QuizResult> fillQuizResultList() {
+        List<QuizResult> resultList = new ArrayList<>();
+        for (JsonObject jsonObject : listJsonObject) {
+            QuizResult quizResult = gson.fromJson(jsonObject, QuizResult.class);
+            resultList.add(quizResult);
+        }
+        resultList.sort(Comparator.comparing(QuizResult::getUser));
+        return resultList;
+    }
 
     // Assigns students to a group and handles errors when course, group and/or users are not selected.
     public void doAssign() {
@@ -150,6 +185,61 @@ public class AssignStudentsToGroupController {
         } else {
             removeStudentFromGroup(selectedCourse, selectedUsers, selectedGroup);
         }
+    }
+    
+    // Shows a pop-up where you can name the textfile to where the quizresults are exported
+    public void doShowSaveAlert() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Exporteren quizresultaten");
+        alert.setHeaderText("Voer de gewenste bestandsnaam in");
+        GridPane gridPane = new GridPane();
+        TextField fileName = new TextField("quizresults");
+        gridPane.add(fileName, 0,0);
+        alert.getDialogPane().setContent(gridPane);
+        ButtonType buttonCancel = new ButtonType("Annuleer");
+        ButtonType buttonContinue = new ButtonType("Opslaan");
+        alert.getButtonTypes().setAll(buttonCancel, buttonContinue);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == buttonContinue) {
+            saveQuizResult(fileName);
+        }
+    }
+
+    // Saves the quizresult into a given textfile. After you save, a savedLabel shows up on the screen and
+    // disappears after 2 seconds.
+    private void saveQuizResult(TextField fileName) {
+        textfile = fileName.getText();
+        createQuizResultTextFile();
+        savedLabel.setText("Bestand " + textfile + " is opgeslagen in de map: " + path);
+        savedLabel.setVisible(true);
+        timeline.play();
+    }
+
+    private void createQuizResultTextFile() {
+        try {
+            printQuizResults();
+        } catch (FileNotFoundException fileNotFoundException) {
+            System.out.println("Het bestand kan niet worden aangemaakt.");
+        }
+    }
+
+    // Initiates a printWriter, to write the quizresult into a text file.
+    // If a user has multiple quizresults, only shows the username once.
+    private void printQuizResults() throws FileNotFoundException {
+        PrintWriter printWriter = new PrintWriter(file);
+        String lastUsername = null;
+        for (QuizResult quizResult : listQuizResult) {
+            String currentUsername = quizResult.getUser();
+            if (!currentUsername.equals(lastUsername)) {
+                printWriter.println("Naam student: " + quizResult.getUser());
+                lastUsername = currentUsername;
+            }
+            printWriter.println("Quiz: " + quizResult.getQuiz());
+            printWriter.println("Datum gemaakt: " + quizResult.getLocalDate());
+            printWriter.println("Behaald: " + (quizResult.getScore().equals("behaald") ? "ja" : "nee"));
+            printWriter.println();
+        }
+        printWriter.close();
     }
 
     // Removes students from a group when there are no errors
