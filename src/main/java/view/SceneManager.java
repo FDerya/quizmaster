@@ -1,6 +1,7 @@
 package view;
 
 import controller.*;
+import javacouchdb.QuizResultCouchDBDAO;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -126,7 +127,8 @@ public class SceneManager {
     public void showStudentFeedback(Quiz quiz) {
         FXMLLoader loader = getScene("/view/fxml/studentFeedback.fxml");
         StudentFeedbackController controller = loader.getController();
-        controller.setup(quiz);
+        controller.setQuizResultCouchDBDAO(new QuizResultCouchDBDAO(Main.getCouchDBaccess()));
+        controller.setup(quiz, User.getCurrentUser());
     }
 
     public void showCoordinatorDashboard() {

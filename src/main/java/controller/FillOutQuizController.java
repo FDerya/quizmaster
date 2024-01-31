@@ -128,9 +128,10 @@ public class FillOutQuizController {
         if (showAlert()) {
             int amountOfCorrectQuestions = getResult(givenAnswers, correctAnswers);
             String score = amountOfCorrectQuestions >= amountOfCorrectQuestionsToPassQuiz ? "behaald" : "niet behaald";
-            QuizResult quizResult = new QuizResult(selectedQuiz.getNameQuiz(), score, LocalDate.now().toString(), User.getCurrentUser().getFullName());
+            QuizResult quizResult = new QuizResult(selectedQuiz.getNameQuiz(), score, LocalDate.now().toString(),
+                    User.getCurrentUser().getFullName());
             quizResultCouchDBDAO.saveSingleQuizResult(quizResult);
-//            Main.getSceneManager().showStudentFeedback(selectedQuiz);
+            Main.getSceneManager().showStudentFeedback(selectedQuiz);
         }
     }
 
