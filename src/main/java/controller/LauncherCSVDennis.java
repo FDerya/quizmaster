@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class DennisCSVLauncher {
+public class LauncherCSVDennis {
     // Attributen nodig voor initialiseren database en Filereader.
 
     private static final String filepathGebruikers = "src/main/java/database/Gebruikers.csv";

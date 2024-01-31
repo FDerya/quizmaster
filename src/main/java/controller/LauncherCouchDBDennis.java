@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class DennisNoSQLLauncher {
+public class LauncherCouchDBDennis {
     public static void main(String[] args) {
         // Making testdata
         User testUserOne = new User(1, "Test", "test", "Frits", null, "Sissing", "Student");
