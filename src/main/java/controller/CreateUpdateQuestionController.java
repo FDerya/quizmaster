@@ -134,16 +134,26 @@ public class CreateUpdateQuestionController {
             if (!isUpdate && question.getQuiz() != null) {
                 // Only attempt to store the question if the quiz is not null
                 questionDAO.storeOne(question);
-                clearFields();
                 warningLabel.setText("Vraag is opgeslagen");
-            } else if (isUpdate && question != null) {
-                updateExistingQuestion(question);
-            } else {
                 warningLabel.setVisible(true);
-                warningLabel.setText("Field/s are empty");
+                Timeline timeline = new Timeline(
+                        new KeyFrame(Duration.seconds(2), event -> {
+                            clearFields();
+                            warningLabel.setVisible(false);
+                        })
+                );
+
+                timeline.play();
             }
+
+        } else if (isUpdate && question != null) {
+            updateExistingQuestion(question);
+        } else {
+            warningLabel.setVisible(true);
+            warningLabel.setText("Field/s are empty!");
         }
     }
+
 
     private void updateExistingQuestion(Question question) {
         question.setIdQuestion(existingQuestionId);
@@ -229,8 +239,6 @@ public class CreateUpdateQuestionController {
     private void showSuccessMessage(String message) {
         warningLabel.setVisible(true);
         warningLabel.setText(message);
-
-        // Create a timeline with a KeyFrame to wait for 2 seconds
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(2), event -> {
                     // After 2 seconds, go back to the manage screen
@@ -240,7 +248,6 @@ public class CreateUpdateQuestionController {
 
         timeline.play();
     }
-
     //Vult de keuzelijst (ComboBox) met beschikbare quizzen.
 //Vult de keuzelijst (ComboBox) met beschikbare quizzen.
     public void fillComboBoxQuizzes() {
@@ -270,5 +277,8 @@ public class CreateUpdateQuestionController {
         warningLabel.setText("");
         quizlist.setValue(null);
         quizlist.getSelectionModel().clearSelection();
+    }
+    public void doDashboard() {
+        Main.getSceneManager().showCoordinatorDashboard();
     }
 }

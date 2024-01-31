@@ -133,6 +133,11 @@ public class ManageQuestionsController {
             warningLabel.setText("Je moet eerst een vraag kiezen!");
             warningLabel.setStyle("-fx-text-fill: red;");
         }
+
+    }
+    public void doDashboard() {
+        Main.getSceneManager().showCoordinatorDashboard();
     }
 }
+
 
