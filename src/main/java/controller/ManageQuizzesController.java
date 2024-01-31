@@ -29,8 +29,14 @@ public class ManageQuizzesController extends WarningAlertController {
     public void setup() {
         User currentUser = User.getCurrentUser();
         List<Quiz> quizzen = quizDAO.getQuizzesFromUser(currentUser);
-        countLabel.setText("Gemiddeld aantal vragen per quiz: "+ doCount(quizzen));
+        countLabel.setText("Gemiddeld aantal vragen per quiz: " + doCount(quizzen));
         quizList.getItems().addAll(quizzen);
+        makeColumns();
+        quizList.getSelectionModel().getSelectedItem();
+
+    }
+
+    private void makeColumns() {
         quizList.setCellFactory(param -> new ListCell<>() {
             @Override
             public void updateItem(Quiz item, boolean empty) {
@@ -46,8 +52,6 @@ public class ManageQuizzesController extends WarningAlertController {
                 setGraphic(hBox);
             }
         });
-        quizList.getSelectionModel().getSelectedItem();
-
     }
 
     public void doMenu(ActionEvent event) {
@@ -75,8 +79,8 @@ public class ManageQuizzesController extends WarningAlertController {
         double avg = 0;
         if (amount > 0) {
             avg = Math.round((amount * 10.0 / count)) / 10.0;
-        }else {
-            showEmpty("coordinator","vragen gemaakt" );
+        } else {
+            showEmpty("coordinator", "vragen gemaakt");
         }
         return avg;
     }

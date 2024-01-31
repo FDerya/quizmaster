@@ -56,17 +56,7 @@ public class CreateUpdateQuizController extends WarningAlertController {
         levelsListComboBox.setItems(levelsList);
         coursesListComboBox.setItems(coursesList);
         titelLabel.setText("Nieuwe quiz");
-        nameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (nameTextField.getText().length() > MAXLENGTH) {
-                String s = nameTextField.getText(0, MAXLENGTH);
-                nameTextField.setText(s);
-            }
-        });
-        amountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                amountTextField.setText(oldValue);
-            }
-        });
+        setupInput();
         if (quizOne != null) {
             idQuiz = quizOne.getIdQuiz();
             titelLabel.setText("Wijzig quiz");
@@ -79,6 +69,20 @@ public class CreateUpdateQuizController extends WarningAlertController {
             courseText.setVisible(true);
             coursesListComboBox.setVisible(true);
         }
+    }
+
+    private void setupInput() {
+        nameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (nameTextField.getText().length() > MAXLENGTH) {
+                String s = nameTextField.getText(0, MAXLENGTH);
+                nameTextField.setText(s);
+            }
+        });
+        amountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                amountTextField.setText(oldValue);
+            }
+        });
     }
 
     // Menu terug gaan naar ManageQuiz
@@ -97,7 +101,7 @@ public class CreateUpdateQuizController extends WarningAlertController {
     }
 
     // Quiz opslaan, met melding nieuwe of gewijzigde quiz
-    public void doCreateUpdateQuiz(ActionEvent event){
+    public void doCreateUpdateQuiz(ActionEvent event) {
         Quiz quiz = createQuiz();
         if (quiz != null) {
             if (checkDuplicate(quiz)) {
@@ -175,8 +179,6 @@ public class CreateUpdateQuizController extends WarningAlertController {
         checkAndChangeLabelColor(amountQuestions.isEmpty(), amountQuestionsLabel);
         return (!amountQuestions.isEmpty() && !nameQuiz.isEmpty());
     }
-
-    // Niet-ingevulde velden rood markeren en melding tonen
 
     // Melding tonen en tekst rood kleuren wanneer geen cursus is gekozen
     private void isCorrectInputCourse(Course course, Label label) {
