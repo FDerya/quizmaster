@@ -9,6 +9,7 @@ class FillOutQuizControllerTest {
         int counter = 0;
         String singular = "Je hebt de volgende vraag niet ingevuld: ";
         String plural = "Je hebt de volgende vragen niet ingevuld: ";
+        String endOfSentence = "\nWeet je zeker dat je wilt inleveren?";
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < givenAnsers.length; i++) {
             if (givenAnsers[i].isEmpty()) {
@@ -21,11 +22,11 @@ class FillOutQuizControllerTest {
         }
 
         if (counter == 0) {
-            return "";
+            return endOfSentence;
         } else if (counter == 1) {
-            return singular + stringBuilder;
+            return singular + stringBuilder + endOfSentence;
         } else {
-            return plural + stringBuilder;
+            return plural + stringBuilder + endOfSentence;
         }
     }
 
@@ -35,19 +36,21 @@ class FillOutQuizControllerTest {
 
     @Test
     void checkAnswersTwoNotGiven() {
-        String expected = "Je hebt de volgende vragen niet ingevuld: 2, 5";
+        String expected = "Je hebt de volgende vragen niet ingevuld: 2, 5" +
+                "\nWeet je zeker dat je wilt inleveren?";
         assertEquals(expected, checkAnswers(givenAnswersTwoNotGiven));
     }
 
     @Test
     void checkAnswersOneNotGiven() {
-        String expected = "Je hebt de volgende vraag niet ingevuld: 5";
+        String expected = "Je hebt de volgende vraag niet ingevuld: 5" +
+                "\nWeet je zeker dat je wilt inleveren?";
         assertEquals(expected, checkAnswers(givenAnswersOneNotGiven));
     }
 
     @Test
     void checkAnswersAllGiven() {
-        String expected = "";
+        String expected = "\nWeet je zeker dat je wilt inleveren?";
         assertEquals(expected, checkAnswers(givenAnswersAllGiven));
     }
 }

@@ -198,6 +198,7 @@ public class FillOutQuizController {
         int counter = 0;
         String singular = "Je hebt de volgende vraag niet ingevuld: ";
         String plural = "Je hebt de volgende vragen niet ingevuld: ";
+        String endOfSentence = "\nWeet je zeker dat je wilt inleveren?";
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < givenAnsers.length; i++) {
             if (givenAnsers[i].isEmpty()) {
@@ -207,11 +208,11 @@ public class FillOutQuizController {
         }
         removeLastComma(stringBuilder);
         if (counter == 0) {
-            return "";
+            return endOfSentence;
         } else if (counter == 1) {
-            return singular + stringBuilder;
+            return singular + stringBuilder + endOfSentence;
         }
-        return plural + stringBuilder;
+        return plural + stringBuilder + endOfSentence;
     }
 
     private static void removeLastComma(StringBuilder stringBuilder) {
