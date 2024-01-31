@@ -22,9 +22,8 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         this.userDAO = userDAO;
         this.courseDAO = courseDAO;
     }
-    public GroupDAO(DBAccess dbAccess) {
-        super(dbAccess);
-    }
+
+    // public GroupDAO(DBAccess dbAccess) {super(dbAccess);}
 
     // Method to retrieve all groups
     @Override
@@ -78,46 +77,28 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
             executeManipulateStatement();
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
-            System.err.println("Fout bij het opslaan van de groep: " + sqlException.getMessage());
         }
     }
 
-    // Update the information of a Group in the database
-    public Group updateOne(Group group) {
-        Course course = group.getCourse();
-        CourseDAO courseDAO = new CourseDAO(Main.getDBaccess(), new UserDAO(Main.getDBaccess()));
-
-        Course existingCourse = courseDAO.getOneById(course.getIdCourse());
-
-        if (existingCourse != null) {
-            updateGroupWithCourseId(group, existingCourse.getIdCourse());
-            return getOneById(group.getIdGroup());
-        } else {
-            System.out.println("Kan groep niet updaten. Cursus niet gevonden.");
-            return null;
-        }
-    }
-
-    // Update the group information in the database using the provided course ID
-    private void updateGroupWithCourseId(Group group, int courseId) {
-        String updateSql = "UPDATE `group` SET idCourse = ?, nameGroup = ?, amountStudent = ?, idUser = ? WHERE idGroup = ?";
+    // Update the information of a Group in the database using the provided group ID
+    public Group updateGroupById(Group group) {
+        String sql = "UPDATE `group` SET idUser = ?, nameGroup = ?, amountStudent = ?, idCourse = ? " +
+                "WHERE `idGroup` = ?";
         try {
-            setupPreparedStatement(updateSql);
-            preparedStatement.setInt(1, courseId);
-            storeUpdateGroup(group);
+            setupPreparedStatementWithKey(sql);
+            preparedStatement.setInt(1, group.getTeacher().getIdUser());
+            preparedStatement.setString(2, group.getGroupName());
+            preparedStatement.setInt(3, group.getAmountStudent());
+            preparedStatement.setInt(4, group.getCourse().getIdCourse());
             preparedStatement.setInt(5, group.getIdGroup());
 
             executeManipulateStatement();
-        } catch (SQLException sqlException) {
-            System.out.println("SQL error " + sqlException.getMessage());
-        }
-    }
 
-    // Set the parameters for updating the group information
-    private void storeUpdateGroup(Group group) throws SQLException {
-        preparedStatement.setString(2, group.getGroupName());
-        preparedStatement.setInt(3, group.getAmountStudent());
-        preparedStatement.setInt(4, group.getTeacher().getIdUser());
+            return group;
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+            return null;
+        }
     }
 
     // Method to create a Group object from a ResultSet
@@ -139,14 +120,15 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
 
     // Methode to delete a group
     public void deleteGroup(Group group) {
-        String sql = "DELETE FROM `group` WHERE nameGroup = ?";
+        String sql = "DELETE FROM `group` WHERE idGroup = ?";
         try {
             setupPreparedStatement(sql);
-            preparedStatement.setString(1, group.getGroupName());
+            preparedStatement.setString(1, String.valueOf(group.getIdGroup()));
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
             } else {
-                System.out.println("Groep niet verwijderd.\nMogelijk bestaat de groep niet of er is een probleem met de query.");
+                System.out.println("Groep niet verwijderd.\nMogelijk bestaat de groep niet of er " +
+                        "is een probleem met de query.");
             }
         } catch (SQLException e) {
             e.printStackTrace();

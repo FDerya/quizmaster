@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class LauncherBiancaCouchDB {
+public class LauncherCouchDBBianca {
 
     private static CouchDBAccess couchDBaccess;
     private static GroupCouchDBDAO groupCouchDBDAO;

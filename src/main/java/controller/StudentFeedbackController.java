@@ -7,8 +7,6 @@ import model.Quiz;
 import model.QuizResult;
 import view.Main;
 
-import java.util.List;
-
 public class StudentFeedbackController {
 
     @FXML
