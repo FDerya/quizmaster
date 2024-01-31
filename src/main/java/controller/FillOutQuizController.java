@@ -103,6 +103,7 @@ public class FillOutQuizController {
     public void doNextQuestion() {
         saveAnswersToArrays();
         questionArea.clear();
+        givenAnswer = "";
         questionNumber++;
         if (questionNumber == questionList.size()) {
             nextQuestionButton.setVisible(false);
@@ -144,7 +145,8 @@ public class FillOutQuizController {
         Alert turnInAlert = new Alert(Alert.AlertType.CONFIRMATION);
         turnInAlert.setTitle("Inleveren");
         turnInAlert.setHeaderText("Inleveren quiz");
-        turnInAlert.setContentText("Je staat op het punt je quiz in te leveren.\n");
+        turnInAlert.setContentText("Je staat op het punt je quiz in te leveren.\n" +
+                     checkAnswers(givenAnswers));
         ButtonType buttonCancel = new ButtonType("Annuleer");
         ButtonType buttonContinue = new ButtonType("Inleveren");
         turnInAlert.getButtonTypes().setAll(buttonCancel, buttonContinue);
@@ -190,5 +192,31 @@ public class FillOutQuizController {
             }
         }
         return counter;
+    }
+
+    public String checkAnswers(String[] givenAnsers) {
+        int counter = 0;
+        String singular = "Je hebt de volgende vraag niet ingevuld: ";
+        String plural = "Je hebt de volgende vragen niet ingevuld: ";
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < givenAnsers.length; i++) {
+            if (givenAnsers[i].isEmpty()) {
+                stringBuilder.append(i + 1).append(", ");
+                counter++;
+            }
+        }
+        removeLastComma(stringBuilder);
+        if (counter == 0) {
+            return "";
+        } else if (counter == 1) {
+            return singular + stringBuilder;
+        }
+        return plural + stringBuilder;
+    }
+
+    private static void removeLastComma(StringBuilder stringBuilder) {
+        if (stringBuilder.length() > 0) {
+            stringBuilder.setLength(stringBuilder.length()-2);
+        }
     }
 }
