@@ -50,7 +50,6 @@ public class AssignStudentsToGroupController {
     final String path = "src/resources/";
     String textfile = "quizresults";
     final String extension = ".txt";
-    File file = new File(path+textfile+extension);
     Gson gson = new Gson();
     List<JsonObject> listJsonObject = new ArrayList<>();
     List<QuizResult> listQuizResult = new ArrayList<>();
@@ -226,6 +225,7 @@ public class AssignStudentsToGroupController {
     // Initiates a printWriter, to write the quizresult into a text file.
     // If a user has multiple quizresults, only shows the username once.
     private void printQuizResults() throws FileNotFoundException {
+        File file = new File(path+textfile+extension);
         PrintWriter printWriter = new PrintWriter(file);
         String lastUsername = null;
         for (QuizResult quizResult : listQuizResult) {
