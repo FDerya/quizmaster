@@ -29,7 +29,7 @@ public class ParticipationDAO extends AbstractDAO implements GenericDAO<Particip
         try {
             setupPreparedStatement(sql);
             ResultSet resultSet = executeSelectStatement();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 resultList.add(getParticipation(resultSet));
             }
         } catch (SQLException sqlError) {
@@ -37,7 +37,8 @@ public class ParticipationDAO extends AbstractDAO implements GenericDAO<Particip
         }
         return resultList;
     }
-    public List<Participation> getParticipationPerCourse(int id){
+
+    public List<Participation> getParticipationPerCourse(int id) {
         List<Participation> resultList = new ArrayList<>();
         String sql = "Select * From Participation WHERE idCourse = ? AND idGroup is null;";
         return getParticipationList(id, resultList, sql);
@@ -48,16 +49,16 @@ public class ParticipationDAO extends AbstractDAO implements GenericDAO<Particip
             setupPreparedStatement(sql);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = executeSelectStatement();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 resultList.add(getParticipation(resultSet));
             }
-        } catch (SQLException sqlFout){
+        } catch (SQLException sqlFout) {
             System.out.println("SQL error " + sqlFout.getMessage());
         }
         return resultList;
     }
 
-    public List<Participation> getParticipationInGroup(Course course, Group group){
+    public List<Participation> getParticipationInGroup(Course course, Group group) {
         List<Participation> resultList = new ArrayList<>();
         String sql = "Select * From Participation WHERE idCourse = ? AND idGroup = ?;";
         try {
@@ -65,10 +66,10 @@ public class ParticipationDAO extends AbstractDAO implements GenericDAO<Particip
             preparedStatement.setInt(1, course.getIdCourse());
             preparedStatement.setInt(2, group.getIdGroup());
             ResultSet resultSet = executeSelectStatement();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 resultList.add(getParticipation(resultSet));
             }
-        } catch (SQLException sqlFout){
+        } catch (SQLException sqlFout) {
             System.out.println("SQL error " + sqlFout.getMessage());
         }
         return resultList;
@@ -116,7 +117,7 @@ public class ParticipationDAO extends AbstractDAO implements GenericDAO<Particip
             preparedStatement.setInt(2, participation.getCourse().getIdCourse());
             preparedStatement.setInt(3, participation.getGroup().getIdGroup());
             executeManipulateStatement();
-        } catch (SQLException sqlException){
+        } catch (SQLException sqlException) {
             System.out.println("SQL fout " + sqlException.getMessage());
         }
     }
@@ -130,6 +131,35 @@ public class ParticipationDAO extends AbstractDAO implements GenericDAO<Particip
             executeManipulateStatement();
         } catch (SQLException sqlException) {
             System.out.println("SQL fout " + sqlException.getMessage());
+        }
+    }
+
+    public List<String> getStudentsFullNamesByGroupId(int groupId) throws SQLException {
+        List<String> studentFullNames = new ArrayList<>();
+        String sql = "SELECT u.firstName, u.prefix, u.surname FROM participation p INNER JOIN user u " +
+                "ON p.idUser = u.idUser WHERE p.idGroup = ?";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, groupId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    String firstName = resultSet.getString("firstName");
+                    String prefix = resultSet.getString("prefix");
+                    String surname = resultSet.getString("surname");
+
+                    StringBuilder fullName = new StringBuilder();
+                    fullName.append(firstName);
+                    if (prefix != null && !prefix.isEmpty()) {
+                        fullName.append(" ").append(prefix);
+                    }
+                    fullName.append(" ").append(surname);
+
+                    studentFullNames.add(fullName.toString());
+                }
+            }
+            return studentFullNames;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -183,6 +213,7 @@ public class ParticipationDAO extends AbstractDAO implements GenericDAO<Particip
         Group group = groupDAO.getOneById(idGroup);
         return new Participation(user, course, group);
     }
+
     public List<Participation> getParticipationByIdUserGroupNotNull(int idUser) {
         List<Participation> resultList = new ArrayList<>();
         String sql = "SELECT * FROM participation WHERE idUser = ? AND idGroup IS NOT NULL;";
