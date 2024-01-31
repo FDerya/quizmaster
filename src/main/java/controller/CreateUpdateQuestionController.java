@@ -144,16 +144,15 @@ public class CreateUpdateQuestionController {
                 );
 
                 timeline.play();
-            }
 
-        } else if (isUpdate && question != null) {
-            updateExistingQuestion(question);
-        } else {
-            warningLabel.setVisible(true);
-            warningLabel.setText("Field/s are empty!");
+            } else if (isUpdate && question != null) {
+                updateExistingQuestion(question);
+            } else {
+                warningLabel.setVisible(true);
+                warningLabel.setText("Field/s are empty!");
+            }
         }
     }
-
 
     private void updateExistingQuestion(Question question) {
         question.setIdQuestion(existingQuestionId);
