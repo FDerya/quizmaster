@@ -51,6 +51,7 @@ public class LoginController {
     private void successfulLogin(User user) {
         User.setCurrentUser(user);
         if (user.getRole().equals("Docent")) {
+            errorMessage.setVisible(true);
             errorMessage.setText("Er zijn momenteel geen taken beschikbaar voor een docent");
         } else {
             Main.getSceneManager().showWelcomeScene();
