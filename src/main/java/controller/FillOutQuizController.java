@@ -48,7 +48,7 @@ public class FillOutQuizController {
         fillQuestionArea(questionList);
         correctAnswers = new String[questionList.size()];
         givenAnswers = new String[questionList.size()];
-        amountOfCorrectQuestionsToPassQuiz = quiz.getAmountQuestions();
+        amountOfCorrectQuestionsToPassQuiz = quiz.getMinimumAmountCorrectQuestions();
         selectedQuiz = quiz;
     }
 

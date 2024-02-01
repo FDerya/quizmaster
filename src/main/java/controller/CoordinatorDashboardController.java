@@ -2,14 +2,11 @@ package controller;
 
 import database.mysql.*;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import model.*;
 import view.Main;
-import javacouchdb.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +67,7 @@ public class CoordinatorDashboardController extends WarningAlertController {
                     if (newQuiz != null) {
                         List<String> questions = questionDAO.getQuestionNamesForQuiz(newQuiz);
                         List<Integer> maxAmount = new ArrayList<>();
-                        int max = quizList.getSelectionModel().getSelectedItem().getAmountQuestions();
+                        int max = quizList.getSelectionModel().getSelectedItem().getMinimumAmountCorrectQuestions();
                         maxAmount.add(max);
                         questionList.setItems(FXCollections.observableList(questions));
                         //questionQuizList.setItems(FXCollections.observableList(maxAmount));
@@ -89,7 +86,7 @@ public class CoordinatorDashboardController extends WarningAlertController {
                 HBox hBox = new HBox(naam, aantal);
                 if (!(item == null || empty)) {
                     naam.setText(item.getNameQuiz());
-                    aantal.setText(" " + item.getAmountQuestions() + " ");
+                    aantal.setText(" " + item.getMinimumAmountCorrectQuestions() + " ");
                 }
                 setGraphic(hBox);
             }

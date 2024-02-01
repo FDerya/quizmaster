@@ -1,6 +1,7 @@
 package controller;
 // Tom van Beek, 500941521.
 
+import database.mysql.DBAccess;
 import database.mysql.QuestionDAO;
 import database.mysql.QuizDAO;
 import javafx.event.ActionEvent;
@@ -10,6 +11,9 @@ import javafx.scene.layout.HBox;
 import model.*;
 import view.Main;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.List;
 
 public class ManageQuizzesController extends WarningAlertController {
@@ -19,6 +23,8 @@ public class ManageQuizzesController extends WarningAlertController {
     Label countLabel;
     private final QuizDAO quizDAO;
     private final QuestionDAO questionDAO;
+    private static File fileTXT = new File("src/main/java/database/saveQuizTXT.txt");
+
 
     public ManageQuizzesController() {
         this.quizDAO = new QuizDAO(Main.getDBaccess());
@@ -97,4 +103,36 @@ public class ManageQuizzesController extends WarningAlertController {
             quizList.getItems().remove(selectedQuiz);
         }
     }
+
+    public void doWriteTXT(ActionEvent event) {
+        User user = User.getCurrentUser();
+        if (user.getRole().equals("Coördinator")) {
+            List<Quiz> listQuiz = quizDAO.getQuizzesFromUser(user);
+            saveQuizToTXT(Main.getDBaccess(), listQuiz, quizDAO, user);
+        }else if(user.getRole().equals("Administrator")){
+            //saveAllToTXT(Main.getDBaccess(), quizList);
+        }
+    }
+
+    private void saveQuizToTXT(DBAccess dbAccess, List<Quiz> listQuiz, QuizDAO quizDAO, User user) {
+        dbAccess.openConnection();
+        if (!listQuiz.isEmpty()) {
+            int amountQuiz = listQuiz.size();
+            int amountQuestion = questionDAO.getQuestionCountForUser(user);
+            double avgQuestion = (Math.round(amountQuestion * 10 / amountQuiz) / 10.0);
+            try {
+                PrintWriter printWriter = new PrintWriter(fileTXT);
+                printWriter.printf("%-30s %-30s %-15s %-10s\n", "Cursus", "Quiznaam", "Level", "Aantal vragen per quiz");
+                for (Quiz quiz : listQuiz) {
+                    printWriter.printf("%-30s %-30s %-15s %-10d\n", quiz.getCourse(), quiz.getNameQuiz(), quiz.getLevel(), questionDAO.getQuestionCountForQuiz(quiz));
+                }
+                printWriter.println("\nEr zijn " + amountQuiz + " quizzen met " + amountQuestion + " vragen, gemiddelde = " + avgQuestion);
+                printWriter.close();
+
+            } catch (FileNotFoundException fileNotFoundException) {
+                System.out.println("File not found: " + fileNotFoundException);
+            }
+        }
+    }
+
 }

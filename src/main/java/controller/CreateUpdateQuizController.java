@@ -63,7 +63,7 @@ public class CreateUpdateQuizController extends WarningAlertController {
             courseLabel.setText(quizOne.getCourse().getNameCourse());
             nameTextField.setText(quizOne.getNameQuiz());
             levelsListComboBox.setValue(quizOne.getLevel());
-            amountTextField.setText(String.valueOf(quizOne.getAmountQuestions()));
+            amountTextField.setText(String.valueOf(quizOne.getMinimumAmountCorrectQuestions()));
         } else {
             courseText.setText("Naam cursus");
             courseText.setVisible(true);
@@ -157,17 +157,17 @@ public class CreateUpdateQuizController extends WarningAlertController {
         }
         String nameQuiz = nameTextField.getText();
         String level = levelsListComboBox.getValue();
-        String amount = amountTextField.getText();
+        String minimumAmount = amountTextField.getText();
         isCorrectInputCourse(coursesListComboBox.getSelectionModel().getSelectedItem(), courseText);
         isCorrectInputComboBox(level);
-        correctInput = isCorrectInput(nameQuiz, amount);
+        correctInput = isCorrectInput(nameQuiz, minimumAmount);
         if (course == null || !correctInput || level == null) {
             showWarningLabel(true);
             return null;
         } else {
             showWarningLabel(false);
-            int amountQuestions = Integer.parseInt(amount);
-            Quiz newQuiz = new Quiz(course, nameQuiz, level, amountQuestions);
+            int minimumAmountCorrectQuestions = Integer.parseInt(minimumAmount);
+            Quiz newQuiz = new Quiz(course, nameQuiz, level, minimumAmountCorrectQuestions);
             return newQuiz;
         }
     }
