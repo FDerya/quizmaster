@@ -1,7 +1,9 @@
 package controller;
 
 import database.mysql.CourseDAO;
+import database.mysql.DBAccess;
 import database.mysql.QuestionDAO;
+import database.mysql.QuizDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,9 +12,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import model.Question;
+import model.Quiz;
 import model.User;
 import view.Main;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +34,8 @@ public class ManageQuestionsController {
     @FXML
     Label questionCountLabel;
     private Question question;
+
+    private static File fileTXT = new File("src/main/java/database/saveQuestionTXT.txt");
 
     public ManageQuestionsController() {
         this.questionDAO = new QuestionDAO(Main.getDBaccess());
@@ -135,7 +143,39 @@ public class ManageQuestionsController {
         }
 
     }
-    public void doDashboard() {
+
+    public void doWriteTXT(ActionEvent event) {
+        User user = User.getCurrentUser();
+        if (user.getRole().equals("Coördinator")) {
+            List<Question> listQuestion = questionDAO.getQuestionsForUser(user.getIdUser());
+            saveQuestionToTXT(Main.getDBaccess(), listQuestion, questionDAO, user);
+        }else if(user.getRole().equals("Administrator")){
+
+        }
+    }
+    private void saveQuestionToTXT(DBAccess dbAccess, List<Question> listQuestion, QuestionDAO questionDAO, User user) {
+        dbAccess.openConnection();
+        try {
+            PrintWriter printWriter = new PrintWriter(fileTXT);
+            printWriter.printf("%-30s %-30s %-15s %-15s %-15s %-15s\n",
+                    "Quiz", "Question", "AnswerRight", "AnswerWrong1", "AnswerWrong2", "AnswerWrong3");
+
+            for (Question question : listQuestion) {
+                printWriter.printf("%-30s %-30s %-15s %-15s %-15s %-15s\n",
+                        question.getQuiz().getNameQuiz(), question.getQuestion(),
+                        question.getAnswerRight(), question.getAnswerWrong1(),
+                        question.getAnswerWrong2(), question.getAnswerWrong3());
+            }
+
+            printWriter.close();
+            System.out.println("Questions saved to " + fileTXT);
+
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e.getMessage());
+        }
+    }
+
+    public void doDashboard(ActionEvent event) {
         Main.getSceneManager().showCoordinatorDashboard();
     }
 }
