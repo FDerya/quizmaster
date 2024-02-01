@@ -76,7 +76,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         return quiz;
     }
 
-    // Zoek een specifieke quiz aan de hand van de naam
+    // Zoek een specifieke quiz aan de hand van de naam van de quiz
     public Quiz getOneByName(String quizName) {
         String sql = "SELECT * FROM Quiz WHERE nameQuiz = ?;";
         CourseDAO courseDAO = new CourseDAO(dbAccess, userDAO);
@@ -125,7 +125,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         preparedStatement.setInt(1, quiz.getCourse().getIdCourse());
         preparedStatement.setString(2, quiz.getNameQuiz());
         preparedStatement.setString(3, quiz.getLevel());
-        preparedStatement.setInt(4, quiz.getAmountQuestions());
+        preparedStatement.setInt(4, quiz.getMinimumAmountCorrectQuestions());
     }
 
     private Quiz getQuiz(ResultSet resultSet, CourseDAO courseDAO, Quiz quiz) throws SQLException {
@@ -133,9 +133,9 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         int idCourse = resultSet.getInt("idCourse");
         String name = resultSet.getString("nameQuiz");
         String level = resultSet.getString("levelQuiz");
-        int amountQuestion = resultSet.getInt("amountQuestion");
+        int minimumAmountCorrectQuestion = resultSet.getInt("amountQuestion");
         Course course = courseDAO.getOneById(idCourse);
-        quiz = new Quiz(idQuiz, course, name, level, amountQuestion);
+        quiz = new Quiz(idQuiz, course, name, level, minimumAmountCorrectQuestion);
         return quiz;
     }
 

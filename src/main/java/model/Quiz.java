@@ -7,18 +7,18 @@ public class Quiz {
     private Course course;
     private String nameQuiz;
     private String level;
-    private int amountQuestions;
+    private int minimumAmountCorrectQuestions;
 
     //Constructors
-    public Quiz(int idQuiz, Course course, String nameQuiz, String level, int amountQuestions){
+    public Quiz(int idQuiz, Course course, String nameQuiz, String level, int minimumAmountCorrectQuestions){
         this.idQuiz = idQuiz;
         this.course = course;
         this.nameQuiz = nameQuiz;
         this.level = level;
-        this.amountQuestions = amountQuestions;
+        this.minimumAmountCorrectQuestions = minimumAmountCorrectQuestions;
     }
-    public Quiz (Course course, String nameQuiz, String level, int amountQuestions){
-        this(0,course, nameQuiz,level,amountQuestions);
+    public Quiz (Course course, String nameQuiz, String level, int minimumAmountCorrectQuestions){
+        this(0,course, nameQuiz,level, minimumAmountCorrectQuestions);
     }
     public Quiz(Course course){
         this(0,course, "","",0);
@@ -46,16 +46,16 @@ public class Quiz {
         return course;
     }
 
-    public int getAmountQuestions() {
-        return amountQuestions;
+    public int getMinimumAmountCorrectQuestions() {
+        return minimumAmountCorrectQuestions;
     }
 
     public String getLevel() {
         return level;
     }
 
-    public void setAmountQuestions(int amountQuestions) {
-        this.amountQuestions = amountQuestions;
+    public void setMinimumAmountCorrectQuestions(int minimumAmountCorrectQuestions) {
+        this.minimumAmountCorrectQuestions = minimumAmountCorrectQuestions;
     }
 
     public void setCourse(Course course) {

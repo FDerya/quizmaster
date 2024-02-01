@@ -1,19 +1,6 @@
 package controller;
 
 import database.mysql.*;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
-import javafx.stage.DirectoryChooser;
-
-import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ResourceBundle;
 
 import model.*;
 import view.Main;
@@ -25,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -149,7 +135,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
             try {
                 PrintWriter printWriter = new PrintWriter(fileCSV);
                 for (Quiz quiz : listQuiz) {
-                    printWriter.printf("%d, %s, %s, %s, %d\n", quiz.getIdQuiz(), quiz.getCourse(), quiz.getNameQuiz(), quiz.getLevel(), quiz.getAmountQuestions());
+                    printWriter.printf("%d, %s, %s, %s, %d\n", quiz.getIdQuiz(), quiz.getCourse(), quiz.getNameQuiz(), quiz.getLevel(), quiz.getMinimumAmountCorrectQuestions());
                 }
                 printWriter.close();
 
