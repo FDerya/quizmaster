@@ -1,5 +1,4 @@
 package controller;
-// Bianca Duijvesteijn, studentnummer 500940421
 // Manages the display of quiz feedback for a specific user on a particular quiz
 
 import javacouchdb.QuizResultCouchDBDAO;
