@@ -24,7 +24,8 @@ public class LauncherCouchDBTom {
         updatQuiz("1a8e646fc65d405288f79f33cf7ba2c7");
         Course course = courseDAO.getOneByName("An");
         Quiz quizTest = new Quiz(course, "test", "medium", 12);
-        quizCouchDBDAO.saveSingleQuiz(quizTest);
+        saveSingleQuiz(quizTest);
+        updatSingleQuiz(quizTest);
         deleteQuiz(quizTest);
         closeCouchDBAccess();
     }
@@ -55,6 +56,19 @@ public class LauncherCouchDBTom {
             for (Quiz quiz : quizList) {
                 quizCouchDBDAO.saveSingleQuiz(quiz);
             }
+        }
+    }
+    public static void updatSingleQuiz(Quiz quiz){
+        if(couchDBAccess.getClient()!=null){
+            System.out.println("Connectie open");
+            quiz.setMinimumAmountCorrectQuestions(25);
+            quizCouchDBDAO.updateQuiz(quiz);
+        }
+    }
+    public static void saveSingleQuiz(Quiz quiz){
+        if (couchDBAccess.getClient()!= null){
+            System.out.println("Connectie open");
+            quizCouchDBDAO.saveSingleQuiz(quiz);
         }
     }
     private static void getQuiz(String code){
