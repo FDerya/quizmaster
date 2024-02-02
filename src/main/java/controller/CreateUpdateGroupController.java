@@ -1,5 +1,4 @@
 package controller;
-// Bianca Duijvesteijn, studentnummer 500940421
 // The controller initializes a screen with data from a group when it is given and sets
 // allows the user to add or update groups. It retrieves course and teacher data,
 // shows warnings for invalid input and has methods for saving and showing groups.

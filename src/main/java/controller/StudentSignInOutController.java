@@ -1,5 +1,4 @@
 package controller;
-// Bianca Duijvesteijn, studentnummer 500940421
 // Manages the signing in and out of courses for a student, updating the UI and database accordingly
 
 import database.mysql.CourseDAO;
