@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FillOutQuizController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FillOutQuizController">
     <Label fx:id="titleLabel" layoutX="14.0" layoutY="14.0" text="Vraag 1">
         <font>
             <Font size="18.0" />
@@ -19,11 +19,10 @@
     <Button layoutX="284.0" layoutY="366.0" mnemonicParsing="false" onAction="#doRegisterD" text="Antwoord D" />
     <Button fx:id="previousQuestionButton" layoutX="481.0" layoutY="366.0" mnemonicParsing="false" onAction="#doPreviousQuestion" text="Vorige" visible="false" />
     <Button fx:id="nextQuestionButton" layoutX="546.0" layoutY="366.0" mnemonicParsing="false" onAction="#doNextQuestion" text="Volgende" />
-    <Button layoutX="14.0" layoutY="422.0" mnemonicParsing="false" onAction="#doMenu" text="Welkomstscherm">
+    <Button layoutX="14.0" layoutY="421.0" mnemonicParsing="false" onAction="#doMenu" prefHeight="30.0" text="Quiz afbreken">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-   <Button layoutX="152.0" layoutY="424.0" mnemonicParsing="false" onAction="#doQuizSelect" text="Quizoverzicht" />
    <Button fx:id="turnInButton" layoutX="546.0" layoutY="366.0" mnemonicParsing="false" onAction="#doTurnIn" prefWidth="71.0" text="Inleveren" visible="false" />
 </AnchorPane>

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StudentSignInOutController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StudentSignInOutController">
     <Label layoutX="11.0" layoutY="14.0" text="In- en uitschrijven voor een cursus">
         <font>
             <Font size="18.0" />
@@ -37,5 +39,5 @@
             <Font size="14.0" />
         </font>
     </Button>
-    <Label fx:id="warningLabel" layoutX="11.0" layoutY="378.0" prefHeight="17.0" prefWidth="353.0" text="warningLabel" visible="false" />
+    <Label fx:id="warningLabel" layoutX="483.0" layoutY="313.0" prefHeight="17.0" prefWidth="353.0" text="warningLabel" visible="false" />
 </AnchorPane>

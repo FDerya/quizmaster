@@ -158,10 +158,6 @@ public class FillOutQuizController {
         Main.getSceneManager().showWelcomeScene();
     }
 
-    public void doQuizSelect() {
-        Main.getSceneManager().showSelectQuizForStudent();
-    }
-
     private List<Question> shuffleQuestions(List<Question> oldList) {
         int originalSizeOldList = oldList.size();
         List<Question> newList = new ArrayList<>();
