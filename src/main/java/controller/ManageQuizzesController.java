@@ -8,6 +8,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 import model.*;
 import view.Main;
 
@@ -109,8 +111,6 @@ public class ManageQuizzesController extends WarningAlertController {
         if (user.getRole().equals("Coördinator")) {
             List<Quiz> listQuiz = quizDAO.getQuizzesFromUser(user);
             saveQuizToTXT(Main.getDBaccess(), listQuiz, quizDAO, user);
-        }else if(user.getRole().equals("Administrator")){
-            //saveAllToTXT(Main.getDBaccess(), quizList);
         }
     }
 
@@ -135,4 +135,18 @@ public class ManageQuizzesController extends WarningAlertController {
         }
     }
 
+    /*public void fileChooser() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        fileChooser.getExtensionFilters().
+                addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"),
+                        new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
+                        new FileChooser.ExtensionFilter("Audio Files", "*.wav", "*.mp3", "*.aac"),
+                        new FileChooser.ExtensionFilter("All Files", "*.*"));
+        Window mainStage = null;
+        File selectedFile = fileChooser.showSaveDialog(mainStage);
+        if (selectedFile != null) {
+            mainStage.display(selectedFile);
+        }
+    }*/
 }

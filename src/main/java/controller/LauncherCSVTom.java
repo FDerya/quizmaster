@@ -29,7 +29,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
     public class LauncherCSVTom {
         // Eerst locatie benoemen csv
         private static final String filepath = "src/main/java/database/Quizzen.csv";
-        private static final File userFile = new File(filepath);
+        private static final File quizFile = new File(filepath);
 
         private static DBAccess dbAccess = null;
         private static QuestionDAO questionDAO = new QuestionDAO(Main.getDBaccess());
@@ -93,12 +93,12 @@ import javafx.stage.FileChooser.ExtensionFilter;
         public static List<String> FileReaderToArray() {
             List<String> linesFromFile = new ArrayList<>();
             try {
-                Scanner input = new Scanner(userFile);
+                Scanner input = new Scanner(quizFile);
                 while (input.hasNextLine()) {
                     linesFromFile.add(input.nextLine());
                 }
             } catch (FileNotFoundException notFound) {
-                System.out.println("File not found.");
+                System.out.println("Bestand niet gevonden.");
             }
             return linesFromFile;
         }
