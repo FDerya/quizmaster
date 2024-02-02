@@ -11,12 +11,13 @@ public class Main extends Application {
     public static Stage primaryStage = null;
     private static DBAccess dbAccess = null;
     private static CouchDBAccess couchDBAccess = null;
-    private static final String databaseName = "Quizmaster";
-    private static final String mainUser = "userQuizmaster";
-    private static final String mainUserPassword = "pwQuizmaster";
-    private static final String couchDBDatabaseName = "quizmaster-quizresult";
-    private static final String couchDBMainUser = "admin";
-    private static final String couchDBPassword = "admin";
+    private static final String DATABASE_NAME = "Quizmaster";
+    private static final String MAIN_USER = "userQuizmaster";
+    private static final String MAIN_USER_PASSWORD = "pwQuizmaster";
+    private static final String COUCHDB_DATABASE_NAME = "quizmaster-quizresult";
+    private static final String COUCHDB_MAIN_USER = "admin";
+    private static final String COUCHDB_PASSWORD = "admin";
+    private static final String MAIN_SCREEN_BUTTON = "Beginscherm";
 
     public static void main(String[] args) {
         launch(args);
@@ -43,7 +44,7 @@ public class Main extends Application {
 
     public static DBAccess getDBaccess() {
         if (dbAccess == null) {
-            dbAccess = new DBAccess(databaseName, mainUser,mainUserPassword);
+            dbAccess = new DBAccess(DATABASE_NAME, MAIN_USER, MAIN_USER_PASSWORD);
             dbAccess.openConnection();
         }
         return dbAccess;
@@ -51,7 +52,7 @@ public class Main extends Application {
 
     public static CouchDBAccess getCouchDBaccess() {
         if (couchDBAccess == null) {
-            couchDBAccess = new CouchDBAccess(couchDBDatabaseName, couchDBMainUser, couchDBPassword);
+            couchDBAccess = new CouchDBAccess(COUCHDB_DATABASE_NAME, COUCHDB_MAIN_USER, COUCHDB_PASSWORD);
             couchDBAccess.getClient();
         }
         return couchDBAccess;
