@@ -277,7 +277,7 @@ public class CreateUpdateQuestionController {
         quizlist.setValue(null);
         quizlist.getSelectionModel().clearSelection();
     }
-    public void doDashboard() {
+    public void doDashboard(ActionEvent action) {
         Main.getSceneManager().showCoordinatorDashboard();
     }
 }
