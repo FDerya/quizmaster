@@ -34,6 +34,7 @@ public class ManageCoursesController {
 // Method to setup the manageCourses screen
     @FXML
     public void setup() {
+        menuButton.setText(Main.getMainScreenButtonText());
         List<Course> courses = courseDAO.getAll();
         courseList.getItems().addAll(courses);
         doStudentCount();

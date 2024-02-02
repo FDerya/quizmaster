@@ -15,26 +15,26 @@
             <Font size="18.0" />
         </font>
     </Label>
-    <ListView fx:id="courseList" layoutX="14.0" layoutY="78.0" prefHeight="200.0" prefWidth="281.0" />
-    <Button fx:id="newCourseButton" layoutX="13.0" layoutY="285.0" mnemonicParsing="false" onAction="#doCreateCourse" text="Nieuw">
+    <ListView fx:id="courseList" layoutX="15.0" layoutY="78.0" prefHeight="200.0" prefWidth="281.0" />
+    <Button fx:id="newCourseButton" layoutX="15.0" layoutY="295.0" mnemonicParsing="false" onAction="#doCreateCourse" prefHeight="30.0" text="Nieuw">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-    <Button layoutX="113.0" layoutY="285.0" mnemonicParsing="false" onAction="#doUpdateCourse" text="Wijzig">
+    <Button layoutX="84.2" layoutY="295.0" mnemonicParsing="false" onAction="#doUpdateCourse" text="Wijzig">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-    <Button layoutX="217.0" layoutY="285.0" mnemonicParsing="false" onAction="#doDeleteCourse" text="Verwijder">
+    <Button layoutX="151.8" layoutY="295.0" mnemonicParsing="false" onAction="#doDeleteCourse" text="Verwijder">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-    <Button fx:id="menuButton" layoutX="14.0" layoutY="329.0" mnemonicParsing="false" onAction="#doMenu" text="Welkomstscherm">
+    <Button fx:id="menuButton" layoutX="15.0" layoutY="355.0" mnemonicParsing="false" onAction="#doMenu" prefHeight="30.0" text="Beginscherm">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-   <Label fx:id="warningLabel" layoutX="339.0" layoutY="78.0" text="Selecteer een cursus." />
+   <Label fx:id="warningLabel" layoutX="316.6" layoutY="78.0" text="Selecteer een cursus." />
 </AnchorPane>
