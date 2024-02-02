@@ -79,6 +79,6 @@
     </GridPane>
     <Button layoutX="47.0" layoutY="300.0" mnemonicParsing="false" onAction="#doSaveUser" text="Opslaan" />
     <Button layoutX="141.0" layoutY="300.0" mnemonicParsing="false" onAction="#doShowManageUsers" text="Gebruikerslijst" />
-    <Button layoutX="267.0" layoutY="300.0" mnemonicParsing="false" onAction="#doShowMenu" text="Welkomstscherm" />
+    <Button fx:id="mainScreenButton" layoutX="267.0" layoutY="300.0" mnemonicParsing="false" onAction="#doShowMenu" text="Welkomstscherm" />
     <Label fx:id="warningLabel" layoutX="41.0" layoutY="346.0" prefHeight="26.0" prefWidth="400.0" text="Je hebt niet alles ingevuld" visible="false" wrapText="true" />
 </AnchorPane>

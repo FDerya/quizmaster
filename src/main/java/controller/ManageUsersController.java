@@ -16,6 +16,8 @@ public class ManageUsersController extends WarningAlertController {
     ListView<User> userList;
     @FXML
     Label userInformation;
+    @FXML
+    Button mainScreenButton;
 
     // Controller
     public ManageUsersController() {
@@ -29,6 +31,7 @@ public class ManageUsersController extends WarningAlertController {
         userList.setCellFactory(param -> createHBox());
         doCounterRole();
         userList.getSelectionModel().selectedItemProperty().addListener((observableValue, user, t1) -> doCounterRole());
+        mainScreenButton.setText(Main.getMainScreenButtonText());
     }
 
     // Makes a Hbox which shows the user fullname and the role of the user next to it.

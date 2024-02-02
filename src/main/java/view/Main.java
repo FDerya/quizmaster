@@ -57,4 +57,8 @@ public class Main extends Application {
         }
         return couchDBAccess;
     }
+
+    public static String getMainScreenButtonText() {
+        return MAIN_SCREEN_BUTTON;
+    }
 }

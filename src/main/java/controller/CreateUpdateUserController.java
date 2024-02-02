@@ -34,7 +34,8 @@ public class CreateUpdateUserController extends WarningAlertController {
     TextField surnameTextfield;
     @FXML
     ComboBox<String> roleComboBox;
-
+    @FXML
+    Button mainScreenButton;
     @FXML
     Label usernameLabel;
     @FXML
@@ -99,6 +100,7 @@ public class CreateUpdateUserController extends WarningAlertController {
             surnameTextfield.setText(String.valueOf(user.getSurname()));
             roleComboBox.getSelectionModel().select(user.getRole());
         }
+        mainScreenButton.setText(Main.getMainScreenButtonText());
     }
 
     // Before saving the user, it creates a user from the given input, checks if all mandatory fields are filled in and
