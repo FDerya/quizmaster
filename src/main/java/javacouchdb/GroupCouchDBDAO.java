@@ -5,6 +5,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import model.Group;
+import view.Main;
+
+import java.util.List;
 
 public class GroupCouchDBDAO extends AbstractCouchDBDAO {
     private Gson gson;
@@ -81,12 +84,10 @@ public class GroupCouchDBDAO extends AbstractCouchDBDAO {
 
     // Updates a Group document in CouchDB.
     public String updateGroup(Group group) {
-        // Zet group om in JsonObject
         String[] idAndRev = getIdAndRevOfGroup(group);
         String jsonString = gson.toJson(group);
         JsonParser parser = new JsonParser();
         JsonObject jsonObject = parser.parse(jsonString).getAsJsonObject();
-        // Voeg _id en _rev toe aan JsonObject, nodig voor de update van een document.
         jsonObject.addProperty("_id", idAndRev[0]);
         jsonObject.addProperty("_rev", idAndRev[1]);
         return updateDocument(jsonObject);

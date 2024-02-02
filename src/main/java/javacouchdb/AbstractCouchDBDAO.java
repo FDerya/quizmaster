@@ -14,6 +14,7 @@ public class AbstractCouchDBDAO {
 
     public String saveDocument(JsonObject document) {
         Response response = couchDBaccess.getClient().save(document);
+        response.getReason();
         return response.getId();
     }
 
