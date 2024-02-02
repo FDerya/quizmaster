@@ -30,27 +30,27 @@
     <ListView fx:id="courseList" layoutX="15.0" layoutY="75.0" prefHeight="200.0" prefWidth="270.0" />
     <ListView fx:id="quizList" layoutX="315.0" layoutY="75.0" prefHeight="200.0" prefWidth="270.0" />
     <ListView fx:id="questionList" layoutX="615.0" layoutY="75.0" prefHeight="200.0" prefWidth="270.0" />
-    <Button layoutX="316.0" layoutY="292.0" mnemonicParsing="false" onAction="#doNewQuiz" text="Nieuwe quiz">
+    <Button layoutX="315.0" layoutY="292.0" mnemonicParsing="false" onAction="#doNewQuiz" prefHeight="30.0" text="Nieuwe quiz">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-    <Button layoutX="497.0" layoutY="292.0" mnemonicParsing="false" onAction="#doEditQuiz" text="Wijzig quiz">
+    <Button layoutX="421.0" layoutY="292.0" mnemonicParsing="false" onAction="#doEditQuiz" prefHeight="30.0" text="Wijzig quiz">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-    <Button layoutX="615.0" layoutY="292.0" mnemonicParsing="false" onAction="#doNewQuestion" text="Nieuwe vraag">
+    <Button layoutX="615.0" layoutY="292.0" mnemonicParsing="false" onAction="#doNewQuestion" prefHeight="30.0" text="Nieuwe vraag">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-    <Button layoutX="789.0" layoutY="292.0" mnemonicParsing="false" onAction="#doEditQuestion" text="Wijzig vraag">
+    <Button layoutX="729.0" layoutY="292.0" mnemonicParsing="false" onAction="#doEditQuestion" prefHeight="30.0" text="Wijzig vraag">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-   <Button fx:id="mainScreenButton" layoutX="15.0" layoutY="292.0" mnemonicParsing="false" onAction="#doMenu" text="Beginscherm">
+   <Button fx:id="mainScreenButton" layoutX="15.0" layoutY="292.0" mnemonicParsing="false" onAction="#doMenu" prefHeight="30.0" text="Beginscherm">
       <font>
          <Font size="14.0" />
       </font>

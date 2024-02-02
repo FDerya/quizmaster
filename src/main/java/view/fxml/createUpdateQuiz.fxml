@@ -60,6 +60,6 @@
         <Button layoutX="242.0" layoutY="314.0" mnemonicParsing="false" onAction="#doDashboard" prefHeight="26.0" prefWidth="80.0" text="Dashboard" />
         <Button layoutX="15.0" layoutY="254.0" mnemonicParsing="false" onAction="#doCreateUpdateQuiz" prefHeight="26.0" prefWidth="67.0" text="Opslaan" />
         <Button fx:id="mainScreenButton" layoutX="15.0" layoutY="314.0" mnemonicParsing="false" onAction="#doMenu" prefHeight="26.0" prefWidth="108.0" text="Welkomstscherm" />
-        <Label fx:id="warningLabel" layoutX="369.0" layoutY="91.0" prefHeight="27.0" prefWidth="368.0" text="Label" visible="false" />
+        <Label fx:id="warningLabel" layoutX="376.0" layoutY="91.0" prefHeight="27.0" prefWidth="368.0" text="Label" visible="false" />
         </children>
 </AnchorPane>
