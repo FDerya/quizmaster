@@ -1,35 +1,78 @@
-Naam student: Alfred van der Berg
-Quiz: Geschiedenis Middeleeuwen 1
-Datum gemaakt: 2024-01-31
-Behaald: nee
-
 Naam student: Frits  Fritsma
-Quiz: Engels A 1
-Datum gemaakt: 2024-01-30
-Behaald: ja
-
-Quiz: Engels A 1
+Quiz: Python Basis
 Datum gemaakt: 2024-01-31
 Behaald: nee
 
-Quiz: Engels A 1
-Datum gemaakt: 2024-01-31
-Behaald: ja
-
-Quiz: Engels A 3
+Quiz: Python Basis
 Datum gemaakt: 2024-01-31
 Behaald: nee
 
-Quiz: Engels A 2
+Quiz: Python Basis
+Datum gemaakt: 2024-01-31
+Behaald: nee
+
+Quiz: Python Basis
+Datum gemaakt: 2024-01-31
+Behaald: nee
+
+Quiz: Python Basis
+Datum gemaakt: 2024-01-31
+Behaald: ja
+
+Quiz: Python Basis
+Datum gemaakt: 2024-01-31
+Behaald: nee
+
+Quiz: Python Basis
+Datum gemaakt: 2024-01-31
+Behaald: nee
+
+Quiz: Python Basis
+Datum gemaakt: 2024-01-31
+Behaald: nee
+
+Quiz: Python Basis
+Datum gemaakt: 2024-01-31
+Behaald: nee
+
+Quiz: Python Basis
+Datum gemaakt: 2024-01-31
+Behaald: nee
+
+Quiz: Python Basis
+Datum gemaakt: 2024-01-31
+Behaald: nee
+
+Quiz: Python Basis
+Datum gemaakt: 2024-01-31
+Behaald: nee
+
+Quiz: Python Basis
+Datum gemaakt: 2024-01-31
+Behaald: nee
+
+Quiz: Python Basis
+Datum gemaakt: 2024-01-31
+Behaald: nee
+
+Quiz: Python Basis
+Datum gemaakt: 2024-01-31
+Behaald: nee
+
+Quiz: Python Basis
+Datum gemaakt: 2024-01-31
+Behaald: nee
+
+Quiz: Python Basis
+Datum gemaakt: 2024-01-31
+Behaald: nee
+
+Quiz: Python Basis
 Datum gemaakt: 2024-01-31
 Behaald: nee
 
 Naam student: Frits Fritsma
-Quiz: Geschiedenis Middeleeuwen 3
+Quiz: Python Basis
 Datum gemaakt: 2024-02-02
-Behaald: nee
-
-Quiz: Geschiedenis Middeleeuwen 3
-Datum gemaakt: 2024-01-31
 Behaald: nee
 
