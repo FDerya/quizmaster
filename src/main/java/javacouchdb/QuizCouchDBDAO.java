@@ -52,8 +52,8 @@ public class QuizCouchDBDAO extends AbstractCouchDBDAO{
         return idAndRev;
     }
     public String updateQuiz(Quiz quiz) {
-        // Haal _id en _rev van document op behorend bij verbruiker
-        // Zet verbruiker om in JsonObject
+        // Haal _id en _rev van document op behorend bij quiz
+        // Zet quiz om in JsonObject
         String[] idAndRev = getIdAndRevQuiz(quiz);
         String jsonString = gson.toJson(quiz);
         JsonParser parser = new JsonParser();

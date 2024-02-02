@@ -8,8 +8,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.stage.FileChooser;
-import javafx.stage.Window;
 import model.*;
 import view.Main;
 
@@ -21,23 +19,21 @@ import java.util.List;
 public class ManageQuizzesController extends WarningAlertController {
     @FXML
     ListView<Quiz> quizList;
-    @FXML
-    Label countLabel;
-    private final QuizDAO quizDAO;
-    private final QuestionDAO questionDAO;
+    private final QuizDAO QUIZDAO;
+    private final QuestionDAO QUESTIONDAO;
     private static File fileTXT = new File("src/main/java/database/saveQuizTXT.txt");
 
 
+
     public ManageQuizzesController() {
-        this.quizDAO = new QuizDAO(Main.getDBaccess());
-        this.questionDAO = new QuestionDAO(Main.getDBaccess());
+        this.QUIZDAO = new QuizDAO(Main.getDBaccess());
+        this.QUESTIONDAO = new QuestionDAO(Main.getDBaccess());
     }
 
     // Quizlijst van coordinator (user) afdrukken in scherm
     public void setup() {
         User currentUser = User.getCurrentUser();
-        List<Quiz> quizzen = quizDAO.getQuizzesFromUser(currentUser);
-        countLabel.setText("Gemiddeld aantal vragen per quiz: " + doCount(quizzen));
+        List<Quiz> quizzen = QUIZDAO.getQuizzesFromUser(currentUser);
         quizList.getItems().addAll(quizzen);
         makeColumns();
         quizList.getSelectionModel().getSelectedItem();
@@ -55,16 +51,14 @@ public class ManageQuizzesController extends WarningAlertController {
                 HBox hBox = new HBox(naam, aantal);
                 if (!(item == null || empty)) {
                     naam.setText(item.getNameQuiz());
-                    aantal.setText(" " + questionDAO.getQuestionCountForQuiz(item) + " ");
+                    aantal.setText(" " + QUESTIONDAO.getQuestionCountForQuiz(item) + " ");
                 }
                 setGraphic(hBox);
             }
         });
     }
 
-    public void doMenu(ActionEvent event) {
-        Main.getSceneManager().showWelcomeScene();
-    }
+    public void doMenu(ActionEvent event) {Main.getSceneManager().showWelcomeScene();}
 
     // Nieuwe quiz maken met leeg scherm
     public void doCreateQuiz(ActionEvent event) {
@@ -81,18 +75,6 @@ public class ManageQuizzesController extends WarningAlertController {
         }
     }
 
-    private double doCount(List<Quiz> quizzes) {
-        int count = quizzes.size();
-        int amount = questionDAO.getQuestionCountForUser(User.getCurrentUser());
-        double avg = 0;
-        if (amount > 0) {
-            avg = Math.round((amount * 10.0 / count)) / 10.0;
-        } else {
-            showEmpty("coordinator", "vragen gemaakt");
-        }
-        return avg;
-    }
-
     // Quiz verwijderen uit de database én de Listview
     public void doDeleteQuiz(ActionEvent event) {
         Quiz selectedQuiz = quizList.getSelectionModel().getSelectedItem();
@@ -101,33 +83,20 @@ public class ManageQuizzesController extends WarningAlertController {
             return;
         }
         if (confirmDeletion(selectedQuiz.getNameQuiz(), "Quiz")) {
-            quizDAO.deleteQuiz(selectedQuiz);
+            QUIZDAO.deleteQuiz(selectedQuiz);
             quizList.getItems().remove(selectedQuiz);
         }
     }
 
-    public void doWriteTXT(ActionEvent event) {
-        User user = User.getCurrentUser();
-        if (user.getRole().equals("Coördinator")) {
-            List<Quiz> listQuiz = quizDAO.getQuizzesFromUser(user);
-            saveQuizToTXT(Main.getDBaccess(), listQuiz, quizDAO, user);
-        }
-    }
-
-    private void saveQuizToTXT(DBAccess dbAccess, List<Quiz> listQuiz, QuizDAO quizDAO, User user) {
+    private void saveQuizToTXT(DBAccess dbAccess, List<Quiz> listQuiz, User user) {
         dbAccess.openConnection();
         if (!listQuiz.isEmpty()) {
             int amountQuiz = listQuiz.size();
-            int amountQuestion = questionDAO.getQuestionCountForUser(user);
+            int amountQuestion = QUESTIONDAO.getQuestionCountForUser(user);
             double avgQuestion = (Math.round(amountQuestion * 10 / amountQuiz) / 10.0);
             try {
-                PrintWriter printWriter = new PrintWriter(fileTXT);
-                printWriter.printf("%-30s %-30s %-15s %-10s\n", "Cursus", "Quiznaam", "Level", "Aantal vragen per quiz");
-                for (Quiz quiz : listQuiz) {
-                    printWriter.printf("%-30s %-30s %-15s %-10d\n", quiz.getCourse(), quiz.getNameQuiz(), quiz.getLevel(), questionDAO.getQuestionCountForQuiz(quiz));
-                }
-                printWriter.println("\nEr zijn " + amountQuiz + " quizzen met " + amountQuestion + " vragen, gemiddelde = " + avgQuestion);
-                printWriter.close();
+                printWriterQuiz(listQuiz, amountQuiz, amountQuestion, avgQuestion);
+                showSaveAlert();
 
             } catch (FileNotFoundException fileNotFoundException) {
                 System.out.println("File not found: " + fileNotFoundException);
@@ -135,6 +104,19 @@ public class ManageQuizzesController extends WarningAlertController {
         }
     }
 
+    private void printWriterQuiz(List<Quiz> listQuiz, int amountQuiz, int amountQuestion, double avgQuestion) throws FileNotFoundException {
+        PrintWriter printWriter = new PrintWriter(fileTXT);
+        printWriter.printf("%-30s %-30s %-15s %-10s\n", "Cursus", "Quiznaam", "Level", "Aantal vragen per quiz");
+        for (Quiz quiz : listQuiz) {
+            printWriter.printf("%-30s %-30s %-15s %-10d\n", quiz.getCourse(), quiz.getNameQuiz(), quiz.getLevel(), QUESTIONDAO.getQuestionCountForQuiz(quiz));
+        }
+        printWriter.println("\nEr zijn " + amountQuiz + " quizzen met " + amountQuestion + " vragen, gemiddelde = " + avgQuestion);
+        printWriter.close();
+    }
+private void showSaveAlert(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+}
     /*public void fileChooser() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
