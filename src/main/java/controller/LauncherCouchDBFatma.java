@@ -7,9 +7,7 @@ import model.Quiz;
 import model.Question;
 import view.Main;
 
-import java.io.IOException;
-
-public class LauncherFatmaCouchDB {
+public class LauncherCouchDBFatma {
 
     private static CouchDBAccess couchDBaccess;
     private static QuestionCouchDBDAO questionCouchDBDAO;
