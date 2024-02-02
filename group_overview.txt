@@ -1,85 +1,85 @@
 Groep: Groep 1
 Cursus: Python Basis
 Aantal studenten: 25
-Docent: Michelangelo  Tonkes
+Docent: Michelangelo Tonkes
 Studenten:
 
 Groep: Groep 2
 Cursus: Python Basis
 Aantal studenten: 25
-Docent: Zarah  School
+Docent: Zarah School
 Studenten:
 
 Groep: Groep 3
 Cursus: Python Basis
 Aantal studenten: 25
-Docent: Zarah  School
+Docent: Zarah School
 Studenten:
 
 Groep: Groep 1
 Cursus: Python++
 Aantal studenten: 25
-Docent: Zarah  School
+Docent: Zarah School
 Studenten:
 
 Groep: Groep 2
 Cursus: Python++
 Aantal studenten: 25
-Docent: Fady  Stegehuis
+Docent: Fady Stegehuis
 Studenten:
 
 Groep: Groep 3
 Cursus: Python++
 Aantal studenten: 25
-Docent: Fady  Stegehuis
+Docent: Fady Stegehuis
 Studenten:
 
 Groep: Groep 1
 Cursus: Java Object Orientatie
 Aantal studenten: 25
-Docent: Romay  Reinink
+Docent: Romay Reinink
 Studenten:
 
 Groep: Groep 2
 Cursus: Java Object Orientatie
 Aantal studenten: 25
-Docent: Fady  Stegehuis
+Docent: Fady Stegehuis
 Studenten:
 
 Groep: Groep 1
 Cursus: Java Spring Framework
 Aantal studenten: 20
-Docent: Zarah  School
+Docent: Zarah School
 Studenten:
 
 Groep: Groep 1
 Cursus: Moderne Geschiedenis
 Aantal studenten: 25
-Docent: Milouda  Cornelisse
+Docent: Milouda Cornelisse
 Studenten:
 
 Groep: Groep 1
 Cursus: Kunstgeschiedenis
 Aantal studenten: 20
-Docent: Milouda  Cornelisse
+Docent: Milouda Cornelisse
 Studenten:
 
 Groep: Groep 2
 Cursus: Kunstgeschiedenis
 Aantal studenten: 20
-Docent: Lilian  Veltrop
+Docent: Lilian Veltrop
 Studenten:
 
 Groep: Groep 3
 Cursus: Kunstgeschiedenis
 Aantal studenten: 20
-Docent: Milouda  Cornelisse
+Docent: Milouda Cornelisse
 Studenten:
 
 Groep: Groep 1
 Cursus: Engels A
 Aantal studenten: 25
-Docent: Yelina  Veldhoen
+Docent: Yelina Veldhoen
 Studenten:
 
 Groep: Groep 1
@@ -97,7 +97,7 @@ Studenten:
 Groep: Groep 1
 Cursus: Spaans B
 Aantal studenten: 25
-Docent: Yelina  Veldhoen
+Docent: Yelina Veldhoen
 Studenten:
 
 Groep: Groep 2
@@ -115,30 +115,30 @@ Studenten:
 Groep: Groep 2
 Cursus: Muziek Theorie Basis
 Aantal studenten: 25
-Docent: Keziah  Gubbels
+Docent: Keziah Gubbels
 Studenten:
 
 Groep: Groep 1
 Cursus: Harmonieleer 1
 Aantal studenten: 25
-Docent: Mana  Simonis
+Docent: Mana Simonis
 Studenten:
 
 Groep: Groep 2
 Cursus: Harmonieleer 1
 Aantal studenten: 25
-Docent: Mana  Simonis
+Docent: Mana Simonis
 Studenten:
 
 Groep: Groep 3
 Cursus: Harmonieleer 1
 Aantal studenten: 25
-Docent: Mana  Simonis
+Docent: Mana Simonis
 Studenten:
 
 Groep: Groep 1
 Cursus: Harmonieleer Jazz
 Aantal studenten: 15
-Docent: Zev  Ypma
+Docent: Zev Ypma
 Studenten:
 

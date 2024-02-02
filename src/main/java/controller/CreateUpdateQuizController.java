@@ -22,13 +22,13 @@ public class CreateUpdateQuizController extends WarningAlertController {
     private final DBAccess dbAccess;
     private int idQuiz;
     CourseDAO courseDAO = new CourseDAO(Main.getDBaccess());
-    private final QuizDAO quizDAO = new QuizDAO(Main.getDBaccess());
+    private final QuizDAO QUIZDAO = new QuizDAO(Main.getDBaccess());
     @FXML
     private TextField nameTextField;
     @FXML
     TextField amountTextField;
     @FXML
-    private Label titelLabel;
+    private Label titleLabel;
     @FXML
     private Label courseLabel;
     @FXML
@@ -37,6 +37,8 @@ public class CreateUpdateQuizController extends WarningAlertController {
     Label nameQuizLabel;
     @FXML
     Label amountQuestionsLabel;
+    @FXML
+    Button mainScreenButton;
     @FXML
     ComboBox<String> levelsListComboBox;
     @FXML
@@ -53,13 +55,14 @@ public class CreateUpdateQuizController extends WarningAlertController {
 
     //Quiz tonen om te wijzigen of leeg scherm voor het maken van een quiz
     public void setup(Quiz quizOne) {
+        mainScreenButton.setText(Main.getMainScreenButtonText());
         levelsListComboBox.setItems(levelsList);
         coursesListComboBox.setItems(coursesList);
-        titelLabel.setText("Nieuwe quiz");
+        titleLabel.setText("Nieuwe quiz");
         setupInput();
         if (quizOne != null) {
             idQuiz = quizOne.getIdQuiz();
-            titelLabel.setText("Wijzig quiz");
+            titleLabel.setText("Wijzig quiz");
             courseLabel.setText(quizOne.getCourse().getNameCourse());
             nameTextField.setText(quizOne.getNameQuiz());
             levelsListComboBox.setValue(quizOne.getLevel());
@@ -107,9 +110,9 @@ public class CreateUpdateQuizController extends WarningAlertController {
             if (checkDuplicate(quiz)) {
                 showSame(true, "quiz");
             } else {
-                if (titelLabel.getText().equals("Wijzig quiz")) {
+                if (titleLabel.getText().equals("Wijzig quiz")) {
                     updateQuiz(quiz);
-                } else if (titelLabel.getText().equals("Nieuwe quiz")) {
+                } else if (titleLabel.getText().equals("Nieuwe quiz")) {
                     newQuiz(quiz);
                 }
                 Timeline timeline = new Timeline(new KeyFrame(
@@ -121,11 +124,11 @@ public class CreateUpdateQuizController extends WarningAlertController {
     }
 
     private boolean checkDuplicate(Quiz nameQuiz) {
-        if (titelLabel.getText().equals("Wijzig quiz")) {
+        if (titleLabel.getText().equals("Wijzig quiz")) {
             nameQuiz.setIdQuiz(idQuiz);
         }
         boolean showDuplicate = false;
-        List<Quiz> quizNamen = quizDAO.getAll();
+        List<Quiz> quizNamen = QUIZDAO.getAll();
         for (Quiz naamquiz : quizNamen) {
             if (nameQuiz.getNameQuiz().equals(naamquiz.getNameQuiz()) && (nameQuiz.getIdQuiz() != naamquiz.getIdQuiz())) {
                 checkAndChangeLabelColor(true, nameQuizLabel);
@@ -138,13 +141,13 @@ public class CreateUpdateQuizController extends WarningAlertController {
 
     private void newQuiz(Quiz quiz) {
         showSaved(quiz.getNameQuiz());
-        quizDAO.storeOne(quiz);
+        QUIZDAO.storeOne(quiz);
     }
 
     private void updateQuiz(Quiz quiz) {
         showUpdated(quiz.getNameQuiz());
         quiz.setIdQuiz(idQuiz);
-        quizDAO.updateOne(quiz);
+        QUIZDAO.updateOne(quiz);
     }
 
     // Quiz maken om op te kunnen slaan en checken of alles is ingevuld

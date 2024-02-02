@@ -11,13 +11,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
+import javafx.util.converter.DefaultStringConverter;
 import model.Course;
 import model.User;
 import view.Main;
 
 import java.util.List;
 
-public class CreateUpdateCourseController {
+public class CreateUpdateCourseController extends WarningAlertController {
 // Attributes
     private final CourseDAO courseDAO;
     private final UserDAO userDAO = new UserDAO(Main.getDBaccess());
@@ -52,6 +54,7 @@ public class CreateUpdateCourseController {
 
 // Method to setup the createUpdateCourse page
     public void setup(Course course) {
+        courseNameTextField.setTextFormatter(setMaxAmountCharactersTextField());
         levelComboBox.setItems(levelOptions);
         coordinatorComboBox.setItems(coordinatorOptions);
         if (course != null){
@@ -63,6 +66,14 @@ public class CreateUpdateCourseController {
         }
     }
 
+// Method to set the amount of characters in the TextField to 45 characters
+    private static TextFormatter<String> setMaxAmountCharactersTextField(){
+        int maxCharsCourseName = 45;
+        StringConverter<String> converter = new DefaultStringConverter();
+        return new TextFormatter<>(converter, "", c ->
+                c.getControlNewText().length() <= maxCharsCourseName ? c : null);
+    }
+
 // Method to save a new or updated course
     public void doSaveCourse(ActionEvent actionEvent){
         setColoursBackToBlack();
@@ -70,11 +81,11 @@ public class CreateUpdateCourseController {
         if (course != null){
             if (titleLabel.getText().equals("Nieuwe Cursus")){
                 courseDAO.storeOne(course);
-                warningLabel.setText("De cursus " + course + " is toegevoegd");
+                showSaved(course.getNameCourse());
             }else {
                 course.setIdCourse(idCourse);
                 courseDAO.updateOne(course);
-                warningLabel.setText("De cursus " + course + " is aangepast en opgeslagen");
+                showUpdated(course.getNameCourse());
             }
             timeline.play();
         }
@@ -94,7 +105,7 @@ public class CreateUpdateCourseController {
         if (courseName.isEmpty() || coordinator == null || level == null) {
             doWhenFieldEmpty(courseName, coordinator, level);
             return null;
-        } else if (checkExistenceCourseName(courseName)) {
+        } else if (titleLabel.getText().equals("Nieuwe Cursus") && checkExistenceCourseName(courseName)) {
             warningLabel.setText("De naam van de cursus bestaat al, kies een nieuwe naam.");
             return null;
         } else {

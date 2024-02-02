@@ -97,11 +97,18 @@ public class WelcomeController {
         aMenuItem3.setOnAction(actionEvent -> Main.getSceneManager().showAssignStudentsToGroupScene());
         MenuItem aMenuItem4 = new MenuItem("Exporteer quizresultaten");
         aMenuItem4.setOnAction(actionEvent -> doShowSaveTextFileAlert("quizresultaat"));
+        //MenuItem aMenuItem4 = new MenuItem("Exporteer groepen");
+        //aMenuItem4.setOnAction(actionEvent -> doShowSaveAlert());
+       // MenuItem aMenuItem5 = new MenuItem("Exporteer quizresultaten");
+        //aMenuItem5.setOnAction(actionEvent -> doShowSaveAlert());
+
 
         taskMenuButton.getItems().add(aMenuItem1);
         taskMenuButton.getItems().add(aMenuItem2);
         taskMenuButton.getItems().add(aMenuItem3);
         taskMenuButton.getItems().add(aMenuItem4);
+        //taskMenuButton.getItems().add(aMenuItem5);
+
     }
 
     public void initializeMenuItemsFunctionalManagement() {
