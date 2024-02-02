@@ -4,6 +4,7 @@ import database.mysql.*;
 import javacouchdb.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -26,6 +27,8 @@ public class SelectQuizForStudentController extends WarningAlertController {
     private List<String> score = new ArrayList<>();
     @FXML
     ListView<Quiz> quizList;
+    @FXML
+    Button mainScreenButton;
 
     public SelectQuizForStudentController() {
         this.QUIZDAO = new QuizDAO(Main.getDBaccess());
@@ -34,6 +37,7 @@ public class SelectQuizForStudentController extends WarningAlertController {
     }
 
     public void setup() {
+        mainScreenButton.setText(Main.getMainScreenButtonText());
         User user = User.getCurrentUser();
         List<Participation> participation = PARTICIPATIONDAO.getParticipationByIdUserGroupNotNull(user.getIdUser());
 

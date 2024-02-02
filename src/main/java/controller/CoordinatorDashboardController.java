@@ -20,6 +20,8 @@ public class CoordinatorDashboardController extends WarningAlertController {
     @FXML
     private ListView<String> questionList;
     private final DBAccess dbAccess;
+    @FXML
+    Button mainScreenButton;
 
     private final QuestionDAO questionDAO;
     private final CourseDAO courseDAO;
@@ -37,6 +39,7 @@ public class CoordinatorDashboardController extends WarningAlertController {
     User currentUser = User.getCurrentUser();
 
     public void setup() {
+        mainScreenButton.setText(Main.getMainScreenButtonText());
         setCourseList();
         setQuizList();
 

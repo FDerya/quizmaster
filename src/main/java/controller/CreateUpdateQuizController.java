@@ -38,6 +38,8 @@ public class CreateUpdateQuizController extends WarningAlertController {
     @FXML
     Label amountQuestionsLabel;
     @FXML
+    Button mainScreenButton;
+    @FXML
     ComboBox<String> levelsListComboBox;
     @FXML
     ComboBox<Course> coursesListComboBox;
@@ -53,6 +55,7 @@ public class CreateUpdateQuizController extends WarningAlertController {
 
     //Quiz tonen om te wijzigen of leeg scherm voor het maken van een quiz
     public void setup(Quiz quizOne) {
+        mainScreenButton.setText(Main.getMainScreenButtonText());
         levelsListComboBox.setItems(levelsList);
         coursesListComboBox.setItems(coursesList);
         titleLabel.setText("Nieuwe quiz");

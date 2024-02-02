@@ -19,6 +19,8 @@ import java.util.List;
 public class ManageQuizzesController extends WarningAlertController {
     @FXML
     ListView<Quiz> quizList;
+    @FXML
+    Button mainScreenButton;
     private final QuizDAO QUIZDAO;
     private final QuestionDAO QUESTIONDAO;
     private static File fileTXT = new File("src/main/java/database/saveQuizTXT.txt");
@@ -32,6 +34,7 @@ public class ManageQuizzesController extends WarningAlertController {
 
     // Quizlijst van coordinator (user) afdrukken in scherm
     public void setup() {
+        mainScreenButton.setText(Main.getMainScreenButtonText());
         User currentUser = User.getCurrentUser();
         List<Quiz> quizzen = QUIZDAO.getQuizzesFromUser(currentUser);
         quizList.getItems().addAll(quizzen);
