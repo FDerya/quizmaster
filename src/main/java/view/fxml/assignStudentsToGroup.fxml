@@ -38,11 +38,10 @@
     </Button>
 
     <ListView fx:id="studentsInGroupList" layoutX="425.0" layoutY="106.0" prefHeight="200.0" prefWidth="300.0" />
-    <Button layoutX="11.0" layoutY="319.0" mnemonicParsing="false" onAction="#doMenu" text="Welkomstscherm">
+    <Button fx:id="mainScreenButton" layoutX="11.0" layoutY="319.0" mnemonicParsing="false" onAction="#doMenu" text="Beginscherm">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-   <Label fx:id="warningLabel" layoutX="425.0" layoutY="341.0" text="Voor deze cursus zijn er nog geen groepen aangemaakt." visible="false" />
-   <Button layoutX="152.0" layoutY="319.0" mnemonicParsing="false" onAction="#doShowSaveAlert" prefHeight="28.0" prefWidth="160.0" text="Exporteer quizresultaten" />
+   <Label fx:id="warningLabel" layoutX="425.0" layoutY="323.0" text="Voor deze cursus zijn er nog geen groepen aangemaakt." visible="false" />
 </AnchorPane>

@@ -18,6 +18,8 @@ import java.util.List;
 
 public class AssignStudentsToGroupController {
     @FXML
+    Button mainScreenButton;
+    @FXML
     ComboBox<Course> courseComboBox;
     @FXML
     ComboBox<Group> groupComboBox;
@@ -51,6 +53,7 @@ public class AssignStudentsToGroupController {
         fillStudentList();
         fillGroupComboBox();
         fillStudentInGroupList();
+        mainScreenButton.setText(Main.getMainScreenButtonText());
     }
 
     private void fillCourseComboBox() {
@@ -84,8 +87,20 @@ public class AssignStudentsToGroupController {
             studentsInGroupList.getItems().clear();
             List<Participation> participationPerGroup = participationDAO.getParticipationInGroup(selectedCourse, group);
             fillListView(participationPerGroup, studentsInGroupList);
+            checkGroupSize(group, participationPerGroup);
         } else {
             studentsInGroupList.getItems().clear();
+        }
+    }
+
+    private void checkGroupSize(Group group, List<Participation> participationPerGroup) {
+        String tooManyUsersInGroup = "Het maximum aantal studenten in de groep is: " + group.getAmountStudent() +
+                "\nDit wordt nu overschreden.";
+        if (participationPerGroup.size() > group.getAmountStudent()) {
+            warningLabel.setVisible(true);
+            warningLabel.setText(tooManyUsersInGroup);
+        } else {
+            warningLabel.setVisible(false);
         }
     }
 

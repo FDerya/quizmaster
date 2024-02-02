@@ -5,8 +5,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import model.*;
 
-import javax.xml.transform.Result;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -34,7 +32,7 @@ public class QuizResultCouchDBDAO extends AbstractCouchDBDAO {
             }
         }
         // resultList op datum sorteren
-        resultList.sort(Comparator.comparing(quizResult -> quizResult.getLocalDate()));
+        resultList.sort(Comparator.comparing(quizResult -> quizResult.getLocalDateTime()));
         return resultList;
     }
 }

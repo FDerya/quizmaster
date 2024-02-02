@@ -10,7 +10,7 @@ import model.QuizResult;
 import model.User;
 import view.Main;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -126,14 +126,29 @@ public class FillOutQuizController {
 
     public void doTurnIn() {
         saveAnswersToArrays();
-        if (showAlert()) {
-            int amountOfCorrectQuestions = getResult(givenAnswers, correctAnswers);
-            String score = amountOfCorrectQuestions >= amountOfCorrectQuestionsToPassQuiz ? "behaald" : "niet behaald";
-            QuizResult quizResult = new QuizResult(selectedQuiz.getNameQuiz(), score, LocalDate.now().toString(),
-                    User.getCurrentUser().getFullName());
-            quizResultCouchDBDAO.saveSingleQuizResult(quizResult);
-            Main.getSceneManager().showStudentFeedback(selectedQuiz);
+        boolean allQuestionsAnswered = true;
+        for (String answer : givenAnswers) {
+            if (answer.isEmpty()) {
+                allQuestionsAnswered = false;
+                break;
+            }
         }
+        if (allQuestionsAnswered) {
+            turnInQuiz();
+        } else {
+            showAlert();
+        }
+    }
+
+    private void turnInQuiz() {
+        int amountOfCorrectQuestions = getResult(givenAnswers, correctAnswers);
+        int totalQuestions = givenAnswers.length;
+        String score = amountOfCorrectQuestions + " / " + totalQuestions;
+        String result = amountOfCorrectQuestions >= amountOfCorrectQuestionsToPassQuiz ? "behaald" : "niet behaald";
+        QuizResult quizResult = new QuizResult(selectedQuiz.getNameQuiz(), score, result, LocalDateTime.now().toString(),
+                User.getCurrentUser().getFullName());
+        quizResultCouchDBDAO.saveSingleQuizResult(quizResult);
+        Main.getSceneManager().showStudentFeedback(selectedQuiz);
     }
 
     private void saveAnswersToArrays() {
@@ -141,7 +156,7 @@ public class FillOutQuizController {
         correctAnswers[questionNumber - 1] = questionList.get(questionNumber - 1).getAnswerRight();
     }
 
-    public boolean showAlert() {
+    public void showAlert() {
         Alert turnInAlert = new Alert(Alert.AlertType.CONFIRMATION);
         turnInAlert.setTitle("Inleveren");
         turnInAlert.setHeaderText("Inleveren quiz");
@@ -151,11 +166,24 @@ public class FillOutQuizController {
         ButtonType buttonContinue = new ButtonType("Inleveren");
         turnInAlert.getButtonTypes().setAll(buttonCancel, buttonContinue);
         Optional<ButtonType> result = turnInAlert.showAndWait();
-        return (result.isPresent() && result.get() == buttonContinue);
+        if (result.isPresent() && result.get() == buttonContinue) {
+            turnInQuiz();
+        }
     }
 
     public void doMenu() {
-        Main.getSceneManager().showWelcomeScene();
+        Alert turnInAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        turnInAlert.setTitle("Quiz afbreken");
+        turnInAlert.setHeaderText("Quiz afbreken");
+        turnInAlert.setContentText("Je staat op het punt je quiz af te breken.\n" +
+                "Je antwoorden worden niet opgeslagen." + "\nWeet je het zeker?");
+        ButtonType buttonCancel = new ButtonType("Annuleer");
+        ButtonType buttonContinue = new ButtonType("Afbreken");
+        turnInAlert.getButtonTypes().setAll(buttonCancel, buttonContinue);
+        Optional<ButtonType> result = turnInAlert.showAndWait();
+        if (result.isPresent() && result.get() == buttonContinue) {
+            Main.getSceneManager().showWelcomeScene();
+        }
     }
 
     private List<Question> shuffleQuestions(List<Question> oldList) {

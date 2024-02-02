@@ -82,7 +82,7 @@ public class SelectQuizForStudentController extends WarningAlertController {
         finishedQuizzes = quizResultCouchDBDAO.getQuizResults(quizDAO.getOneByName(nameQuiz), User.getCurrentUser());
         if (!finishedQuizzes.isEmpty()) {
             QuizResult lastQuiz = finishedQuizzes.get(finishedQuizzes.size() - 1);
-            String datum = lastQuiz.getLocalDate();
+            String datum = lastQuiz.getLocalDateTime();
             return datum;
         }else return "";
     }
