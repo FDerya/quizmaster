@@ -21,12 +21,12 @@ public class LauncherCouchDBTom {
         List<Quiz> quizList = quizDAO.getAll();
         //saveQuizList(quizList);
         getQuiz("1a8e646fc65d405288f79f33cf7ba2c7");
-        updatQuiz("1a8e646fc65d405288f79f33cf7ba2c7");
+        updateQuiz("1a8e646fc65d405288f79f33cf7ba2c7");
         Course course = courseDAO.getOneByName("An");
         Quiz quizTest = new Quiz(course, "test", "medium", 12);
-        saveSingleQuiz(quizTest);
-        updatSingleQuiz(quizTest);
-        deleteQuiz(quizTest);
+        //saveSingleQuiz(quizTest);
+        //updateSingleQuiz(quizTest);
+        //deleteQuiz(quizTest.getIdQuiz());
         closeCouchDBAccess();
     }
     //Verbinding CouchDB openen
@@ -58,10 +58,10 @@ public class LauncherCouchDBTom {
             }
         }
     }
-    public static void updatSingleQuiz(Quiz quiz){
+    public static void updateSingleQuiz(Quiz quiz){
+        quiz.setMinimumAmountCorrectQuestions(25);
         if(couchDBAccess.getClient()!=null){
             System.out.println("Connectie open");
-            quiz.setMinimumAmountCorrectQuestions(25);
             quizCouchDBDAO.updateQuiz(quiz);
         }
     }
@@ -73,17 +73,17 @@ public class LauncherCouchDBTom {
     }
     private static void getQuiz(String code){
         Quiz quiz = quizCouchDBDAO.getQuizById(code);
-        System.out.println(quiz.toString());
+        System.out.println(quiz.getNameQuiz());
     }
-    private static void updatQuiz(String code){
+    private static void updateQuiz(String code){
         Quiz quiz = quizCouchDBDAO.getQuizById(code);
-        System.out.println(quiz.toString());
+        System.out.println(quiz.getNameQuiz());
         quiz.setMinimumAmountCorrectQuestions(24);
         quizCouchDBDAO.saveSingleQuiz(quiz);
-        System.out.println(quiz.toString());
+        System.out.println(quiz.getNameQuiz());
     }
-    private static void deleteQuiz(Quiz quiz){
-        System.out.println(quiz.toString());
-        quizCouchDBDAO.deleteQuiz(quiz);
+    private static void deleteQuiz(int idQuiz){
+        System.out.println(quizDAO.getOneById(idQuiz).getNameQuiz());
+        quizCouchDBDAO.deleteQuiz(quizDAO.getOneById(idQuiz));
     }
 }

@@ -7,12 +7,12 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CoordinatorDashboardController">
-    <Label layoutX="14.0" layoutY="14.0" text="Coördinator dashboard">
+    <Label layoutX="15.0" layoutY="14.0" text="Coördinator dashboard">
         <font>
             <Font size="18.0" />
         </font>
     </Label>
-    <Label layoutX="14.0" layoutY="51.0" text="Selecteer cursus">
+    <Label layoutX="15.0" layoutY="51.0" text="Selecteer cursus">
         <font>
             <Font size="16.0" />
         </font>
@@ -30,33 +30,33 @@
     <ListView fx:id="courseList" layoutX="15.0" layoutY="75.0" prefHeight="200.0" prefWidth="270.0" />
     <ListView fx:id="quizList" layoutX="315.0" layoutY="75.0" prefHeight="200.0" prefWidth="270.0" />
     <ListView fx:id="questionList" layoutX="615.0" layoutY="75.0" prefHeight="200.0" prefWidth="270.0" />
-    <Button layoutX="315.0" layoutY="279.0" mnemonicParsing="false" onAction="#doNewQuiz" text="Nieuwe quiz">
+    <Button layoutX="316.0" layoutY="292.0" mnemonicParsing="false" onAction="#doNewQuiz" text="Nieuwe quiz">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-    <Button layoutX="493.0" layoutY="278.0" mnemonicParsing="false" onAction="#doEditQuiz" text="Wijzig quiz">
+    <Button layoutX="497.0" layoutY="292.0" mnemonicParsing="false" onAction="#doEditQuiz" text="Wijzig quiz">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-    <Button layoutX="615.0" layoutY="279.0" mnemonicParsing="false" onAction="#doNewQuestion" text="Nieuwe vraag">
+    <Button layoutX="615.0" layoutY="292.0" mnemonicParsing="false" onAction="#doNewQuestion" text="Nieuwe vraag">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-    <Button layoutX="784.0" layoutY="278.0" mnemonicParsing="false" onAction="#doEditQuestion" text="Wijzig vraag">
+    <Button layoutX="789.0" layoutY="292.0" mnemonicParsing="false" onAction="#doEditQuestion" text="Wijzig vraag">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-   <Button layoutX="15.0" layoutY="334.0" mnemonicParsing="false" onAction="#doMenu" text="Welkomstscherm">
+   <Button layoutX="15.0" layoutY="292.0" mnemonicParsing="false" onAction="#doMenu" text="Beginscherm">
       <font>
          <Font size="14.0" />
       </font>
    </Button>
    <Label fx:id="warningLabel" layoutX="316.0" layoutY="329.0" prefHeight="37.0" prefWidth="318.0" visible="false" />
-   <Label layoutX="477.0" layoutY="51.0" prefHeight="26.0" prefWidth="108.0" text="Aantal vragen">
+   <Label layoutX="477.0" layoutY="51.0" prefHeight="26.0" prefWidth="108.0" text="cesuur">
       <font>
          <Font size="16.0" />
       </font>
