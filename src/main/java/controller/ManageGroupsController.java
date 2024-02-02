@@ -1,5 +1,4 @@
 package controller;
-// Bianca Duijvesteijn, studentnummer 500940421
 // JavaFX controller class responsible for handling the user interface logic related to managing groups.
 // Works with a GroupDAO and a CourseDAO to perform operations such as displaying, deleting, and deleting groups.
 // The class also contains methods for user prompts and confirmation dialogs.

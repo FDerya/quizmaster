@@ -10,8 +10,8 @@
             <Font size="18.0" />
         </font>
     </Label>
-    <ListView fx:id="feedbackList" layoutX="14.0" layoutY="61.0" prefHeight="300.0" prefWidth="400.0" />
-    <Button layoutX="14.0" layoutY="372.0" mnemonicParsing="false" onAction="#doMenu" text="Menu">
+    <ListView fx:id="feedbackList" layoutX="15.0" layoutY="61.0" prefHeight="300.0" prefWidth="400.0" />
+    <Button layoutX="15.0" layoutY="378.0" maxHeight="30.0" mnemonicParsing="false" onAction="#doMenu" text="Beginscherm">
         <font>
             <Font size="14.0" />
         </font>
