@@ -6,7 +6,6 @@ package controller;
 import database.mysql.CourseDAO;
 import database.mysql.GroupDAO;
 import database.mysql.UserDAO;
-import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -378,18 +377,7 @@ public class CreateUpdateGroupController extends WarningAlertController {
         setLabelErrorColor(nameGroupLabel, "nameGroup");
         setLabelErrorColor(amountStudentLabel, "amountStudent");
         setLabelErrorColor(teacherLabel, "teacher");
-        fadeOutWarningLabel();
-    }
 
-    // Fades out the warning message
-    private void fadeOutWarningLabel() {
-        FadeTransition fadeOut = new FadeTransition(Duration.seconds(2), warningLabel);
-        fadeOut.setFromValue(1.0);
-        fadeOut.setToValue(0.0);
-
-        PauseTransition pause = new PauseTransition(Duration.seconds(5));
-        pause.setOnFinished(event -> fadeOut.play());
-        pause.play();
     }
 
     // validates input fields, updates labels with error messages, displays a red warning label

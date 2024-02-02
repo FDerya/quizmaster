@@ -4,7 +4,9 @@ package controller;
 import javacouchdb.QuizResultCouchDBDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.HBox;
 import model.Quiz;
 import model.QuizResult;
 import model.User;
@@ -28,11 +30,9 @@ public class StudentFeedbackController {
         if (quizResultCouchDBDAO == null) {
             throw new IllegalStateException("quizResultCouchDBDAO is not initialized");
         }
+
         feedbackLabel.setText("Quiz Feedback voor " + quiz.getNameQuiz() + " door " + user.getFullName());
-
         List<QuizResult> quizResults = quizResultCouchDBDAO.getQuizResults(quiz, user);
-
-
         feedbackList.getItems().addAll(quizResults);
     }
 

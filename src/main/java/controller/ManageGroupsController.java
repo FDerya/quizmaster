@@ -62,7 +62,7 @@ public class ManageGroupsController extends WarningAlertController {
         // Creates an HBox with Labels for group name and course name, setting their texts
         private HBox createGroupListCell(Group group) {
             Label groupName = new Label();
-            groupName.setPrefWidth(130.0);
+            groupName.setPrefWidth(250.0);
             Label courseName = new Label();
             HBox hBox = new HBox(groupName, courseName);
             if (group != null) {
@@ -161,7 +161,7 @@ public class ManageGroupsController extends WarningAlertController {
         fadeOut.setFromValue(1.0);
         fadeOut.setToValue(0.0);
 
-        PauseTransition pause = new PauseTransition(Duration.seconds(5));
+        PauseTransition pause = new PauseTransition(Duration.seconds(3));
         pause.setOnFinished(event -> fadeOut.play());
         pause.play();
     }
