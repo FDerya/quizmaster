@@ -1,21 +1,16 @@
 package controller;
 
-import database.mysql.CourseDAO;
 import database.mysql.DBAccess;
 import database.mysql.QuestionDAO;
-import database.mysql.QuizDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import model.Question;
-import model.Quiz;
 import model.User;
 import view.Main;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -25,7 +20,6 @@ import java.util.Optional;
 public class ManageQuestionsController {
 
     private final QuestionDAO questionDAO;
-    private final CourseDAO courseDAO;
 
     @FXML
     ListView<Question> questionList;
@@ -33,13 +27,13 @@ public class ManageQuestionsController {
     Label warningLabel;
     @FXML
     Label questionCountLabel;
-    private Question question;
 
-    private static File fileTXT = new File("src/main/java/database/saveQuestionTXT.txt");
+
+  final static File fileTXT = new File("src/main/java/database/saveQuestionTXT.txt");
 
     public ManageQuestionsController() {
         this.questionDAO = new QuestionDAO(Main.getDBaccess());
-        this.courseDAO = new CourseDAO(Main.getDBaccess());
+
     }
 
     public void setup() {
