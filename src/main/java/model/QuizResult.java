@@ -20,7 +20,7 @@ public class QuizResult {
     // ToString Methode
     @Override
     public String toString() {
-        // Controleer of lrocalDate overeenkomt met het verwachte formaat voordat je probeert te parsen
+        // Controleer of localDate overeenkomt met het verwachte formaat voordat je probeert te parsen
         if (localDate.matches("\\d{2}-\\d{2}-\\d{4}")) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             LocalDateTime dateTime = LocalDateTime.parse(localDate, formatter);
