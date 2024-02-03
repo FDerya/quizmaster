@@ -1,6 +1,145 @@
+Naam student: Frits  Fritsma
+	Quiz: Python Basis
+	Datum gemaakt: null
+	Resultaat: niet behaald
+	Behaald: null
+
+	Quiz: Python Basis
+	Datum gemaakt: null
+	Resultaat: niet behaald
+	Behaald: null
+
+	Quiz: Python Basis
+	Datum gemaakt: null
+	Resultaat: niet behaald
+	Behaald: null
+
+	Quiz: Python Basis
+	Datum gemaakt: null
+	Resultaat: niet behaald
+	Behaald: null
+
+	Quiz: Python Basis
+	Datum gemaakt: null
+	Resultaat: behaald
+	Behaald: null
+
+	Quiz: Python Basis
+	Datum gemaakt: null
+	Resultaat: niet behaald
+	Behaald: null
+
+	Quiz: Python Basis
+	Datum gemaakt: null
+	Resultaat: niet behaald
+	Behaald: null
+
+	Quiz: Python Basis
+	Datum gemaakt: null
+	Resultaat: niet behaald
+	Behaald: null
+
+	Quiz: Python Basis
+	Datum gemaakt: null
+	Resultaat: niet behaald
+	Behaald: null
+
+	Quiz: Python Basis
+	Datum gemaakt: null
+	Resultaat: niet behaald
+	Behaald: null
+
+	Quiz: Python Basis
+	Datum gemaakt: null
+	Resultaat: niet behaald
+	Behaald: null
+
+	Quiz: Python Basis
+	Datum gemaakt: null
+	Resultaat: niet behaald
+	Behaald: null
+
+	Quiz: Python Basis
+	Datum gemaakt: null
+	Resultaat: niet behaald
+	Behaald: null
+
+	Quiz: Python Basis
+	Datum gemaakt: null
+	Resultaat: niet behaald
+	Behaald: null
+
+	Quiz: Python Basis
+	Datum gemaakt: null
+	Resultaat: niet behaald
+	Behaald: null
+
+	Quiz: Python Basis
+	Datum gemaakt: null
+	Resultaat: niet behaald
+	Behaald: null
+
+	Quiz: Python Basis
+	Datum gemaakt: null
+	Resultaat: niet behaald
+	Behaald: null
+
+	Quiz: Python Basis
+	Datum gemaakt: null
+	Resultaat: niet behaald
+	Behaald: null
+
 Naam student: Frits Fritsma
-	Quiz: Geschiedenis Middeleeuwen 1
-	Datum gemaakt: 2024-02-02T14:03:56.582027
-	Resultaat: 2 / 10
-	Behaald: niet behaald
+	Quiz: Python Basis
+	Datum gemaakt: null
+	Resultaat: niet behaald
+	Behaald: null
+
+sis
+Groep: Groep 2
+Aantal studenten: 25
+Docent: Zarah School
+	Studenten:
+
+Cursus: Python Basis
+Groep: Groep 3
+Aantal studenten: 25
+Docent: Zarah School
+	Studenten:
+
+Cursus: Python++
+Groep: Groep 1
+Aantal studenten: 25
+Docent: Zarah School
+	Studenten:
+
+Cursus: Python++
+Groep: Groep 2
+Aantal studenten: 25
+Docent: Fady Stegehuis
+	Studenten:
+
+Cursus: Python++
+Groep: Groep 3
+Aantal studenten: 25
+Docent: Fady Stegehuis
+	Studenten:
+
+Cursus: Spaans A
+Groep: Groep 1
+Aantal studenten: 25
+Docent: Maj van Otterlo
+	Studenten:
+
+Cursus: Spaans B
+Groep: Groep 1
+Aantal studenten: 25
+Docent: Yelina Veldhoen
+	Studenten:
+
+Cursus: Spaans B
+Groep: Groep 2
+Aantal studenten: 25
+Docent: Maj van Otterlo
+	Studenten:
 

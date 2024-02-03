@@ -1,0 +1,150 @@
+Cursus: Engels A
+Groep: Groep 1
+Aantal studenten: 25
+Docent: Yelina Veldhoen
+	Studenten:
+		- Alfred van der Berg
+		- Frits Fritsma
+
+Cursus: Engels B
+Groep: Groep 1
+Aantal studenten: 25
+Docent: Maj van Otterlo
+	Studenten:
+		- Alfred van der Berg
+		- Frits Fritsma
+
+Cursus: Harmonieleer 1
+Groep: Groep 1
+Aantal studenten: 25
+Docent: Mana Simonis
+	Studenten:
+
+Cursus: Harmonieleer 1
+Groep: Groep 2
+Aantal studenten: 25
+Docent: Mana Simonis
+	Studenten:
+		- Alfred van der Berg
+		- Frits Fritsma
+
+Cursus: Harmonieleer 1
+Groep: Groep 3
+Aantal studenten: 25
+Docent: Mana Simonis
+	Studenten:
+
+Cursus: Harmonieleer Jazz
+Groep: Groep 1
+Aantal studenten: 15
+Docent: Zev Ypma
+	Studenten:
+
+Cursus: Java Object Orientatie
+Groep: Groep 1
+Aantal studenten: 25
+Docent: Romay Reinink
+	Studenten:
+
+Cursus: Java Object Orientatie
+Groep: Groep 2
+Aantal studenten: 25
+Docent: Fady Stegehuis
+	Studenten:
+
+Cursus: Java Spring Framework
+Groep: Groep 1
+Aantal studenten: 20
+Docent: Zarah School
+	Studenten:
+
+Cursus: Kunstgeschiedenis
+Groep: Groep 1
+Aantal studenten: 20
+Docent: Milouda Cornelisse
+	Studenten:
+
+Cursus: Kunstgeschiedenis
+Groep: Groep 2
+Aantal studenten: 20
+Docent: Lilian Veltrop
+	Studenten:
+
+Cursus: Kunstgeschiedenis
+Groep: Groep 3
+Aantal studenten: 20
+Docent: Milouda Cornelisse
+	Studenten:
+
+Cursus: Moderne Geschiedenis
+Groep: Groep 1
+Aantal studenten: 25
+Docent: Milouda Cornelisse
+	Studenten:
+
+Cursus: Muziek Theorie Basis
+Groep: Groep 1
+Aantal studenten: 25
+Docent: Dogan ten Hoven
+	Studenten:
+
+Cursus: Muziek Theorie Basis
+Groep: Groep 2
+Aantal studenten: 25
+Docent: Keziah Gubbels
+	Studenten:
+
+Cursus: Python Basis
+Groep: Groep 1
+Aantal studenten: 25
+Docent: Michelangelo Tonkes
+	Studenten:
+
+Cursus: Python Basis
+Groep: Groep 2
+Aantal studenten: 25
+Docent: Zarah School
+	Studenten:
+
+Cursus: Python Basis
+Groep: Groep 3
+Aantal studenten: 25
+Docent: Zarah School
+	Studenten:
+
+Cursus: Python++
+Groep: Groep 1
+Aantal studenten: 25
+Docent: Zarah School
+	Studenten:
+
+Cursus: Python++
+Groep: Groep 2
+Aantal studenten: 25
+Docent: Fady Stegehuis
+	Studenten:
+
+Cursus: Python++
+Groep: Groep 3
+Aantal studenten: 25
+Docent: Fady Stegehuis
+	Studenten:
+
+Cursus: Spaans A
+Groep: Groep 1
+Aantal studenten: 25
+Docent: Maj van Otterlo
+	Studenten:
+
+Cursus: Spaans B
+Groep: Groep 1
+Aantal studenten: 25
+Docent: Yelina Veldhoen
+	Studenten:
+
+Cursus: Spaans B
+Groep: Groep 2
+Aantal studenten: 25
+Docent: Maj van Otterlo
+	Studenten:
+

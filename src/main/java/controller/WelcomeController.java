@@ -2,6 +2,10 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import database.mysql.CourseDAO;
+import database.mysql.GroupDAO;
+import database.mysql.ParticipationDAO;
+import database.mysql.UserDAO;
 import javacouchdb.QuizResultCouchDBDAO;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -9,17 +13,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
+import model.Group;
 import model.QuizResult;
 import model.User;
 import view.Main;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.io.*;
+import java.sql.SQLException;
+import java.util.*;
 
 public class WelcomeController {
     @FXML
@@ -97,18 +98,14 @@ public class WelcomeController {
         aMenuItem3.setOnAction(actionEvent -> Main.getSceneManager().showAssignStudentsToGroupScene());
         MenuItem aMenuItem4 = new MenuItem("Exporteer quizresultaten");
         aMenuItem4.setOnAction(actionEvent -> doShowSaveTextFileAlert("quizresultaat"));
-        //MenuItem aMenuItem4 = new MenuItem("Exporteer groepen");
-        //aMenuItem4.setOnAction(actionEvent -> doShowSaveAlert());
-        // MenuItem aMenuItem5 = new MenuItem("Exporteer quizresultaten");
-        //aMenuItem5.setOnAction(actionEvent -> doShowSaveAlert());
-
+        MenuItem aMenuItem5 = new MenuItem("Exporteer groepen");
+        aMenuItem5.setOnAction(actionEvent -> doShowSaveTextFileAlert("groepen"));
 
         taskMenuButton.getItems().add(aMenuItem1);
         taskMenuButton.getItems().add(aMenuItem2);
         taskMenuButton.getItems().add(aMenuItem3);
         taskMenuButton.getItems().add(aMenuItem4);
-        //taskMenuButton.getItems().add(aMenuItem5);
-
+        taskMenuButton.getItems().add(aMenuItem5);
     }
 
     public void initializeMenuItemsFunctionalManagement() {
@@ -180,6 +177,8 @@ public class WelcomeController {
         switch (typeToPrint) {
             case "quizresultaat":
                 printQuizResults(printWriter);
+            case "groepen":
+                printGroups(printWriter);
                 break;
         }
         printWriter.close();
@@ -200,5 +199,57 @@ public class WelcomeController {
             printWriter.println("\tBehaald: " + quizResult.getResult());
             printWriter.println();
         }
+    }
+
+    // Prints group information along with associated students' details to a file
+    private void printGroups(PrintWriter printWriter) {
+        String fileName = path + textfile + extension;
+        try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(fileName)))) {
+            List<Group> groups = getSortedGroups();
+            ParticipationDAO participationDAO = new ParticipationDAO(Main.getDBaccess());
+            for (Group group : groups) {
+                writer.write(writeGroupInfo(group));
+                writer.write(writeStudentsInfo(participationDAO, group.getIdGroup()));
+                writer.write("\n");
+            }
+        } catch (IOException | SQLException e) {
+            System.err.println("Fout bij het schrijven naar het bestand: " + e.getMessage());
+        }
+    }
+
+    // Returns specific group details as a string
+    private static String writeGroupInfo(Group group) {
+        return "Cursus: " + group.getCourse().getNameCourse() + "\n" +
+                "Groep: " + group.getGroupName() + "\n" +
+                "Aantal studenten: " + group.getAmountStudent() + "\n" +
+                "Docent: " + group.getTeacher().getFullName() + "\n";
+    }
+
+    // Returns the full names of students associated with a particular group as a string
+    private static String writeStudentsInfo(ParticipationDAO participationDAO, int groupId) throws SQLException {
+        String studentsInfo = "\tStudenten:\n";
+        List<String> studentFullNames = participationDAO.getStudentsFullNamesByGroupId(groupId);
+        studentFullNames.sort(String::compareToIgnoreCase);
+        for (String studentFullName : studentFullNames) {
+            studentsInfo += "\t\t- " + studentFullName + "\n";
+        }
+        return studentsInfo;
+    }
+
+    // Returns a sorted list of courses
+    private List<Group> getSortedGroups() throws SQLException {
+        UserDAO userDAO = new UserDAO(Main.getDBaccess());
+        CourseDAO courseDAO = new CourseDAO(Main.getDBaccess(), userDAO);
+        GroupDAO groupDAO = new GroupDAO(Main.getDBaccess(), userDAO, courseDAO);
+        List<Group> groups = groupDAO.getAll();
+        groups.sort(Comparator.comparing(group -> group.getCourse().getNameCourse()));
+        return groups;
+    }
+
+    // Returns a sorted list of students' full names associated with a particular group
+    private List<String> getSortedStudents(ParticipationDAO participationDAO, int groupId) throws SQLException {
+        List<String> studentFullNames = participationDAO.getStudentsFullNamesByGroupId(groupId);
+        studentFullNames.sort(String::compareToIgnoreCase);
+        return studentFullNames;
     }
 }

@@ -9,6 +9,7 @@ import view.Main;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
@@ -23,7 +24,7 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         this.courseDAO = courseDAO;
     }
 
-    // public GroupDAO(DBAccess dbAccess) {super(dbAccess);}
+    public GroupDAO(DBAccess dbAccess) {super(dbAccess);}
 
     // Method to retrieve all groups
     @Override
