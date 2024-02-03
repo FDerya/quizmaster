@@ -227,13 +227,13 @@ public class WelcomeController {
 
     // Returns the full names of students associated with a particular group as a string
     private static String writeStudentsInfo(ParticipationDAO participationDAO, int groupId) throws SQLException {
-        String studentsInfo = "\tStudenten:\n";
+        StringBuilder studentsInfo = new StringBuilder("\tStudenten:\n");
         List<String> studentFullNames = participationDAO.getStudentsFullNamesByGroupId(groupId);
         studentFullNames.sort(String::compareToIgnoreCase);
         for (String studentFullName : studentFullNames) {
-            studentsInfo += "\t\t- " + studentFullName + "\n";
+            studentsInfo.append("\t\t- ").append(studentFullName).append("\n");
         }
-        return studentsInfo;
+        return studentsInfo.toString();
     }
 
     // Returns a sorted list of courses
@@ -244,12 +244,5 @@ public class WelcomeController {
         List<Group> groups = groupDAO.getAll();
         groups.sort(Comparator.comparing(group -> group.getCourse().getNameCourse()));
         return groups;
-    }
-
-    // Returns a sorted list of students' full names associated with a particular group
-    private List<String> getSortedStudents(ParticipationDAO participationDAO, int groupId) throws SQLException {
-        List<String> studentFullNames = participationDAO.getStudentsFullNamesByGroupId(groupId);
-        studentFullNames.sort(String::compareToIgnoreCase);
-        return studentFullNames;
     }
 }
