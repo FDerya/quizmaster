@@ -17,7 +17,6 @@ import java.util.Optional;
 
 public class ManageQuestionsController {
 
-    final static File fileTXT = new File("src/main/java/database/saveQuestionTXT.txt");
     private final QuestionDAO questionDAO;
     @FXML
     ListView<Question> questionList;
@@ -47,26 +46,9 @@ public class ManageQuestionsController {
             // Set the selection mode to SINGLE
             questionList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-            // Added a HBOX to create a column between quiz name and question
-            questionList.setCellFactory(param -> new ListCell<>() {
-                @Override
-                protected void updateItem(Question item, boolean empty) {
-                    super.updateItem(item, empty);
+            // Creates columns
+            create_HBOX();
 
-                    if (empty || item == null) {
-                        setText(null);
-                    } else {
-                        HBox hbox = new HBox(10);
-
-                        Label quizLabel = new Label(item.getQuiz().getNameQuiz() + " :");
-                        Label questionLabel = new Label(item.getQuestion());
-
-                        hbox.getChildren().addAll(quizLabel, questionLabel);
-
-                        setGraphic(hbox);
-                    }
-                }
-            });
             // How many questions in a quiz
             questionList.getSelectionModel().selectedItemProperty().addListener(
                     (observable, oldValue, newValue) -> updateQuestionCount(newValue)
@@ -74,6 +56,29 @@ public class ManageQuestionsController {
         }
         // Clear the selection after populating the items
         questionList.getSelectionModel().clearSelection();
+    }
+
+    private void create_HBOX() {
+        // Added a HBOX to create a column between quiz name and question
+        questionList.setCellFactory(param -> new ListCell<>() {
+            @Override
+            protected void updateItem(Question item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    HBox hbox = new HBox(10);
+
+                    Label quizLabel = new Label(item.getQuiz().getNameQuiz() + " :");
+                    Label questionLabel = new Label(item.getQuestion());
+
+                    hbox.getChildren().addAll(quizLabel, questionLabel);
+
+                    setGraphic(hbox);
+                }
+            }
+        });
     }
 
     // How many questions in a quiz
@@ -89,12 +94,13 @@ public class ManageQuestionsController {
         Main.getSceneManager().showWelcomeScene();
     }
 
-    // Creates a new question
+    // Creates a new question (Button)
     public void doCreateQuestion() {
         Main.getSceneManager().showCreateUpdateQuestionScene(null);
         warningLabel.setVisible(false);
     }
 
+    // Updates the question
     public void doUpdateQuestion(ActionEvent event) {
         // Gets the selected question
         Question question = questionList.getSelectionModel().getSelectedItem();
@@ -108,29 +114,34 @@ public class ManageQuestionsController {
         }
     }
 
+    // Deletes the question
     public void doDeleteQuestion(ActionEvent event) {
         // Gets the selected question
         Question selectedQuestion = questionList.getSelectionModel().getSelectedItem();
         if (selectedQuestion != null) {
-            // Show a confirmation dialog
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Bevestig Verwijderen");
-            alert.setHeaderText("Weet je zeker dat je de vraag wilt verwijderen?");
-            alert.setContentText("Vraag : " + selectedQuestion.getIdQuestion());
-
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                // User clicked OK, proceed with deletion
-                questionDAO.deleteOne(selectedQuestion);
-                questionList.getItems().remove(selectedQuestion);
-                warningLabel.setVisible(false);
-            }
+            show_delete_confirmation(selectedQuestion);
         } else {
             warningLabel.setVisible(true);
             warningLabel.setText("Je moet eerst een vraag kiezen!");
             warningLabel.setStyle("-fx-text-fill: red;");
         }
 
+    }
+
+    private void show_delete_confirmation(Question selectedQuestion) {
+        // Show a confirmation dialog
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Bevestig Verwijderen");
+        alert.setHeaderText("Weet je zeker dat je de vraag wilt verwijderen?");
+        alert.setContentText("Vraag : " + selectedQuestion.getIdQuestion());
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // User clicked OK, proceed with deletion
+            questionDAO.deleteOne(selectedQuestion);
+            questionList.getItems().remove(selectedQuestion);
+            warningLabel.setVisible(false);
+        }
     }
 
     public void doDashboard(ActionEvent event) {

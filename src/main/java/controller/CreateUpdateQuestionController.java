@@ -53,13 +53,11 @@ public class CreateUpdateQuestionController {
     @FXML
     private Label label_Juist;
 
-
     @FXML
     private Label label_Vraag;
 
     @FXML
     private ComboBox<String> quizlist;
-
 
     @FXML
     private Label titelLabel;
