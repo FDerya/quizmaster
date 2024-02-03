@@ -83,7 +83,6 @@ public class FillOutQuizController {
         }
     }
 
-
     public void doRegisterA() {
         givenAnswer = answerList.get(0);
     }
@@ -100,6 +99,11 @@ public class FillOutQuizController {
         givenAnswer = answerList.get(3);
     }
 
+    // When you press the next question button: saves answers to arrays (given answer to given answers, correct answer
+    // to correct answers), clears the questionarea, reverts the givenAnswer String back to empty, changes the
+    // questionNumber counter to the next question. If you're on the last question, changes the nextQuestionButton
+    // to the turnInButton. It then fills the questionArea with the new question, changes the title and shows the
+    // previousQuestion button if you're above question 1.
     public void doNextQuestion() {
         saveAnswersToArrays();
         questionArea.clear();
@@ -114,6 +118,9 @@ public class FillOutQuizController {
         previousQuestionButton.setVisible(questionNumber > 1);
     }
 
+    // Clears the question area, changes the questionNumber counter to the previous question. Then fills the
+    // questionArea, sets the title label and shows the previousQuestion button if you're above question 1.
+    // Also hides the turnInButton and shows the nextQuestion button.
     public void doPreviousQuestion() {
         questionArea.clear();
         questionNumber--;
@@ -124,6 +131,8 @@ public class FillOutQuizController {
         turnInButton.setVisible(false);
     }
 
+    // Turn in quiz, first checks if all answers are given. If not: shows an alert with questionnumbers not filled in.
+    // Else turns in the quiz.
     public void doTurnIn() {
         saveAnswersToArrays();
         boolean allQuestionsAnswered = true;
@@ -140,6 +149,7 @@ public class FillOutQuizController {
         }
     }
 
+    // Method to turn in quiz, make a quizresult and save it to the couchDB.
     private void turnInQuiz() {
         int amountOfCorrectQuestions = getResult(givenAnswers, correctAnswers);
         int totalQuestions = givenAnswers.length;
@@ -151,11 +161,13 @@ public class FillOutQuizController {
         Main.getSceneManager().showStudentFeedback(selectedQuiz);
     }
 
+    // Saves given and correct answers to arrays.
     private void saveAnswersToArrays() {
         givenAnswers[questionNumber - 1] = givenAnswer;
         correctAnswers[questionNumber - 1] = questionList.get(questionNumber - 1).getAnswerRight();
     }
 
+    // Shows alert to turn in quiz when you haven't filled in all questions.
     public void showAlert() {
         Alert turnInAlert = new Alert(Alert.AlertType.CONFIRMATION);
         turnInAlert.setTitle("Inleveren");
@@ -171,6 +183,7 @@ public class FillOutQuizController {
         }
     }
 
+    // Aborts quiz
     public void doMenu() {
         Alert turnInAlert = new Alert(Alert.AlertType.CONFIRMATION);
         turnInAlert.setTitle("Quiz afbreken");
@@ -186,6 +199,7 @@ public class FillOutQuizController {
         }
     }
 
+    // Shuffles questions and returns them to a new list.
     private List<Question> shuffleQuestions(List<Question> oldList) {
         int originalSizeOldList = oldList.size();
         List<Question> newList = new ArrayList<>();
@@ -197,6 +211,7 @@ public class FillOutQuizController {
         return newList;
     }
 
+    // Shuffles answers and returns them to a new list.
     private List<String> shuffleAnswers(List<String> oldList) {
         int originalSizeOldList = oldList.size();
         List<String> newList = new ArrayList<>();
@@ -208,6 +223,7 @@ public class FillOutQuizController {
         return newList;
     }
 
+    // Compares the givenAnswers to the correctAnswers array and returns amount of correct answers in the givenAnswers.
     private int getResult(String[]givenAnswers, String[]correctAnswers) {
         int counter = 0;
         for (int i = 0; i < givenAnswers.length; i++) {
@@ -218,6 +234,7 @@ public class FillOutQuizController {
         return counter;
     }
 
+    // Handles warning if you haven't filled in all questions.
     public String checkAnswers(String[] givenAnsers) {
         int counter = 0;
         String singular = "Je hebt de volgende vraag niet ingevuld: ";

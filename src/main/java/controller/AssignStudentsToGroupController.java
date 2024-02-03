@@ -93,15 +93,13 @@ public class AssignStudentsToGroupController {
         }
     }
 
+    // Checks the group size. Group size maximum is not mandatory, it's recommended, so only the warning is given
+    // and no action is taken.
     private void checkGroupSize(Group group, List<Participation> participationPerGroup) {
         String tooManyUsersInGroup = "Het maximum aantal studenten in de groep is: " + group.getAmountStudent() +
                 "\nDit wordt nu overschreden.";
-        if (participationPerGroup.size() > group.getAmountStudent()) {
-            warningLabel.setVisible(true);
+            warningLabel.setVisible(participationPerGroup.size() > group.getAmountStudent());
             warningLabel.setText(tooManyUsersInGroup);
-        } else {
-            warningLabel.setVisible(false);
-        }
     }
 
     public void fillListView(List<Participation> participations, ListView<User> students) {
@@ -166,8 +164,6 @@ public class AssignStudentsToGroupController {
             removeStudentFromGroup(selectedCourse, selectedUsers, selectedGroup);
         }
     }
-    
-
 
     // Removes students from a group when there are no errors
     private void removeStudentFromGroup(Course selectedCourse, ObservableList<User> selectedUsers, Group selectedGroup) {
