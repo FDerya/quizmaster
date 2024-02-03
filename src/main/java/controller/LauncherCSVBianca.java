@@ -1,5 +1,4 @@
 package controller;
-// Bianca Duijvesteijn, studentnummer 500940421
 // Reads CSV data into a list, and creating a list of Group objects,
 // which are then stored in the database
 
@@ -117,5 +116,6 @@ public class LauncherCSVBianca {
     }
 
 }
+
 
 

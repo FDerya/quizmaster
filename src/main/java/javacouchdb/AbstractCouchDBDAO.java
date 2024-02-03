@@ -35,3 +35,4 @@ public class AbstractCouchDBDAO {
         couchDBaccess.getClient().remove(idDocument, revDocument);
     }
 }
+

@@ -191,7 +191,7 @@ public class LauncherCouchDBBianca {
             //System.out.println("Connection Perform CouchDB Operations open");
             performRetrieveAndUpdateOperations();
             //performDeleteOperation();
-           // printAllDocuments();
+            // printAllDocuments();
         }
     }
 
@@ -261,4 +261,3 @@ public class LauncherCouchDBBianca {
         System.out.println("------------------------------------------");
     }
 }
-

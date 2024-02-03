@@ -5,11 +5,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import model.Group;
-import view.Main;
+import org.lightcouch.CouchDbClient;
+import org.lightcouch.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GroupCouchDBDAO extends AbstractCouchDBDAO {
+    private UserCouchDBDAO userCouchDBDAO;
     private Gson gson;
 
     // Initializes the GroupCouchDBDAO
@@ -79,7 +82,7 @@ public class GroupCouchDBDAO extends AbstractCouchDBDAO {
                 return new String[]{jsonObject.get("_id").getAsString(), jsonObject.get("_rev").getAsString()};
             }
         }
-        return null;
+        return new String[0];
     }
 
     // Updates a Group document in CouchDB.
@@ -93,3 +96,5 @@ public class GroupCouchDBDAO extends AbstractCouchDBDAO {
         return updateDocument(jsonObject);
     }
 }
+
+
