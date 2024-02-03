@@ -210,11 +210,11 @@ public class WelcomeController {
         List<Question> questionsList = questionDAO.getAll();
         for (Question question : questionsList) {
             printWriter.println("\tQuiz: " + question.getQuiz().getNameQuiz());
-            printWriter.println("\tQuestion: " + question.getQuestion());
-            printWriter.println("\tAnswer Right: " + question.getAnswerRight());
-            printWriter.println("\tAnswer Wrong 1: " + question.getAnswerWrong1());
-            printWriter.println("\tAnswer Wrong 2: " + question.getAnswerWrong2());
-            printWriter.println("\tAnswer Wrong 2: " + question.getAnswerWrong3());
+            printWriter.println("\tVragen: " + question.getQuestion());
+            printWriter.println("\tJuist Antwoord: " + question.getAnswerRight());
+            printWriter.println("\tOnjuist Antwoord 1: " + question.getAnswerWrong1());
+            printWriter.println("\tOnjuist Antwoord 2: " + question.getAnswerWrong2());
+            printWriter.println("\tOnjuist Antwoord 3: " + question.getAnswerWrong3());
             printWriter.println();
         }
     }
