@@ -23,9 +23,9 @@ import java.util.Optional;
 
 public class WelcomeController {
     @FXML
-    private Label welcomeLabel;
+    Label welcomeLabel;
     @FXML
-    private MenuButton taskMenuButton;
+    MenuButton taskMenuButton;
     @FXML
     Label savedLabel;
     private final QuizResultCouchDBDAO quizResultCouchDBDAO = new QuizResultCouchDBDAO(Main.getCouchDBaccess());
@@ -60,7 +60,7 @@ public class WelcomeController {
     }
 
     public void doLogout() {
-        // Verandert de currentUser naar null
+        // Changes current user to null, so no user is logged in anymore.
         User.setCurrentUser(null);
         Main.getSceneManager().showLoginScene();
     }
@@ -133,7 +133,7 @@ public class WelcomeController {
 
     // Shows a pop-up where you can name the textfile to where the quizresults are exported
     public void doShowSaveTextFileAlert(String type) {
-        typeOfPrint = type;
+        typeOfPrint = type; // Saves the typeOfPrint in the global scope, to access it in another method later on
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Exporteer " + type);
         alert.setHeaderText("Voer de gewenste bestandsnaam in");
@@ -150,8 +150,8 @@ public class WelcomeController {
         }
     }
 
-    // Saves the quizresult into a given textfile. After you save, a savedLabel shows up on the screen and
-    // disappears after 2 seconds.
+    // Saves the typeOfPrint into a given textfile. After you save, a savedLabel shows up on the screen and
+    // disappears after 3 seconds.
     private void showLabelToSave(TextField fileName) {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), actionEvent ->
                 savedLabel.setVisible(false)));
@@ -162,6 +162,7 @@ public class WelcomeController {
         timeline.play();
     }
 
+    // Creates the textFile with the printToTextFile method.
     private void createTextFile() {
         try {
             printToTextFile(typeOfPrint);
@@ -170,8 +171,9 @@ public class WelcomeController {
         }
     }
 
-    // Initiates a printWriter, to write the quizresult into a text file.
-    // If a user has multiple quizresults, only shows the username once.
+    // Initiates a printWriter, to write the typeOfPrint into a text file. Depending on the typeOfPrint,
+    // chooses the correct way to print, via a switch statement.
+
     private void printToTextFile(String typeToPrint) throws FileNotFoundException {
         File file = new File(path + textfile + extension);
         PrintWriter printWriter = new PrintWriter(file);
@@ -183,6 +185,7 @@ public class WelcomeController {
         printWriter.close();
     }
 
+    // Prints the quizresult. If a user has multiple quizresults, only shows the username once.
     private void printQuizResults(PrintWriter printWriter) {
         String lastUsername = null;
         for (QuizResult quizResult : listQuizResult) {
