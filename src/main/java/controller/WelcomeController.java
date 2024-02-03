@@ -2,10 +2,7 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import database.mysql.CourseDAO;
-import database.mysql.GroupDAO;
-import database.mysql.ParticipationDAO;
-import database.mysql.UserDAO;
+import database.mysql.*;
 import javacouchdb.QuizResultCouchDBDAO;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -14,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import model.Group;
+import model.Question;
 import model.QuizResult;
 import model.User;
 import view.Main;
@@ -100,12 +98,15 @@ public class WelcomeController {
         aMenuItem4.setOnAction(actionEvent -> doShowSaveTextFileAlert("quizresultaat"));
         MenuItem aMenuItem5 = new MenuItem("Exporteer groepen");
         aMenuItem5.setOnAction(actionEvent -> doShowSaveTextFileAlert("groepen"));
+        MenuItem aMenuItem6 = new MenuItem("Exporteer question");
+        aMenuItem6.setOnAction(actionEvent -> doShowSaveTextFileAlert("question"));
 
         taskMenuButton.getItems().add(aMenuItem1);
         taskMenuButton.getItems().add(aMenuItem2);
         taskMenuButton.getItems().add(aMenuItem3);
         taskMenuButton.getItems().add(aMenuItem4);
         taskMenuButton.getItems().add(aMenuItem5);
+        taskMenuButton.getItems().add(aMenuItem6);
     }
 
     public void initializeMenuItemsFunctionalManagement() {
@@ -179,6 +180,8 @@ public class WelcomeController {
                 printQuizResults(printWriter);
             case "groepen":
                 printGroups(printWriter);
+            case "question":
+                printQuestion(printWriter);
                 break;
         }
         printWriter.close();
@@ -200,6 +203,22 @@ public class WelcomeController {
             printWriter.println();
         }
     }
+
+    private void printQuestion(PrintWriter printWriter) {
+        QuestionDAO questionDAO = new QuestionDAO(Main.getDBaccess());
+
+        List<Question> questionsList = questionDAO.getAll();
+        for (Question question : questionsList) {
+            printWriter.println("\tQuiz: " + question.getQuiz().getNameQuiz());
+            printWriter.println("\tQuestion: " + question.getQuestion());
+            printWriter.println("\tAnswer Right: " + question.getAnswerRight());
+            printWriter.println("\tAnswer Wrong 1: " + question.getAnswerWrong1());
+            printWriter.println("\tAnswer Wrong 2: " + question.getAnswerWrong2());
+            printWriter.println("\tAnswer Wrong 2: " + question.getAnswerWrong3());
+            printWriter.println();
+        }
+    }
+
 
     // Prints group information along with associated students' details to a file
     private void printGroups(PrintWriter printWriter) {

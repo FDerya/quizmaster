@@ -11,7 +11,7 @@
 <AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateUpdateQuestionController">
     <children>
         <Label fx:id="titelLabel" layoutX="14.0" layoutY="14.0" text="" />
-      <TextArea layoutX="140.0" layoutY="130.0" prefHeight="142.0" prefWidth="713.0" />
+      <TextArea fx:id="questionTextArea" layoutX="140.0" layoutY="130.0" prefHeight="142.0" prefWidth="713.0" />
         <TextField fx:id="answerRightTextfield" alignment="TOP_LEFT" layoutX="140.0" layoutY="291.0" prefHeight="25.0" prefWidth="242.0" promptText="Right Answer" />
         <TextField fx:id="answerWrong1Textfield" alignment="TOP_LEFT" layoutX="140.0" layoutY="348.0" prefHeight="25.0" prefWidth="242.0" promptText="Wrong Answer 1" />
         <TextField fx:id="answerWrong2Textfield" alignment="TOP_LEFT" layoutX="606.0" layoutY="291.0" prefHeight="25.0" prefWidth="242.0" promptText="Wrong Answer 2" />
