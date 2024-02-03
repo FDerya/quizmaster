@@ -1,13 +1,10 @@
 package controller;
 
-import database.mysql.CourseDAO;
-import database.mysql.DBAccess;
 import database.mysql.QuestionDAO;
 import database.mysql.QuizDAO;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -19,14 +16,13 @@ import view.Main;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javafx.scene.paint.Color;
 
 public class CreateUpdateQuestionController {
-    private QuestionDAO questionDAO;
-    private QuizDAO quizDAO;
-    private CourseDAO courseDAO;
+    private final QuestionDAO questionDAO;
+    private final QuizDAO quizDAO;
+
     @FXML
     private TextField answerRightTextfield;
 
@@ -40,7 +36,7 @@ public class CreateUpdateQuestionController {
     private TextField answerWrong3Textfield;
 
     @FXML
-    private TextField questionTextfield;
+    private TextArea questionTextArea;
 
     @FXML
     private Label label_Antwood_1;
@@ -57,8 +53,6 @@ public class CreateUpdateQuestionController {
     @FXML
     private Label label_Juist;
 
-    @FXML
-    private Label label_Quiz;
 
     @FXML
     private Label label_Vraag;
@@ -80,7 +74,6 @@ public class CreateUpdateQuestionController {
     public CreateUpdateQuestionController() {
         this.questionDAO = new QuestionDAO(Main.getDBaccess());
         this.quizDAO = new QuizDAO(Main.getDBaccess());
-        this.courseDAO = new CourseDAO(Main.getDBaccess());
     }
 
     public void setup(Question question) {
@@ -94,59 +87,57 @@ public class CreateUpdateQuestionController {
                 label_Course.setText(quizDAO.getOneByName(quiz.getNameQuiz()).getCourse().getNameCourse());
             }
         });
-        // Update Question
+        // Update the question
         if (question != null) {
-            isUpdate = true;
-            existingQuestionId = question.getIdQuestion();
-            // Fill out question fields
-            titelLabel.setText("Wijzig vraag");
-            questionTextfield.setText(question.getQuestion());
-            answerRightTextfield.setText(question.getAnswerRight());
-            answerWrong1Textfield.setText(question.getAnswerWrong1());
-            answerWrong2Textfield.setText(question.getAnswerWrong2());
-            answerWrong3Textfield.setText(question.getAnswerWrong3());
-            String quizName = question.getQuiz().getNameQuiz();
-            quizlist.getSelectionModel().select(quizName);
-            quizlist.setPromptText("Wijzig de bijbehorende quiz:");
-            label_Course.setText(quizDAO.getOneByName(quizName).getCourse().getNameCourse());
+            updateQuestion(question);
         }
-        // New Question
+        // Create the question
         else {
-            isUpdate = false;
-            String selectedQuizName = quizlist.getSelectionModel().getSelectedItem();
-            if (selectedQuizName != null) {
-                Quiz quiz = quizDAO.getOneByName(selectedQuizName);
-                label_Course.setText(quiz.getCourse().getNameCourse());
-            }
+            create_new_Question();
         }
     }
 
+    // Fills the text fields with the old question
+    void updateQuestion(Question question) {
+        isUpdate = true;
+        existingQuestionId = question.getIdQuestion();
+        // Fill out question fields
+        titelLabel.setText("Wijzig vraag");
+        questionTextArea.setText(question.getQuestion());
+        answerRightTextfield.setText(question.getAnswerRight());
+        answerWrong1Textfield.setText(question.getAnswerWrong1());
+        answerWrong2Textfield.setText(question.getAnswerWrong2());
+        answerWrong3Textfield.setText(question.getAnswerWrong3());
+        String quizName = question.getQuiz().getNameQuiz();
+        quizlist.getSelectionModel().select(quizName);
+        quizlist.setPromptText("Wijzig de bijbehorende quiz:");
+        label_Course.setText(quizDAO.getOneByName(quizName).getCourse().getNameCourse());
+    }
+
+    // Fields are left blank since a new question is being made
+    void create_new_Question() {
+        isUpdate = false;
+        String selectedQuizName = quizlist.getSelectionModel().getSelectedItem();
+        if (selectedQuizName != null) {
+            Quiz quiz = quizDAO.getOneByName(selectedQuizName);
+            label_Course.setText(quiz.getCourse().getNameCourse());
+        }
+    }
+
+    // Takes user to menu
     public void doMenu(ActionEvent event) {
         Main.getSceneManager().showManageQuestionsScene();
     }
 
     // Opslaan
     public void doStoreQuestion(ActionEvent actionEvent) {
-        Question question = doUpdateQuestion();
-
+        Question question = isQuestionValid();
         if (question != null) {
             // Check if the quiz in the question is not null
             if (!isUpdate && question.getQuiz() != null) {
-                // Only attempt to store the question if the quiz is not null
-                questionDAO.storeOne(question);
-                warningLabel.setText("Vraag is opgeslagen");
-                warningLabel.setVisible(true);
-                Timeline timeline = new Timeline(
-                        new KeyFrame(Duration.seconds(2), event -> {
-                            clearFields();
-                            warningLabel.setVisible(false);
-                        })
-                );
-
-                timeline.play();
-
-            } else if (isUpdate && question != null) {
-                updateExistingQuestion(question);
+                store_new_question(question);
+            } else if (isUpdate) {
+                doUpdateQuestion(question);
             } else {
                 warningLabel.setVisible(true);
                 warningLabel.setText("Field/s are empty!");
@@ -154,7 +145,23 @@ public class CreateUpdateQuestionController {
         }
     }
 
-    private void updateExistingQuestion(Question question) {
+    // Storing new question
+    private void store_new_question(Question question) {
+        // Only attempt to store the question if the quiz is not null
+        questionDAO.storeOne(question);
+        warningLabel.setText("Vraag is opgeslagen");
+        warningLabel.setVisible(true);
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(2), event -> {
+                    clearFields();
+                    warningLabel.setVisible(false);
+                })
+        );
+        timeline.play();
+    }
+
+    // Updating the existing question
+    private void doUpdateQuestion(Question question) {
         question.setIdQuestion(existingQuestionId);
         Question existingQuestion = questionDAO.getOneById(existingQuestionId);
 
@@ -164,11 +171,11 @@ public class CreateUpdateQuestionController {
         }
     }
 
-    public Question doUpdateQuestion() {
+    public Question isQuestionValid() {
         boolean correctInput;
         // Gets values from textfields
         String selectedQuiz = quizlist.getValue();
-        String questionText = questionTextfield.getText();
+        String questionText = questionTextArea.getText();
         String answerRight = answerRightTextfield.getText();
         String answerWrong1 = answerWrong1Textfield.getText();
         String answerWrong2 = answerWrong2Textfield.getText();
@@ -182,16 +189,6 @@ public class CreateUpdateQuestionController {
             // If fields are not empty, return question
             return createQuestion(selectedQuiz, questionText, answerRight, answerWrong1, answerWrong2, answerWrong3);
         }
-    }
-
-    // Checks if fields are empty
-    private boolean areFieldsEmpty(String... fields) {
-        for (String field : fields) {
-            if (field.isEmpty()) {
-                return true;
-            }
-        }
-        return false;
     }
 
     // Creating a new question
@@ -247,6 +244,7 @@ public class CreateUpdateQuestionController {
 
         timeline.play();
     }
+
     //Vult de keuzelijst (ComboBox) met beschikbare quizzen.
 //Vult de keuzelijst (ComboBox) met beschikbare quizzen.
     public void fillComboBoxQuizzes() {
@@ -268,7 +266,7 @@ public class CreateUpdateQuestionController {
     }
 
     public void clearFields() {
-        questionTextfield.clear();
+        questionTextArea.clear();
         answerRightTextfield.clear();
         answerWrong1Textfield.clear();
         answerWrong2Textfield.clear();
@@ -277,6 +275,7 @@ public class CreateUpdateQuestionController {
         quizlist.setValue(null);
         quizlist.getSelectionModel().clearSelection();
     }
+
     public void doDashboard(ActionEvent action) {
         Main.getSceneManager().showCoordinatorDashboard();
     }

@@ -1,11 +1,9 @@
 package javacouchdb;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import model.Question;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class QuestionCouchDBDAO extends AbstractCouchDBDAO {
 
@@ -16,7 +14,7 @@ public class QuestionCouchDBDAO extends AbstractCouchDBDAO {
         this.gson = gson;
     }
 
-    public String saveSingleQuestion (Question question ) {
+    public String saveSingleQuestion(Question question) {
         String jsonString = gson.toJson(question);
         JsonParser parser = new JsonParser();
         JsonObject jsonObject = parser.parse(jsonString).getAsJsonObject();
@@ -28,11 +26,11 @@ public class QuestionCouchDBDAO extends AbstractCouchDBDAO {
         return gson.fromJson(getDocumentById(doc_Id), Question.class);
     }
 
-    public Question getQuestion (int idQuestion, int idQuiz) {
+    public Question getQuestion(int idQuestion, int idQuiz) {
         Question resultaat;
         for (JsonObject jsonObject : getAllDocuments()) {
             resultaat = gson.fromJson(jsonObject, Question.class);
-            if (resultaat.getIdQuestion() == idQuestion && (resultaat.getQuiz().getIdQuiz()== idQuiz)) {
+            if (resultaat.getIdQuestion() == idQuestion && (resultaat.getQuiz().getIdQuiz() == idQuiz)) {
                 return resultaat;
             }
         }
@@ -50,7 +48,7 @@ public class QuestionCouchDBDAO extends AbstractCouchDBDAO {
         return idAndRev;
     }
 
-    public void deleteQuestion(Question question){
+    public void deleteQuestion(Question question) {
         String[] idAndRev = getIdAndRevQuestion(question);
         deleteDocument(idAndRev[0], idAndRev[1]);
     }

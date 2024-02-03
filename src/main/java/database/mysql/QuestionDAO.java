@@ -1,6 +1,5 @@
 package database.mysql;
 
-import model.Course;
 import model.Question;
 import model.Quiz;
 import model.User;
@@ -13,6 +12,7 @@ import java.util.List;
 
 public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
     private QuizDAO quizDAO;
+
     public QuestionDAO(DBAccess dbAccess) {
         super(dbAccess);
         this.quizDAO = new QuizDAO(Main.getDBaccess());
@@ -57,6 +57,7 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
         }
         return questions;
     }
+
     // Methode die wordt gebruikt om een specifieke vraag op ID op te halen
     @Override
     public Question getOneById(int questionId) {
@@ -75,7 +76,7 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
         return question;
     }
 
-    // Helpermethode die een vraagobject maakt met de resultaatset
+    // Helper-methode die een vraagobject maakt met de resultaatset
     private Question getQuestionFromResultSet(ResultSet resultSet) throws SQLException {
         int idQuestion = resultSet.getInt("idQuestion");
         int idQuiz = resultSet.getInt("idQuiz");
