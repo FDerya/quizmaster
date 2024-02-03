@@ -159,20 +159,6 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
         }
     }
 
-    public int getLastQuestionId() {
-        int lastQuestionId = 0;
-        String sql = "SELECT MAX(idQuestion) FROM question;";
-        try {
-            setupPreparedStatement(sql);
-            ResultSet resultSet = executeSelectStatement();
-            if (resultSet.next()) {
-                lastQuestionId = resultSet.getInt(1);
-            }
-        } catch (SQLException sqlException) {
-            System.out.println("SQL fout " + sqlException.getMessage());
-        }
-        return lastQuestionId;
-    }
 
     public void updateQuestion(Question question) {
         String sql = "UPDATE question SET idQuiz=?, question=?, answerRight=?, answerWrong1=?, answerWrong2=?, answerWrong3=? WHERE idQuestion=?";
