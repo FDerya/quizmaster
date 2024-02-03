@@ -29,6 +29,8 @@ public class ManageGroupsController extends WarningAlertController {
     private Label groupCountLabel;
     @FXML
     private Label warningLabel;
+    @FXML
+    Button mainScreenButton;
 
     // Constructor
     public ManageGroupsController() {
@@ -47,6 +49,7 @@ public class ManageGroupsController extends WarningAlertController {
 
         groupList.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection,
                                                                           newSelection) -> updateGroupCountLabel());
+        mainScreenButton.setText(Main.getMainScreenButtonText());
     }
 
     // Clears the existing items in the groupList and populates it with the provided list of groups
@@ -120,7 +123,7 @@ public class ManageGroupsController extends WarningAlertController {
         boolean foundInNewGroups = isGroupInNewGroups(selectedGroup);
         if (selectedGroup.isNew() || foundInNewGroups) {
             // confirmDeletion("groep", selectedGroup.getGroupName());
-           showConfirmationDialog(selectedGroup);
+            showConfirmationDialog(selectedGroup);
         } else {
             showWarningAndSetup(selectedGroup);
         }

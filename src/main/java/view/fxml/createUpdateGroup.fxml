@@ -72,7 +72,7 @@
         </GridPane>
         <Button layoutX="15.0" layoutY="249.0" maxHeight="30.0" mnemonicParsing="false" onAction="#doSaveGroup" text="Opslaan" />
         <Button layoutX="84.33" layoutY="249.0" maxHeight="30.0" mnemonicParsing="false" onAction="#doShowManageGroups" text="Groepenbeheer" />
-        <Button layoutX="193.66" layoutY="249.0" maxHeight="30.0" mnemonicParsing="false" onAction="#doShowMenu" text="Beginscherm" />
+        <Button fx:id="mainScreenButton" layoutX="193.66" layoutY="249.0" maxHeight="30.0" mnemonicParsing="false" onAction="#doShowMenu" text="Beginscherm" />
         <Label fx:id="warningLabel" layoutX="41.0" layoutY="340.0" prefHeight="17.0" prefWidth="353.0" text="Label" visible="false" />
     </children>
 </AnchorPane>

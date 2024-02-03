@@ -49,6 +49,8 @@ public class CreateUpdateGroupController extends WarningAlertController {
     ComboBox<Course> courseComboBox;
     @FXML
     ComboBox<User> teacherComboBox;
+    @FXML
+    Button mainScreenButton;
 
     // Initializes the CreateUpdateGroupController with the provided group.
     public CreateUpdateGroupController() {
@@ -69,6 +71,7 @@ public class CreateUpdateGroupController extends WarningAlertController {
         initializeTeacherComboBox();
         this.selectedGroup = group;
         populateFields(group);
+        mainScreenButton.setText(Main.getMainScreenButtonText());
     }
 
     // Sets up the de nameGroup TextField
