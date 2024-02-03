@@ -23,8 +23,7 @@ public class LoginController {
         userDAO = new UserDAO(Main.getDBaccess());
     }
 
-    // Nadat de constructor is aangeroepen, wordt de listener aan nameTextField en passwordField gegeven.
-    // Deze zorgt dat de errorMessage na foutief inloggen verdwijnt zodra je begint te typen in een van deze textfields.
+    // Adds a listener to the nameTextField and passwordField, that hides the errorMessage label when you start typing.
     public void initialize() {
         nameTextField.textProperty().addListener(changeErrorMessage());
         passwordField.textProperty().addListener(changeErrorMessage());
@@ -34,6 +33,7 @@ public class LoginController {
         return (observable, oldValue, newValue) -> errorMessage.setVisible(newValue.isEmpty());
     }
 
+    // Checks if username and password check out with eachother. If it fails, shows a login error.
     public void doLogin() {
         String loginErrorMessage = "Combinatie van gebruikersnaam en wachtwoord is onjuist. \nProbeer het opnieuw.";
         User user = userDAO.getOneByUsername(nameTextField.getText());
@@ -48,6 +48,8 @@ public class LoginController {
         }
     }
 
+    // Changes the static user to the logged in user, so he's logged in in the whole program.
+    // If a teacher logs in, shows an error message.
     private void successfulLogin(User user) {
         User.setCurrentUser(user);
         if (user.getRole().equals("Docent")) {
@@ -58,6 +60,7 @@ public class LoginController {
         }
     }
 
+    // After a failed login, shows the loginerror and clears the textfields.
     private void failedLogin(String loginErrorMessage) {
         errorMessage.setText(loginErrorMessage);
         nameTextField.clear();
@@ -65,11 +68,11 @@ public class LoginController {
     }
 
     public void doQuit(ActionEvent event) {
-        // Verandert de currentUser naar null
+        // changes currentUser to null
         User.setCurrentUser(null);
-        // Sluit de database
+        // closes the database
         Main.getDBaccess().closeConnection();
-        // Sluit de applicatie
+        // closes the application
         System.exit(0);
     }
 }

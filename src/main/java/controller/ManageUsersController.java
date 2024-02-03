@@ -15,9 +15,8 @@ public class ManageUsersController extends WarningAlertController {
     @FXML
     ListView<User> userList;
     @FXML
-    Label userInformation;
-    @FXML
     Button mainScreenButton;
+    final String chooseUser = "Kies een gebruiker";
 
     // Controller
     public ManageUsersController() {
@@ -69,7 +68,7 @@ public class ManageUsersController extends WarningAlertController {
         if (user != null) {
             Main.getSceneManager().showCreateUpdateUserScene(user);
         } else {
-            userInformation.setText("Kies een gebruiker");
+            warningLabel.setText(chooseUser + " om te wijzigen");
         }
     }
 
@@ -78,6 +77,7 @@ public class ManageUsersController extends WarningAlertController {
         User user = userList.getSelectionModel().getSelectedItem();
         if (user == null) {
             warningLabel.setVisible(true);
+            warningLabel.setText(chooseUser + " om te verwijderen");
         } else {
             warningLabel.setVisible(false);
             deleteUser(user);
@@ -100,12 +100,12 @@ public class ManageUsersController extends WarningAlertController {
         List<User> users = userDAO.getAll();
 
         if (user == null) {
-            userInformation.setText("Kies een gebruiker");
-            userInformation.setVisible(true);
+            warningLabel.setText(chooseUser);
+            warningLabel.setVisible(true);
         } else {
             int counter = (int) users.stream().filter(roleUsers -> roleUsers.getRole().equals(user.getRole())).count();
-            userInformation.setVisible(true);
-            userInformation.setText(counter == 1 ? "Er is " + counter + " " + user.getRole().toLowerCase() :
+            warningLabel.setVisible(true);
+            warningLabel.setText(counter == 1 ? "Er is " + counter + " " + user.getRole().toLowerCase() :
                     "Er zijn " + counter + " " + getRoleTextInPlural(user.getRole()).toLowerCase());
             }
     }
