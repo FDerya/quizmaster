@@ -178,8 +178,10 @@ public class WelcomeController {
         switch (typeToPrint) {
             case "quizresultaat":
                 printQuizResults(printWriter);
+                break;
             case "groepen":
                 printGroups(printWriter);
+                break;
             case "question":
                 printQuestion(printWriter);
                 break;
