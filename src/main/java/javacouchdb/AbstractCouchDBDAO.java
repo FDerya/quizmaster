@@ -11,6 +11,9 @@ public class AbstractCouchDBDAO {
     public AbstractCouchDBDAO(CouchDBAccess couchDBaccess) {
         this.couchDBaccess = couchDBaccess;
     }
+    public AbstractCouchDBDAO(){
+        this.couchDBaccess = new CouchDBAccess(new CouchDBAccess("quizmaster", "admin", "admin"));
+    }
 
     public String saveDocument(JsonObject document) {
         Response response = couchDBaccess.getClient().save(document);
