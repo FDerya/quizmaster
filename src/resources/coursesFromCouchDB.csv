@@ -1,0 +1,6 @@
+Test Course 1
+JSON: {"idCourse":1,"coordinator":{"idUser":1,"username":"Eve","password":"eve","firstName":"Eve","surname":"Addams","role":"Coördinator"},"nameCourse":"Test Course 1","difficultyCourse":"Beginner"}
+Test Course 2
+JSON: {"idCourse":2,"coordinator":{"idUser":1,"username":"Eve","password":"eve","firstName":"Eve","surname":"Addams","role":"Coördinator"},"nameCourse":"Test Course 2","difficultyCourse":"Medium"}
+Test Course 3
+JSON: {"idCourse":3,"coordinator":{"idUser":1,"username":"Eve","password":"eve","firstName":"Eve","surname":"Addams","role":"Coördinator"},"nameCourse":"Test Course 3","difficultyCourse":"Gevorderd"}
