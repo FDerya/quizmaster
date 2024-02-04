@@ -3,15 +3,6 @@ package model;
 // Manages groups in the UI, including creating, updating, and deleting.
 // Shows the selected group with course information and the number of similar groups.
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import javacouchdb.CouchDBAccess;
-import org.lightcouch.CouchDbClient;
-import org.lightcouch.View;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Group {
     private int idGroup;
     private Course course;
@@ -19,23 +10,22 @@ public class Group {
     private int amountStudent;
     private User teacher;
     private boolean isNew;
-    private CouchDBAccess couchDBaccess;
 
     // Constructors
     public Group(int idGroup, Course course, String groupName, int amountStudent, User teacher){
-        this.idGroup =idGroup;
+        this.idGroup = idGroup;
         this.course = course;
         this.groupName = groupName;
         this.amountStudent = amountStudent;
         this.teacher = teacher;
-        this.isNew= false;
+        this.isNew = false;
     }
 
     public Group() {
         super();
     }
 
-    // toString methode
+    // toString methods
     @Override
     public String toString() {
         return groupName;
@@ -76,6 +66,10 @@ public class Group {
 
     public User getTeacher() {
         return teacher;
+    }
+
+    public void setTeacher(User teacher) {
+        this.teacher = teacher;
     }
 
     public boolean isNew() {
