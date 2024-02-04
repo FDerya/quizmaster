@@ -53,9 +53,6 @@ public class WelcomeController {
                 initializeMenuItemsFunctionalManagement();
                 break;
         }
-
-        listJsonObject = quizResultCouchDBDAO.getAllDocuments();
-        listQuizResult = fillQuizResultList();
     }
 
     public void doLogout() {
@@ -114,19 +111,6 @@ public class WelcomeController {
         fMenuItem1.setOnAction(actionEvent -> Main.getSceneManager().showManageUserScene());
 
         taskMenuButton.getItems().add(fMenuItem1);
-    }
-
-    // Fills a List<QuizResult> from the List<JsonObject>, by converting the JsonObject to a QuizResult.
-    // Sorts by username.
-    public List<QuizResult> fillQuizResultList() {
-        Gson gson = new Gson();
-        List<QuizResult> resultList = new ArrayList<>();
-        for (JsonObject jsonObject : listJsonObject) {
-            QuizResult quizResult = gson.fromJson(jsonObject, QuizResult.class);
-            resultList.add(quizResult);
-        }
-        resultList.sort(Comparator.comparing(QuizResult::getUser));
-        return resultList;
     }
 
     // Shows a pop-up where you can name the textfile to where the quizresults are exported
@@ -189,8 +173,23 @@ public class WelcomeController {
         printWriter.close();
     }
 
+    // Fills a List<QuizResult> from the List<JsonObject>, by converting the JsonObject to a QuizResult.
+    // Sorts by username.
+    public List<QuizResult> fillQuizResultList() {
+        listJsonObject = quizResultCouchDBDAO.getAllDocuments();
+        Gson gson = new Gson();
+        List<QuizResult> resultList = new ArrayList<>();
+        for (JsonObject jsonObject : listJsonObject) {
+            QuizResult quizResult = gson.fromJson(jsonObject, QuizResult.class);
+            resultList.add(quizResult);
+        }
+        resultList.sort(Comparator.comparing(QuizResult::getUser));
+        return resultList;
+    }
+
     // Prints the quizresult. If a user has multiple quizresults, only shows the username once.
     private void printQuizResults(PrintWriter printWriter) {
+        listQuizResult = fillQuizResultList();
         String lastUsername = null;
         for (QuizResult quizResult : listQuizResult) {
             String currentUsername = quizResult.getUser();
