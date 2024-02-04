@@ -14,6 +14,21 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         super(dbAccess);
     }
 
+    // CREATE METHODS
+    // Stores a user to the database from a given user. idUser is set because database uses auto-increment.
+    public void storeOne(User user) {
+        String sql = "INSERT INTO user(username, password, firstName, prefix, surname, role) VALUES (?,?,?,?,?,?) ;";
+        try {
+            setupPreparedStatementWithKey(sql);
+            createUpdateUser(user);
+            int idUser = executeInsertStatementWithKey();
+            user.setIdUser(idUser);
+        } catch (SQLException sqlException) {
+            System.out.println("SQL fout " + sqlException.getMessage());
+        }
+    }
+
+    // READ METHODS
     // Get all users from the database, sorted by surname first, then firstname.
     public List<User> getAll() {
         List<User> resultList = new ArrayList<>();
@@ -63,19 +78,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         return user;
     }
 
-    // Stores a user to the database from a given user. idUser is set because database uses auto-increment.
-    public void storeOne(User user) {
-        String sql = "INSERT INTO user(username, password, firstName, prefix, surname, role) VALUES (?,?,?,?,?,?) ;";
-        try {
-            setupPreparedStatementWithKey(sql);
-            createUpdateUser(user);
-            int idUser = executeInsertStatementWithKey();
-            user.setIdUser(idUser);
-        } catch (SQLException sqlException) {
-            System.out.println("SQL fout " + sqlException.getMessage());
-        }
-    }
-
+    // UPDATE METHODS
     // Updates a given user
     public void updateOne(User user) {
         String sql = "UPDATE User SET username = ?, password = ?, firstName = ?, prefix = ?, surname = ?, role = ? WHERE idUser = ?;";
@@ -89,16 +92,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         }
     }
 
-    // Sets the parameters for the SQL statement, from the given user
-    private void createUpdateUser(User user) throws SQLException {
-        preparedStatement.setString(1, user.getUsername());
-        preparedStatement.setString(2, user.getPassword());
-        preparedStatement.setString(3, user.getFirstName());
-        preparedStatement.setString(4, user.getPrefix());
-        preparedStatement.setString(5, user.getSurname());
-        preparedStatement.setString(6, user.getRole());
-    }
-
+    // DELETE METHODS
     // Removes a user from the database
     public void removeOne(User user) {
         String sql = "DELETE FROM user WHERE idUser = ?;";
@@ -109,6 +103,16 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         } catch (SQLException sqlException) {
             System.out.println("SQL fout " + sqlException.getMessage());
         }
+    }
+
+    // Sets the parameters for the SQL statement, from the given user
+    private void createUpdateUser(User user) throws SQLException {
+        preparedStatement.setString(1, user.getUsername());
+        preparedStatement.setString(2, user.getPassword());
+        preparedStatement.setString(3, user.getFirstName());
+        preparedStatement.setString(4, user.getPrefix());
+        preparedStatement.setString(5, user.getSurname());
+        preparedStatement.setString(6, user.getRole());
     }
 
     // Creates and returns a user from the database query.

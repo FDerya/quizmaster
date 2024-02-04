@@ -13,12 +13,14 @@ public class UserCouchDBDAO extends AbstractCouchDBDAO {
         gson = new Gson();
     }
 
+    // CREATE METHODS
     public String saveSingleUser(User user) {
         String jsonString = gson.toJson(user);
         JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
         return saveDocument(jsonObject);
     }
 
+    // READ METHODS
     public User getUserByDocId(String doc_Id) {
         return gson.fromJson(getDocumentById(doc_Id), User.class);
     }
@@ -34,11 +36,23 @@ public class UserCouchDBDAO extends AbstractCouchDBDAO {
         return null;
     }
 
+    // UPDATE METHODS
+    public String updateUser(User user) {
+        String[] idAndRev = getIdAndRevUser(user);
+        String jsonString = gson.toJson(user);
+        JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
+        jsonObject.addProperty("_id", idAndRev[0]);
+        jsonObject.addProperty("_rev", idAndRev[1]);
+        return updateDocument(jsonObject);
+    }
+
+    // DELETE METHODS
     public void deleteUser(User user) {
         String[] idAndRev = getIdAndRevUser(user);
         deleteDocument(idAndRev[0], idAndRev[1]);
     }
 
+    // Method to get ID and Rev, needed for updating and deleting
     public String[] getIdAndRevUser(User user) {
         String[] idAndRev = new String[2];
         for (JsonObject jsonObject : getAllDocuments()) {
@@ -49,16 +63,6 @@ public class UserCouchDBDAO extends AbstractCouchDBDAO {
         }
         return idAndRev;
     }
-
-    public String updateUser(User user) {
-        String[] idAndRev = getIdAndRevUser(user);
-        String jsonString = gson.toJson(user);
-        JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
-        jsonObject.addProperty("_id", idAndRev[0]);
-        jsonObject.addProperty("_rev", idAndRev[1]);
-        return updateDocument(jsonObject);
-    }
-
 
 }
 
