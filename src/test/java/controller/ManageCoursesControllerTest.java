@@ -9,7 +9,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ManageCoursesControllerTest {
+// Testdata for the Unit tests
+    Course testCourse = new Course(null, "testCourse", "Beginner");
+    Course testCourseNull = null;
+    List<Integer[]> emptyParticipation = new ArrayList<>();
+    List<Integer[]> filledParticipation = Arrays.asList(new Integer[] {1}, new Integer[]{2});
 
+// The method that will be tested
     public String doStudentCount(Course course, List<Integer[]> participationList){
         if (course == null) {
             return "Selecteer een cursus.";
@@ -23,12 +29,7 @@ public class ManageCoursesControllerTest {
         }
     }
 
-    Course testCourse = new Course(null, "testCourse", "Beginner");
-    Course testCourseNull = null;
-    List<Integer[]> emptyParticipation = new ArrayList<>();
-    List<Integer[]> filledParticipation = Arrays.asList(new Integer[] {1}, new Integer[]{2});
-
-
+// The unit tests
     @Test
     void checkCourseIsNull() {
         String expected = "Selecteer een cursus.";
