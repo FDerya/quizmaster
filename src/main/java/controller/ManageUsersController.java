@@ -34,7 +34,7 @@ public class ManageUsersController extends WarningAlertController {
     }
 
     // Makes a Hbox which shows the user fullname and the role of the user next to it.
-    private static ListCell<User> createHBox() {
+    private ListCell<User> createHBox() {
         return new ListCell<>() {
             @Override
             public void updateItem(User item, boolean empty) {

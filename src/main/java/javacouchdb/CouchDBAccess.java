@@ -19,6 +19,12 @@ public class CouchDBAccess {
         this.mainUserPassword = mainUserPassword;
     }
 
+    public CouchDBAccess(CouchDBAccess couchDBAccess) {
+        this.databaseName = couchDBAccess.databaseName;
+        this.mainUser = couchDBAccess.mainUser;
+        this.mainUserPassword = couchDBAccess.mainUserPassword;
+    }
+
     private CouchDbProperties createProperties() {
         CouchDbProperties properties = new CouchDbProperties();
         properties.setDbName(databaseName);

@@ -9,6 +9,7 @@ public class QuizResult {
     private String result;
     private String localDateTime;
     private String user;
+    private int attemptCount;
 
     public QuizResult(String quiz, String score, String result, String localDateTime, String user) {
         this.quiz = quiz;
@@ -16,9 +17,13 @@ public class QuizResult {
         this.result = result;
         this.localDateTime = localDateTime;
         this.user = user;
+        this.attemptCount = 0;
     }
 
-    // ToString Methode
+    public void incrementAttemptCount() {
+        attemptCount++;
+    }
+
     @Override
     public String toString() {
         // Controleer of localDate overeenkomt met het verwachte formaat voordat je probeert te parsen
@@ -73,5 +78,9 @@ public class QuizResult {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    public int getAttemptCount() {
+        return attemptCount;
     }
 }

@@ -209,7 +209,12 @@ public class CreateUpdateUserController extends WarningAlertController {
         // Clear combobox and show prompt text
         roleComboBox.getSelectionModel().select(null);
         roleComboBox.setPromptText("Kies een rol");
-        roleComboBox.setButtonCell(new ListCell<>() {
+        roleComboBox.setButtonCell(setButtonText());
+    }
+
+    // Method to set prompt button text and show it after you cleared all fields
+    private ListCell<String> setButtonText() {
+        return new ListCell<>() {
             @Override
             public void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
@@ -219,7 +224,7 @@ public class CreateUpdateUserController extends WarningAlertController {
                     setText(item);
                 }
             }
-        });
+        };
     }
 
     // All textFields in an array, to loop through the array.
