@@ -157,6 +157,7 @@ public class FillOutQuizController {
         String result = amountOfCorrectQuestions >= amountOfCorrectQuestionsToPassQuiz ? "behaald" : "niet behaald";
         QuizResult quizResult = new QuizResult(selectedQuiz.getNameQuiz(), score, result, LocalDateTime.now().toString(),
                 User.getCurrentUser().getFullName());
+        quizResult.incrementAttemptCount();
         quizResultCouchDBDAO.saveSingleQuizResult(quizResult);
         Main.getSceneManager().showStudentFeedback(selectedQuiz);
     }
