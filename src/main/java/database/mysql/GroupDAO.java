@@ -14,8 +14,8 @@ import java.util.List;
 
 public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
     // Attributes
-    private UserDAO userDAO;
-    private CourseDAO courseDAO;
+    private UserDAO userDAO = new UserDAO(Main.getDBaccess());
+    private CourseDAO courseDAO = new CourseDAO(Main.getDBaccess());
 
     // Constructor with parameter UserDAO en CourseDAO
     public GroupDAO(DBAccess dBaccess, UserDAO userDAO, CourseDAO courseDAO) {

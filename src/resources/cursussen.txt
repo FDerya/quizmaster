@@ -1,0 +1,107 @@
+Cursus: Analyse
+Aantal ingeschreven studenten: 0
+Er zitten nog geen groepen in deze cursus.
+
+Cursus: Calculus 1
+Aantal ingeschreven studenten: 0
+Er zitten nog geen groepen in deze cursus.
+
+Cursus: Engels A
+Aantal ingeschreven studenten: 0
+Groepen in deze cursus:
+	Groep 1
+
+Cursus: Engels B
+Aantal ingeschreven studenten: 0
+Groepen in deze cursus:
+	Groep 1
+
+Cursus: Engels C
+Aantal ingeschreven studenten: 0
+Er zitten nog geen groepen in deze cursus.
+
+Cursus: Geschiedenis Middeleeuwen
+Aantal ingeschreven studenten: 3
+Groepen in deze cursus:
+	Groep Geschiedenis 1
+	Groep Geschiedenis 2
+	Groep Geschiedenis 3
+
+Cursus: Harmonieleer 1
+Aantal ingeschreven studenten: 0
+Groepen in deze cursus:
+	Groep 1
+	Groep 2
+	Groep 3
+
+Cursus: Harmonieleer 2
+Aantal ingeschreven studenten: 0
+Er zitten nog geen groepen in deze cursus.
+
+Cursus: Harmonieleer Jazz
+Aantal ingeschreven studenten: 0
+Groepen in deze cursus:
+	Groep 1
+
+Cursus: Java Programming
+Aantal ingeschreven studenten: 0
+Er zitten nog geen groepen in deze cursus.
+
+Cursus: Java Spring Framework
+Aantal ingeschreven studenten: 0
+Groepen in deze cursus:
+	Groep 1
+
+Cursus: Kunstgeschiedenis
+Aantal ingeschreven studenten: 0
+Groepen in deze cursus:
+	Groep 1
+	Groep 2
+	Groep 3
+
+Cursus: Moderne Geschiedenis
+Aantal ingeschreven studenten: 0
+Groepen in deze cursus:
+	Groep 1
+
+Cursus: Muziek Geschiedenis
+Aantal ingeschreven studenten: 0
+Er zitten nog geen groepen in deze cursus.
+
+Cursus: Muziek Theorie Basis
+Aantal ingeschreven studenten: 0
+Groepen in deze cursus:
+	Groep 1
+	Groep 2
+
+Cursus: Python Basis
+Aantal ingeschreven studenten: 2
+Groepen in deze cursus:
+	Groep 1
+	Groep 2
+	Groep 3
+
+Cursus: Python++
+Aantal ingeschreven studenten: 0
+Groepen in deze cursus:
+	Groep 1
+	Groep 2
+	Groep 3
+	Groep 1
+	Groep 2
+
+Cursus: Spaans A
+Aantal ingeschreven studenten: 0
+Groepen in deze cursus:
+	Groep 1
+
+Cursus: Spaans B
+Aantal ingeschreven studenten: 0
+Groepen in deze cursus:
+	Groep 1
+	Groep 2
+
+Cursus: Spaans C
+Aantal ingeschreven studenten: 0
+Er zitten nog geen groepen in deze cursus.
+

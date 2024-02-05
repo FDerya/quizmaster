@@ -10,10 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
-import model.Group;
-import model.Question;
-import model.QuizResult;
-import model.User;
+import model.*;
 import view.Main;
 
 import java.io.*;
@@ -34,6 +31,9 @@ public class WelcomeController {
     final String extension = ".txt";
     String textfile;
     String typeOfPrint;
+    final static CourseDAO courseDAO = new CourseDAO(Main.getDBaccess());
+    final static ParticipationDAO participationDAO = new ParticipationDAO(Main.getDBaccess());
+    final static GroupDAO groupDAO = new GroupDAO(Main.getDBaccess());
 
     public void setup() {
         welcomeLabel.setText("Welkom " + User.getCurrentUser().getFirstName() + "\nJe bent ingelogd als " + User.getCurrentUser().getRole().toLowerCase());
@@ -78,10 +78,13 @@ public class WelcomeController {
         cMenuItem2.setOnAction(actionEvent -> Main.getSceneManager().showManageQuizScene());
         MenuItem cMenuItem3 = new MenuItem("Vragenbeheer");
         cMenuItem3.setOnAction(actionEvent -> Main.getSceneManager().showManageQuestionsScene());
+        MenuItem cMenuItem4 = new MenuItem("Exporteer question");
+        cMenuItem4.setOnAction(actionEvent -> doShowSaveTextFileAlert("question"));
 
         taskMenuButton.getItems().add(cMenuItem1);
         taskMenuButton.getItems().add(cMenuItem2);
         taskMenuButton.getItems().add(cMenuItem3);
+        taskMenuButton.getItems().add(cMenuItem4);
     }
 
     public void initializeMenuItemsAdministrator() {
@@ -91,12 +94,12 @@ public class WelcomeController {
         aMenuItem2.setOnAction(actionEvent -> Main.getSceneManager().showManageGroupsScene());
         MenuItem aMenuItem3 = new MenuItem("Studenten toewijzen aan groepen");
         aMenuItem3.setOnAction(actionEvent -> Main.getSceneManager().showAssignStudentsToGroupScene());
-        MenuItem aMenuItem4 = new MenuItem("Exporteer quizresultaten");
-        aMenuItem4.setOnAction(actionEvent -> doShowSaveTextFileAlert("quizresultaat"));
+        MenuItem aMenuItem4 = new MenuItem("Exporteer cursussen");
+        aMenuItem4.setOnAction(actionEvent -> doShowSaveTextFileAlert("cursussen"));
         MenuItem aMenuItem5 = new MenuItem("Exporteer groepen");
         aMenuItem5.setOnAction(actionEvent -> doShowSaveTextFileAlert("groepen"));
-        MenuItem aMenuItem6 = new MenuItem("Exporteer question");
-        aMenuItem6.setOnAction(actionEvent -> doShowSaveTextFileAlert("question"));
+        MenuItem aMenuItem6 = new MenuItem("Exporteer quizresultaten");
+        aMenuItem6.setOnAction(actionEvent -> doShowSaveTextFileAlert("quizresultaat"));
 
         taskMenuButton.getItems().add(aMenuItem1);
         taskMenuButton.getItems().add(aMenuItem2);
@@ -169,6 +172,9 @@ public class WelcomeController {
             case "question":
                 printQuestion(printWriter);
                 break;
+            case "cursussen":
+                printCourse(printWriter);
+                break;
         }
         printWriter.close();
     }
@@ -216,6 +222,30 @@ public class WelcomeController {
             printWriter.println("\tOnjuist Antwoord 1: " + question.getAnswerWrong1());
             printWriter.println("\tOnjuist Antwoord 2: " + question.getAnswerWrong2());
             printWriter.println("\tOnjuist Antwoord 3: " + question.getAnswerWrong3());
+            printWriter.println();
+        }
+    }
+
+    private void printCourse(PrintWriter printWriter) {
+        List<Course> courseList = courseDAO.getAll();
+        writeCourseInfo(printWriter, courseList);
+    }
+
+    private static void writeCourseInfo(PrintWriter printWriter, List<Course> courseList) {
+        for (Course course : courseList) {
+            List<Participation> participation = participationDAO.getParticipationPerCourse(course.getIdCourse());
+            List<Group> groupsPerCourse = groupDAO.getGroupsByIdCourse(course.getIdCourse());
+            int numberOfStudents = participation.size();
+            printWriter.println("Cursus: " + course.getNameCourse());
+            printWriter.println("Aantal ingeschreven studenten: " + numberOfStudents);
+            if (groupsPerCourse.isEmpty()) {
+                printWriter.println("Er zitten nog geen groepen in deze cursus.");
+            } else {
+                printWriter.println("Groepen in deze cursus:");
+                for (Group group : groupsPerCourse) {
+                    printWriter.println("\t" + group.getGroupName());
+                }
+            }
             printWriter.println();
         }
     }

@@ -6,6 +6,7 @@ package database.mysql;
 
 import model.Course;
 import model.User;
+import view.Main;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
-    private UserDAO userDAO;
+    private UserDAO userDAO = new UserDAO(Main.getDBaccess());
     private Course course = null;
 
 
@@ -73,7 +74,6 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
             try (ResultSet resultSet = executeSelectStatement()) {
                 if (resultSet.next()) {
                     course = getCourse(resultSet);
-                    return course;
                 }
             }
         } catch (SQLException sqlError) {
@@ -145,7 +145,6 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
 
 // Create course object from resultSet
     private Course getCourse(ResultSet resultSet) throws SQLException {
-        UserDAO userDAO = new UserDAO(dbAccess);
         int idCourse = resultSet.getInt("idCourse");
         int idCoordinator = resultSet.getInt("idUser");
         String nameCourse = resultSet.getString("nameCourse");
