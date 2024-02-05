@@ -12,6 +12,8 @@ import javafx.scene.layout.HBox;
 import model.*;
 import view.Main;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,11 +48,12 @@ public class SelectQuizForStudentController extends WarningAlertController {
         if (!participation.isEmpty()) {
             List<Quiz> quizzen = new ArrayList<>();
             for (Participation course : participation) {
-                if (QUESTIONDAO.getQuestionCountForQuiz(QUIZDAO.getOneById(course.getCourse().getIdCourse())) > 0) ;
-                quizzen.addAll(QUIZDAO.getAllByCourseId(course.getCourse().getIdCourse()));
+                if (QUESTIONDAO.getQuestionCountForQuiz(QUIZDAO.getOneById(course.getCourse().getIdCourse())) > 0) {
+                    quizzen.addAll(QUIZDAO.getAllByCourseId(course.getCourse().getIdCourse()));
+                }
             }
-            makeColumn();
             quizList.getItems().addAll(quizzen);
+            makeColumn();
         }
     }
 
@@ -62,7 +65,7 @@ public class SelectQuizForStudentController extends WarningAlertController {
                 Label naam = new Label();
                 naam.setPrefWidth(200.0);
                 Label datum = new Label();
-                datum.setPrefWidth(100);
+                datum.setPrefWidth(150);
                 Label score = new Label();
                 HBox hBox = new HBox(naam, datum, score);
                 if (!(item == null || empty)) {
@@ -93,8 +96,10 @@ public class SelectQuizForStudentController extends WarningAlertController {
         finishedQuizzes = quizResultCouchDBDAO.getQuizResults(QUIZDAO.getOneByName(nameQuiz), User.getCurrentUser());
         if (!finishedQuizzes.isEmpty()) {
             QuizResult lastQuiz = finishedQuizzes.get(finishedQuizzes.size() - 1);
-            String datum = lastQuiz.getLocalDateTime();
-            return datum;
+            LocalDateTime dateTime = LocalDateTime.parse(lastQuiz.getLocalDateTime());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDateTime = dateTime.format(formatter);
+            return formattedDateTime;
         }else return "";
     }
 

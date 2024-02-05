@@ -12,7 +12,7 @@
             <Font size="18.0" />
         </font>
     </Label>
-    <ListView fx:id="quizList" layoutX="13.0" layoutY="68.0" prefHeight="200.0" prefWidth="400.0" />
+    <ListView fx:id="quizList" layoutX="15.0" layoutY="68.0" prefHeight="200.0" prefWidth="400.0" />
     <Button fx:id="mainScreenButton" layoutX="15.0" layoutY="285.0" mnemonicParsing="false" onAction="#doMenu" text="Welkomstscherm">
         <font>
             <Font size="14.0" />
@@ -29,12 +29,12 @@
          <Font size="14.0" />
       </font>
    </Label>
-   <Label layoutX="215.0" layoutY="46.0" text="Datum">
+   <Label layoutX="220.0" layoutY="46.0" text="Datum">
       <font>
          <Font size="14.0" />
       </font>
    </Label>
-   <Label layoutX="315.0" layoutY="46.0" text="Score">
+   <Label layoutX="370.0" layoutY="46.0" text="Score">
       <font>
          <Font size="14.0" />
       </font>
