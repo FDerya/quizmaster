@@ -5,14 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateUpdateQuizController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateUpdateQuizController">
     <children>
         <Label fx:id="titleLabel" layoutX="15.0" layoutY="29.0" prefHeight="27.0" prefWidth="108.0" text="Nieuwe quiz" textAlignment="LEFT">
-            <font>
-                <Font size="18.0" />
-            </font>
-        </Label>
-        <Label fx:id="courseLabel" layoutX="15.0" layoutY="64.0" prefHeight="27.0" prefWidth="342.0">
             <font>
                 <Font size="18.0" />
             </font>
@@ -45,7 +40,7 @@
                         <Insets right="5.0" />
                     </GridPane.margin>
                 </Label>
-                <Label fx:id="amountQuestionsLabel" text="Aantal vragen" GridPane.halignment="LEFT" GridPane.rowIndex="3">
+                <Label fx:id="amountQuestionsLabel" text="Cesuur" GridPane.halignment="LEFT" GridPane.rowIndex="3">
                     <GridPane.margin>
                         <Insets right="5.0" />
                     </GridPane.margin>
@@ -54,12 +49,17 @@
                 <TextField fx:id="nameTextField" promptText="verplicht" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <ComboBox fx:id="levelsListComboBox" prefHeight="26.0" prefWidth="230.0" promptText="Kies een level" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <TextField fx:id="amountTextField" promptText="verplicht" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+              <Label fx:id="courseLabel" prefHeight="27.0" prefWidth="342.0" GridPane.columnIndex="1">
+                  <font>
+                      <Font size="18.0" />
+                  </font>
+              </Label>
                 </children>
         </GridPane>
-        <Button layoutX="138.0" layoutY="314.0" mnemonicParsing="false" onAction="#doMenuBack" prefHeight="26.0" prefWidth="80.0" text="Quizbeheer" />
-        <Button layoutX="242.0" layoutY="314.0" mnemonicParsing="false" onAction="#doDashboard" prefHeight="26.0" prefWidth="80.0" text="Dashboard" />
-        <Button layoutX="15.0" layoutY="254.0" mnemonicParsing="false" onAction="#doCreateUpdateQuiz" prefHeight="26.0" prefWidth="67.0" text="Opslaan" />
-        <Button fx:id="mainScreenButton" layoutX="15.0" layoutY="314.0" mnemonicParsing="false" onAction="#doMenu" prefHeight="26.0" prefWidth="108.0" text="Welkomstscherm" />
+        <Button layoutX="137.0" layoutY="314.0" mnemonicParsing="false" onAction="#doMenuBack" text="Quizbeheer" />
+        <Button layoutX="230.0" layoutY="314.0" mnemonicParsing="false" onAction="#doDashboard" text="Dashboard" />
+        <Button layoutX="15.0" layoutY="254.0" mnemonicParsing="false" onAction="#doCreateUpdateQuiz" text="Opslaan" />
+        <Button fx:id="mainScreenButton" layoutX="15.0" layoutY="314.0" mnemonicParsing="false" onAction="#doMenu" text="Welkomstscherm" />
         <Label fx:id="warningLabel" layoutX="376.0" layoutY="91.0" prefHeight="27.0" prefWidth="368.0" text="Label" visible="false" />
         </children>
 </AnchorPane>

@@ -1,4 +1,9 @@
 Cursus                         Quiznaam                       Level           Aantal vragen per quiz
-Python Basis                   Python Basis                   Beginner        14        
+Geschiedenis Middeleeuwen      Geschiedenis Middeleeuwen 1    Beginner        14        
+Geschiedenis Middeleeuwen      Geschiedenis Middeleeuwen 2    Beginner        10        
+Geschiedenis Middeleeuwen      Geschiedenis Middeleeuwen 3    Beginner        10        
+Geschiedenis Middeleeuwen      GMm                            Medium          0         
+Geschiedenis Middeleeuwen      amt                            Beginner        0         
+Geschiedenis Middeleeuwen      aewrg                          Beginner        0         
 
-Er zijn 1 quizzen met 14 vragen, gemiddelde = 14.0
+Er zijn 6 quizzen met 34 vragen, gemiddelde = 5.6

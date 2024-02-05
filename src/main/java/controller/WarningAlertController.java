@@ -64,7 +64,7 @@ public class WarningAlertController {
     }
 
     public void setEmptyChoice(String insert, boolean trueorfalse) {
-        String choice = "Je moet eerst een " + insert + " kiezen.";
+        String choice = "Je moet eerst een " + insert + " kiezen";
         warningLabel.setText(choice);
         if (trueorfalse) {
             warningLabel.setVisible(true);
@@ -75,7 +75,7 @@ public class WarningAlertController {
     public boolean confirmDeletion(String insert, String object) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Verwijder " + object);
-        alert.setHeaderText(object + " " + insert + " wordt verwijderd.");
+        alert.setHeaderText(object + " " + insert + " wordt verwijderd");
         alert.setContentText("Weet je het zeker?");
         ButtonType buttonCancel = new ButtonType("Annuleer");
         ButtonType buttonContinue = new ButtonType("Verwijder");
@@ -85,7 +85,7 @@ public class WarningAlertController {
     }
 
     public void showSame(boolean trueorfalse, String insert) {
-        String same = "Deze "+insert+"naam bestaat al.";
+        String same = "Deze "+insert+"naam bestaat al";
         warningLabel.setText(same);
         if (trueorfalse) {
             warningLabel.setVisible(true);

@@ -69,6 +69,7 @@ public class CreateUpdateQuizController extends WarningAlertController {
             amountTextField.setText(String.valueOf(quizOne.getMinimumAmountCorrectQuestions()));
         } else {
             courseText.setText("Naam cursus");
+            courseLabel.setVisible(false);
             courseText.setVisible(true);
             coursesListComboBox.setVisible(true);
         }

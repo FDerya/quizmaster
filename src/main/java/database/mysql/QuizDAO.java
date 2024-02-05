@@ -58,7 +58,6 @@ public class QuizDAO extends AbstractDAO implements GenericDAO<Quiz> {
         }
         return courseTotalListQuiz;
     }
-
     // Zoek een specifieke quiz aan de hand van idQuiz
     @Override
     public Quiz getOneById(int id) {
