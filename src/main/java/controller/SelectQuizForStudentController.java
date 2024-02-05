@@ -18,6 +18,7 @@ import java.util.List;
 public class SelectQuizForStudentController extends WarningAlertController {
     private final UserDAO USERDAO;
     private final QuizDAO QUIZDAO;
+    private final QuestionDAO QUESTIONDAO;
     private final ParticipationDAO PARTICIPATIONDAO;
     private QuizResultCouchDBDAO quizResultCouchDBDAO = new QuizResultCouchDBDAO(Main.getCouchDBaccess());
 
@@ -33,6 +34,7 @@ public class SelectQuizForStudentController extends WarningAlertController {
     public SelectQuizForStudentController() {
         this.QUIZDAO = new QuizDAO(Main.getDBaccess());
         this.USERDAO = new UserDAO(Main.getDBaccess());
+        this.QUESTIONDAO = new QuestionDAO(Main.getDBaccess());
         this.PARTICIPATIONDAO = new ParticipationDAO(Main.getDBaccess());
     }
 
@@ -44,6 +46,7 @@ public class SelectQuizForStudentController extends WarningAlertController {
         if (!participation.isEmpty()) {
             List<Quiz> quizzen = new ArrayList<>();
             for (Participation course : participation) {
+                if (QUESTIONDAO.getQuestionCountForQuiz(QUIZDAO.getOneById(course.getCourse().getIdCourse())) > 0) ;
                 quizzen.addAll(QUIZDAO.getAllByCourseId(course.getCourse().getIdCourse()));
             }
             makeColumn();

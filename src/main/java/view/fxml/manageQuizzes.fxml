@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageQuizzesController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageQuizzesController">
     <Label layoutX="15.0" layoutY="14.0" text="Quizbeheer">
         <font>
             <Font size="18.0" />
@@ -17,12 +17,12 @@
             <Font size="14.0" />
         </font>
     </Label>
-    <Label layoutX="184.0" layoutY="49.0" text="Aantal vragen">
+    <Label layoutX="215.0" layoutY="49.0" text="Cesuur">
         <font>
             <Font size="14.0" />
         </font>
     </Label>
-    <ListView fx:id="quizList" layoutX="14.0" layoutY="78.0" prefHeight="200.0" prefWidth="281.0" />
+    <ListView fx:id="quizList" layoutX="15.0" layoutY="78.0" prefHeight="200.0" prefWidth="281.0" />
 
     <Button layoutX="15.0" layoutY="295.0" mnemonicParsing="false" onAction="#doCreateQuiz" prefHeight="30.0" text="Nieuw">
         <font>
