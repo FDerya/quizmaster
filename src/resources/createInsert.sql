@@ -2,7 +2,7 @@ CREATE DATABASE  IF NOT EXISTS `quizmaster` /*!40100 DEFAULT CHARACTER SET utf8m
 USE `quizmaster`;
 -- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: quizmaster
+-- Host: localhost    Database: quizmaster
 -- ------------------------------------------------------
 -- Server version	8.0.34
 
@@ -30,9 +30,11 @@ CREATE TABLE `course` (
   `nameCourse` varchar(45) NOT NULL,
   `difficultyCourse` set('Beginner','Medium','Gevorderd') NOT NULL,
   PRIMARY KEY (`idCourse`),
+  UNIQUE KEY `idCourse_UNIQUE` (`idCourse`),
+  UNIQUE KEY `nameCourse_UNIQUE` (`nameCourse`),
   KEY `verzinzelf3_idx` (`idUser`),
-  CONSTRAINT `verzinzelf3` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb3;
+  CONSTRAINT `is coordinator of` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,10 +49,14 @@ CREATE TABLE `group` (
   `idUser` int NOT NULL,
   `nameGroup` varchar(45) NOT NULL,
   `amountStudent` int NOT NULL,
+  `idCourse` int NOT NULL,
   PRIMARY KEY (`idGroup`),
+  UNIQUE KEY `idGroup_UNIQUE` (`idGroup`),
   KEY `verzinzelf2_idx` (`idUser`),
-  CONSTRAINT `verzinzelf2` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb3;
+  KEY `teaches_idx` (`idCourse`),
+  CONSTRAINT `is administrator of` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`),
+  CONSTRAINT `teaches` FOREIGN KEY (`idCourse`) REFERENCES `course` (`idCourse`)
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,14 +69,14 @@ DROP TABLE IF EXISTS `participation`;
 CREATE TABLE `participation` (
   `idUser` int NOT NULL,
   `idCourse` int NOT NULL,
-  `idGroup` int NOT NULL,
+  `idGroup` int DEFAULT NULL,
   PRIMARY KEY (`idUser`,`idCourse`),
   KEY `verzinzelf6_idx` (`idGroup`),
   KEY `verzinzelf5_idx` (`idUser`),
   KEY `verzinzelf7_idx` (`idCourse`),
-  CONSTRAINT `verzinzelf5` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`),
-  CONSTRAINT `verzinzelf6` FOREIGN KEY (`idGroup`) REFERENCES `group` (`idGroup`),
-  CONSTRAINT `verzinzelf7` FOREIGN KEY (`idCourse`) REFERENCES `course` (`idCourse`)
+  CONSTRAINT `is divided into` FOREIGN KEY (`idGroup`) REFERENCES `group` (`idGroup`),
+  CONSTRAINT `is teacher of` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`),
+  CONSTRAINT `parts of` FOREIGN KEY (`idCourse`) REFERENCES `course` (`idCourse`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -90,9 +96,10 @@ CREATE TABLE `question` (
   `answerWrong2` varchar(1000) NOT NULL,
   `answerWrong3` varchar(1000) NOT NULL,
   PRIMARY KEY (`idQuestion`),
+  UNIQUE KEY `idQuestion_UNIQUE` (`idQuestion`),
   KEY `verzinzelf4_idx` (`idQuiz`),
-  CONSTRAINT `verzinzelf4` FOREIGN KEY (`idQuiz`) REFERENCES `quiz` (`idQuiz`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb3 COMMENT='	';
+  CONSTRAINT `is a part of` FOREIGN KEY (`idQuiz`) REFERENCES `quiz` (`idQuiz`)
+) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=utf8mb3 COMMENT='	';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -109,9 +116,11 @@ CREATE TABLE `quiz` (
   `levelQuiz` set('Beginner','Medium','Gevorderd') NOT NULL,
   `amountQuestion` int NOT NULL,
   PRIMARY KEY (`idQuiz`),
+  UNIQUE KEY `nameQuiz_UNIQUE` (`nameQuiz`),
+  UNIQUE KEY `idQuiz_UNIQUE` (`idQuiz`),
   KEY `verzinzelf1_idx` (`idCourse`),
   CONSTRAINT `is part of` FOREIGN KEY (`idCourse`) REFERENCES `course` (`idCourse`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,8 +138,10 @@ CREATE TABLE `user` (
   `prefix` varchar(10) DEFAULT NULL,
   `surname` varchar(45) NOT NULL,
   `role` set('Student','Docent','Coördinator','Administrator','Functioneel Beheerder') NOT NULL,
-  PRIMARY KEY (`idUser`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb3 COMMENT='										';
+  PRIMARY KEY (`idUser`),
+  UNIQUE KEY `idUser_UNIQUE` (`idUser`),
+  UNIQUE KEY `username_UNIQUE` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=213 DEFAULT CHARSET=utf8mb3 COMMENT='										';
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -142,7 +153,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-CREATE USER 'userQuizmaster'@'localhost' IDENTIFIED BY 'pwQuizmaster';
-GRANT ALL PRIVILEGES ON Quizmaster.* TO 'userQuizmaster'@'localhost';
-
--- Dump completed on 2023-12-22 10:34:25
+-- Dump completed on 2024-02-06 13:21:45
