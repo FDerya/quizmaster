@@ -47,12 +47,12 @@ public class SelectQuizForStudentController extends WarningAlertController {
 
         if (!participation.isEmpty()) {
             List<Quiz> quizzen = new ArrayList<>();
+            List<Quiz> finalQuizList = new ArrayList<>();
             for (Participation course : participation) {
-                if (QUESTIONDAO.getQuestionCountForQuiz(QUIZDAO.getOneById(course.getCourse().getIdCourse())) > 0) {
-                    quizzen.addAll(QUIZDAO.getAllByCourseId(course.getCourse().getIdCourse()));
-                }
+                quizzen = checkEmptyQuestion(course.getCourse().getIdCourse());
+                finalQuizList.addAll(quizzen);
             }
-            quizList.getItems().addAll(quizzen);
+            quizList.getItems().addAll(finalQuizList);
             makeColumn();
         }
     }
@@ -77,6 +77,15 @@ public class SelectQuizForStudentController extends WarningAlertController {
             }
         });
     }
+private List<Quiz> checkEmptyQuestion(int course){
+        List<Quiz> newList = new ArrayList<>();
+        List<Quiz> oldList = QUIZDAO.getAllByCourseId(course);
+        for (Quiz quiz:oldList){
+            if(QUESTIONDAO.getQuestionCountForQuiz(QUIZDAO.getOneById(quiz.getIdQuiz()))>0){
+                newList.add(quiz);
+            }
+        }return newList;
+}
 
     public void doMenu(ActionEvent event) {
         Main.getSceneManager().showWelcomeScene();
