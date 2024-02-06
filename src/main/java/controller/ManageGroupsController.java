@@ -22,7 +22,7 @@ import java.util.Optional;
 
 
 public class ManageGroupsController extends WarningAlertController {
-    private final GroupDAO groupDAO;
+    private GroupDAO groupDAO;
     @FXML
     private ListView<Group> groupList;
     @FXML
@@ -36,6 +36,12 @@ public class ManageGroupsController extends WarningAlertController {
     public ManageGroupsController() {
         this.groupDAO = new GroupDAO(Main.getDBaccess(), new UserDAO(Main.getDBaccess()),
                 new CourseDAO(Main.getDBaccess()));
+    }
+
+    // Constructor for testing
+    public ManageGroupsController(GroupDAO groupDAO, Label groupCountLabel) {
+        this.groupDAO = groupDAO;
+        this.groupCountLabel = groupCountLabel;
     }
 
     // Clears the group list, retrieves and sorts groups, sets up list view properties, and updates labels
@@ -210,7 +216,7 @@ public class ManageGroupsController extends WarningAlertController {
     }
 
     // Updates the group count label and selected course label based on the selected group
-    private void updateGroupCountLabel() {
+    protected Object updateGroupCountLabel() {
         Group selectedGroup = getSelectedGroup();
         if (selectedGroup == null) {
             hideLabel();
@@ -223,6 +229,7 @@ public class ManageGroupsController extends WarningAlertController {
                 hideLabel();
             }
         }
+        return null;
     }
 
     // Clears labels when no group is selected or no course is associated with the selected group.
@@ -245,5 +252,9 @@ public class ManageGroupsController extends WarningAlertController {
     // Getter for the selected group
     public Group getSelectedGroup() {
         return groupList.getSelectionModel().getSelectedItem();
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
     }
 }
