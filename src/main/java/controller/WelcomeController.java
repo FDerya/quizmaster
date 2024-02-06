@@ -10,10 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
-import model.Group;
-import model.Question;
-import model.QuizResult;
-import model.User;
+import model.*;
 import view.Main;
 
 import java.io.*;
@@ -32,6 +29,9 @@ public class WelcomeController {
     List<QuizResult> listQuizResult = new ArrayList<>();
     final String path = "src/resources/";
     final String extension = ".txt";
+    private QuestionDAO questionDAO = new QuestionDAO(Main.getDBaccess());
+    private QuizDAO quizDAO = new QuizDAO(Main.getDBaccess());
+
     String textfile;
     String typeOfPrint;
 
@@ -78,10 +78,15 @@ public class WelcomeController {
         cMenuItem2.setOnAction(actionEvent -> Main.getSceneManager().showManageQuizScene());
         MenuItem cMenuItem3 = new MenuItem("Vragenbeheer");
         cMenuItem3.setOnAction(actionEvent -> Main.getSceneManager().showManageQuestionsScene());
+        MenuItem cMenuItem4 = new MenuItem("Exporteer quizzen");
+        cMenuItem4.setOnAction(actionEvent -> doShowSaveTextFileAlert("quizzen"));
 
         taskMenuButton.getItems().add(cMenuItem1);
         taskMenuButton.getItems().add(cMenuItem2);
         taskMenuButton.getItems().add(cMenuItem3);
+        taskMenuButton.getItems().add(cMenuItem4);
+
+
     }
 
     public void initializeMenuItemsAdministrator() {
@@ -169,6 +174,9 @@ public class WelcomeController {
             case "question":
                 printQuestion(printWriter);
                 break;
+            case "quizzen":
+                printQuizzes(printWriter);
+                break;
         }
         printWriter.close();
     }
@@ -205,8 +213,22 @@ public class WelcomeController {
         }
     }
 
+    private void printQuizzes(PrintWriter printWriter) {
+        User user = User.getCurrentUser();
+        List<Quiz> listQuiz = quizDAO.getQuizzesFromUser(user);
+        int amountQuiz = listQuiz.size();
+        int amountQuestion = questionDAO.getQuestionCountForUser(user);
+        double avgQuestion = (Math.round(amountQuestion * 10 / amountQuiz) / 10.0);
+        printWriter.printf("%-30s %-30s %-15s %-10s\n", "Cursus", "Quiznaam", "Level", "Aantal vragen per quiz");
+        for (Quiz quiz : listQuiz) {
+            printWriter.printf("%-30s %-30s %-15s %-10d\n", quiz.getCourse(), quiz.getNameQuiz(), quiz.getLevel(), questionDAO.getQuestionCountForQuiz(quiz));
+        }
+        printWriter.println("\nEr zijn " + amountQuiz + " quizzen met " + amountQuestion + " vragen, gemiddelde = " + avgQuestion);
+        printWriter.close();
+    }
+
+
     private void printQuestion(PrintWriter printWriter) {
-        QuestionDAO questionDAO = new QuestionDAO(Main.getDBaccess());
 
         List<Question> questionsList = questionDAO.getAll();
         for (Question question : questionsList) {
