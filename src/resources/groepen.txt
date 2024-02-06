@@ -1,6 +1,6 @@
 Cursus: Engels A
 Groep: Groep 1
-Aantal studenten: 25
+Max. aantal studenten: 25
 Docent: Yelina Veldhoen
 	Studenten:
 		- Alfred van der Berg
@@ -8,7 +8,7 @@ Docent: Yelina Veldhoen
 
 Cursus: Engels B
 Groep: Groep 1
-Aantal studenten: 25
+Max. aantal studenten: 25
 Docent: Maj van Otterlo
 	Studenten:
 		- Alfred van der Berg
@@ -16,13 +16,14 @@ Docent: Maj van Otterlo
 
 Cursus: Harmonieleer 1
 Groep: Groep 1
-Aantal studenten: 25
+Max. aantal studenten: 25
 Docent: Mana Simonis
 	Studenten:
+		- Geen studenten in deze groep.
 
 Cursus: Harmonieleer 1
 Groep: Groep 2
-Aantal studenten: 25
+Max. aantal studenten: 25
 Docent: Mana Simonis
 	Studenten:
 		- Alfred van der Berg
@@ -30,121 +31,141 @@ Docent: Mana Simonis
 
 Cursus: Harmonieleer 1
 Groep: Groep 3
-Aantal studenten: 25
+Max. aantal studenten: 25
 Docent: Mana Simonis
 	Studenten:
+		- Geen studenten in deze groep.
 
 Cursus: Harmonieleer Jazz
 Groep: Groep 1
-Aantal studenten: 15
+Max. aantal studenten: 15
 Docent: Zev Ypma
 	Studenten:
+		- Geen studenten in deze groep.
 
 Cursus: Java Object Orientatie
 Groep: Groep 1
-Aantal studenten: 25
+Max. aantal studenten: 25
 Docent: Romay Reinink
 	Studenten:
+		- Geen studenten in deze groep.
 
 Cursus: Java Object Orientatie
 Groep: Groep 2
-Aantal studenten: 25
+Max. aantal studenten: 25
 Docent: Fady Stegehuis
 	Studenten:
+		- Geen studenten in deze groep.
 
 Cursus: Java Spring Framework
 Groep: Groep 1
-Aantal studenten: 20
+Max. aantal studenten: 20
 Docent: Zarah School
 	Studenten:
+		- Geen studenten in deze groep.
 
 Cursus: Kunstgeschiedenis
 Groep: Groep 1
-Aantal studenten: 20
+Max. aantal studenten: 20
 Docent: Milouda Cornelisse
 	Studenten:
+		- Geen studenten in deze groep.
 
 Cursus: Kunstgeschiedenis
 Groep: Groep 2
-Aantal studenten: 20
+Max. aantal studenten: 20
 Docent: Lilian Veltrop
 	Studenten:
+		- Geen studenten in deze groep.
 
 Cursus: Kunstgeschiedenis
 Groep: Groep 3
-Aantal studenten: 20
+Max. aantal studenten: 20
 Docent: Milouda Cornelisse
 	Studenten:
+		- Geen studenten in deze groep.
 
 Cursus: Moderne Geschiedenis
 Groep: Groep 1
-Aantal studenten: 25
+Max. aantal studenten: 25
 Docent: Milouda Cornelisse
 	Studenten:
+		- Geen studenten in deze groep.
 
 Cursus: Muziek Theorie Basis
 Groep: Groep 1
-Aantal studenten: 25
+Max. aantal studenten: 25
 Docent: Dogan ten Hoven
 	Studenten:
+		- Geen studenten in deze groep.
 
 Cursus: Muziek Theorie Basis
 Groep: Groep 2
-Aantal studenten: 25
+Max. aantal studenten: 25
 Docent: Keziah Gubbels
 	Studenten:
+		- Geen studenten in deze groep.
 
 Cursus: Python Basis
 Groep: Groep 1
-Aantal studenten: 25
+Max. aantal studenten: 25
 Docent: Michelangelo Tonkes
 	Studenten:
+		- Geen studenten in deze groep.
 
 Cursus: Python Basis
 Groep: Groep 2
-Aantal studenten: 25
+Max. aantal studenten: 25
 Docent: Zarah School
 	Studenten:
+		- Geen studenten in deze groep.
 
 Cursus: Python Basis
 Groep: Groep 3
-Aantal studenten: 25
+Max. aantal studenten: 25
 Docent: Zarah School
 	Studenten:
+		- Geen studenten in deze groep.
 
 Cursus: Python++
 Groep: Groep 1
-Aantal studenten: 25
+Max. aantal studenten: 25
 Docent: Zarah School
 	Studenten:
+		- Geen studenten in deze groep.
 
 Cursus: Python++
 Groep: Groep 2
-Aantal studenten: 25
+Max. aantal studenten: 25
 Docent: Fady Stegehuis
 	Studenten:
+		- Geen studenten in deze groep.
 
 Cursus: Python++
 Groep: Groep 3
-Aantal studenten: 25
+Max. aantal studenten: 25
 Docent: Fady Stegehuis
 	Studenten:
+		- Geen studenten in deze groep.
 
 Cursus: Spaans A
 Groep: Groep 1
-Aantal studenten: 25
+Max. aantal studenten: 25
 Docent: Maj van Otterlo
 	Studenten:
+		- Geen studenten in deze groep.
 
 Cursus: Spaans B
 Groep: Groep 1
-Aantal studenten: 25
+Max. aantal studenten: 25
 Docent: Yelina Veldhoen
 	Studenten:
+		- Geen studenten in deze groep.
 
 Cursus: Spaans B
 Groep: Groep 2
-Aantal studenten: 25
+Max. aantal studenten: 25
 Docent: Maj van Otterlo
 	Studenten:
+		- Geen studenten in deze groep.
 

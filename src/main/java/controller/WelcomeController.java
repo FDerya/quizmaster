@@ -294,7 +294,7 @@ public class WelcomeController {
     private static String writeGroupInfo(Group group) {
         return "Cursus: " + group.getCourse().getNameCourse() + "\n" +
                 "Groep: " + group.getGroupName() + "\n" +
-                "Aantal studenten: " + group.getAmountStudent() + "\n" +
+                "Max. aantal studenten: " + group.getAmountStudent() + "\n" +
                 "Docent: " + group.getTeacher().getFullName() + "\n";
     }
 
@@ -303,13 +303,18 @@ public class WelcomeController {
         StringBuilder studentsInfo = new StringBuilder("\tStudenten:\n");
         List<String> studentFullNames = participationDAO.getStudentsFullNamesByGroupId(groupId);
         studentFullNames.sort(String::compareToIgnoreCase);
-        for (String studentFullName : studentFullNames) {
-            studentsInfo.append("\t\t- ").append(studentFullName).append("\n");
+        if (studentFullNames.isEmpty()) {
+            studentsInfo.append("\t\t- Geen studenten in deze groep\n");
+        } else {
+            for (String studentFullName : studentFullNames) {
+                studentsInfo.append("\t\t- ").append(studentFullName).append("\n");
+            }
         }
         return studentsInfo.toString();
     }
 
-    // Returns a sorted list of courses
+
+    // Returns a sorted list of groups
     private List<Group> getSortedGroups() throws SQLException {
         UserDAO userDAO = new UserDAO(Main.getDBaccess());
         CourseDAO courseDAO = new CourseDAO(Main.getDBaccess(), userDAO);

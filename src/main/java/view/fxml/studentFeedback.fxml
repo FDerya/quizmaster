@@ -20,14 +20,9 @@
             <Font size="14.0" />
         </font>
     </Label>
-    <Label layoutX="271.0" layoutY="56.0" text="Score">
+    <Label layoutX="275.0" layoutY="56.0" text="Score">
         <font>
             <Font size="14.0" />
-        </font>
-    </Label>
-    <Label fx:id="countLabel" layoutX="423.0" layoutY="80.0" text="Aantal pogingen &lt;QUIZ&gt;" visible="true">
-        <font>
-            <Font size="18.0" />
         </font>
     </Label>
     <ListView fx:id="feedbackList" layoutX="13.0" layoutY="80.0" prefHeight="300.0" prefWidth="390.0" />
