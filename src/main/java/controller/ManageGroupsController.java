@@ -18,8 +18,6 @@ import view.Main;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-
 
 public class ManageGroupsController extends WarningAlertController {
     private GroupDAO groupDAO;
@@ -34,8 +32,8 @@ public class ManageGroupsController extends WarningAlertController {
 
     // Constructor
     public ManageGroupsController() {
-        this.groupDAO = new GroupDAO(Main.getDBaccess(), new UserDAO(Main.getDBaccess()),
-                new CourseDAO(Main.getDBaccess()));
+        this.groupDAO = new GroupDAO(Main.getDBaccess());
+
     }
 
     // Constructor for testing
@@ -128,8 +126,8 @@ public class ManageGroupsController extends WarningAlertController {
         }
         boolean foundInNewGroups = isGroupInNewGroups(selectedGroup);
         if (selectedGroup.isNew() || foundInNewGroups) {
-            // confirmDeletion("groep", selectedGroup.getGroupName());
-            showConfirmationDialog(selectedGroup);
+            confirmDeletion("groep", selectedGroup.getGroupName());
+            // showConfirmationDialog(selectedGroup);
         } else {
             showWarningAndSetup(selectedGroup);
         }
@@ -175,21 +173,6 @@ public class ManageGroupsController extends WarningAlertController {
         pause.play();
     }
 
-    // Displays a confirmation dialog prompting the user to confirm the deletion of the selected group
-    private void showConfirmationDialog(Group selectedGroup) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Verwijder groep");
-        alert.setHeaderText("Verwijder " + selectedGroup.getGroupName() + " van de cursus "
-                + selectedGroup.getCourse().getNameCourse());
-        alert.setContentText("Weet je het zeker?");
-        ButtonType buttonTypeYes = new ButtonType("Ja");
-        ButtonType buttonTypeNo = new ButtonType("Nee");
-        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
-
-        Optional<ButtonType> result = alert.showAndWait();
-        result.ifPresent(buttonType -> handleDeleteConfirmation(selectedGroup, buttonType));
-    }
-
     // Event handler for YES button
     private void handleDeleteConfirmation(Group selectedGroup, ButtonType buttonType) {
         String buttonText = buttonType.getText().toLowerCase();
@@ -210,7 +193,7 @@ public class ManageGroupsController extends WarningAlertController {
     // Shows warninglabel
     private void showWarningLabel() {
         Platform.runLater(() -> {
-            warningLabel.setText("Deze groep mag niet worden verwijderd.");
+            warningLabel.setText("Deze groep mag niet worden verwijderd");
             warningLabel.setVisible(true);
         });
     }
@@ -247,14 +230,11 @@ public class ManageGroupsController extends WarningAlertController {
             label = counter + " groepen in " + selectedGroup.getCourse();
         }
         groupCountLabel.setText(label);
+        groupCountLabel.setWrapText(true);
     }
 
     // Getter for the selected group
     public Group getSelectedGroup() {
         return groupList.getSelectionModel().getSelectedItem();
-    }
-
-    public void setGroupDAO(GroupDAO groupDAO) {
-        this.groupDAO = groupDAO;
     }
 }

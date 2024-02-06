@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
 <AnchorPane fx:id="mainAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageGroupsController">
@@ -15,7 +16,7 @@
             <Font size="14.0" />
         </font>
     </Label>
-    <Label layoutX="275.0" layoutY="49.0" text="Cursus">
+    <Label layoutX="280.0" layoutY="49.0" text="Cursus">
         <font>
             <Font size="14.0" />
         </font>
@@ -42,11 +43,12 @@
             <Font size="14.0" />
         </font>
     </Button>
-    <Label fx:id="groupCountLabel" layoutX="565.0" layoutY="78.0" prefHeight="0.0" prefWidth="207.0" text="Aantal groepen die cursus volgen" visible="true">
+    <Label fx:id="groupCountLabel" layoutX="565.0" layoutY="78.0" prefWidth="207.0" text="Aantal groepen die cursus volgen" visible="true" wrapText="true">
         <font>
             <Font size="14.0" />
         </font>
     </Label>
     <Label fx:id="warningLabel" layoutX="15.0" layoutY="405.0" prefHeight="20.0" prefWidth="353.0" text="Label" visible="false" />
+   <Line endX="100.0" startX="-100.0" />
 
 </AnchorPane>

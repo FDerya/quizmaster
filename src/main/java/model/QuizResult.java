@@ -2,6 +2,7 @@ package model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class QuizResult {
     private String quiz;
@@ -9,7 +10,6 @@ public class QuizResult {
     private String result;
     private String localDateTime;
     private String user;
-    private int attemptCount;
 
     public QuizResult(String quiz, String score, String result, String localDateTime, String user) {
         this.quiz = quiz;
@@ -17,18 +17,13 @@ public class QuizResult {
         this.result = result;
         this.localDateTime = localDateTime;
         this.user = user;
-        this.attemptCount = 0;
     }
 
-    public void incrementAttemptCount() {
-        attemptCount++;
-    }
-
+    // ToString for QuizResults
     @Override
     public String toString() {
-        // Controleer of localDate overeenkomt met het verwachte formaat voordat je probeert te parsen
-        if (localDateTime.matches("\\d{2}-\\d{2}-\\d{4}")) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        if (localDateTime.matches("\\d{2}-\\d{2}-\\d{4}T\\d{2}:\\d{2}:\\d{2}.\\d+")) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
             LocalDateTime dateTime = LocalDateTime.parse(localDateTime, formatter);
             String formattedDate = dateTime.format(formatter);
             return "\nBehaald resultaat: " + score + "\n" +
@@ -36,6 +31,20 @@ public class QuizResult {
         } else {
             return "\nBehaald resultaat: " + score + "\n" +
                     "Voltooiingsdatum: " + localDateTime;
+        }
+    }
+
+    // Formats the date and time to the correct format
+    public String formatLocalDateTime(String localDateTimeString) {
+        try {
+            LocalDateTime dateTime = LocalDateTime.parse(localDateTimeString);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+
+            String formattedDateTime = dateTime.format(formatter);
+
+            return formattedDateTime;
+        } catch (DateTimeParseException e) {
+            return localDateTimeString;
         }
     }
 
@@ -50,10 +59,6 @@ public class QuizResult {
 
     public String getScore() {
         return score;
-    }
-
-    public void setScore(String score) {
-        this.score = score;
     }
 
     public String getResult() {
@@ -78,9 +83,5 @@ public class QuizResult {
 
     public void setUser(String user) {
         this.user = user;
-    }
-
-    public int getAttemptCount() {
-        return attemptCount;
     }
 }
