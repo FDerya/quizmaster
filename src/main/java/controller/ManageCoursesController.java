@@ -38,9 +38,7 @@ public class ManageCoursesController {
         List<Course> courses = courseDAO.getAll();
         courseList.getItems().addAll(courses);
         doStudentCount();
-        courseList.getSelectionModel().selectedItemProperty().addListener((observableValue, course, t1) -> {
-            doStudentCount();
-        });
+        courseList.getSelectionModel().selectedItemProperty().addListener((observableValue, course, t1) -> doStudentCount());
     }
 
 // Method to go back to the welcome screen

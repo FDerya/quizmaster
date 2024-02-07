@@ -27,17 +27,17 @@ public class LauncherCSVEline {
 
     public static void main(String[] args) {
         dbAccess.openConnection();
-        // Csv to an ArrayList
+    // Csv to an ArrayList
         List<String> listOfCourses = fileReaderCourseToArray();
         List<Course> courseList = listCourses(listOfCourses);
 
-        // Save courses in database
+    // Save courses in database
         saveCoursesFromArray(courseList, courseDAO);
 
         dbAccess.closeConnection();
     }
 
-    // Reads csv file and saves it in an ArrayList
+// Reads csv file and saves it in an ArrayList
     public static List<String> fileReaderCourseToArray(){
         List<String> linesFromFile = new ArrayList<>();
         try {
@@ -51,7 +51,7 @@ public class LauncherCSVEline {
         return linesFromFile;
     }
 
-    // Reads Arraylist fileReaderCourseToArray() and creates a list of Courses
+// Reads Arraylist fileReaderCourseToArray() and creates a list of Courses
     public static List<Course> listCourses(List<String> list){
         UserDAO userDAO = new UserDAO(dbAccess);
         List<Course> courseList = new ArrayList<>();
@@ -66,7 +66,7 @@ public class LauncherCSVEline {
         return courseList;
     }
 
-    // Saves Course via CourseDAO in database
+// Saves Course via CourseDAO in database
     public static void saveCoursesFromArray(List<Course> courseList, CourseDAO courseDAO){
         dbAccess.openConnection();
         for (Course course : courseList){

@@ -16,12 +16,12 @@ import java.util.List;
 
 public class ParticipationDAO extends AbstractDAO implements GenericDAO<Participation> {
 
-    // Constructors
+// Constructors
     public ParticipationDAO(DBAccess dBaccess) {
         super(dBaccess);
     }
 
-    // Alle participations ophalen
+// Alle participations ophalen
     @Override
     public List<Participation> getAll() {
         List<Participation> resultList = new ArrayList<>();
@@ -87,7 +87,7 @@ public class ParticipationDAO extends AbstractDAO implements GenericDAO<Particip
         return getParticipationList(idUser, resultList, sql);
     }
 
-    // Participations ophalen op basis van ID
+// Participations ophalen op basis van ID
     @Override
     public Participation getOneById(int id) {
         String sql = "SELECT * FROM Participation WHERE idUser = ?;";
@@ -107,7 +107,7 @@ public class ParticipationDAO extends AbstractDAO implements GenericDAO<Particip
         return participation;
     }
 
-    // Nieuwe participation opslaan
+// Save a new participation
     @Override
     public void storeOne(Participation participation) {
         String sql = "INSERT INTO Participation (idUser, idCourse, idGroup) VALUES(?, ?, ?);";
@@ -200,7 +200,7 @@ public class ParticipationDAO extends AbstractDAO implements GenericDAO<Particip
         }
     }
 
-    // Participation object maken vanuit resultSet
+// Create Participation object from the resultSet
     private Participation getParticipation(ResultSet resultSet) throws SQLException {
         UserDAO userDAO = new UserDAO(dbAccess);
         CourseDAO courseDAO = new CourseDAO(dbAccess, userDAO);

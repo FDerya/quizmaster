@@ -4,8 +4,6 @@
 
 package model;
 
-import java.util.List;
-
 public class Course {
 // Attributes
     private int idCourse;
@@ -26,7 +24,7 @@ public class Course {
     }
 
 
-    // Methods
+// Methods
     @Override
     public String toString(){
         return String.format("%s", getNameCourse());
