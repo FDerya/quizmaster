@@ -1,12 +1,9 @@
 package javacouchdb;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import model.*;
-
-import java.util.List;
 
 public class QuizCouchDBDAO extends AbstractCouchDBDAO{
 
@@ -43,7 +40,7 @@ public class QuizCouchDBDAO extends AbstractCouchDBDAO{
    public String[] getIdAndRevQuiz(Quiz quiz){
         String[] idAndRev= new String[2];
         for (JsonObject jsonObject : getAllDocuments()) {
-            if (jsonObject.has("idQuiz") && jsonObject.get("idQuiz").getAsString().equals(quiz.getIdQuiz())){
+            if (jsonObject.has("idQuiz") && jsonObject.get("idQuiz").getAsInt() ==quiz.getIdQuiz()){
 
                 idAndRev[0] = jsonObject.get("_id").getAsString();
                 idAndRev[1] = jsonObject.get("_rev").getAsString();
