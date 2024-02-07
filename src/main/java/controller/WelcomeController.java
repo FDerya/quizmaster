@@ -213,7 +213,7 @@ public class WelcomeController {
                 lastUsername = currentUsername;
             }
             printWriter.println("\tQuiz: " + quizResult.getQuiz());
-            printWriter.println("\tDatum gemaakt: " + QuizResult.formatLocalDateTime(quizResult.getLocalDateTime()));
+            printWriter.println("\tDatum gemaakt: " + quizResult.getLocalDateTime());
             printWriter.println("\tResultaat: " + quizResult.getScore());
             printWriter.println("\tBehaald: " + quizResult.getResult());
             printWriter.println();
