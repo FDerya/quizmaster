@@ -313,7 +313,6 @@ public class WelcomeController {
         return studentsInfo.toString();
     }
 
-
     // Returns a sorted list of groups
     private List<Group> getSortedGroups() throws SQLException {
         UserDAO userDAO = new UserDAO(Main.getDBaccess());

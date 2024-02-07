@@ -14,10 +14,8 @@ class ManageGroupsControllerTest {
         String label;
         if (counter == null) {
             label = "Selecteer een groep.";
-        } else if (counter == 0) {
-            label = "Er zitten " + selectedGroup.getGroupName() + " groepen in deze cursus";
         } else if (counter == 1) {
-            label = selectedGroup.getGroupName() + " groep in " + selectedGroup.getCourse().getNameCourse();
+            label = "1 groep in " + selectedGroup.getCourse().getNameCourse();
         } else {
             label = counter + " groepen in " + selectedGroup.getCourse().getNameCourse();
         }
@@ -42,7 +40,7 @@ class ManageGroupsControllerTest {
     // Test when counter is zero
     @Test
     void checkGroupIsZero() {
-        String expected = "0 groepen in Calculus";
+        String expected = "0 groepen in Algebra";
         assertEquals(expected, updateLabels(testGroup, 0L));
     }
 

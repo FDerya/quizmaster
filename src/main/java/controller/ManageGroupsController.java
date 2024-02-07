@@ -3,16 +3,10 @@ package controller;
 // Works with a GroupDAO and a CourseDAO to perform operations such as displaying, deleting, and deleting groups.
 // The class also contains methods for user prompts and confirmation dialogs.
 
-import database.mysql.CourseDAO;
 import database.mysql.GroupDAO;
-import database.mysql.UserDAO;
-import javafx.animation.FadeTransition;
-import javafx.animation.PauseTransition;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.util.Duration;
 import model.Group;
 import view.Main;
 
@@ -20,20 +14,17 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ManageGroupsController extends WarningAlertController {
-    private GroupDAO groupDAO;
+    private final GroupDAO groupDAO;
     @FXML
     private ListView<Group> groupList;
     @FXML
     private Label groupCountLabel;
-    @FXML
-    private Label warningLabel;
     @FXML
     Button mainScreenButton;
 
     // Constructor
     public ManageGroupsController() {
         this.groupDAO = new GroupDAO(Main.getDBaccess());
-
     }
 
     // Clears the group list, retrieves and sorts groups, sets up list view properties, and updates labels
@@ -55,10 +46,6 @@ public class ManageGroupsController extends WarningAlertController {
         groupList.getItems().clear();
         groups.sort(Comparator.comparing(group -> group.getCourse().getNameCourse()));
         groupList.getItems().addAll(groups);
-    }
-
-    public void setGroupCountLabel(Label groupCountLabel) {
-        this.groupCountLabel = groupCountLabel;
     }
 
     // Creates a custom ListCell for JavaFX ListView, utilizing an HBox with Labels for group and
@@ -87,12 +74,8 @@ public class ManageGroupsController extends WarningAlertController {
 
     // Handles the click event on the menu button and navigates back to the welcome scene
     @FXML
-    private void doMenu() {
-        try {
-            Main.getSceneManager().showWelcomeScene();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void doMenu() {
+        Main.getSceneManager().showWelcomeScene();
     }
 
     // Handles the creation of a new group and opens the corresponding user interface
@@ -112,8 +95,7 @@ public class ManageGroupsController extends WarningAlertController {
         }
     }
 
-    // Deletes a selected group, confirming if new or found in newGroups, and updates UI and database,
-    // showing a warning and triggering setup otherwise.
+    // Deletes a selected group and updates UI and database
     @FXML
     private void doDeleteGroup() {
         hideLabel();
@@ -122,66 +104,21 @@ public class ManageGroupsController extends WarningAlertController {
             groupCountLabel.setText("Selecteer een groep");
             return;
         }
-        boolean foundInNewGroups = isGroupInNewGroups(selectedGroup);
-        if (selectedGroup.isNew() || foundInNewGroups) {
-            confirmDeletion("groep", selectedGroup.getGroupName());
-            // showConfirmationDialog(selectedGroup);
-        } else {
-            showWarningAndSetup(selectedGroup);
-        }
-    }
-
-    // Checks if the selected group is present in the newGroups list
-    private boolean isGroupInNewGroups(Group selectedGroup) {
-        for (Group newGroup : CreateUpdateGroupController.newGroups) {
-            if (newGroup.getGroupName().equals(selectedGroup.getGroupName())) {
-                return true;
-            }
-        }
-        return false;
+        confirmDeletion("groep", selectedGroup.getGroupName());
+        deleteGroup(selectedGroup);
     }
 
     // Removes the specified group from the database, UI list, sorts the list by course names, and
     // updates the group count label.
     private void deleteGroup(Group selectedGroup) {
-
         groupDAO.deleteGroup(selectedGroup);
         groupList.getItems().remove(selectedGroup);
         groupList.getItems().sort(Comparator.comparing(group -> group.getCourse().getNameCourse()));
         updateGroupCountLabel();
-
-    }
-
-    // Shows a warning, logs the message that the group cannot be deleted
-    private void showWarningAndSetup(Group selectedGroup) {
-        showWarningLabel();
-        System.out.println(selectedGroup.getGroupName() + " mag niet worden verwijderd uit de database.");
-        fadeOutWarningLabel();
-        setup();
-    }
-
-    // Fades out the warning message
-    private void fadeOutWarningLabel() {
-        FadeTransition fadeOut = new FadeTransition(Duration.seconds(2), warningLabel);
-        fadeOut.setFromValue(1.0);
-        fadeOut.setToValue(0.0);
-
-        PauseTransition pause = new PauseTransition(Duration.seconds(3));
-        pause.setOnFinished(event -> fadeOut.play());
-        pause.play();
-    }
-
-
-    // Shows warninglabel
-    private void showWarningLabel() {
-        Platform.runLater(() -> {
-            warningLabel.setText("Deze groep mag niet worden verwijderd");
-            warningLabel.setVisible(true);
-        });
     }
 
     // Updates the group count label and selected course label based on the selected group
-    protected Object updateGroupCountLabel() {
+    private void updateGroupCountLabel() {
         Group selectedGroup = getSelectedGroup();
         if (selectedGroup == null) {
             hideLabel();
@@ -194,7 +131,6 @@ public class ManageGroupsController extends WarningAlertController {
                 hideLabel();
             }
         }
-        return null;
     }
 
     // Clears labels when no group is selected or no course is associated with the selected group.
