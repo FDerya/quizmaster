@@ -171,8 +171,7 @@ public class CreateUpdateQuizController extends WarningAlertController {
         } else {
             showWarningLabel(false);
             int minimumAmountCorrectQuestions = Integer.parseInt(minimumAmount);
-            Quiz newQuiz = new Quiz(course, nameQuiz, level, minimumAmountCorrectQuestions);
-            return newQuiz;
+            return new Quiz(course, nameQuiz, level, minimumAmountCorrectQuestions);
         }
     }
 

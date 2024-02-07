@@ -1,7 +1,6 @@
 package controller;
 // Tom van Beek, 500941521.
 
-import database.mysql.DBAccess;
 import database.mysql.QuestionDAO;
 import database.mysql.QuizDAO;
 import javafx.event.ActionEvent;
@@ -12,8 +11,6 @@ import model.*;
 import view.Main;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.List;
 
 public class ManageQuizzesController extends WarningAlertController {
@@ -24,7 +21,6 @@ public class ManageQuizzesController extends WarningAlertController {
     Button mainScreenButton;
     private final QuizDAO QUIZDAO;
     private final QuestionDAO QUESTIONDAO;
-    private static File fileTXT = new File("src/main/java/database/saveQuizTXT.txt");
 
 
     public ManageQuizzesController() {
