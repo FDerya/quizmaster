@@ -28,8 +28,8 @@ public class LauncherCSVEline {
     public static void main(String[] args) {
         dbAccess.openConnection();
         // Csv to an ArrayList
-        List<String> test = fileReaderCourseToArray();
-        List<Course> courseList = listCourses(test);
+        List<String> listOfCourses = fileReaderCourseToArray();
+        List<Course> courseList = listCourses(listOfCourses);
 
         // Save courses in database
         saveCoursesFromArray(courseList, courseDAO);
