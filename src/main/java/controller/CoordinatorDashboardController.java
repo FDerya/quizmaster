@@ -8,7 +8,6 @@ import javafx.scene.layout.HBox;
 import model.*;
 import view.Main;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CoordinatorDashboardController extends WarningAlertController {
@@ -69,9 +68,6 @@ public class CoordinatorDashboardController extends WarningAlertController {
                 (observableValue, oldQuiz, newQuiz) -> {
                     if (newQuiz != null) {
                         List<String> questions = questionDAO.getQuestionNamesForQuiz(newQuiz);
-                        List<Integer> maxAmount = new ArrayList<>();
-                        int max = quizList.getSelectionModel().getSelectedItem().getMinimumAmountCorrectQuestions();
-                        maxAmount.add(max);
                         questionList.setItems(FXCollections.observableList(questions));
                         //questionQuizList.setItems(FXCollections.observableList(maxAmount));
                     }
