@@ -29,6 +29,9 @@ public class WelcomeController {
     List<QuizResult> listQuizResult = new ArrayList<>();
     final String path = "src/resources/";
     final String extension = ".txt";
+    private QuestionDAO questionDAO = new QuestionDAO(Main.getDBaccess());
+    private QuizDAO quizDAO = new QuizDAO(Main.getDBaccess());
+
     String textfile;
     String typeOfPrint;
     final static CourseDAO courseDAO = new CourseDAO(Main.getDBaccess());
@@ -78,13 +81,16 @@ public class WelcomeController {
         cMenuItem2.setOnAction(actionEvent -> Main.getSceneManager().showManageQuizScene());
         MenuItem cMenuItem3 = new MenuItem("Vragenbeheer");
         cMenuItem3.setOnAction(actionEvent -> Main.getSceneManager().showManageQuestionsScene());
-        MenuItem cMenuItem4 = new MenuItem("Exporteur vraag");
-        cMenuItem4.setOnAction(actionEvent -> doShowSaveTextFileAlert("question"));
+        MenuItem cMenuItem4 = new MenuItem("Exporteer quizzen");
+        cMenuItem4.setOnAction(actionEvent -> doShowSaveTextFileAlert("quizzen"));
+        MenuItem cMenuItem5 = new MenuItem("Exporteer question");
+        cMenuItem5.setOnAction(actionEvent -> doShowSaveTextFileAlert("question"));
 
         taskMenuButton.getItems().add(cMenuItem1);
         taskMenuButton.getItems().add(cMenuItem2);
         taskMenuButton.getItems().add(cMenuItem3);
         taskMenuButton.getItems().add(cMenuItem4);
+        taskMenuButton.getItems().add(cMenuItem5);
     }
 
     public void initializeMenuItemsAdministrator() {
@@ -175,6 +181,9 @@ public class WelcomeController {
             case "cursussen":
                 printCourse(printWriter);
                 break;
+            case "quizzen":
+                printQuizzes(printWriter);
+                break;
         }
         printWriter.close();
     }
@@ -211,8 +220,22 @@ public class WelcomeController {
         }
     }
 
+    private void printQuizzes(PrintWriter printWriter) {
+        User user = User.getCurrentUser();
+        List<Quiz> listQuiz = quizDAO.getQuizzesFromUser(user);
+        int amountQuiz = listQuiz.size();
+        int amountQuestion = questionDAO.getQuestionCountForUser(user);
+        double avgQuestion = (Math.round(amountQuestion * 10 / amountQuiz) / 10.0);
+        printWriter.printf("%-30s %-30s %-15s %-10s\n", "Cursus", "Quiznaam", "Level", "Aantal vragen per quiz");
+        for (Quiz quiz : listQuiz) {
+            printWriter.printf("%-30s %-30s %-15s %-10d\n", quiz.getCourse(), quiz.getNameQuiz(), quiz.getLevel(), questionDAO.getQuestionCountForQuiz(quiz));
+        }
+        printWriter.println("\nEr zijn " + amountQuiz + " quizzen met " + amountQuestion + " vragen, gemiddelde = " + avgQuestion + " vragen per quiz");
+        printWriter.close();
+    }
+
+
     private void printQuestion(PrintWriter printWriter) {
-        QuestionDAO questionDAO = new QuestionDAO(Main.getDBaccess());
 
         List<Question> questionsList = questionDAO.getAll();
         for (Question question : questionsList) {
@@ -271,7 +294,7 @@ public class WelcomeController {
     private static String writeGroupInfo(Group group) {
         return "Cursus: " + group.getCourse().getNameCourse() + "\n" +
                 "Groep: " + group.getGroupName() + "\n" +
-                "Aantal studenten: " + group.getAmountStudent() + "\n" +
+                "Max. aantal studenten: " + group.getAmountStudent() + "\n" +
                 "Docent: " + group.getTeacher().getFullName() + "\n";
     }
 
@@ -280,13 +303,18 @@ public class WelcomeController {
         StringBuilder studentsInfo = new StringBuilder("\tStudenten:\n");
         List<String> studentFullNames = participationDAO.getStudentsFullNamesByGroupId(groupId);
         studentFullNames.sort(String::compareToIgnoreCase);
-        for (String studentFullName : studentFullNames) {
-            studentsInfo.append("\t\t- ").append(studentFullName).append("\n");
+        if (studentFullNames.isEmpty()) {
+            studentsInfo.append("\t\t- Geen studenten in deze groep\n");
+        } else {
+            for (String studentFullName : studentFullNames) {
+                studentsInfo.append("\t\t- ").append(studentFullName).append("\n");
+            }
         }
         return studentsInfo.toString();
     }
 
-    // Returns a sorted list of courses
+
+    // Returns a sorted list of groups
     private List<Group> getSortedGroups() throws SQLException {
         UserDAO userDAO = new UserDAO(Main.getDBaccess());
         CourseDAO courseDAO = new CourseDAO(Main.getDBaccess(), userDAO);

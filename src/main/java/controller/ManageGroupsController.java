@@ -18,11 +18,9 @@ import view.Main;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-
 
 public class ManageGroupsController extends WarningAlertController {
-    private final GroupDAO groupDAO;
+    private GroupDAO groupDAO;
     @FXML
     private ListView<Group> groupList;
     @FXML
@@ -34,8 +32,8 @@ public class ManageGroupsController extends WarningAlertController {
 
     // Constructor
     public ManageGroupsController() {
-        this.groupDAO = new GroupDAO(Main.getDBaccess(), new UserDAO(Main.getDBaccess()),
-                new CourseDAO(Main.getDBaccess()));
+        this.groupDAO = new GroupDAO(Main.getDBaccess());
+
     }
 
     // Clears the group list, retrieves and sorts groups, sets up list view properties, and updates labels
@@ -57,6 +55,10 @@ public class ManageGroupsController extends WarningAlertController {
         groupList.getItems().clear();
         groups.sort(Comparator.comparing(group -> group.getCourse().getNameCourse()));
         groupList.getItems().addAll(groups);
+    }
+
+    public void setGroupCountLabel(Label groupCountLabel) {
+        this.groupCountLabel = groupCountLabel;
     }
 
     // Creates a custom ListCell for JavaFX ListView, utilizing an HBox with Labels for group and
@@ -122,8 +124,8 @@ public class ManageGroupsController extends WarningAlertController {
         }
         boolean foundInNewGroups = isGroupInNewGroups(selectedGroup);
         if (selectedGroup.isNew() || foundInNewGroups) {
-            // confirmDeletion("groep", selectedGroup.getGroupName());
-            showConfirmationDialog(selectedGroup);
+            confirmDeletion("groep", selectedGroup.getGroupName());
+            // showConfirmationDialog(selectedGroup);
         } else {
             showWarningAndSetup(selectedGroup);
         }
@@ -169,48 +171,17 @@ public class ManageGroupsController extends WarningAlertController {
         pause.play();
     }
 
-    // Displays a confirmation dialog prompting the user to confirm the deletion of the selected group
-    private void showConfirmationDialog(Group selectedGroup) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Verwijder groep");
-        alert.setHeaderText("Verwijder " + selectedGroup.getGroupName() + " van de cursus "
-                + selectedGroup.getCourse().getNameCourse());
-        alert.setContentText("Weet je het zeker?");
-        ButtonType buttonTypeYes = new ButtonType("Ja");
-        ButtonType buttonTypeNo = new ButtonType("Nee");
-        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
-
-        Optional<ButtonType> result = alert.showAndWait();
-        result.ifPresent(buttonType -> handleDeleteConfirmation(selectedGroup, buttonType));
-    }
-
-    // Event handler for YES button
-    private void handleDeleteConfirmation(Group selectedGroup, ButtonType buttonType) {
-        String buttonText = buttonType.getText().toLowerCase();
-        if ("ja".equals(buttonText)) {
-            try {
-                if (selectedGroup.isNew()) {
-                    CreateUpdateGroupController.newGroups.remove(selectedGroup);
-                }
-                deleteGroup(selectedGroup);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            setup();
-        }
-    }
 
     // Shows warninglabel
     private void showWarningLabel() {
         Platform.runLater(() -> {
-            warningLabel.setText("Deze groep mag niet worden verwijderd.");
+            warningLabel.setText("Deze groep mag niet worden verwijderd");
             warningLabel.setVisible(true);
         });
     }
 
     // Updates the group count label and selected course label based on the selected group
-    private void updateGroupCountLabel() {
+    protected Object updateGroupCountLabel() {
         Group selectedGroup = getSelectedGroup();
         if (selectedGroup == null) {
             hideLabel();
@@ -223,6 +194,7 @@ public class ManageGroupsController extends WarningAlertController {
                 hideLabel();
             }
         }
+        return null;
     }
 
     // Clears labels when no group is selected or no course is associated with the selected group.
@@ -240,6 +212,7 @@ public class ManageGroupsController extends WarningAlertController {
             label = counter + " groepen in " + selectedGroup.getCourse();
         }
         groupCountLabel.setText(label);
+        groupCountLabel.setWrapText(true);
     }
 
     // Getter for the selected group

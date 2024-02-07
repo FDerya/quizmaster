@@ -15,7 +15,7 @@ public class WarningAlertController {
     Label warningLabel;
     @FXML
     Label comboLabel;
-
+    // Warning to call if not every field is completed
     public void showWarningLabel(boolean trueorfalse) {
         String labelNoFields = "Je hebt niet alles ingevuld";
         warningLabel.setText(labelNoFields);
@@ -25,26 +25,27 @@ public class WarningAlertController {
             warningLabel.setVisible(false);
         }
     }
-
+    // Warning to show an object is saved
     public void showSaved(String insert) {
         String newAlert = "Nieuw: " + insert + "  is toegevoegd";
         warningLabel.setText(newAlert);
         warningLabel.setVisible(true);
     }
-
+    // Warning to show an object is changed
     public void showUpdated(String insert) {
         String updateAlert = insert + " is gewijzigd";
         warningLabel.setText(updateAlert);
         warningLabel.setVisible(true);
 
     }
+    // Warning to show an object is emtpy
     public void showEmpty(String type, String insert) {
         String updateAlert = "Deze "+ type + " heeft geen " + insert;
         warningLabel.setText(updateAlert);
         warningLabel.setVisible(true);
 
     }
-    // Melding tonen en tekst rood kleuren wanneer veld niet is ingevuld
+    // Method to color text red if fields are not filled
 
     public void checkAndChangeLabelColor(boolean emptyfields, Label label) {
         if (emptyfields) {
@@ -54,7 +55,7 @@ public class WarningAlertController {
         }
     }
 
-    // Melding tonen en tekst rood kleuren wanneer geen level is gekozen
+    // Method to color text red when a comboBox is not chosen
     public void isCorrectInputComboBox(String insert) {
         if (insert == null) {
             comboLabel.setTextFill(Color.RED);
@@ -62,7 +63,7 @@ public class WarningAlertController {
             comboLabel.setTextFill(Color.BLACK);
         }
     }
-
+    // Warning to show if no choice is made but button is activated
     public void setEmptyChoice(String insert, boolean trueorfalse) {
         String choice = "Je moet eerst een " + insert + " kiezen";
         warningLabel.setText(choice);
@@ -70,7 +71,7 @@ public class WarningAlertController {
             warningLabel.setVisible(true);
         } else warningLabel.setVisible(false);
     }
-    //Waarschuwing in pop-up scherm weergeven voor verwijderen object
+    //Alert to show an object is being deleted
 
     public boolean confirmDeletion(String insert, String object) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -83,7 +84,7 @@ public class WarningAlertController {
         Optional<ButtonType> result = alert.showAndWait();
         return result.isPresent() && result.get() == buttonContinue;
     }
-
+    // Warning to show a name is chosen which already exist in the database
     public void showSame(boolean trueorfalse, String insert) {
         String same = "Deze "+insert+"naam bestaat al";
         warningLabel.setText(same);

@@ -53,7 +53,7 @@ public class CreateUpdateQuizController extends WarningAlertController {
         this.dbAccess = Main.getDBaccess();
     }
 
-    //Quiz tonen om te wijzigen of leeg scherm voor het maken van een quiz
+    //Setup to show an empty screen for a new quiz or filled screen for changing a quiz
     public void setup(Quiz quizOne) {
         mainScreenButton.setText(Main.getMainScreenButtonText());
         levelsListComboBox.setItems(levelsList);
@@ -74,7 +74,7 @@ public class CreateUpdateQuizController extends WarningAlertController {
             coursesListComboBox.setVisible(true);
         }
     }
-
+    // Method to limit textfields by amount or number
     private void setupInput() {
         nameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (nameTextField.getText().length() > MAXLENGTH) {
@@ -89,22 +89,22 @@ public class CreateUpdateQuizController extends WarningAlertController {
         });
     }
 
-    // Menu terug gaan naar ManageQuiz
+    // Back to ManageQuiz-screen
     public void doMenuBack(ActionEvent event) {
         Main.getSceneManager().showManageQuizScene();
     }
 
-    // Naar hoofdmenu
+    // Back to Welcome-screeen
     public void doMenu() {
         Main.getSceneManager().showWelcomeScene();
     }
 
-    // Naar CoordinatorDashboard
+    // Forward to dashboard
     public void doDashboard() {
         Main.getSceneManager().showCoordinatorDashboard();
     }
 
-    // Quiz opslaan, met melding nieuwe of gewijzigde quiz
+    // Save a quiz with warning new or changed
     public void doCreateUpdateQuiz(ActionEvent event) {
         Quiz quiz = createQuiz();
         if (quiz != null) {
@@ -177,14 +177,14 @@ public class CreateUpdateQuizController extends WarningAlertController {
     }
 
 
-    // Check of textvelden zijn ingevuld
+    // Check if textfields are filled
     private boolean isCorrectInput(String nameQuiz, String amountQuestions) {
         checkAndChangeLabelColor(nameQuiz.isEmpty(), nameQuizLabel);
         checkAndChangeLabelColor(amountQuestions.isEmpty(), amountQuestionsLabel);
         return (!amountQuestions.isEmpty() && !nameQuiz.isEmpty());
     }
 
-    // Melding tonen en tekst rood kleuren wanneer geen cursus is gekozen
+    // Check if comboBox is chosen
     private void isCorrectInputCourse(Course course, Label label) {
         if (course == null) {
             if (courseLabel.getText().equals("")) {
