@@ -70,7 +70,7 @@ public class QuizResult {
     }
 
     public String getLocalDateTime() {
-        return localDateTime;
+        return formatLocalDateTime(localDateTime);
     }
 
     public void setLocalDateTime(String localDateTime) {
