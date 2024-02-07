@@ -26,11 +26,11 @@ public class QuizCouchDBDAO extends AbstractCouchDBDAO{
     public Quiz getQuizById(String doc_Id){
         return gson.fromJson(getDocumentById(doc_Id), Quiz.class);
     }
-    public Quiz getQuiz(Quiz quiz){
+    public Quiz getQuiz(String quiz){
         Quiz resultaat;
         for (JsonObject jsonObject : getAllDocuments()) {
             resultaat = gson.fromJson(jsonObject, Quiz.class);
-            if (resultaat.equals(quiz)) {
+            if (resultaat.getNameQuiz().equals(quiz)) {
                 return resultaat;
             }
         }

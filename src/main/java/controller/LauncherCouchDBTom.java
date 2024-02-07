@@ -8,6 +8,7 @@ import model.*;
 import view.Main;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LauncherCouchDBTom {
@@ -18,21 +19,31 @@ public class LauncherCouchDBTom {
 
     public static void main(String[] args) throws IOException {
         createCouchDBAccess();
-        List<Quiz> quizList = quizDAO.getAll();
+        //List<Quiz> quizList = quizDAO.getAll();
         //saveQuizList(quizList);
-        getQuiz("1a8e646fc65d405288f79f33cf7ba2c7");
-        updateQuiz("1a8e646fc65d405288f79f33cf7ba2c7");
+        //getQuiz("Python Basis");
+        //updateQuiz("Java Basis");
         Course course = courseDAO.getOneByName("An");
-        Quiz quizTest = new Quiz(course, "test", "medium", 12);
-        //saveSingleQuiz(quizTest);
-        //updateSingleQuiz(quizTest);
-        //deleteQuiz(quizTest.getIdQuiz());
+        Quiz quizTest1 = new Quiz(1,course, "test1", "medium", 12);
+        Quiz quizTest2 = new Quiz(2,course, "test2", "gevorder", 10);
+        Quiz quizTest3 = new Quiz(3,course, "test3", "beginner", 8);
+        Quiz quizTest4 = new Quiz(4,course, "test4", "medium", 6);
+
+        List<Quiz> testList = new ArrayList<>();
+        testList.add(quizTest1);
+        testList.add(quizTest2);
+        testList.add(quizTest3);
+        testList.add(quizTest4);
+
+        //saveQuizList(testList);
+        updateQuiz(testList.get(1));
+        //deleteQuiz(testList.get(3));
         closeCouchDBAccess();
     }
     //Verbinding CouchDB openen
     private static void createCouchDBAccess() {
         try {
-            couchDBAccess = new CouchDBAccess("quizmaster", "admin", "admin");
+            couchDBAccess = new CouchDBAccess("quizzesinquizmaster", "admin", "admin");
             quizCouchDBDAO = new QuizCouchDBDAO(couchDBAccess);
         } catch (Exception exception) {
             System.err.println("Fout bij het creeren toegang: " + exception.getMessage());
@@ -58,13 +69,7 @@ public class LauncherCouchDBTom {
             }
         }
     }
-    public static void updateSingleQuiz(Quiz quiz){
-        quiz.setMinimumAmountCorrectQuestions(25);
-        if(couchDBAccess.getClient()!=null){
-            System.out.println("Connectie open");
-            quizCouchDBDAO.updateQuiz(quiz);
-        }
-    }
+
     public static void saveSingleQuiz(Quiz quiz){
         if (couchDBAccess.getClient()!= null){
             System.out.println("Connectie open");
@@ -72,18 +77,18 @@ public class LauncherCouchDBTom {
         }
     }
     private static void getQuiz(String code){
-        Quiz quiz = quizCouchDBDAO.getQuizById(code);
+        Quiz quiz = quizCouchDBDAO.getQuiz(code);
         System.out.println(quiz.getNameQuiz());
     }
-    private static void updateQuiz(String code){
-        Quiz quiz = quizCouchDBDAO.getQuizById(code);
+    private static void updateQuiz(Quiz quiz){
+        Quiz updateQuiz = quizCouchDBDAO.updateQuiz(quiz);
         System.out.println(quiz.getNameQuiz());
         quiz.setMinimumAmountCorrectQuestions(24);
         quizCouchDBDAO.saveSingleQuiz(quiz);
         System.out.println(quiz.getNameQuiz());
     }
-    private static void deleteQuiz(int idQuiz){
-        System.out.println(quizDAO.getOneById(idQuiz).getNameQuiz());
-        quizCouchDBDAO.deleteQuiz(quizDAO.getOneById(idQuiz));
+    private static void deleteQuiz(Quiz quiz){
+        System.out.println(quiz.getNameQuiz());
+        quizCouchDBDAO.deleteQuiz(quiz);
     }
 }
