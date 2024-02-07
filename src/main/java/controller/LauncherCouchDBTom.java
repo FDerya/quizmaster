@@ -81,7 +81,7 @@ public class LauncherCouchDBTom {
         System.out.println(quiz.getNameQuiz());
     }
     private static void updateQuiz(Quiz quiz){
-        Quiz updateQuiz = quizCouchDBDAO.updateQuiz(quiz);
+        //Quiz updateQuiz = quizCouchDBDAO.updateQuiz(quiz);
         System.out.println(quiz.getNameQuiz());
         quiz.setMinimumAmountCorrectQuestions(24);
         quizCouchDBDAO.saveSingleQuiz(quiz);
