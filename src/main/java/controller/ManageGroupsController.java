@@ -36,12 +36,6 @@ public class ManageGroupsController extends WarningAlertController {
 
     }
 
-    // Constructor for testing
-    public ManageGroupsController(GroupDAO groupDAO, Label groupCountLabel) {
-        this.groupDAO = groupDAO;
-        this.groupCountLabel = groupCountLabel;
-    }
-
     // Clears the group list, retrieves and sorts groups, sets up list view properties, and updates labels
     @FXML
     public void setup() {
@@ -61,6 +55,10 @@ public class ManageGroupsController extends WarningAlertController {
         groupList.getItems().clear();
         groups.sort(Comparator.comparing(group -> group.getCourse().getNameCourse()));
         groupList.getItems().addAll(groups);
+    }
+
+    public void setGroupCountLabel(Label groupCountLabel) {
+        this.groupCountLabel = groupCountLabel;
     }
 
     // Creates a custom ListCell for JavaFX ListView, utilizing an HBox with Labels for group and
@@ -173,22 +171,6 @@ public class ManageGroupsController extends WarningAlertController {
         pause.play();
     }
 
-    // Event handler for YES button
-    private void handleDeleteConfirmation(Group selectedGroup, ButtonType buttonType) {
-        String buttonText = buttonType.getText().toLowerCase();
-        if ("ja".equals(buttonText)) {
-            try {
-                if (selectedGroup.isNew()) {
-                    CreateUpdateGroupController.newGroups.remove(selectedGroup);
-                }
-                deleteGroup(selectedGroup);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            setup();
-        }
-    }
 
     // Shows warninglabel
     private void showWarningLabel() {
