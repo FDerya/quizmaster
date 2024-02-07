@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FillOutQuizController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FillOutQuizController">
     <Label fx:id="titleLabel" layoutX="14.0" layoutY="14.0" text="Vraag 1">
         <font>
             <Font size="18.0" />
         </font>
     </Label>
-    <TextArea fx:id="questionArea" editable="false" layoutX="14.0" layoutY="49.0" prefHeight="300.0" prefWidth="600.0" promptText="Deze textarea bevat de vraag en de vier antwoorden." wrapText="true" />
+    <TextArea fx:id="questionArea" editable="false" layoutX="14.0" layoutY="49.0" prefHeight="300.0" prefWidth="600.0" style="-fx-background-color: #f5f5dc" wrapText="true" />
     <Button layoutX="14.0" layoutY="366.0" mnemonicParsing="false" onAction="#doRegisterA" text="Antwoord A" />
     <Button layoutX="104.0" layoutY="366.0" mnemonicParsing="false" onAction="#doRegisterB" text="Antwoord B" />
     <Button layoutX="194.0" layoutY="366.0" mnemonicParsing="false" onAction="#doRegisterC" text="Antwoord C" />
@@ -25,4 +24,26 @@
         </font>
     </Button>
    <Button fx:id="turnInButton" layoutX="546.0" layoutY="366.0" mnemonicParsing="false" onAction="#doTurnIn" prefWidth="71.0" text="Inleveren" visible="false" />
+   <GridPane layoutX="14.0" layoutY="49.0" prefHeight="300.0" prefWidth="594.0">
+     <columnConstraints>
+       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+     </columnConstraints>
+     <rowConstraints>
+       <RowConstraints maxHeight="120.0" minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
+       <RowConstraints maxHeight="116.0" minHeight="0.0" prefHeight="57.5" />
+       <RowConstraints maxHeight="82.0" minHeight="10.0" prefHeight="57.5" />
+         <RowConstraints maxHeight="90.0" minHeight="10.0" prefHeight="52.0" />
+         <RowConstraints maxHeight="65.0" minHeight="10.0" prefHeight="61.0" />
+     </rowConstraints>
+      <children>
+         <TextArea fx:id="textAreaQuestion" prefHeight="200.0" prefWidth="200.0" promptText="Question" wrapText="true" />
+         <TextArea fx:id="textAreaAnswerA" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.rowIndex="1" />
+         <TextArea fx:id="textAreaAnswerB" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.rowIndex="2" />
+         <TextArea fx:id="textAreaAnswerC" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3" />
+         <TextArea fx:id="textAreaAnswerD" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4" />
+      </children>
+      <padding>
+         <Insets left="5.0" />
+      </padding>
+   </GridPane>
 </AnchorPane>
