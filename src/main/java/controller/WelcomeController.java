@@ -78,8 +78,8 @@ public class WelcomeController {
         cMenuItem2.setOnAction(actionEvent -> Main.getSceneManager().showManageQuizScene());
         MenuItem cMenuItem3 = new MenuItem("Vragenbeheer");
         cMenuItem3.setOnAction(actionEvent -> Main.getSceneManager().showManageQuestionsScene());
-        MenuItem cMenuItem4 = new MenuItem("Exporteer question");
-        cMenuItem4.setOnAction(actionEvent -> doShowSaveTextFileAlert("question"));
+        MenuItem cMenuItem4 = new MenuItem("Exporteer vragen");
+        cMenuItem4.setOnAction(actionEvent -> doShowSaveTextFileAlert("vragen"));
 
         taskMenuButton.getItems().add(cMenuItem1);
         taskMenuButton.getItems().add(cMenuItem2);

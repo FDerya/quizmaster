@@ -11,17 +11,17 @@
 <AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateUpdateQuestionController">
     <children>
         <Label fx:id="titelLabel" layoutX="14.0" layoutY="14.0" text="" />
-      <TextArea fx:id="questionTextArea" layoutX="140.0" layoutY="130.0" prefHeight="142.0" prefWidth="713.0" />
-        <TextField fx:id="answerRightTextfield" alignment="TOP_LEFT" layoutX="140.0" layoutY="291.0" prefHeight="25.0" prefWidth="242.0" promptText="Right Answer" />
-        <TextField fx:id="answerWrong1Textfield" alignment="TOP_LEFT" layoutX="140.0" layoutY="348.0" prefHeight="25.0" prefWidth="242.0" promptText="Wrong Answer 1" />
-        <TextField fx:id="answerWrong2Textfield" alignment="TOP_LEFT" layoutX="606.0" layoutY="291.0" prefHeight="25.0" prefWidth="242.0" promptText="Wrong Answer 2" />
-        <TextField fx:id="answerWrong3Textfield" alignment="TOP_LEFT" layoutX="606.0" layoutY="348.0" prefHeight="25.0" prefWidth="242.0" promptText="Wrong Answer 3" />
-      <Button layoutX="15.0" layoutY="463.0" mnemonicParsing="false" onAction="#doMenu" prefHeight="30.0" prefWidth="101.0" text="Terug">
+      <TextArea fx:id="questionTextArea" layoutX="140.0" layoutY="130.0" prefHeight="142.0" prefWidth="713.0" wrapText="true" />
+        <TextField fx:id="answerRightTextfield" alignment="TOP_LEFT" layoutX="140.0" layoutY="291.0" prefHeight="25.0" prefWidth="257.0" promptText="Right Answer" />
+        <TextField fx:id="answerWrong1Textfield" alignment="TOP_LEFT" layoutX="140.0" layoutY="348.0" prefHeight="25.0" prefWidth="257.0" promptText="Wrong Answer 1" />
+        <TextField fx:id="answerWrong2Textfield" alignment="TOP_LEFT" layoutX="606.0" layoutY="291.0" prefHeight="25.0" prefWidth="257.0" promptText="Wrong Answer 2" />
+        <TextField fx:id="answerWrong3Textfield" alignment="TOP_LEFT" layoutX="606.0" layoutY="348.0" prefHeight="25.0" prefWidth="257.0" promptText="Wrong Answer 3" />
+      <Button layoutX="15.0" layoutY="463.0" mnemonicParsing="false" onAction="#doMenu" text="Vragenbeheer">
          <font>
             <Font size="14.0" />
          </font></Button>
         <ComboBox fx:id="quizlist" layoutX="140.0" layoutY="91.0" prefHeight="25.0" prefWidth="242.0" promptText="Selecteer Quiz" />
-        <Button layoutX="15.0" layoutY="403.0" mnemonicParsing="false" onAction="#doStoreQuestion" prefHeight="30.0" prefWidth="155.0" text="Opslaan ">
+        <Button layoutX="15.0" layoutY="403.0" mnemonicParsing="false" onAction="#doStoreQuestion" text="Opslaan ">
          <font>
             <Font size="14.0" />
          </font></Button>
@@ -34,7 +34,7 @@
          <font>
             <Font size="14.0" />
          </font></Label>
-      <Label fx:id="warningLabel" layoutX="351.0" layoutY="467.0" prefHeight="76.0" prefWidth="510.0" textFill="RED" />
+      <Label fx:id="warningLabel" layoutX="108.0" layoutY="403.0" prefHeight="30.0" prefWidth="510.0" textFill="RED" />
       <Label alignment="BOTTOM_LEFT" layoutX="14.0" layoutY="16.0" prefHeight="30.0" prefWidth="190.0" text="Vragenbeheer" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="695.0" AnchorPane.topAnchor="17.0">
          <font>
             <Font name="Calibri" size="25.0" />
@@ -61,7 +61,7 @@
             <Font size="14.0" />
          </font></Label>
       <Label fx:id="label_Course" layoutX="140.0" layoutY="58.0" prefHeight="17.0" prefWidth="234.0" text="(Selecteer een quiz om de cursus te tonen)" />
-      <Button layoutX="136.0" layoutY="463.0" mnemonicParsing="false" onAction="#doDashboard" prefHeight="32.0" prefWidth="104.0" text="Dashboard">
+      <Button layoutX="130.0" layoutY="463.0" mnemonicParsing="false" onAction="#doDashboard" text="Dashboard">
          <font>
             <Font size="14.0" />
          </font></Button>
