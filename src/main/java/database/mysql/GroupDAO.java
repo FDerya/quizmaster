@@ -9,7 +9,6 @@ import view.Main;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
@@ -172,6 +171,7 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         return resultList;
     }
 
+    // Checks if a group with a given name and course ID exists in the database
     public boolean groupExists(Group group) {
         String sql = "SELECT COUNT(*) FROM `group` WHERE nameGroup = ? AND idCourse = ?";
         try {

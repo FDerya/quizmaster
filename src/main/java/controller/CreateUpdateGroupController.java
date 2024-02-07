@@ -25,11 +25,16 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class CreateUpdateGroupController extends WarningAlertController {
+    private final String NIEUWE_GROEP = "Nieuwe groep";
+    private final String GROEPS = "groeps";
+    private static final String COURSE_FIELD = "course";
+    private static final String NAME_GROUP_FIELD = "nameGroup";
+    private static final String AMOUNT_STUDENT_FIELD = "amountStudent";
+    private static final String TEACHER_FIELD = "teacher";
     private final UserDAO userDAO;
     private final GroupDAO groupDAO;
     private final CourseDAO courseDAO;
     private final ObservableList<Course> allCourses = FXCollections.observableArrayList();
-    public static List<Group> newGroups = new ArrayList<>();
     private Group selectedGroup;
     @FXML
     Label titleLabel;
@@ -54,17 +59,16 @@ public class CreateUpdateGroupController extends WarningAlertController {
 
     // Initializes the CreateUpdateGroupController with the provided group.
     public CreateUpdateGroupController() {
-        this.groupDAO = new GroupDAO(Main.getDBaccess(), new UserDAO(Main.getDBaccess()), new CourseDAO(Main.getDBaccess()));
+        this.groupDAO = new GroupDAO(Main.getDBaccess());
         this.courseDAO = new CourseDAO(Main.getDBaccess());
         this.userDAO = new UserDAO(Main.getDBaccess());
     }
 
     // Sets up the controller with the specified group, initializing UI elements and populating fields.
     public void setup(Group group) {
-        int idGroup = (group != null) ? group.getIdGroup() : 0;
         setLabelsAndTitle(group);
         initializeCourseComboBox();
-        limitTextFieldLength(nameGroupTextField, "[a-zA-Z0-9 ]*");
+        limitTextFieldLength(nameGroupTextField);
         setNameGroupTextField();
         setAmountStudentTextField();
 
@@ -94,7 +98,7 @@ public class CreateUpdateGroupController extends WarningAlertController {
 
     // Sets labels and title based on the provided group.
     private void setLabelsAndTitle(Group group) {
-        titleLabel.setText((group != null) ? "Wijzig groep" : "Nieuwe groep");
+        titleLabel.setText((group != null) ? "Wijzig groep" : NIEUWE_GROEP);
     }
 
     // Initializes the course combo box with a sorted list of all available courses.
@@ -106,14 +110,14 @@ public class CreateUpdateGroupController extends WarningAlertController {
     }
 
     // Limits the length of the input in a TextField to the specified length
-    private void limitTextFieldLength(TextField textField, String pattern) {
+    private void limitTextFieldLength(TextField textField) {
         StringConverter<String> converter = new DefaultStringConverter();
         TextFormatter<String> textFormatter = new TextFormatter<>(
                 converter,
                 null,
                 change -> {
                     String newText = change.getControlNewText();
-                    if (newText.matches(pattern) && newText.length() <= MAXLENGTH) {
+                    if (newText.matches("[a-zA-Z0-9 ]*") && newText.length() <= MAXLENGTH) {
                         return change;
                     }
                     return null;
@@ -149,7 +153,8 @@ public class CreateUpdateGroupController extends WarningAlertController {
     // Retrieves a list of teachers from the database
     public List<User> getTeachers() {
         try {
-            return userDAO.getAll().stream()
+            List<User> allUsers = userDAO.getAll();
+            return allUsers.stream()
                     .filter(user -> "Docent".equals(user.getRole()))
                     .sorted(Comparator.comparing(User::getSurname)
                             .thenComparing(User::getPrefix)
@@ -162,7 +167,7 @@ public class CreateUpdateGroupController extends WarningAlertController {
     }
 
     // Custom ListCell implementation for displaying User objects in a ComboBox
-    public class UserListCell extends ListCell<User> {
+    public static class UserListCell extends ListCell<User> {
         @Override
         protected void updateItem(User user, boolean empty) {
             super.updateItem(user, empty);
@@ -196,7 +201,7 @@ public class CreateUpdateGroupController extends WarningAlertController {
     public void doSaveGroup(ActionEvent actionEvent) {
         Group group = createGroup();
         if (group != null) {
-            if (titleLabel.getText().equals("Nieuwe groep")) {
+            if (titleLabel.getText().equals(NIEUWE_GROEP)) {
                 boolean isUnique = isGroupNameUniqueForCourse(group.getGroupName(),
                         group.getCourse().getIdCourse(), group.getIdGroup());
                 if (isUnique) {
@@ -224,7 +229,7 @@ public class CreateUpdateGroupController extends WarningAlertController {
     private Group createGroup() {
         Group newGroup = validateAndBuildGroup();
         if (newGroup != null) {
-            if (titleLabel.getText().equals("Nieuwe groep")) {
+            if (titleLabel.getText().equals(NIEUWE_GROEP)) {
                 handleNewGroup(newGroup);
             } else {
                 handleExistingGroup(newGroup);
@@ -239,9 +244,8 @@ public class CreateUpdateGroupController extends WarningAlertController {
                 newGroup.getIdGroup());
         if (isUnique) {
             saveNewGroup(newGroup);
-            newGroups.add(newGroup);
         } else {
-            showSame(true, "groeps");
+            showSame(true, GROEPS);
         }
     }
 
@@ -249,9 +253,8 @@ public class CreateUpdateGroupController extends WarningAlertController {
     private void handleExistingGroup(Group group) {
         if (validateInput()) {
             updateExistingGroup(group);
-            newGroups.add(group);
         } else {
-            showSame(true, "groeps");
+            showSame(true, GROEPS);
         }
     }
 
@@ -261,7 +264,7 @@ public class CreateUpdateGroupController extends WarningAlertController {
             return;
         }
         if (!isGroupUnique(group, selectedGroup.getIdGroup())) {
-            showSame(true, "groeps");
+            showSame(true, GROEPS);
 
             return;
         }
@@ -339,20 +342,22 @@ public class CreateUpdateGroupController extends WarningAlertController {
         return true;
     }
 
-    // Validates input fields, returns true if all fields are filled, false otherwise.
+    // Validates input fields to ensure all required fields are filled. Returns true if all fields are filled,
+    // false otherwise. If any field is empty, displays a warning message using setWarningLabel method.
     private boolean validateInput() {
         Map<String, String> inputFields = new LinkedHashMap<>();
-        inputFields.put("course", "Je hebt niet alles ingevuld");
-        inputFields.put("nameGroup", "Je hebt niet alles ingevuld");
-        inputFields.put("amountStudent", "Je hebt niet alles ingevuld");
-        inputFields.put("teacher", "Je hebt niet alles ingevuld");
+        String INVALID_INPUT_MESSAGE = "Je hebt niet alles ingevuld";
+        inputFields.put(COURSE_FIELD, INVALID_INPUT_MESSAGE);
+        inputFields.put(NAME_GROUP_FIELD, INVALID_INPUT_MESSAGE);
+        inputFields.put(AMOUNT_STUDENT_FIELD, INVALID_INPUT_MESSAGE);
+        inputFields.put(TEACHER_FIELD, INVALID_INPUT_MESSAGE);
 
-        boolean correctInput = validateFields(inputFields);
+        boolean isInputValid = validateFields(inputFields);
 
-        if (!correctInput) {
-            setWarningLabel(inputFields);
+        if (!isInputValid) {
+            setWarningLabelFromMap(inputFields);
         }
-        return correctInput;
+        return isInputValid;
     }
 
     // Validates input fields based on the provided map, returns true if all fields are filled, false otherwise.
@@ -376,16 +381,15 @@ public class CreateUpdateGroupController extends WarningAlertController {
         warningLabel.setVisible(true);
 
         resetLabelColors();
-        setLabelErrorColor(courseLabel, "course");
-        setLabelErrorColor(nameGroupLabel, "nameGroup");
-        setLabelErrorColor(amountStudentLabel, "amountStudent");
-        setLabelErrorColor(teacherLabel, "teacher");
-
+        setLabelErrorColor(courseLabel, COURSE_FIELD);
+        setLabelErrorColor(nameGroupLabel, NAME_GROUP_FIELD);
+        setLabelErrorColor(amountStudentLabel, AMOUNT_STUDENT_FIELD);
+        setLabelErrorColor(teacherLabel, TEACHER_FIELD);
     }
 
     // validates input fields, updates labels with error messages, displays a red warning label
     // if errors are present, and resets label colors.
-    private void setWarningLabel(Map<String, String> inputFields) {
+    private void setWarningLabelFromMap(Map<String, String> inputFields) {
         StringBuilder error = new StringBuilder();
         boolean hasError = false;
 
@@ -410,17 +414,20 @@ public class CreateUpdateGroupController extends WarningAlertController {
     private void setLabelErrorColor(String fieldName) {
         resetLabelColors();
         switch (fieldName) {
-            case "course":
+            case COURSE_FIELD:
                 setLabelErrorColor(courseLabel, fieldName);
                 break;
-            case "nameGroup":
+            case NAME_GROUP_FIELD:
                 setLabelErrorColor(nameGroupLabel, fieldName);
                 break;
-            case "amountStudent":
+            case AMOUNT_STUDENT_FIELD:
                 setLabelErrorColor(amountStudentLabel, fieldName);
                 break;
-            case "teacher":
+            case TEACHER_FIELD:
                 setLabelErrorColor(teacherLabel, fieldName);
+                break;
+            default:
+                System.out.println("Unexpected field name: " + fieldName);
                 break;
         }
     }
@@ -451,14 +458,14 @@ public class CreateUpdateGroupController extends WarningAlertController {
     // Retrieves the value of a specific input field based on the field name.
     private String getInputValue(String fieldName) {
         switch (fieldName) {
-            case "course":
+            case COURSE_FIELD:
                 Course selectedCourse = courseComboBox.getSelectionModel().getSelectedItem();
                 return String.valueOf(selectedCourse != null ? selectedCourse.getNameCourse() : "");
-            case "nameGroup":
+            case NAME_GROUP_FIELD:
                 return nameGroupTextField.getText();
-            case "amountStudent":
+            case AMOUNT_STUDENT_FIELD:
                 return amountStudentTextField.getText();
-            case "teacher":
+            case TEACHER_FIELD:
                 User selectedTeacher = teacherComboBox.getSelectionModel().getSelectedItem();
                 return String.valueOf(selectedTeacher != null ? selectedTeacher.getFullName() : "");
             default:
