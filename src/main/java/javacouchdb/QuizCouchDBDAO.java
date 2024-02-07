@@ -7,7 +7,7 @@ import model.*;
 
 public class QuizCouchDBDAO extends AbstractCouchDBDAO{
 
-    private Gson gson;
+    private final Gson gson;
 
     public QuizCouchDBDAO(CouchDBAccess couchDBaccess) {
         super(couchDBaccess);

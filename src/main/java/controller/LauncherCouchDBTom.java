@@ -31,12 +31,12 @@ public class LauncherCouchDBTom {
 
         saveQuizList(testList);
         getQuiz(testList.get(0).getNameQuiz());
-        System.out.println(testList.get(0).toString() + " is aanwezig");
+        System.out.println(testList.get(0).getNameQuiz() + " is aanwezig");
         testList.get(1).setMinimumAmountCorrectQuestions(24);
         updateQuiz(testList.get(1));
-        System.out.println(testList.get(1).toString() + "is ook aanwezig en verbeterd");
+        System.out.println(testList.get(1).getNameQuiz() + " is ook aanwezig en verbeterd zichzelf");
         deleteQuiz(testList.get(3));
-        System.out.println(testList.get(3) + " is met pensioen en mag verwijderd uit het systeem");
+        System.out.println(testList.get(3).getNameQuiz() + " is met pensioen en mag verwijderd uit het systeem");
         closeCouchDBAccess();
     }
     //Verbinding CouchDB openen
@@ -70,14 +70,12 @@ public class LauncherCouchDBTom {
     }
     private static void getQuiz(String code){
         Quiz quiz = quizCouchDBDAO.getQuiz(code);
-        System.out.println(quiz.getNameQuiz());
     }
     private static void updateQuiz(Quiz quiz){
         quizCouchDBDAO.updateQuiz(quiz);
-        System.out.println(quiz.getNameQuiz());
+
     }
     private static void deleteQuiz(Quiz quiz){
-        System.out.println(quiz.getNameQuiz());
         quizCouchDBDAO.deleteQuiz(quiz);
     }
 }
