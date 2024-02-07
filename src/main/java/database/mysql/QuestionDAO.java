@@ -184,7 +184,8 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
                 "JOIN quiz z ON q.idQuiz = z.idQuiz " +
                 "JOIN course c ON z.idCourse = c.idCourse " +
                 "JOIN user u ON c.idUser = u.idUser " +
-                "WHERE u.idUser = ?;";
+                "WHERE u.idUser = ? " +
+                "ORDER BY z.nameQuiz;";
         try {
             setupPreparedStatement(sql);
             preparedStatement.setInt(1, userId);
@@ -197,6 +198,7 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
         }
         return questions;
     }
+
 
 
     public Question getQuestionByName(String questionName) {
