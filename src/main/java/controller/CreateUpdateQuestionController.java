@@ -232,6 +232,7 @@ public class CreateUpdateQuestionController {
     // Display success message, wait for 2 seconds, then go back to the manage screen
     private void showSuccessMessage(String message) {
         warningLabel.setVisible(true);
+        warningLabel.setTextFill(Color.RED);
         warningLabel.setText(message);
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(2), event -> {

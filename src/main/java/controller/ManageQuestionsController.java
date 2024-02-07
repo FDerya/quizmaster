@@ -10,8 +10,6 @@ import javafx.scene.layout.HBox;
 import model.Question;
 import model.User;
 import view.Main;
-
-import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,42 +22,40 @@ public class ManageQuestionsController {
     Label warningLabel;
     @FXML
     Label questionCountLabel;
+    @FXML
+    Button idBeginscherm;
 
     public ManageQuestionsController() {
         this.questionDAO = new QuestionDAO(Main.getDBaccess());
 
     }
-
+    // Method that initializes the controller; receives the current user's questions and creates a visual list if there are questions
+    // sets the mode for selecting a single item, adds listeners to update the number of questions, and Cleans the selection after the elements are filled.
     public void setup() {
-        // Gets the current user
         User currentUser = User.getCurrentUser();
         int userId = currentUser.getIdUser();
+        idBeginscherm.setText(Main.getMainScreenButtonText());
 
-        // Gets the current user's questions
         List<Question> userQuestions = questionDAO.getQuestionsForUser(userId);
 
-        // Tracking changes when occurring
         if (!userQuestions.isEmpty()) {
             ObservableList<Question> questionObservableList = FXCollections.observableArrayList(userQuestions);
             questionList.setItems(questionObservableList);
 
-            // Set the selection mode to SINGLE
             questionList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-            // Creates columns
             create_HBOX();
 
-            // How many questions in a quiz
+
             questionList.getSelectionModel().selectedItemProperty().addListener(
                     (observable, oldValue, newValue) -> updateQuestionCount(newValue)
             );
         }
-        // Clear the selection after populating the items
         questionList.getSelectionModel().clearSelection();
     }
 
+    // Added a HBOX to create a column between quiz name and question
     private void create_HBOX() {
-        // Added a HBOX to create a column between quiz name and question
         questionList.setCellFactory(param -> new ListCell<>() {
             @Override
             protected void updateItem(Question item, boolean empty) {
@@ -107,7 +103,6 @@ public class ManageQuestionsController {
         if (question == null) {
             warningLabel.setVisible(true);
             warningLabel.setText("Je moet eerst een vraag kiezen!");
-            warningLabel.setStyle("-fx-text-fill: red;");
         } else {
             Main.getSceneManager().showCreateUpdateQuestionScene(question);
             warningLabel.setVisible(false);
@@ -123,7 +118,6 @@ public class ManageQuestionsController {
         } else {
             warningLabel.setVisible(true);
             warningLabel.setText("Je moet eerst een vraag kiezen!");
-            warningLabel.setStyle("-fx-text-fill: red;");
         }
 
     }
@@ -133,7 +127,6 @@ public class ManageQuestionsController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Bevestig Verwijderen");
         alert.setHeaderText("Weet je zeker dat je de vraag wilt verwijderen?");
-        alert.setContentText("Vraag : " + selectedQuestion.getIdQuestion());
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {

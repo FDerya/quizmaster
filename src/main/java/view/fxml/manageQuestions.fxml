@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-padding: 0 0 0 15;" xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageQuestionsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-padding: 0 0 0 15;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageQuestionsController">
     <Label layoutX="15.0" layoutY="14.0" text="Vragenbeheer">
 
         <font>
@@ -20,7 +17,7 @@
         </font>
     </Label>
     <ListView fx:id="questionList" layoutX="15.0" layoutY="80.0" prefHeight="236.0" prefWidth="860.0" />
-    <Button layoutX="15.0" layoutY="333.0" mnemonicParsing="false" onAction="#doCreateQuestion" prefHeight="30.0" prefWidth="81.0" text="Nieuw" textFill="#403d3d">
+    <Button layoutX="15.0" layoutY="333.0" mnemonicParsing="false" onAction="#doCreateQuestion" text="Nieuw" textFill="#403d3d">
         <font>
             <Font size="14.0" />
         </font>
@@ -35,13 +32,13 @@
             <Font size="14.0" />
         </font>
     </Button>
-    <Button layoutX="15.0" layoutY="393.0" mnemonicParsing="false" onAction="#doMenu" prefHeight="30.0" prefWidth="125.0" text="Welkomstscherm">
+    <Button fx:id="idBeginscherm" layoutX="15.0" layoutY="393.0" mnemonicParsing="false" onAction="#doMenu" text="Beginscherm">
       <font>
          <Font size="14.0" />
       </font></Button>
     <TextField fx:id="warningTextField" layoutX="14.0" layoutY="415.0" prefHeight="65.0" prefWidth="340.0" promptText="Je moet eerst een vraag kiezen" visible="false" />
-   <Label fx:id="warningLabel" layoutX="15.0" layoutY="501.0" prefHeight="93.0" prefWidth="408.0" />
-   <Label fx:id="questionCountLabel" layoutX="590.0" layoutY="362.0" prefHeight="93.0" prefWidth="281.0" />
+   <Label fx:id="warningLabel" layoutX="7.0" layoutY="467.0" prefHeight="93.0" prefWidth="408.0" />
+   <Label fx:id="questionCountLabel" layoutX="289.0" layoutY="333.0" prefHeight="93.0" prefWidth="281.0" />
    <Button layoutX="150.0" layoutY="393.0" mnemonicParsing="false" onAction="#doDashboard" text="Dashboard">
       <font>
          <Font size="14.0" />
