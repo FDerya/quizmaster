@@ -29,7 +29,7 @@ public class WelcomeController {
     List<QuizResult> listQuizResult = new ArrayList<>();
     final String path = "src/resources/";
     final String extension = ".txt";
-    private QuestionDAO questionDAO = new QuestionDAO(Main.getDBaccess());
+    private static QuestionDAO questionDAO = new QuestionDAO(Main.getDBaccess());
 
 
     String textfile;
@@ -233,7 +233,7 @@ public class WelcomeController {
 
     }
 
-    protected String countAVG(List<Quiz> listQuiz, User user) {
+    public static String countAVG(List<Quiz> listQuiz, User user) {
         int amountQuiz = listQuiz.size();
         int amountQuestion = questionDAO.getQuestionCountForUser(user);
         double avgQuestion = (Math.round(amountQuestion * 10.0 / amountQuiz) / 10.0);
