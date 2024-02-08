@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public class ManageQuestionsController {
 
-    private final QuestionDAO questionDAO;
+    QuestionDAO questionDAO;
     @FXML
     ListView<Question> questionList;
     @FXML
@@ -33,25 +33,29 @@ public class ManageQuestionsController {
     // sets the mode for selecting a single item, adds listeners to update the number of questions, and Cleans the selection after the elements are filled.
     public void setup() {
         User currentUser = User.getCurrentUser();
-        int userId = currentUser.getIdUser();
-        idBeginscherm.setText(Main.getMainScreenButtonText());
 
-        List<Question> userQuestions = questionDAO.getQuestionsForUser(userId);
+        if (currentUser != null) {
+            int userId = currentUser.getIdUser();
+            idBeginscherm.setText(Main.getMainScreenButtonText());
 
-        if (!userQuestions.isEmpty()) {
-            ObservableList<Question> questionObservableList = FXCollections.observableArrayList(userQuestions);
-            questionList.setItems(questionObservableList);
+            List<Question> userQuestions = questionDAO.getQuestionsForUser(userId);
 
-            questionList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+            if (!userQuestions.isEmpty()) {
+                ObservableList<Question> questionObservableList = FXCollections.observableArrayList(userQuestions);
+                questionList.setItems(questionObservableList);
 
-            create_HBOX();
+                questionList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+                create_HBOX();
 
 
-            questionList.getSelectionModel().selectedItemProperty().addListener(
-                    (observable, oldValue, newValue) -> updateQuestionCount(newValue)
-            );
+                questionList.getSelectionModel().selectedItemProperty().addListener(
+                        (observable, oldValue, newValue) -> updateQuestionCount(newValue)
+                );
+            }
+            questionList.getSelectionModel().clearSelection();
         }
-        questionList.getSelectionModel().clearSelection();
+
     }
 
     // Added a HBOX to create a column between quiz name and question
@@ -78,7 +82,7 @@ public class ManageQuestionsController {
     }
 
     // How many questions in a quiz
-    private void updateQuestionCount(Question selectedQuestion) {
+    void updateQuestionCount(Question selectedQuestion) {
         if (selectedQuestion != null) {
             int questionCount = questionDAO.getQuestionCountForQuiz(selectedQuestion.getQuiz());
             questionCountLabel.setText("Vragen in Quiz: " + questionCount);
@@ -127,6 +131,13 @@ public class ManageQuestionsController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Bevestig Verwijderen");
         alert.setHeaderText("Weet je zeker dat je de vraag wilt verwijderen?");
+
+        // Get the buttons
+        ButtonType okButton = new ButtonType("Verwijderen", ButtonBar.ButtonData.OK_DONE);
+        ButtonType closeButton = new ButtonType("Annuleren", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        // Set the buttons
+        alert.getButtonTypes().setAll(okButton, closeButton);
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
