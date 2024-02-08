@@ -38,6 +38,7 @@ public class WelcomeController {
     final static ParticipationDAO participationDAO = new ParticipationDAO(Main.getDBaccess());
     final static GroupDAO groupDAO = new GroupDAO(Main.getDBaccess());
     final static QuizDAO quizDAO = new QuizDAO(Main.getDBaccess());
+
     public void setup() {
         welcomeLabel.setText("Welkom " + User.getCurrentUser().getFirstName() + "\nJe bent ingelogd als " + User.getCurrentUser().getRole().toLowerCase());
         // Shows menu buttons by role
@@ -223,15 +224,27 @@ public class WelcomeController {
     private void printQuizzes(PrintWriter printWriter) {
         User user = User.getCurrentUser();
         List<Quiz> listQuiz = quizDAO.getQuizzesFromUser(user);
-        int amountQuiz = listQuiz.size();
-        int amountQuestion = questionDAO.getQuestionCountForUser(user);
-        double avgQuestion = (Math.round(amountQuestion * 10.0 / amountQuiz) / 10.0);
         printWriter.printf("%-30s %-30s %-15s %-10s\n", "Cursus", "Quiznaam", "Level", "Aantal vragen per quiz");
         for (Quiz quiz : listQuiz) {
             printWriter.printf("%-30s %-30s %-15s %-10d\n", quiz.getCourse(), quiz.getNameQuiz(), quiz.getLevel(), questionDAO.getQuestionCountForQuiz(quiz));
         }
-        printWriter.println("\nEr zijn " + amountQuiz + " quizzen met " + amountQuestion + " vragen, gemiddelde = " + avgQuestion + " vragen per quiz");
+        printWriter.println(countAVG(listQuiz, user));
         printWriter.close();
+
+    }
+
+    protected String countAVG(List<Quiz> listQuiz, User user) {
+        int amountQuiz = listQuiz.size();
+        int amountQuestion = questionDAO.getQuestionCountForUser(user);
+        double avgQuestion = (Math.round(amountQuestion * 10.0 / amountQuiz) / 10.0);
+        if (amountQuiz == 0) {
+            return "Er zijn geen quizzen met vragen";
+        } else if (amountQuestion == 0) {
+            return "Deze quizzen hebben geen vragen";
+        } else {
+            return "\nEr zijn " + amountQuiz + " quizzen met " + amountQuestion + " vragen, gemiddelde = " + avgQuestion + " vragen per quiz";
+
+        }
     }
 
 
@@ -239,8 +252,8 @@ public class WelcomeController {
 
         List<Question> questionsList = questionDAO.getAll();
         for (Question question : questionsList) {
-            printWriter.println("\tQuiz: " + question.getQuiz().getNameQuiz());
-            printWriter.println("\tVragen: " + question.getQuestion());
+            printWriter.println("Quiz: " + question.getQuiz().getNameQuiz());
+            printWriter.println("Vragen: " + question.getQuestion());
             printWriter.println("\tJuist Antwoord: " + question.getAnswerRight());
             printWriter.println("\tOnjuist Antwoord 1: " + question.getAnswerWrong1());
             printWriter.println("\tOnjuist Antwoord 2: " + question.getAnswerWrong2());
