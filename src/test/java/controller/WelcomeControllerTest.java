@@ -7,11 +7,11 @@ import org.junit.jupiter.api.Test;
 import model.*;
 import view.Main;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 import static controller.WelcomeController.countAVG;
+import static controller.WelcomeController.courseDAO;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WelcomeControllerTest {
@@ -21,15 +21,22 @@ class WelcomeControllerTest {
     QuestionDAO questionDAO = new QuestionDAO(Main.getDBaccess());
     User user = userDAO.getOneById(120);
     User user2 = userDAO.getOneById(181);
-    User user3 = new User (500, "horlepiep", "makeitwork", "Tom", "van", "Beek", "coordinator");
+    Course course = courseDAO.getOneByName("Muziek Theorie Basis");
+
+    User user3 = new User(500, "horlepiep", "makeitwork", "Tom", "van", "Beek", "coordinator");
     List<Quiz> emptyList = quizDAO.getQuizzesFromUser(user3);
-    List<Quiz> newList = quizDAO.getQuizzesFromUser(user2);
+    public List<Quiz> newList () {
+        Quiz testQuiz = new Quiz(50, course, "Muziek Theorie", "Beginner", 10);
+       List<Quiz> normalList = new ArrayList<>();
+        normalList.add(testQuiz);
+        return normalList;
+    }
+    List<Quiz> newList = newList();
     List<Quiz> fullList = quizDAO.getQuizzesFromUser(user);
     int amountQuiz = fullList.size();
-    int amountQuestionEmptyList = newList.size();
     int amountQuestion = questionDAO.getQuestionCountForUser(user);
-    int amountQuestionEmpty = questionDAO.getQuestionCountForUser(user3);
     double avgQuestion = (amountQuestion * 10.0 / amountQuiz) / 10.0;
+
     String quizEmpty = "Er zijn geen quizzen met vragen";
     String questionEmpty = "Deze quizzen hebben geen vragen";
     String avg = "\nEr zijn " + amountQuiz + " quizzen met " + amountQuestion + " vragen, gemiddelde = " + avgQuestion + " vragen per quiz";
@@ -48,8 +55,9 @@ class WelcomeControllerTest {
     void countAVGEmptyQuestion() {
         assertEquals(questionEmpty, countAVG(newList, user2));
     }
+
     @Test
-    void countAVGFullQuiz(){
-        assertEquals (avg, countAVG(fullList, user));
+    void countAVGFullQuiz() {
+        assertEquals(avg, countAVG(fullList, user));
     }
 }
