@@ -20,8 +20,8 @@ class WelcomeControllerTest {
     QuizDAO quizDAO = new QuizDAO(Main.getDBaccess());
     QuestionDAO questionDAO = new QuestionDAO(Main.getDBaccess());
     User user = userDAO.getOneById(120);
-    User user2 = userDAO.getOneById(203);
-    User user3 = userDAO.getOneById(204);
+    User user2 = userDAO.getOneById(181);
+    User user3 = new User (500, "horlepiep", "makeitwork", "Tom", "van", "Beek", "coordinator");
     List<Quiz> emptyList = quizDAO.getQuizzesFromUser(user3);
     List<Quiz> newList = quizDAO.getQuizzesFromUser(user2);
     List<Quiz> fullList = quizDAO.getQuizzesFromUser(user);
