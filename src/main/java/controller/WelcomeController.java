@@ -247,10 +247,10 @@ public class WelcomeController {
             }
             // Print the question details
             printWriter.println("Vragen: " + question.getQuestion());
-            printWriter.println("Juist Antwoord: " + question.getAnswerRight());
-            printWriter.println("Onjuist Antwoord 1: " + question.getAnswerWrong1());
-            printWriter.println("Onjuist Antwoord 2: " + question.getAnswerWrong2());
-            printWriter.println("Onjuist Antwoord 3: " + question.getAnswerWrong3());
+            printWriter.println("\tJuist Antwoord: " + question.getAnswerRight());
+            printWriter.println("\tOnjuist Antwoord 1: " + question.getAnswerWrong1());
+            printWriter.println("\tOnjuist Antwoord 2: " + question.getAnswerWrong2());
+            printWriter.println("\tOnjuist Antwoord 3: " + question.getAnswerWrong3());
             printWriter.println();
         }
     }
