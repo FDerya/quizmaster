@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateUpdateQuestionController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateUpdateQuestionController">
     <children>
-        <Label fx:id="titelLabel" layoutX="14.0" layoutY="14.0" text="" />
+        <Label fx:id="titelLabel" layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="148.0" text="" />
       <TextArea fx:id="questionTextArea" layoutX="140.0" layoutY="130.0" prefHeight="142.0" prefWidth="713.0" wrapText="true" />
         <TextField fx:id="answerRightTextfield" alignment="TOP_LEFT" layoutX="140.0" layoutY="291.0" prefHeight="25.0" prefWidth="257.0" promptText="Right Answer" />
         <TextField fx:id="answerWrong1Textfield" alignment="TOP_LEFT" layoutX="140.0" layoutY="348.0" prefHeight="25.0" prefWidth="257.0" promptText="Wrong Answer 1" />
@@ -35,7 +35,7 @@
             <Font size="14.0" />
          </font></Label>
       <Label fx:id="warningLabel" layoutX="108.0" layoutY="403.0" prefHeight="30.0" prefWidth="510.0" textFill="RED" />
-      <Label alignment="BOTTOM_LEFT" layoutX="14.0" layoutY="16.0" prefHeight="30.0" prefWidth="190.0" text="Vragenbeheer" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="695.0" AnchorPane.topAnchor="17.0">
+      <Label fx:id="Vragenbeheer" alignment="BOTTOM_LEFT" layoutX="14.0" layoutY="16.0" prefHeight="30.0" prefWidth="190.0" text="Vragenbeheer" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="695.0" AnchorPane.topAnchor="17.0">
          <font>
             <Font name="Calibri" size="25.0" />
          </font>

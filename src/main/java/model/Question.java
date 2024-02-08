@@ -73,19 +73,5 @@ public class Question {
         this.question = question;
     }
 
-    public void setAnswerRight(String answerRight) {
-        this.answerRight = answerRight;
     }
 
-    public void setAnswerWrong1(String answerWrong1) {
-        this.answerWrong1 = answerWrong1;
-    }
-
-    public void setAnswerWrong2(String answerWrong2) {
-        this.answerWrong2 = answerWrong2;
-    }
-
-    public void setAnswerWrong3(String answerWrong3) {
-        this.answerWrong3 = answerWrong3;
-    }
-}

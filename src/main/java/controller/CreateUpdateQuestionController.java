@@ -24,6 +24,9 @@ public class CreateUpdateQuestionController {
     private final QuizDAO quizDAO;
 
     @FXML
+    private Label Vragenbeheer;
+
+    @FXML
     private TextField answerRightTextfield;
 
     @FXML
@@ -77,6 +80,7 @@ public class CreateUpdateQuestionController {
     public void setup(Question question) {
         // Filling up the combo box
         fillComboBoxQuizzes();
+
         // Show course that is asocciated with user
         quizlist.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -87,10 +91,12 @@ public class CreateUpdateQuestionController {
         });
         // Update the question
         if (question != null) {
+            Vragenbeheer.setText("Wijzig vraag");
             updateQuestion(question);
         }
         // Create the question
         else {
+            Vragenbeheer.setText("Vragenbeheer");
             create_new_Question();
         }
     }
@@ -100,7 +106,6 @@ public class CreateUpdateQuestionController {
         isUpdate = true;
         existingQuestionId = question.getIdQuestion();
         // Fill out question fields
-        titelLabel.setText("Wijzig vraag");
         questionTextArea.setText(question.getQuestion());
         answerRightTextfield.setText(question.getAnswerRight());
         answerWrong1Textfield.setText(question.getAnswerWrong1());
@@ -182,11 +187,19 @@ public class CreateUpdateQuestionController {
         correctInput = isCorrectInput(questionText, answerRight, answerWrong1, answerWrong2, answerWrong3);
         // If fields are empty, return false
         if (!correctInput) {
+            verplichtTextField(answerRightTextfield);
+            verplichtTextField(answerWrong1Textfield);
+            verplichtTextField(answerWrong2Textfield);
+            verplichtTextField(answerWrong3Textfield);
             return null;
         } else {
             // If fields are not empty, return question
             return createQuestion(selectedQuiz, questionText, answerRight, answerWrong1, answerWrong2, answerWrong3);
         }
+    }
+
+    private void verplichtTextField(TextField textField) {
+        textField.setPromptText("Verplicht");
     }
 
     // Creating a new question
@@ -210,7 +223,7 @@ public class CreateUpdateQuestionController {
                 checkAndChangeLabelColor(answerWrong2.isEmpty(), label_Antwood_2) |
                 checkAndChangeLabelColor(answerWrong3.isEmpty(), label_Antwood_3);
 
-        return !anyFieldEmpty;
+     return !anyFieldEmpty;
     }
 
     // Checks if fields are empty or not
