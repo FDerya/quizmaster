@@ -218,6 +218,7 @@ public class CreateUpdateQuestionController {
         String errorMessageNoFields = "Je hebt niet alle velden ingevuld.\nVul de rood gekleurde velden alsnog in.";
         if (emptyTextField) {
             label.setTextFill(Color.RED);
+            warningLabel.setTextFill(Color.BLACK);
             warningLabel.setText(errorMessageNoFields);
             warningLabel.setVisible(true);
             return true;
@@ -232,7 +233,6 @@ public class CreateUpdateQuestionController {
     // Display success message, wait for 2 seconds, then go back to the manage screen
     private void showSuccessMessage(String message) {
         warningLabel.setVisible(true);
-        warningLabel.setTextFill(Color.RED);
         warningLabel.setText(message);
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(2), event -> {

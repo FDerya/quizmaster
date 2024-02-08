@@ -84,8 +84,8 @@ public class WelcomeController {
         cMenuItem3.setOnAction(actionEvent -> Main.getSceneManager().showManageQuestionsScene());
         MenuItem cMenuItem4 = new MenuItem("Exporteer quizzen");
         cMenuItem4.setOnAction(actionEvent -> doShowSaveTextFileAlert("quizzen"));
-        MenuItem cMenuItem5 = new MenuItem("Exporteer question");
-        cMenuItem5.setOnAction(actionEvent -> doShowSaveTextFileAlert("question"));
+        MenuItem cMenuItem5 = new MenuItem("Exporteer vragen");
+        cMenuItem5.setOnAction(actionEvent -> doShowSaveTextFileAlert("vragen"));
 
         taskMenuButton.getItems().add(cMenuItem1);
         taskMenuButton.getItems().add(cMenuItem2);
@@ -176,7 +176,7 @@ public class WelcomeController {
             case "groepen":
                 printGroups(printWriter);
                 break;
-            case "question":
+            case "vragen":
                 printQuestion(printWriter);
                 break;
             case "cursussen":
@@ -249,10 +249,17 @@ public class WelcomeController {
 
 
     private void printQuestion(PrintWriter printWriter) {
-
         List<Question> questionsList = questionDAO.getAll();
+        String lastQuizName = null; // Keep track of the last printed quiz name
         for (Question question : questionsList) {
             printWriter.println("Quiz: " + question.getQuiz().getNameQuiz());
+            // Check if the current question belongs to a different quiz
+            if (!question.getQuiz().getNameQuiz().equals(lastQuizName)) {
+                // If yes, print the quiz name
+                printWriter.println("Quiz: " + question.getQuiz().getNameQuiz());
+                lastQuizName = question.getQuiz().getNameQuiz(); // Update last quiz name
+            }
+            // Print the question details
             printWriter.println("Vragen: " + question.getQuestion());
             printWriter.println("\tJuist Antwoord: " + question.getAnswerRight());
             printWriter.println("\tOnjuist Antwoord 1: " + question.getAnswerWrong1());
@@ -261,6 +268,7 @@ public class WelcomeController {
             printWriter.println();
         }
     }
+
 
     private void printCourse(PrintWriter printWriter) {
         List<Course> courseList = courseDAO.getAll();
@@ -325,7 +333,6 @@ public class WelcomeController {
         }
         return studentsInfo.toString();
     }
-
 
     // Returns a sorted list of groups
     private List<Group> getSortedGroups() throws SQLException {
