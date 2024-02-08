@@ -80,6 +80,3 @@ public class GroupCouchDBDAO extends AbstractCouchDBDAO {
         return updateDocument(jsonObject);
     }
 }
-
-
-

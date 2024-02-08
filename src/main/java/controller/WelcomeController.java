@@ -30,14 +30,14 @@ public class WelcomeController {
     final String path = "src/resources/";
     final String extension = ".txt";
     private QuestionDAO questionDAO = new QuestionDAO(Main.getDBaccess());
-    private QuizDAO quizDAO = new QuizDAO(Main.getDBaccess());
+
 
     String textfile;
     String typeOfPrint;
     final static CourseDAO courseDAO = new CourseDAO(Main.getDBaccess());
     final static ParticipationDAO participationDAO = new ParticipationDAO(Main.getDBaccess());
     final static GroupDAO groupDAO = new GroupDAO(Main.getDBaccess());
-
+    final static QuizDAO quizDAO = new QuizDAO(Main.getDBaccess());
     public void setup() {
         welcomeLabel.setText("Welkom " + User.getCurrentUser().getFirstName() + "\nJe bent ingelogd als " + User.getCurrentUser().getRole().toLowerCase());
         // Shows menu buttons by role
@@ -225,7 +225,7 @@ public class WelcomeController {
         List<Quiz> listQuiz = quizDAO.getQuizzesFromUser(user);
         int amountQuiz = listQuiz.size();
         int amountQuestion = questionDAO.getQuestionCountForUser(user);
-        double avgQuestion = (Math.round(amountQuestion * 10 / amountQuiz) / 10.0);
+        double avgQuestion = (Math.round(amountQuestion * 10.0 / amountQuiz) / 10.0);
         printWriter.printf("%-30s %-30s %-15s %-10s\n", "Cursus", "Quiznaam", "Level", "Aantal vragen per quiz");
         for (Quiz quiz : listQuiz) {
             printWriter.printf("%-30s %-30s %-15s %-10d\n", quiz.getCourse(), quiz.getNameQuiz(), quiz.getLevel(), questionDAO.getQuestionCountForQuiz(quiz));
@@ -319,7 +319,6 @@ public class WelcomeController {
         }
         return studentsInfo.toString();
     }
-
 
     // Returns a sorted list of groups
     private List<Group> getSortedGroups() throws SQLException {

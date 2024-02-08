@@ -1,16 +1,13 @@
 package javacouchdb;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import model.*;
 
-import java.util.List;
-
 public class QuizCouchDBDAO extends AbstractCouchDBDAO{
 
-    private Gson gson;
+    private final Gson gson;
 
     public QuizCouchDBDAO(CouchDBAccess couchDBaccess) {
         super(couchDBaccess);
@@ -26,11 +23,11 @@ public class QuizCouchDBDAO extends AbstractCouchDBDAO{
     public Quiz getQuizById(String doc_Id){
         return gson.fromJson(getDocumentById(doc_Id), Quiz.class);
     }
-    public Quiz getQuiz(Quiz quiz){
+    public Quiz getQuiz(String quiz){
         Quiz resultaat;
         for (JsonObject jsonObject : getAllDocuments()) {
             resultaat = gson.fromJson(jsonObject, Quiz.class);
-            if (resultaat.equals(quiz)) {
+            if (resultaat.getNameQuiz().equals(quiz)) {
                 return resultaat;
             }
         }
@@ -43,7 +40,7 @@ public class QuizCouchDBDAO extends AbstractCouchDBDAO{
    public String[] getIdAndRevQuiz(Quiz quiz){
         String[] idAndRev= new String[2];
         for (JsonObject jsonObject : getAllDocuments()) {
-            if (jsonObject.has("idQuiz") && jsonObject.get("idQuiz").getAsString().equals(quiz.getIdQuiz())){
+            if (jsonObject.has("idQuiz") && jsonObject.get("idQuiz").getAsInt() ==quiz.getIdQuiz()){
 
                 idAndRev[0] = jsonObject.get("_id").getAsString();
                 idAndRev[1] = jsonObject.get("_rev").getAsString();

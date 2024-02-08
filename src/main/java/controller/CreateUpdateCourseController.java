@@ -106,7 +106,7 @@ public class CreateUpdateCourseController extends WarningAlertController {
             doWhenFieldEmpty(courseName, coordinator, level);
             return null;
         } else if (titleLabel.getText().equals("Nieuwe Cursus") && checkExistenceCourseName(courseName)) {
-            warningLabel.setText("De naam van de cursus bestaat al, kies een nieuwe naam.");
+            warningLabel.setText("De naam van de cursus bestaat al, kies een nieuwe naam");
             return null;
         } else {
             return new Course(0, coordinator, courseName, level);
@@ -115,7 +115,7 @@ public class CreateUpdateCourseController extends WarningAlertController {
 
 // Method to set the labels to the colour red when a field is left empty and show a warning
     private void doWhenFieldEmpty(String courseName, User coordinator, String level) {
-        warningLabel.setText("Je hebt niet alles ingevuld.");
+        warningLabel.setText("Je hebt niet alles ingevuld");
         warningLabel.setVisible(true);
         if (courseName.isEmpty()) {courseNameLabel.setTextFill(Color.RED);}
         if (coordinator == null) {coordinatorLabel.setTextFill(Color.RED);}

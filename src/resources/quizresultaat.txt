@@ -1,145 +1,27 @@
-Naam student: Frits  Fritsma
-	Quiz: Python Basis
-	Datum gemaakt: null
-	Resultaat: niet behaald
-	Behaald: null
+Naam student: Alfred van der Berg
+	Quiz: Geschiedenis Middeleeuwen 1
+	Datum gemaakt: 04-02-2024 20:37
+	Resultaat: 2 / 10
+	Behaald: niet behaald
 
-	Quiz: Python Basis
-	Datum gemaakt: null
-	Resultaat: niet behaald
-	Behaald: null
+	Quiz: Geschiedenis Middeleeuwen 1
+	Datum gemaakt: 04-02-2024 13:37
+	Resultaat: 3 / 10
+	Behaald: niet behaald
 
-	Quiz: Python Basis
-	Datum gemaakt: null
-	Resultaat: niet behaald
-	Behaald: null
+	Quiz: Geschiedenis Middeleeuwen 1
+	Datum gemaakt: 04-02-2024 20:42
+	Resultaat: 0 / 10
+	Behaald: niet behaald
 
-	Quiz: Python Basis
-	Datum gemaakt: null
-	Resultaat: niet behaald
-	Behaald: null
-
-	Quiz: Python Basis
-	Datum gemaakt: null
-	Resultaat: behaald
-	Behaald: null
-
-	Quiz: Python Basis
-	Datum gemaakt: null
-	Resultaat: niet behaald
-	Behaald: null
-
-	Quiz: Python Basis
-	Datum gemaakt: null
-	Resultaat: niet behaald
-	Behaald: null
-
-	Quiz: Python Basis
-	Datum gemaakt: null
-	Resultaat: niet behaald
-	Behaald: null
-
-	Quiz: Python Basis
-	Datum gemaakt: null
-	Resultaat: niet behaald
-	Behaald: null
-
-	Quiz: Python Basis
-	Datum gemaakt: null
-	Resultaat: niet behaald
-	Behaald: null
-
-	Quiz: Python Basis
-	Datum gemaakt: null
-	Resultaat: niet behaald
-	Behaald: null
-
-	Quiz: Python Basis
-	Datum gemaakt: null
-	Resultaat: niet behaald
-	Behaald: null
-
-	Quiz: Python Basis
-	Datum gemaakt: null
-	Resultaat: niet behaald
-	Behaald: null
-
-	Quiz: Python Basis
-	Datum gemaakt: null
-	Resultaat: niet behaald
-	Behaald: null
-
-	Quiz: Python Basis
-	Datum gemaakt: null
-	Resultaat: niet behaald
-	Behaald: null
-
-	Quiz: Python Basis
-	Datum gemaakt: null
-	Resultaat: niet behaald
-	Behaald: null
-
-	Quiz: Python Basis
-	Datum gemaakt: null
-	Resultaat: niet behaald
-	Behaald: null
-
-	Quiz: Python Basis
-	Datum gemaakt: null
-	Resultaat: niet behaald
-	Behaald: null
+	Quiz: Geschiedenis Middeleeuwen 1
+	Datum gemaakt: 04-02-2024 20:44
+	Resultaat: 0 / 10
+	Behaald: niet behaald
 
 Naam student: Frits Fritsma
-	Quiz: Python Basis
-	Datum gemaakt: null
-	Resultaat: niet behaald
-	Behaald: null
-
-sis
-Groep: Groep 2
-Aantal studenten: 25
-Docent: Zarah School
-	Studenten:
-
-Cursus: Python Basis
-Groep: Groep 3
-Aantal studenten: 25
-Docent: Zarah School
-	Studenten:
-
-Cursus: Python++
-Groep: Groep 1
-Aantal studenten: 25
-Docent: Zarah School
-	Studenten:
-
-Cursus: Python++
-Groep: Groep 2
-Aantal studenten: 25
-Docent: Fady Stegehuis
-	Studenten:
-
-Cursus: Python++
-Groep: Groep 3
-Aantal studenten: 25
-Docent: Fady Stegehuis
-	Studenten:
-
-Cursus: Spaans A
-Groep: Groep 1
-Aantal studenten: 25
-Docent: Maj van Otterlo
-	Studenten:
-
-Cursus: Spaans B
-Groep: Groep 1
-Aantal studenten: 25
-Docent: Yelina Veldhoen
-	Studenten:
-
-Cursus: Spaans B
-Groep: Groep 2
-Aantal studenten: 25
-Docent: Maj van Otterlo
-	Studenten:
+	Quiz: Geschiedenis Middeleeuwen 1
+	Datum gemaakt: 02-02-2024 14:03
+	Resultaat: 2 / 10
+	Behaald: niet behaald
 

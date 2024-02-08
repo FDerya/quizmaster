@@ -40,9 +40,7 @@ public class QuizResult {
             LocalDateTime dateTime = LocalDateTime.parse(localDateTimeString);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
-            String formattedDateTime = dateTime.format(formatter);
-
-            return formattedDateTime;
+            return dateTime.format(formatter);
         } catch (DateTimeParseException e) {
             return localDateTimeString;
         }
@@ -70,7 +68,7 @@ public class QuizResult {
     }
 
     public String getLocalDateTime() {
-        return localDateTime;
+        return formatLocalDateTime(localDateTime);
     }
 
     public void setLocalDateTime(String localDateTime) {

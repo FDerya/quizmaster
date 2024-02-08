@@ -24,11 +24,8 @@ public class SelectQuizForStudentController extends WarningAlertController {
     private final ParticipationDAO PARTICIPATIONDAO;
     private QuizResultCouchDBDAO quizResultCouchDBDAO = new QuizResultCouchDBDAO(Main.getCouchDBaccess());
 
-    private QuizResult latestQuizResult;
     private List<QuizResult> finishedQuizzes = new ArrayList<>();
-    private List<String> datum = new ArrayList<>();
-    private List<String> score = new ArrayList<>();
-    @FXML
+   @FXML
     ListView<Quiz> quizList;
     @FXML
     Button mainScreenButton;
@@ -46,11 +43,10 @@ public class SelectQuizForStudentController extends WarningAlertController {
         List<Participation> participation = PARTICIPATIONDAO.getParticipationByIdUserGroupNotNull(user.getIdUser());
 
         if (!participation.isEmpty()) {
-            List<Quiz> quizzen = new ArrayList<>();
             List<Quiz> finalQuizList = new ArrayList<>();
             for (Participation course : participation) {
-                quizzen = checkEmptyQuestion(course.getCourse().getIdCourse());
-                finalQuizList.addAll(quizzen);
+                finalQuizList.addAll(checkEmptyQuestion(course.getCourse().getIdCourse()));
+
             }
             quizList.getItems().addAll(finalQuizList);
             makeColumn();
@@ -105,19 +101,14 @@ private List<Quiz> checkEmptyQuestion(int course){
         finishedQuizzes = quizResultCouchDBDAO.getQuizResults(QUIZDAO.getOneByName(nameQuiz), User.getCurrentUser());
         if (!finishedQuizzes.isEmpty()) {
             QuizResult lastQuiz = finishedQuizzes.get(finishedQuizzes.size() - 1);
-            LocalDateTime dateTime = LocalDateTime.parse(lastQuiz.getLocalDateTime());
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            String formattedDateTime = dateTime.format(formatter);
-            return formattedDateTime;
+            return lastQuiz.getLocalDateTime();
         }else return "";
     }
 
     private String getCouchDBScore(String nameQuiz) {
         finishedQuizzes = quizResultCouchDBDAO.getQuizResults(QUIZDAO.getOneByName(nameQuiz), User.getCurrentUser());
         if (!finishedQuizzes.isEmpty()) {
-            QuizResult lastQuiz = finishedQuizzes.get(finishedQuizzes.size() - 1);
-            String score = lastQuiz.getScore();
-            return score;
+            return finishedQuizzes.get(finishedQuizzes.size() - 1).getScore();
         }else return "";
     }
 }
