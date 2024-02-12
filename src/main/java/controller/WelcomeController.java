@@ -233,7 +233,7 @@ public class WelcomeController {
 
     }
 
-    public static String countAVG(List<Quiz> listQuiz, User user) {
+    public String countAVG(List<Quiz> listQuiz, User user) {
         int amountQuiz = listQuiz.size();
         int amountQuestion = questionDAO.getQuestionCountForUser(user);
         double avgQuestion = (Math.round(amountQuestion * 10.0 / amountQuiz) / 10.0);

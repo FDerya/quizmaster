@@ -10,11 +10,12 @@ import view.Main;
 import java.util.ArrayList;
 import java.util.List;
 
-import static controller.WelcomeController.countAVG;
 import static controller.WelcomeController.courseDAO;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WelcomeControllerTest {
+
+    public WelcomeController w = new WelcomeController();
 
     UserDAO userDAO = new UserDAO(Main.getDBaccess());
     QuizDAO quizDAO = new QuizDAO(Main.getDBaccess());
@@ -48,16 +49,16 @@ class WelcomeControllerTest {
 
     @Test
     void countAVGEmptyQuiz() {
-        assertEquals(quizEmpty, countAVG(emptyList, user3));
+        assertEquals(quizEmpty, w.countAVG(emptyList, user3));
     }
 
     @Test
     void countAVGEmptyQuestion() {
-        assertEquals(questionEmpty, countAVG(newList, user2));
+        assertEquals(questionEmpty, w.countAVG(newList, user2));
     }
 
     @Test
     void countAVGFullQuiz() {
-        assertEquals(avg, countAVG(fullList, user));
+        assertEquals(avg, w.countAVG(fullList, user));
     }
 }
